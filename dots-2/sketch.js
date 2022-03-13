@@ -58,9 +58,9 @@ function draw() {
       //   bottomActive = true;
       // }
       // 
-      // if (rightActive){
-      //   dots[x][y].setActive();  
-      // }
+      if (rightActive){
+        dots[x][y].setActive();  
+      }
 
       dots[x][y].draw();
     }
