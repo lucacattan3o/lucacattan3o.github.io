@@ -31,11 +31,11 @@ function draw() {
       // Calculate di angle / multiple of framerate
       let angle = frameCount / 30 * 2;
 
-      // add some angle offset based on the position
+      // Add some angle offset based on the position
       angle += angleOffset(i, items * 1);
       angle += angleOffset(j, items * 1);
 
-      // create the bounce
+      // Create the bounce
       let bounce = sin(angle) * itemSize * 0.5;
   
       push();

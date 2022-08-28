@@ -32,12 +32,12 @@ function draw() {
       // Calculate di angle / multiple of framerate
       let angle = frameCount / 30 * 1;
 
-      // add some angle offset based on the position
-      // calculate the distance with the center of the sketch
+      // Add some angle offset based on the position
+      // Calculate the distance with the center of the sketch
       let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
-      // map it to the number of items
+      // Map it to the number of items
       let offset = map(d, 0, width, 0, items);
-      // calculate the angle offset
+      // Calculate the angle offset
       angle += angleOffset(offset, items * 1);
 
       let bounce = sin(angle);
