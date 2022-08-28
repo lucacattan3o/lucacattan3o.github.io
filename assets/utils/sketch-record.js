@@ -23,14 +23,17 @@ function recordSketchPost(sec){
   if (!doRecord){
     return;
   }
-  recordSketchSave();
+  recordSketchCapture();
   if (frameCount == (60 * sec)){
     noLoop();
-    recordSketchEnd();
+    recordSketchSave();
   }
 }
 
-function recordSketchEnd(){
+// ** UTILS **
+// -----------
+
+function recordSketchSave(){
   if (!doRecord){
     return;
   }
@@ -38,7 +41,7 @@ function recordSketchEnd(){
   capturer.stop();
 }
 
-function recordSketchSave(){
+function recordSketchCapture(){
   if (!doRecord){
     return;
   }

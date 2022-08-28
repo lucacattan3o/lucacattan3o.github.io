@@ -2,7 +2,7 @@ let items = 10;
 let x = 0;
 let y = 0;
 
-let record = false;
+recordSketch(true);
 
 function setup() {
   createCanvas(1080, 1080);
@@ -12,10 +12,7 @@ function setup() {
 }
 
 function draw() {
-
-  if (record && frameCount == 1){
-    capturer.start();
-  }
+  recordSketchPre();
 
   stroke(255);
   let itemSize = width / items;
@@ -39,19 +36,9 @@ function draw() {
 
   if (y >= items){
     noLoop();
-
-    if (record){
-      capturer.save();
-      capturer.stop();
-    }
-    // background(0);
-    // y = 0;
-    // x = 0;
+    recordSketchSave();
   }
-
-  if (record){
-    capturer.capture(canvas);
-  }
+  recordSketchCapture();
 }
 
 
