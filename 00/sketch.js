@@ -1,0 +1,64 @@
+const colors = [
+  '#495ED6', // Blue
+  '#F94E50', // Red
+  '#FFC700', // Yellow
+];
+
+let items = 10;
+let size = 0;
+let x = 0;
+let y = 0;
+
+let record = false;
+
+function setup() {
+  createCanvas(1080, 1080);
+  responsiveSketch();
+  frameRate(30);
+  background(0);
+}
+
+function draw() {
+
+  if (record && frameCount == 1){
+    capturer.start();
+  }
+
+  stroke(255);
+  size = width / items;
+  strokeWeight(2);
+  strokeCap(ROUND);
+
+  if (x < items){
+    push();
+    translate(size * x, size * y);
+    if (random() > 0.2){
+      line(0, 0, size, size);     
+    } else {
+      line(0, size, size, 0); 
+    }
+    pop();
+    x++;
+  } else {
+    x = 0;
+    y++;
+  }
+
+  if (y >= items){
+    noLoop();
+
+    if (record){
+      capturer.save();
+      capturer.stop();
+    }
+    // background(0);
+    // y = 0;
+    // x = 0;
+  }
+
+  if (record){
+    capturer.capture(canvas);
+  }
+}
+
+
