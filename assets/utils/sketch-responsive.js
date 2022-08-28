@@ -1,7 +1,7 @@
 let responsiveMaxWidth, responsiveMaxHeight;
 let domCanvas;
 
-const responsiveCanvasMargin = 60;
+const responsiveCanvasMargin = 80;
 
 function responsiveSketch(){
   setVars();
