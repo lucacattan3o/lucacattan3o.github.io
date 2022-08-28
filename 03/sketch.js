@@ -1,5 +1,5 @@
 let items = 32;
-let record = false;
+recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
@@ -9,9 +9,7 @@ function setup() {
 }
 
 function draw() {
-  if (record && frameCount == 1){
-    capturer.start();
-  }
+  recordSketchPre();
 
   const padding = width * 0.125 / items;
   const paddingTot = padding * (items + 1);
@@ -52,19 +50,7 @@ function draw() {
     }
   }
 
-
-
-  if (record && frameCount == 60 * 8){
-    noLoop();
-    if (record){
-      capturer.save();
-      capturer.stop();
-    }
-  }
-
-  if (record){
-    capturer.capture(canvas);
-  }
+  recordSketchPost();
 }
 
 function angleOffset(index, tot){

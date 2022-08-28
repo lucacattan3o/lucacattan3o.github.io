@@ -1,5 +1,5 @@
 let items = 16;
-let record = false;
+recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
@@ -9,9 +9,7 @@ function setup() {
 }
 
 function draw() {
-  if (record && frameCount == 1){
-    capturer.start();
-  }
+  recordSketchPre();
 
   const gridItemSize = width / items;
   const itemSize = gridItemSize * 0.8;
@@ -19,7 +17,6 @@ function draw() {
 
   background(0);
   stroke(255);
-  //strokeCap(SQUARE);
   strokeWeight(strokeWidth);
 
   for (let i = 0; i < items; i++) {
@@ -49,19 +46,7 @@ function draw() {
     }
   }
 
-
-
-  if (record && frameCount == 60 * 8){
-    noLoop();
-    if (record){
-      capturer.save();
-      capturer.stop();
-    }
-  }
-
-  if (record){
-    capturer.capture(canvas);
-  }
+  recordSketchPost(8);
 }
 
 function angleOffset(index, tot){
