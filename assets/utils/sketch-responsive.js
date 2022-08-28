@@ -9,7 +9,7 @@ function responsiveSketch(){
 }
 
 function setVars(){
-  domCanvas = document.getElementsByTagName('body')[0];
+  domCanvas = document.getElementsByTagName('main')[0];
   resposiveMaxWidth = width;
   resposiveMaxHeight = height;
 }
