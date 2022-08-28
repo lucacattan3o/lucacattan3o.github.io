@@ -1,9 +1,3 @@
-const colors = [
-  '#495ED6', // Blue
-  '#F94E50', // Red
-  '#FFC700', // Yellow
-];
-
 let items = 10;
 let x = 0;
 let y = 0;
