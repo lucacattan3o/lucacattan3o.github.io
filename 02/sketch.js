@@ -19,9 +19,9 @@ function draw() {
     capturer.start();
   }
 
-  const size = width / items;
-  const itemSize = size * 0.8;
-  const strokeWidth = size * 0.125;
+  const gridItemSize = width / items;
+  const itemSize = gridItemSize * 0.8;
+  const strokeWidth = gridItemSize * 0.125;
 
   background(0);
   stroke(255);
@@ -30,12 +30,12 @@ function draw() {
 
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
-      let x = size * i;
-      let y = size * j;
+      let x = gridItemSize * i;
+      let y = gridItemSize * j;
       
       // Go to the center of the item
-      x = x + size * 0.5;
-      y = y + size * 0.5;
+      x = x + gridItemSize * 0.5;
+      y = y + gridItemSize * 0.5;
 
       // Calculate di angle / multiple of framerate
       let angle = frameCount / 30 * 2;
