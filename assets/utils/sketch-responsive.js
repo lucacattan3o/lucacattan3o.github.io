@@ -1,7 +1,7 @@
-let resposiveMaxWidth, responsiveMaxHeight;
+let responsiveMaxWidth, responsiveMaxHeight;
 let domCanvas;
 
-const responsiveCanvasMargin = 20;
+const responsiveCanvasMargin = 60;
 
 function responsiveSketch(){
   setVars();
@@ -10,8 +10,8 @@ function responsiveSketch(){
 
 function setVars(){
   domCanvas = document.getElementsByTagName('main')[0];
-  resposiveMaxWidth = width;
-  resposiveMaxHeight = height;
+  responsiveMaxWidth = width;
+  responsiveMaxHeight = height;
 }
 
 function windowResized() {
@@ -23,8 +23,8 @@ function responsiveCanvas(){
   let availableWidth = window.innerWidth - responsiveCanvasMargin;
   let availableHeight = window.innerHeight - responsiveCanvasMargin;
   
-  let scaleFactorW = availableWidth / resposiveMaxWidth;
-  let scaleFactorH = availableHeight / resposiveMaxHeight;
+  let scaleFactorW = availableWidth / responsiveMaxWidth;
+  let scaleFactorH = availableHeight / responsiveMaxHeight;
   
   let minScaleFactor = Math.min(scaleFactorW, scaleFactorH);
   if (minScaleFactor < 1){
