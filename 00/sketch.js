@@ -2,7 +2,7 @@ let items = 10;
 let x = 0;
 let y = 0;
 
-recordSketch(true);
+recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
