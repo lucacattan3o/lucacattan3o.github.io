@@ -1,4 +1,4 @@
-Sketch 02
+#Sketch 02
 
 Last sketch about lines - for now :)
 
@@ -7,4 +7,4 @@ It's amazing how much beauty lies behind sine and cosine.
 
 Why not teach this in math courses?
 
-#creativecoding #processing #p5js #generative #creativecodeart #codeartgallery
+`#creativecoding #processing #p5js #generative #creativecodeart #codeartgallery`
