@@ -50,7 +50,7 @@ function draw() {
     }
   }
 
-  recordSketchPost();
+  recordSketchPost(8);
 }
 
 function angleOffset(index, tot){
