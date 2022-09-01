@@ -24,7 +24,7 @@ function recordSketchPost(sec){
     return;
   }
   recordSketchCapture();
-  if (frameCount == ((30 * sec) + 2)){
+  if (frameCount == (30 * sec)){
     noLoop();
     recordSketchSave();
   }

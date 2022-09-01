@@ -30,9 +30,9 @@ function draw() {
       // Calculate di angle / multiple of framerate
       let angle = frameCount / 30 * 1;
 
-      // Add some angle offset based on the position03
+      // Add some angle offset based on the position
       angle += angleOffset(i, items * 2);
-      angle += angleOffset(j, items * 1);
+      angle -= angleOffset(j, items * 1);
 
       let bounce = sin(angle);
   
@@ -45,12 +45,11 @@ function draw() {
     }
   }
 
-  if ((frameCount) % 30 == 0){
-    sec++;
-    console.log(sec);
-  }
-
-  recordSketchPost(6);
+  // if ((frameCount - 1) % 30 == 0){
+  //   sec++;
+  //   console.log(sec);
+  // }
+  recordSketchPost(12);
 }
 
 function angleOffset(index, tot){
