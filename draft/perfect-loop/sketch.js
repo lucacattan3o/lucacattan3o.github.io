@@ -20,18 +20,24 @@ function draw() {
 
   background(255);
 
+  // Ottengo un counter proporzionale al framerate
+  // che può essere accelerato con il parametro speed
   let timeFrame = frameCount * speed / fps;
   console.debug('Timeframe: ' + timeFrame);
 
+  // Dal timeframe posso ottenere il valore dei radianti
+  // Moltiplicando * 2PI
+  // Si ottengono valori un po' incomprensibili (non facile ragionare in radianti)
+  // è più facile portarsi dietro il timeFrame e moltiplicarlo * 2 PI
   let rad = timeFrame * 2 * PI;
-  console.debug('Radians: ' + rad);
+  // console.debug('Radians: ' + rad);
 
   let deg = rad * (180 / PI);
   console.debug(deg + '°');
 
   // Default mode in p5.js is RADIANS (angleMode())
-  let bounce = cos(rad * 2 * PI);
-  // console.debug(bounce);
+  let bounce = cos(timeFrame * 2 * PI);
+  console.debug('Bounce: ' + bounce);
   
   rectMode(CENTER);
   fill(100);
@@ -40,6 +46,7 @@ function draw() {
   push();
     fill(100);
     rotate(timeFrame * 2 * PI);
+    scale(bounce, 1);
     rect(0, 0, width, 10);
   pop();
 
@@ -58,7 +65,7 @@ function draw() {
   if (sec == secEnd){
     noLoop();
   }
-  recordSketchPost(3);
+  recordSketchPost(secEnd);
 }
 
 function angleOffset(index, tot){
