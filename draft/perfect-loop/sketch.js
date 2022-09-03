@@ -1,36 +1,61 @@
 let items = 16;
 let sec = 0;
+let fps = 30;
+
+// 1    = 1 complete loop in 1 second
+// 0.5  = 1 complete loop in 2 seconds
+// 0.25 = 1 complete loop in 4 seconds
+let speed = 0.25;
+let secEnd = 4;
 recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
-  frameRate(30);
+  frameRate(fps);
 }
 
 function draw() {
   recordSketchPre();
 
   background(255);
-  let angle = frameCount / 30 * 1;
-  console.debug(angle);
-  let bounce = cos(angle);
+
+  let timeFrame = frameCount * speed / fps;
+  console.debug('Timeframe: ' + timeFrame);
+
+  let rad = timeFrame * 2 * PI;
+  console.debug('Radians: ' + rad);
+
+  let deg = rad * (180 / PI);
+  console.debug(deg + '°');
+
+  // Default mode in p5.js is RADIANS (angleMode())
+  let bounce = cos(rad * 2 * PI);
+  // console.debug(bounce);
+  
+  rectMode(CENTER);
+  fill(100);
+  translate(width * 0.5, height * 0.5);
   
   push();
-    translate(width * 0.5, height * 0.5);
-    scale(bounce);
-    rectMode(CENTER);
     fill(100);
-    rect(0, 0, width, height);
+    rotate(timeFrame * 2 * PI);
+    rect(0, 0, width, 10);
   pop();
 
-  if ((frameCount) % 30 == 0){
+  push();
+    fill(50);
+    // 0.25 = 90°
+    rotate((timeFrame + 0.25) * 2 * PI);
+    rect(0, 0, width, 10);
+  pop();
+
+  if ((frameCount) % fps == 0){
     sec++;
     console.log('Sec: ' + sec);
   }
 
-  if (sec == 3){
-    console.debug(frameCount);
+  if (sec == secEnd){
     noLoop();
   }
   recordSketchPost(3);
