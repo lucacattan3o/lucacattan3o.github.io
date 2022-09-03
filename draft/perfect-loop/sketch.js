@@ -23,7 +23,7 @@ function setup() {
 function draw() {
   recordSketchPre();
 
-  background(255, 255, 255, 100);
+  background(255, 255, 255, 10);
 
   // Ottengo i secondi a partire dal frameCount
   let sec = frameCount / fps;
@@ -39,40 +39,49 @@ function draw() {
   let deg = rad * (180 / PI);
   console.debug(deg + '°');
   
+  stroke(0);
   translate(width * 0.5, height * 0.5);
   strokeWeight(width * 0.002);
-  fill(255, 0, 0);
-  
+  fill(color('#ffc107'));
+
   push();
     rotate(sec * speed * TWO_PI);
     line(0, 0, circleSize, 0);
     translate(circleSize, 0);
-    circle(0, 0, width * 0.01);
+    circle(0, 0, width * 0.015);
   pop();
-
   
   let bounceCos = bounce(sec, speed);
   push();
     translate(0, circleSize * 1.1);
     translate(bounceCos * circleSize, 0);
-    rect(0, 0, width * 0.01);
+    rect(0, 0, width * 0.015);
+  pop();
+
+  // Timing offset
+  let bounceCosB = bounce(sec, speed, 1 / 50);
+  push();
+    translate(0, circleSize * 1.15);
+    translate(bounceCosB * circleSize, 0);
+    rect(0, 0, width * 0.015);
+  pop();
+
+  // Timing offset
+  bounceCosC = bounce(sec, speed, 2 / 50);
+  push();
+    translate(0, circleSize * 1.2);
+    translate(bounceCosC * circleSize, 0);
+    rect(0, 0, width * 0.015);
   pop();
 
   let bounceSin = sin(sec * speed * TWO_PI);
   push();
     translate(circleSize * 1.1, 0);
     translate(0, bounceSin * circleSize);
-    rect(0, 0, width * 0.01);
+    rect(0, 0, width * 0.015);
   pop();
 
-  // Timing offset
-  fill(0, 255, 0);
-  let bounceCosB = bounce(sec, 0.0125);
-  push();
-    translate(0, circleSize * 1.2);
-    translate(bounceCosB * circleSize, 0);
-    rect(0, 0, width * 0.01);
-  pop();
+  
 
   fill(0, 0, 255);
   
