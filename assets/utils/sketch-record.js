@@ -1,6 +1,8 @@
+let cFps = 30;
+
 let capturer = new CCapture({
   format: 'webm',
-  framerate: 30,
+  framerate: cFps,
   verbose: true,
 })
 
@@ -24,7 +26,7 @@ function recordSketchPost(sec){
     return;
   }
   recordSketchCapture();
-  if (frameCount == (30 * sec)){
+  if (frameCount == (cFps * sec)){
     noLoop();
     recordSketchSave();
   }

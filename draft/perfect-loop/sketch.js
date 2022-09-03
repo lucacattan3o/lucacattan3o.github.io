@@ -6,11 +6,11 @@ let fps = 30;
 // 0.5  = 1 complete loop in 2 seconds
 // 0.25 = 1 complete loop in 4 seconds
 let speed = 0.125;
-let secEnd = 4;
+let secEnd = 8;
 
 let circleSize = false;
 
-recordSketch(false);
+recordSketch(true);
 
 function setup() {
   createCanvas(1080, 1080);
@@ -81,7 +81,6 @@ function draw() {
     rect(0, 0, width * 0.015);
   pop();
 
-  
 
   fill(0, 0, 255);
   
@@ -98,9 +97,9 @@ function draw() {
     console.log('Sec: ' + sec);
   }
 
-  // if (sec == secEnd){
-  //   noLoop();
-  // }
+  if (sec == secEnd){
+    noLoop();
+  }
   recordSketchPost(secEnd);
 }
 
