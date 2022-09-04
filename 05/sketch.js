@@ -1,6 +1,8 @@
-let items = 1;
+let items = 10;
 let sec = 0;
 let fps = 30;
+let inverse = false;
+let inverses = [];
 recordSketch(false);
 
 function setup() {
@@ -26,21 +28,31 @@ function draw() {
       let x = (itemSize + padding) * i + padding;
       let y = (itemSize + padding) * j + padding;
 
-      let b = bounce(sec, 0.125);
-      let c = -b;
+      let offset = map(i, 0, items * 2, 0, 1);
+      let b = bounce(sec, 0.25, offset);
       
       // Go to the center of the item
       x = x + itemSize * 0.5;
       y = y + itemSize * 0.5;
 
-      let dir = true;
-      if (b < 0){
-        dir = false;
-      }
-
       push();
         translate(x, y);
         rotate(0.5 * PI);
+
+        let dir = true;
+        if (b < 0){
+          dir = false;
+        }
+
+        if (!inverse && b == -1){
+          inverse = true;
+        }
+        if (inverse && b == 1){
+          inverse = false;
+        }
+        if (inverse){
+          rotate(-PI);
+        }
 
         fill(0);
         if (!dir){
