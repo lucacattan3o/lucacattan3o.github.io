@@ -1,4 +1,4 @@
-let items = 10;
+let items = 1;
 let sec = 0;
 let fps = 30;
 recordSketch(false);
@@ -18,7 +18,7 @@ function draw() {
   const paddingTot = padding * (items + 1);
   const itemSize = (width - paddingTot) / items;
   rectMode(CENTER);
-  background(255, 255, 255, 20);
+  background(255, 255, 255);
   noStroke();
 
   for (let i = 0; i < items; i++) {
@@ -26,19 +26,45 @@ function draw() {
       let x = (itemSize + padding) * i + padding;
       let y = (itemSize + padding) * j + padding;
 
-      let b = bounce(sec, 0.25);
+      let b = bounce(sec, 0.125);
+      let c = -b;
       
       // Go to the center of the item
       x = x + itemSize * 0.5;
       y = y + itemSize * 0.5;
-  
+
+      let dir = true;
+      if (b < 0){
+        dir = false;
+      }
+
       push();
         translate(x, y);
         rotate(0.5 * PI);
-        rotate(sec * 0.5 * PI);
-   
+
         fill(0);
-        arc(0, 0, itemSize, itemSize, 0, PI);
+        if (!dir){
+          arc(0, 0, itemSize, itemSize, 0, PI);
+          push();
+            scale(1, b);
+            arc(0, 0, itemSize, itemSize, 0, -PI);
+          pop();
+        } else {
+          fill(0);
+          arc(0, 0, itemSize, itemSize, 0, PI);
+          fill(255);
+          push();
+            scale(1, b);
+            arc(0, 0, itemSize, itemSize, 0, -PI);
+          pop();
+        }
+
+        // fill(255, 0, 0);
+        // arc(0, 0, itemSize, itemSize, 0, -PI);
+        // if (b < 0){ 
+        //   scale(1, b);
+        // }
+        // arc(0, 0, itemSize, itemSize, 0, PI);
       pop();
     }
   }
