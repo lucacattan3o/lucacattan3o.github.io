@@ -1,4 +1,4 @@
-let items = 10;
+let items = 16;
 let sec = 0;
 let fps = 30;
 let inverse = false;
@@ -9,6 +9,10 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
+
+  for (let z = 0; z < (items * items); z++){
+    inverses.push(false);
+  }
 }
 
 function draw() {
@@ -23,12 +27,19 @@ function draw() {
   background(255, 255, 255);
   noStroke();
 
+  let z = 0;
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
       let x = (itemSize + padding) * i + padding;
       let y = (itemSize + padding) * j + padding;
+      z++;
 
-      let offset = map(i, 0, items * 2, 0, 1);
+      let offset = 0;
+      // Concentric offset
+      let d = Math.abs(dist(x, y, mouseX, mouseY));
+      // offset = map(d, 0, width, 0, 1);
+
+      offset = map(i, 0, items, 0, 1);
       let b = bounce(sec, 0.25, offset);
       
       // Go to the center of the item
@@ -44,13 +55,14 @@ function draw() {
           dir = false;
         }
 
-        if (!inverse && b == -1){
-          inverse = true;
+        // Not easy, but working
+        if (!inverses[z] && b == -1){
+          inverses[z] = true;
         }
-        if (inverse && b == 1){
-          inverse = false;
+        if (inverses[z] && b == 1){
+          inverses[z] = false;
         }
-        if (inverse){
+        if (inverses[z]){
           rotate(-PI);
         }
 

@@ -104,7 +104,6 @@ function draw() {
 }
 
 /**
- * 
  * Offset should be beetween 0 and 1
  */
 function bounce(sec, speed = 1, offset = 0){
