@@ -1,4 +1,4 @@
-let items = 16;
+let items = 8;
 let sec = 0;
 let fps = 30;
 let inverse = false;
@@ -32,19 +32,23 @@ function draw() {
     for (let j = 0; j < items; j++) {
       let x = (itemSize + padding) * i + padding;
       let y = (itemSize + padding) * j + padding;
+
+      // Go to the center of the item
+      x = x + itemSize * 0.5;
+      y = y + itemSize * 0.5;
+      
       z++;
 
       let offset = 0;
       // Concentric offset
-      let d = Math.abs(dist(x, y, mouseX, mouseY));
-      // offset = map(d, 0, width, 0, 1);
+      let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
+      // offset = map(d, 0, width * 0.25, 0, 1, true);
+      // offset dell'animazione non funziona correttamente
+      // deve esserci qualcosa che non funziona nella funziona bounce
+      // forse l'oggetto inverse non funziona correttamente
 
       offset = map(i, 0, items, 0, 1);
-      let b = bounce(sec, 0.25, offset);
-      
-      // Go to the center of the item
-      x = x + itemSize * 0.5;
-      y = y + itemSize * 0.5;
+      let b = bounce(sec, 0.5, 0);
 
       push();
         translate(x, y);
@@ -82,6 +86,8 @@ function draw() {
             arc(0, 0, itemSize, itemSize, 0, -PI);
           pop();
         }
+        // Visual fix
+        arc(0, 0, itemSize, itemSize * 0.025, 0, 2 * PI);
 
         // fill(255, 0, 0);
         // arc(0, 0, itemSize, itemSize, 0, -PI);
