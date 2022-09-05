@@ -46,6 +46,8 @@ function draw() {
       // offset dell'animazione non funziona correttamente
       // deve esserci qualcosa che non funziona nella funziona bounce
       // forse l'oggetto inverse non funziona correttamente
+      // dovrebbe essere settato prima.. perché in alcuni casi l'animazione dovrebbe già trovarsi più avanti..
+      // forse dovrei mappare tutto con una variabile progressiva diversa
 
       offset = map(i, 0, items, 0, 1);
       let b = bounce(sec, 0.5, 0);
