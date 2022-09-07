@@ -1,4 +1,4 @@
-let items = 8;
+let items = 1;
 let sec = 0;
 let fps = 30;
 let inverse = false;
@@ -43,7 +43,7 @@ function draw() {
 
         let offset = 0;
         // Concentric offset
-        let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
+        // let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
         // offset = map(d, 0, width * 0.25, 0, 1, true);
 
         // Cet a progressive 0 to 1 loop from sec
@@ -52,22 +52,43 @@ function draw() {
         // Split animation in 4 pieces
         if (t >= 0 && t < 0.25){
           // Anim. A
-          // Back to 0 - 1;
+          // Linear 0 - 0.5;
           tSec = t * 4;
-          // Bounce 0 - 1
-          tBounce = (cos(t * TWO_PI) + 2) * 0.5; // inverted?
+          // Bounce 1 - 0.5
+          tBounce = (cos(tSec * PI) + 1) * 0.5;
+          console.debug(tBounce);
           
+          // Black
           fill(0);
-          arc(0, 0, itemSize, itemSize, 0, TWO_PI);
+          arc(0, 0, itemSize, itemSize, 0, PI);
           
-          // push();
-          //   fill(0, 255, 0);
-          //   scale(1, tBounce);
-          //   arc(0, 0, itemSize, itemSize, 0, -PI);
-          // pop();
+          // White Anim
+          fill(255);
+          push();
+            scale(1, tBounce);
+            arc(0, 0, itemSize, itemSize, 0, -PI);
+          pop();
+
+          // Visual fix
+          // arc(0, 0, itemSize, itemSize * 0.025, 0, 2 * PI);
         }
         if (t >= 0.25 && t < 0.5){
           // Anim. B
+          tSec = (t - 0.25) * 4;
+          // Bounce 0 - 1
+          tBounce = 1 - (cos(tSec * PI) + 1) * 0.5;
+          
+          // Black
+          fill(0);
+          arc(0, 0, itemSize, itemSize, 0, PI);
+
+          // Right Black Anim
+          push();
+            scale(1, tBounce);
+            rotate(-PI);
+            arc(0, 0, itemSize, itemSize, 0, -PI);
+          pop();
+
         }
         if (t >= 0.5 && t < 0.75){
           // Anim. C
@@ -75,7 +96,11 @@ function draw() {
         if (t >= 0.75 && t < 1){
           // Anim. D
         }
+
+        
+      
       pop();
+
 
 
       // - t * 4 = progressivo 0 - 1 che si può passare dentro seno e coseno
