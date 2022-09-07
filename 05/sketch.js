@@ -2,7 +2,7 @@ let items = 16;
 let sec = 0;
 let fps = 30;
 
-recordSketch(true);
+recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
