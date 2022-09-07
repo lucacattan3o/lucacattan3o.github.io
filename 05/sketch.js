@@ -1,4 +1,4 @@
-let items = 1;
+let items = 10;
 let sec = 0;
 let fps = 30;
 let inverse = false;
@@ -46,50 +46,92 @@ function draw() {
         // let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
         // offset = map(d, 0, width * 0.25, 0, 1, true);
 
-        // Cet a progressive 0 to 1 loop from sec
+        // Get a progressive 0 to 1 loop from sec
         let t = sec % 1;
 
         // Split animation in 4 pieces
-        if (t >= 0 && t < 0.25){
+        if (t >= 0 && t < 0.5){
           // Anim. A
-          // Linear 0 - 0.5;
-          tSec = t * 4;
-          // Bounce 1 - 0.5
-          tBounce = (cos(tSec * PI) + 1) * 0.5;
-          console.debug(tBounce);
+          // Linear 0 - 1;
+          tSec = t * 2;
+          // console.debug(tSec);
+          // Bounce 0 - 1 - 0
+          tBounce = (cos(tSec * TWO_PI) + 1) * 0.5;
+          // console.debug(tBounce);
           
           // Black
           fill(0);
           arc(0, 0, itemSize, itemSize, 0, PI);
           
-          // White Anim
-          fill(255);
-          push();
-            scale(1, tBounce);
-            arc(0, 0, itemSize, itemSize, 0, -PI);
-          pop();
+          if (t <= 0.25){
+            // White Anim
+            fill(255);
+            push();
+              scale(1, tBounce);
+              arc(0, 0, itemSize, itemSize, 0, -PI);
+            pop();
+          } else {
+            // Right Black Anim
+            push();
+              rotate(-PI);
+              scale(1, tBounce);
+              arc(0, 0, itemSize, itemSize, 0, -PI);
+            pop();
+          } 
 
           // Visual fix
           // arc(0, 0, itemSize, itemSize * 0.025, 0, 2 * PI);
-        }
-        if (t >= 0.25 && t < 0.5){
-          // Anim. B
-          tSec = (t - 0.25) * 4;
-          // Bounce 0 - 1
-          tBounce = 1 - (cos(tSec * PI) + 1) * 0.5;
-          
+        } else {
+          // Anim. A
+          // Linear 0 - 1;
+          tSec = (t - 0.5) * 2;
+
+          // Bounce 0 - 1 - 0
+          tBounce = (cos(tSec * TWO_PI) + 1) * 0.5;
+
           // Black
-          fill(0);
-          arc(0, 0, itemSize, itemSize, 0, PI);
-
-          // Right Black Anim
           push();
-            scale(1, tBounce);
             rotate(-PI);
-            arc(0, 0, itemSize, itemSize, 0, -PI);
+            fill(0);
+            arc(0, 0, itemSize, itemSize, 0, PI);
           pop();
+          
+          if (t <= 0.75){
+            // Black Anim
+            fill(0);
+            push();
+              scale(1, tBounce);
+              arc(0, 0, itemSize, itemSize, 0, -PI);
+            pop();
+          } else {
+            // Right White Anim
+            push();
+              fill(255);
+              rotate(-PI);
+              scale(1, tBounce);
+              arc(0, 0, itemSize, itemSize, 0, -PI);
+            pop();  
+          }
 
         }
+        // if (t >= 0.25 && t < 0.5){
+        //   // Anim. B
+        //   tSec = (t - 0.25) * 4;
+        //   // Bounce 0 - 1
+        //   tBounce = 1 - (cos(tSec * PI) + 1) * 0.5;
+        //   
+        //   // Black
+        //   fill(0);
+        //   arc(0, 0, itemSize, itemSize, 0, PI);
+// 
+        //   // Right Black Anim
+        //   push();
+        //     scale(1, tBounce);
+        //     rotate(-PI);
+        //     arc(0, 0, itemSize, itemSize, 0, -PI);
+        //   pop();
+// 
+        // }
         if (t >= 0.5 && t < 0.75){
           // Anim. C
         }
