@@ -18,7 +18,7 @@ function setup() {
 function draw() {
   recordSketchPre();
 
-  let sec = frameCount / fps;
+  let sec = frameCount / fps * 0.25;
 
   const padding = width * 0.25 / items;
   const paddingTot = padding * (items + 1);
@@ -37,17 +37,49 @@ function draw() {
       x = x + itemSize * 0.5;
       y = y + itemSize * 0.5;
       
-      z++;
+      push();
+        translate(x, y);
+        rotate(0.5 * PI);
 
-      let offset = 0;
-      // Concentric offset
-      let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
-      // offset = map(d, 0, width * 0.25, 0, 1, true);
-      // offset dell'animazione non funziona correttamente
-      // deve esserci qualcosa che non funziona nella funziona bounce
-      // forse l'oggetto inverse non funziona correttamente
-      // dovrebbe essere settato prima.. perché in alcuni casi l'animazione dovrebbe già trovarsi più avanti..
-      // forse dovrei mappare tutto con una variabile progressiva diversa
+        let offset = 0;
+        // Concentric offset
+        let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
+        // offset = map(d, 0, width * 0.25, 0, 1, true);
+
+        // Cet a progressive 0 to 1 loop from sec
+        let t = sec % 1;
+
+        // Split animation in 4 pieces
+        if (t >= 0 && t < 0.25){
+          // Anim. A
+          // Back to 0 - 1;
+          tSec = t * 4;
+          // Bounce 0 - 1
+          tBounce = (cos(t * TWO_PI) + 2) * 0.5; // inverted?
+          
+          fill(0);
+          arc(0, 0, itemSize, itemSize, 0, TWO_PI);
+          
+          // push();
+          //   fill(0, 255, 0);
+          //   scale(1, tBounce);
+          //   arc(0, 0, itemSize, itemSize, 0, -PI);
+          // pop();
+        }
+        if (t >= 0.25 && t < 0.5){
+          // Anim. B
+        }
+        if (t >= 0.5 && t < 0.75){
+          // Anim. C
+        }
+        if (t >= 0.75 && t < 1){
+          // Anim. D
+        }
+      pop();
+
+
+      // - t * 4 = progressivo 0 - 1 che si può passare dentro seno e coseno
+      // l'offset si può fare a monte su t
 
       offset = map(i, 0, items, 0, 1);
       let b = bounce(sec, 0.5, 0);
@@ -72,24 +104,24 @@ function draw() {
           rotate(-PI);
         }
 
-        fill(0);
-        if (!dir){
-          arc(0, 0, itemSize, itemSize, 0, PI);
-          push();
-            scale(1, b);
-            arc(0, 0, itemSize, itemSize, 0, -PI);
-          pop();
-        } else {
-          fill(0);
-          arc(0, 0, itemSize, itemSize, 0, PI);
-          fill(255);
-          push();
-            scale(1, b);
-            arc(0, 0, itemSize, itemSize, 0, -PI);
-          pop();
-        }
+        // fill(0);
+        // if (!dir){
+        //   arc(0, 0, itemSize, itemSize, 0, PI);
+        //   push();
+        //     scale(1, b);
+        //     arc(0, 0, itemSize, itemSize, 0, -PI);
+        //   pop();
+        // } else {
+        //   fill(0);
+        //   arc(0, 0, itemSize, itemSize, 0, PI);
+        //   fill(255);
+        //   push();
+        //     scale(1, b);
+        //     arc(0, 0, itemSize, itemSize, 0, -PI);
+        //   pop();
+        // }
         // Visual fix
-        arc(0, 0, itemSize, itemSize * 0.025, 0, 2 * PI);
+        // arc(0, 0, itemSize, itemSize * 0.025, 0, 2 * PI);
 
         // fill(255, 0, 0);
         // arc(0, 0, itemSize, itemSize, 0, -PI);
