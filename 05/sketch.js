@@ -16,7 +16,7 @@ function draw() {
   let speed = 0.5;
   let sec = frameCount / fps * speed;
 
-  const padding = width * 0.125 / items;
+  const padding = width * 0.25 / items;
   const paddingTot = padding * (items + 1);
   const itemSize = (width - paddingTot) / items;
   
@@ -40,20 +40,23 @@ function draw() {
         // Offset options
         let secOffset = 0;
         // 0 - 1 offset
-        secOffset = (i / (items * 2 - 1));
+        secOffset = (i / (items - 1)) * 1;
         // Concentric offset
         // let d = Math.abs(dist(x, y, width, 0));
         // secOffset = map(d, 0, width, 0, 1, true);
 
-        secOffset = 1;
-        if (i % 2 == 0){
-          secOffset = 0.25;
-        }
-        if (j % 2 == 0){
-          secOffset += 0.25;
-        }
+        // Grid
+        // if (j % 2 == 0){
+        //   secOffset = 0.25;
+        // }
+        // if (i % 2 == 0){
+        //   secOffset += 0.25;
+        // }
 
-        
+        // Concentric
+        // let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
+        // secOffset = map(d, 0, width, 0, 1, true) * 4;
+
         // Linear 0 to 1
         let t = (sec + secOffset) % 1;
 
