@@ -37,12 +37,22 @@ function draw() {
         translate(x, y);
         rotate(0.5 * PI);
 
+        // Offset options
         let secOffset = 0;
         // 0 - 1 offset
         secOffset = (i / (items * 2 - 1));
         // Concentric offset
-        let d = Math.abs(dist(x, y, width, 0));
+        // let d = Math.abs(dist(x, y, width, 0));
         // secOffset = map(d, 0, width, 0, 1, true);
+
+        secOffset = 1;
+        if (i % 2 == 0){
+          secOffset = 0.25;
+        }
+        if (j % 2 == 0){
+          secOffset += 0.25;
+        }
+
         
         // Linear 0 to 1
         let t = (sec + secOffset) % 1;
