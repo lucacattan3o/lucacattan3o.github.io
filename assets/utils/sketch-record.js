@@ -35,17 +35,17 @@ function recordSketchPost(sec){
 // ** UTILS **
 // -----------
 
+function recordSketchCapture(){
+  if (!doRecord){
+    return;
+  }
+  capturer.capture(canvas);
+}
+
 function recordSketchSave(){
   if (!doRecord){
     return;
   }
   capturer.save();
   capturer.stop();
-}
-
-function recordSketchCapture(){
-  if (!doRecord){
-    return;
-  }
-  capturer.capture(canvas);
 }
