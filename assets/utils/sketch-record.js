@@ -1,10 +1,7 @@
 let cFps = 30;
+let capturer = false;
 
-let capturer = new CCapture({
-  format: 'webm',
-  framerate: cFps,
-  verbose: true,
-})
+recordSketchSetFps(cFps);
 
 let doRecord = false; 
 
@@ -48,4 +45,13 @@ function recordSketchSave(){
   }
   capturer.save();
   capturer.stop();
+}
+
+function recordSketchSetFps(fps){
+  cFps = fps;
+  capturer = new CCapture({
+    format: 'webm',
+    framerate: cFps,
+    verbose: true,
+  })
 }
