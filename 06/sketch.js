@@ -44,10 +44,10 @@ function draw() {
     y = 0;
     if (doRecord) {
       nLoop--;
-    }
-    if (!nLoop){
-      noLoop();
-      recordSketchSave();
+      if (!nLoop){
+        noLoop();
+        recordSketchSave();
+      }
     }
   }
   recordSketchCapture();
