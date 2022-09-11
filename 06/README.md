@@ -1,8 +1,7 @@
 #Sketch 06
 
-I'm facinated about let the computer make decisions.
-Starting from a really simple decision like choosing a color.
-The result is unpredictable and this can make a simple sketch interesting.
+I'm facinated about let the computer make decisions. Starting from a really simple one, like choosing a color.
+The result is unpredictable and a simple sketch can produce interesting and different outputs every time.
 
 Just vanilla javascript and p5.js
 
