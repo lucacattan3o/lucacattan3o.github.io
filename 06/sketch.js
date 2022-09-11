@@ -1,22 +1,23 @@
-let items = 8;
+let items = 9;
+let nLoop = 12;
 let x = 0;
 let y = 0;
 let itemSize = false;
 
 let colors = [
   '#000000',
-  // '#14213d',
   '#fca311',
   '#e5e5e5',
   '#ffffff',
 ];
 
-recordSketch(true);
+recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(15);
+  recordSketchSetFps(15);
   background(255);
   itemSize = width / items;
 }
@@ -39,8 +40,15 @@ function draw() {
   }
 
   if (y >= items){
-    noLoop();
-    recordSketchSave();
+    x = 0;
+    y = 0;
+    if (doRecord) {
+      nLoop--;
+    }
+    if (!nLoop){
+      noLoop();
+      recordSketchSave();
+    }
   }
   recordSketchCapture();
 }
@@ -54,8 +62,6 @@ function drawItem(){
   let cColor = randomColor();
   fill(cColor);
   arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
-  // translate(itemSize * 0.25 * random(-1, 1), itemSize * 0.25 * random(-1, 1));
-  // arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI);
 }
 
 function randomColor(){
