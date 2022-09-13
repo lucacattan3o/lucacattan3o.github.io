@@ -59,7 +59,8 @@ function drawItem(){
   rect(0, 0, itemSize, itemSize);
 
   fill(shuffledColors[1]);
-  arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
+  // arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
+  arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI);
 }
 
 function drawItemB(){
