@@ -1,5 +1,5 @@
 let items = 9;
-let nLoop = 12;
+let nLoop = 1;
 let x = 0;
 let y = 0;
 let itemSize = false;
@@ -42,12 +42,10 @@ function draw() {
   if (y >= items){
     x = 0;
     y = 0;
-    if (doRecord) {
-      nLoop--;
-      if (!nLoop){
-        noLoop();
-        recordSketchSave();
-      }
+    nLoop--;
+    if (!nLoop){
+      noLoop();
+      recordSketchSave();
     }
   }
   recordSketchCapture();
@@ -55,12 +53,22 @@ function draw() {
 
 function drawItem(){
   noStroke();
-  let bColor = randomColor();
-  fill(bColor);
+  let shuffledColors = shuffle(colors);
+
+  fill(shuffledColors[0]);
   rect(0, 0, itemSize, itemSize);
 
-  let cColor = randomColor();
-  fill(cColor);
+  fill(shuffledColors[1]);
+  arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
+}
+
+function drawItemB(){
+  noStroke();
+
+  fill(randomColor());
+  rect(0, 0, itemSize, itemSize);
+
+  fill(randomColor());
   arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
 }
 
