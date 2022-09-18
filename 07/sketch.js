@@ -1,5 +1,5 @@
 let items = 8;
-let nLoop = 12;
+let nLoop = 1;
 let x = 0;
 let y = 0;
 let itemSize = false;
