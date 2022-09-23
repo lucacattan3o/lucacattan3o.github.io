@@ -11,15 +11,23 @@ let colors = [
   '#ffffff',
 ];
 
+let itemList = [];
+
 recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
-  frameRate(15);
-  recordSketchSetFps(15);
+  frameRate(30);
+  recordSketchSetFps(30);
   background(255);
   itemSize = width / items;
+
+  for (let i = 0; i < items; i++) {
+    for (let j = 0; j < items; j++) { 
+      itemList.push({i, j});
+    }
+  }
 }
 
 function draw() {
@@ -27,27 +35,18 @@ function draw() {
   rectMode(CENTER);
   strokeCap(ROUND);
 
-  if (x < items){
+  let item = getRandomItem();
+  if (item){
     push();
-      translate(itemSize * x, itemSize * y);
+      translate(itemSize * item.i, itemSize * item.j);
       translate(itemSize * 0.5, itemSize * 0.5);
       drawItem();
     pop();
-    x++;
   } else {
-    x = 0;
-    y++;
+    noLoop();
+    recordSketchSave();
   }
 
-  if (y >= items){
-    x = 0;
-    y = 0;
-    nLoop--;
-    if (!nLoop){
-      noLoop();
-      recordSketchSave();
-    }
-  }
   recordSketchCapture();
 }
 
@@ -84,14 +83,15 @@ function drawItem(){
   pop();
 }
 
-function drawItemB(){
-  noStroke();
-
-  fill(randomColor());
-  rect(0, 0, itemSize, itemSize);
-
-  fill(randomColor());
-  arc(0, 0, itemSize * 0.7, itemSize * 0.7, 0, TWO_PI);
+function getRandomItem(){
+  if (itemList.length > 0){
+    let i = Math.floor(random(0, itemList.length));
+    let item = itemList[i];
+    itemList.splice(i, 1);
+    return item;
+  } else {
+    return false;
+  }
 }
 
 function randomColor(){
