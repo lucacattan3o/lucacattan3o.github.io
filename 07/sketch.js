@@ -18,8 +18,8 @@ recordSketch(false);
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
-  frameRate(30);
-  recordSketchSetFps(30);
+  frameRate(15);
+  recordSketchSetFps(15);
   background(255);
   itemSize = width / items;
 
