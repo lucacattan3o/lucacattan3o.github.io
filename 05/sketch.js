@@ -1,6 +1,7 @@
 let items = 16;
 let sec = 0;
 let fps = 30;
+let speed = 0.125;
 
 recordSketch(false);
 
@@ -12,8 +13,6 @@ function setup() {
 
 function draw() {
   recordSketchPre();
-
-  let speed = 0.5;
   let sec = frameCount / fps * speed;
 
   const padding = width * 0.25 / items;
