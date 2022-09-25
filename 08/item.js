@@ -5,7 +5,7 @@ class Item {
     this.i = i;
     this.j = j;
     
-    this.shapeNumber = Math.floor(random(0, 4));
+    this.shapeNumber = Math.floor(random(0, 5));
 
     this.rotate = Math.floor(random() * 4) * 0.5;
     this.colors = shuffle(colors);
@@ -25,8 +25,12 @@ class Item {
       case 2:
         this.drawTriangles();
         break;
-
+      
       case 3:
+        this.drawTriangle();
+        break;
+
+      case 4:
         this.drawArc();
         break;
     
@@ -65,6 +69,16 @@ class Item {
     fill(this.colors[1]);
     triangle(-itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, -itemSize * 0.5, 0, 0);
     triangle(-itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, 0, 0);
+  }
+
+  drawTriangle(){
+    fill(this.colors[0]);
+    rect(0, 0, itemSize, itemSize);
+    push();
+      fill(this.colors[1]);
+      rotate(this.rotate * PI);
+      triangle(-itemSize * 0.5, -itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+    pop();
   }
 
   drawArc(){
