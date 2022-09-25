@@ -3,12 +3,23 @@ let nLoop = 1;
 let x = 0;
 let y = 0;
 let itemSize = false;
+let fps = 60;
 
 let colors = [
   '#000000',
   '#fca311',
   '#e5e5e5',
   '#ffffff',
+];
+
+colors = [
+  // '#000000',
+  // '#780000',
+  '#c1121f',
+  '#fdf0d5',
+  '#003049',
+  '#669bbc',
+  // '#ffffff'
 ];
 
 let itemList = [];
@@ -18,11 +29,14 @@ recordSketch(false);
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
-  frameRate(60);
-  recordSketchSetFps(60);
+  frameRate(fps);
+  recordSketchSetFps(fps);
   background(255);
   itemSize = width / items;
+  setupItemList();
+}
 
+function setupItemList(){
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) { 
       itemList.push({i, j});
@@ -43,11 +57,16 @@ function draw() {
       drawItem();
     pop();
   } else {
-    noLoop();
-    recordSketchSave();
+    // noLoop();
+    if (frameCount % (fps * 5) == 0){
+      background(255,255,255);
+      setupItemList();
+    }
+    // recordSketchSave();
   }
 
-  recordSketchCapture();
+  recordSketchPost(15);
+  // recordSketchCapture();
 }
 
 function drawItem(){
