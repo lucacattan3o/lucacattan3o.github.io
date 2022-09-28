@@ -5,9 +5,13 @@ class Item {
     this.i = i;
     this.j = j;
     
-    this.shapeNumber = Math.floor(random(1, 2));
+    this.shapeNumber = Math.floor(random(1, 3));
 
     this.rotate = Math.floor(random() * 4) * 0.5;
+    this.rotate90 = 0;
+    if (this.rotate > 1){
+      this.rotate90 = 1;
+    }
     this.colors = shuffle(colors);
     this.secOffset = random(0, 1);
   }
@@ -21,7 +25,6 @@ class Item {
     // Bounce -1 - 1
     this.bounce = cos(this.t * TWO_PI);
     this.bouncePlus = (cos(this.t * TWO_PI) + 1) * 0.5;
-
 
     switch (this.shapeNumber) {
       case 0:
@@ -50,14 +53,16 @@ class Item {
   }
 
   drawCircles(){
-    fill(this.colors[0]);
-    rect(0, 0, itemSize, itemSize);
-    fill(this.colors[1]);
-    arc(0, 0, itemSize * this.bounce, itemSize * this.bounce, 0, TWO_PI);
-    fill(this.colors[0]);
-    arc(0, 0, itemSize * 0.6 * this.bounce, itemSize * 0.6 * this.bounce, 0, TWO_PI);
-    fill(this.colors[2]);
-    arc(0, 0, itemSize * 0.3 * this.bounce, itemSize * 0.3 * this.bounce, 0, TWO_PI);
+    push();
+      fill(this.colors[0]);
+      rect(0, 0, itemSize, itemSize);
+      fill(this.colors[1]);
+      arc(0, 0, itemSize, itemSize, 0, TWO_PI * 0.75);
+      fill(this.colors[0]);
+      arc(0, 0, itemSize * 0.6, itemSize * 0.6, 0, TWO_PI * 0.75);
+      fill(this.colors[2]);
+      arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI * 0.75);
+    pop();
   }
 
   drawLines(){
@@ -90,11 +95,14 @@ class Item {
   }
 
   drawTriangles(){
-    fill(this.colors[0]);
-    rect(0, 0, itemSize, itemSize);
-    fill(this.colors[1]);
-    triangle(-itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, -itemSize * 0.5, 0, 0);
-    triangle(-itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, 0, 0);
+    push();
+      rotate(this.rotate * PI);
+      fill(this.colors[0]);
+      rect(0, 0, itemSize, itemSize);
+      fill(this.colors[1]);
+      triangle(-itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5 * this.bounce, 0);
+      triangle(-itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5 * this.bounce, 0);
+    pop();
   }
 
   drawTriangle(){
