@@ -1,4 +1,4 @@
-let items = 8;
+let items = 4;
 let nLoop = 1;
 let x = 0;
 let y = 0;

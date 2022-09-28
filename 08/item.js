@@ -5,7 +5,7 @@ class Item {
     this.i = i;
     this.j = j;
     
-    this.shapeNumber = Math.floor(random(0, 5));
+    this.shapeNumber = Math.floor(random(1, 2));
 
     this.rotate = Math.floor(random() * 4) * 0.5;
     this.colors = shuffle(colors);
@@ -15,12 +15,13 @@ class Item {
   draw(){
     noStroke();
 
-    let secOffset = 0;
     this.sec = frameCount / fps * speed;
     // Linear 0 - 1
     this.t = (this.sec + this.secOffset) % 1;
-    // Bounce
+    // Bounce -1 - 1
     this.bounce = cos(this.t * TWO_PI);
+    this.bouncePlus = (cos(this.t * TWO_PI) + 1) * 0.5;
+
 
     switch (this.shapeNumber) {
       case 0:
@@ -63,13 +64,28 @@ class Item {
     fill(this.colors[0]);
     rect(0, 0, itemSize, itemSize);
     
+    fill(this.colors[1]);
     push();
       rotate(this.rotate * PI);  
-      translate(0, this.t * itemSize * 0.2);
-      fill(this.colors[1]);
-      rect(0, -itemSize * 0.4, itemSize, itemSize * 0.2);
-      rect(0, 0, itemSize, itemSize * 0.2);
-      rect(0, itemSize * 0.4, itemSize, itemSize * 0.2);
+      rectMode(CORNER);
+      
+      if (this.t < 0.5){
+        rect(itemSize * -0.5, itemSize * -0.5, itemSize, itemSize * 0.2 * this.t * 2);
+      }
+      push();
+        translate(0, itemSize * 0.2 * this.t * 2)
+
+        if (this.t >= 0.5){
+          rect(itemSize * -0.5, itemSize * -0.7, itemSize, itemSize * 0.2);  
+        }
+        rect(itemSize * -0.5, itemSize * -0.3, itemSize, itemSize * 0.2);
+        
+        if (this.t <= 0.5){
+          rect(itemSize * -0.5, itemSize * 0.1, itemSize, itemSize * 0.2);
+        } else {
+          rect(itemSize * -0.5, itemSize * 0.1, itemSize, itemSize * 0.2 * (1 - this.t) * 2);
+        }
+      pop();
     pop();
   }
 
