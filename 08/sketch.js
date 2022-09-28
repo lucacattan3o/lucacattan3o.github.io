@@ -1,10 +1,10 @@
-let items = 4;
+let items = 8;
 let nLoop = 1;
 let x = 0;
 let y = 0;
 let itemSize = false;
 let fps = 30;
-let speed = 0.125;
+let speed = 0.25;
 
 let colors = [
   '#000000',

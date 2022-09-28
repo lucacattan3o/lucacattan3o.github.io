@@ -5,26 +5,25 @@ class Item {
     this.i = i;
     this.j = j;
     
-    this.shapeNumber = Math.floor(random(1, 3));
+    this.shapeNumber = Math.floor(random(0, 1));
 
     this.rotate = Math.floor(random() * 4) * 0.5;
-    this.rotate90 = 0;
-    if (this.rotate > 1){
-      this.rotate90 = 1;
-    }
     this.colors = shuffle(colors);
-    this.secOffset = random(0, 1);
+    this.secOffset = 0;
   }
 
   draw(){
     noStroke();
 
-    this.sec = frameCount / fps * speed;
+    this.sec = frameCount / fps;
+    this.time = this.sec * speed;
+    this.timeSlow = this.sec * speed * 0.5;
     // Linear 0 - 1
-    this.t = (this.sec + this.secOffset) % 1;
+    this.t = (this.time + this.secOffset) % 1;
+    this.tSlow = (this.timeSlow + this.secOffset) % 1;
     // Bounce -1 - 1
-    this.bounce = cos(this.t * TWO_PI);
-    this.bouncePlus = (cos(this.t * TWO_PI) + 1) * 0.5;
+    this.bounce = cos(this.tSlow * TWO_PI);
+    this.bouncePlus = (cos(this.tSlow * TWO_PI) + 1) * 0.5;
 
     switch (this.shapeNumber) {
       case 0:
@@ -57,11 +56,11 @@ class Item {
       fill(this.colors[0]);
       rect(0, 0, itemSize, itemSize);
       fill(this.colors[1]);
-      arc(0, 0, itemSize, itemSize, 0, TWO_PI * 0.75);
+      arc(0, 0, itemSize, itemSize, 0, TWO_PI);
       fill(this.colors[0]);
-      arc(0, 0, itemSize * 0.6, itemSize * 0.6, 0, TWO_PI * 0.75);
+      arc(0, 0, itemSize * 0.6, itemSize * 0.6, 0, TWO_PI);
       fill(this.colors[2]);
-      arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI * 0.75);
+      arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI);
     pop();
   }
 
@@ -111,7 +110,7 @@ class Item {
     push();
       fill(this.colors[1]);
       rotate(this.rotate * PI);
-      triangle(-itemSize * 0.5, -itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+      triangle(-itemSize * 0.5, -itemSize * 0.5, -itemSize * 0.5, itemSize * 0.5, itemSize * 0.5 * this.bounce, itemSize * 0.5);
     pop();
   }
 
@@ -121,7 +120,11 @@ class Item {
     push();
       fill(this.colors[1]);
       rotate(this.rotate * PI);
-      arc(-itemSize * 0.5, -itemSize * 0.5, itemSize * 2, itemSize * 2, 0, PI * 0.5 * this.t);
+      if (this.t <= 0.5){
+        arc(-itemSize * 0.5, -itemSize * 0.5, itemSize * 2, itemSize * 2, 0, PI * this.t);
+      } else {
+        arc(-itemSize * 0.5, -itemSize * 0.5, itemSize * 2, itemSize * 2, PI * (this.t - 0.5), PI * 0.5);
+      }
     pop();
   }
 }
