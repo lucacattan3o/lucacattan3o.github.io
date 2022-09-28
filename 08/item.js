@@ -5,10 +5,12 @@ class Item {
     this.i = i;
     this.j = j;
     
-    this.shapeNumber = Math.floor(random(0, 1));
+    this.shapeNumber = Math.floor(random(0, 5));
+    this.shapeNumber = 3;
 
     this.rotate = Math.floor(random() * 4) * 0.5;
     this.colors = shuffle(colors);
+    this.secOffset = random(0, 1);
     this.secOffset = 0;
   }
 
@@ -55,12 +57,17 @@ class Item {
     push();
       fill(this.colors[0]);
       rect(0, 0, itemSize, itemSize);
+      // Big circle
       fill(this.colors[1]);
-      arc(0, 0, itemSize, itemSize, 0, TWO_PI);
+      arc(0, 0, itemSize * this.bounce, itemSize * this.bounce, 0, TWO_PI);
+
+      // Mid circle
       fill(this.colors[0]);
-      arc(0, 0, itemSize * 0.6, itemSize * 0.6, 0, TWO_PI);
+      arc(0, 0, itemSize * this.bounce * 0.6, itemSize * this.bounce * 0.6, 0, TWO_PI);
+
+      // Little circle
       fill(this.colors[2]);
-      arc(0, 0, itemSize * 0.2, itemSize * 0.2, 0, TWO_PI);
+      arc(0, 0, itemSize * this.bounce * 0.2, itemSize * this.bounce * 0.2, 0, TWO_PI);
     pop();
   }
 
