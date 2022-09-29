@@ -49,7 +49,7 @@ function draw() {
     pop();  
   });
 
-  recordSketchPost(15);
+  recordSketchPost(8);
 }
 
 

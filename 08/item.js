@@ -6,7 +6,7 @@ class Item {
     this.j = j;
     
     this.shapeNumber = Math.floor(random(0, 5));
-    this.shapeNumber = 2;
+    this.shapeNumber = 3;
 
     this.rotate = Math.floor(random() * 4) * 0.5;
     this.colors = shuffle(colors);
