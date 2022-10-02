@@ -57,6 +57,6 @@ function browserSyncInit(end){
 // then runs cacheBust, then watch task
 exports.default = series(
   compileSass,
-  browserSyncInit,
+  // browserSyncInit,
   watchSass,
 );
