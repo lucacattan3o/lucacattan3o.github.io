@@ -9,8 +9,6 @@ const autoprefixer = require('gulp-autoprefixer');
 const sass = require('gulp-sass')(require('sass'));
 const cleanCSS = require('gulp-clean-css');
 
-const proxy = false;
-
 // File paths
 const files = { 
   sassFiles:   './assets/scss/**/*.scss',
@@ -34,7 +32,7 @@ function compileSass(){
 // -----------
 
 function watchSass(){
-  watch([files.startitSassFiles, files.kadminSassFiles], {interval: 1000, usePolling: true}, // Makes docker work
+  watch([files.sassFiles], {interval: 1000, usePolling: true}, // Makes docker work
     series(
       compileSass,
     )
@@ -45,15 +43,12 @@ function watchSass(){
 // ------------------
 
 function browserSyncInit(end){
-  if (proxy){
-    browserSync.init({
-      proxy: proxy,
-      open: true,
-      files: [
-        files.sassDest,
-      ],
-    });
-  }
+  browserSync.init({
+    open: true,
+    files: [
+      files.sassDest,
+    ],
+  });
   end();
 }
 
