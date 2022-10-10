@@ -30,6 +30,9 @@ function responsiveCanvas(){
   if (minScaleFactor < 1){
     scaleFactor = minScaleFactor;
   }
+
+  // can be used in sketch to fix mouse position
+  responsiveScaleFactor = scaleFactor;
   
   domCanvas.style = "transform: scale(" + scaleFactor + ")";
 }
