@@ -1,5 +1,6 @@
 let responsiveMaxWidth, responsiveMaxHeight;
 let domCanvas;
+let responsiveScaleFactor;
 
 const responsiveCanvasMargin = 80;
 
@@ -19,7 +20,9 @@ function windowResized() {
 }
 
 function responsiveCanvas(){
-  let scaleFactor = 1;
+  // can also be used in sketch
+  responsiveScaleFactor = 1;
+
   let availableWidth = window.innerWidth - responsiveCanvasMargin;
   let availableHeight = window.innerHeight - responsiveCanvasMargin;
   
@@ -28,11 +31,16 @@ function responsiveCanvas(){
   
   let minScaleFactor = Math.min(scaleFactorW, scaleFactorH);
   if (minScaleFactor < 1){
-    scaleFactor = minScaleFactor;
+    responsiveScaleFactor = minScaleFactor;
   }
-
-  // can be used in sketch to fix mouse position
-  responsiveScaleFactor = scaleFactor;
   
-  domCanvas.style = "transform: scale(" + scaleFactor + ")";
+  domCanvas.style = "transform: scale(" + responsiveScaleFactor + ")";
+}
+
+function responsiveMouseX(){
+  return mouseX * (1 / responsiveScaleFactor);
+}
+
+function responsiveMouseY(){
+  return mouseY * (1 / responsiveScaleFactor);
 }
