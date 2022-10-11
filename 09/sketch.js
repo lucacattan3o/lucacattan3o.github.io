@@ -55,8 +55,8 @@ function draw() {
       let b = pixels[index + 2];
       let a = pixels[index + 3];
       c = color(r, g, b, a);
-      l = map(lightness(c), 0, 100, 255, 0);
-      s = map(lightness(c), 0, 100, 1, 0);
+      l = map(lightness(c), 0, 100, 0, 255);
+      s = map(lightness(c), 0, 100, 0, 1);
 
       let secOffset = s;
       let t = (sec + secOffset) % 1;
