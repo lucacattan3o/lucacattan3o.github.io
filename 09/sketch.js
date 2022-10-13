@@ -1,6 +1,6 @@
 let items = 56;
 let fps = 30;
-let speed = 0.125;
+let speed = 0.25;
 
 let itemSize = false;
 let imgItemSize = false;
@@ -60,12 +60,12 @@ function draw() {
 
       let secOffset = s;
       let t = (sec + secOffset) % 1;
-      let tBounce = cos(t * TWO_PI);
+      let tBounce = (cos(t * TWO_PI) + 1) * 0.5;
 
-      // fill(0);
+      fill(255);
       // rect(x, y, imgItemSize, imgItemSize);
-      fill(l);
-      circle(x + imgItemSize * 0.5, y + imgItemSize * 0.5, imgItemSize * s);
+      // fill(l);
+      circle(x + imgItemSize * 0.5, y + imgItemSize * 0.5, imgItemSize * s * tBounce);
     }
   }
 
