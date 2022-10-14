@@ -1,6 +1,6 @@
 let items = 64;
 let fps = 30;
-let speed = 0.5;
+let speed = 0.25;
 
 let itemSize = false;
 let imgItemSize = false;
@@ -37,6 +37,8 @@ function draw() {
   if (mX > 0){
     d = map(mX, 0, width, 1, items, true);
   }
+
+  // d = 62;
 
   itemSize = width / d;
   imgItemSize = floor(img.width / d);
@@ -75,8 +77,11 @@ function draw() {
     }
   }
 
-  fill('red');
-  circle(mX, mY, 50);
+  // if (mX > 0 && mY > 0){
+  //   let cC = color(252, 163, 17, 255);
+  //   fill(cC);
+  //   circle(mX, mY, 60);
+  // }
 
   recordSketchPost(8);
 }
