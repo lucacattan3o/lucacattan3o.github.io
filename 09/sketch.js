@@ -33,7 +33,7 @@ function draw() {
   let mX = responsiveMouseX();
   let mY = responsiveMouseY();
 
-  let d = 1;
+  let d = 1.05;
   if (mX > 0){
     d = map(mX, 0, width, 1, items, true);
   }
@@ -78,9 +78,9 @@ function draw() {
   }
 
   // if (mX > 0 && mY > 0){
-  //   let cC = color(252, 163, 17, 255);
-  //   fill(cC);
-  //   circle(mX, mY, 60);
+    let cC = color(252, 163, 17, 255);
+    fill(cC);
+    circle(mX, mY, 60);
   // }
 
   recordSketchPost(8);
