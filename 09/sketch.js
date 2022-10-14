@@ -1,6 +1,6 @@
-let items = 56;
+let items = 64;
 let fps = 30;
-let speed = 0.25;
+let speed = 0.5;
 
 let itemSize = false;
 let imgItemSize = false;
@@ -34,7 +34,13 @@ function draw() {
   background(0);
   let sec = frameCount / fps * speed;
 
-  let d = map(responsiveMouseX(), 0, width, 1, items);
+  let mX = responsiveMouseX();
+  let mY = responsiveMouseY();
+
+  let d = 1;
+  if (mX > 0){
+    d = map(mX, 0, width, 1, items, true);
+  }
 
   itemSize = width / d;
   imgItemSize = floor(img.width / d);
@@ -62,15 +68,16 @@ function draw() {
       let t = (sec + secOffset) % 1;
       let tBounce = (cos(t * TWO_PI) + 1) * 0.5;
 
-      fill(255);
+      // fill(255);
       // rect(x, y, imgItemSize, imgItemSize);
       // fill(l);
+      fill(255);
       circle(x + imgItemSize * 0.5, y + imgItemSize * 0.5, imgItemSize * s * tBounce);
     }
   }
 
   fill('red');
-  circle(responsiveMouseX(),  responsiveMouseY(), 50);
+  circle(mX, mY, 50);
 
   recordSketchPost(8);
 }
