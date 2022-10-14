@@ -15,13 +15,9 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
-  // pixelDensity(1);
-  background(255);
 
   img.loadPixels();
   pixels = img.pixels;
-
-  // noLoop();
 }
 
 function preload() {
@@ -56,10 +52,13 @@ function draw() {
       // Get index of the pixel (based by 4)
       var index = (x + (y * img.width)) * 4;
       
+      // Rgba color
       let r = pixels[index + 0];
       let g = pixels[index + 1];
       let b = pixels[index + 2];
       let a = pixels[index + 3];
+
+      // Color
       c = color(r, g, b, a);
       l = map(lightness(c), 0, 100, 0, 255);
       s = map(lightness(c), 0, 100, 0, 1);
