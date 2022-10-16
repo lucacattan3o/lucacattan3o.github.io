@@ -2,8 +2,8 @@ let items = 64;
 let fps = 30;
 let speed = 0.25;
 
-let itemSize = false;
 let imgItemSize = false;
+let itemSize = false;
 
 let img = false;
 let pixels = [];
@@ -28,22 +28,21 @@ function draw() {
   recordSketchPre();
 
   background(0);
+  noStroke();
+  fill(255);
+
   let sec = frameCount / fps * speed;
 
   let mX = responsiveMouseX();
   let mY = responsiveMouseY();
 
-  let d = 1.05;
+  let itemsNumber = 1;
   if (mX > 0){
-    d = map(mX, 0, width, 1, items, true);
+    itemsNumber = map(mX, 0, width, 1, items, true);
   }
 
-  // d = 62;
-
-  itemSize = width / d;
-  imgItemSize = floor(img.width / d);
-
-  noStroke();
+  imgItemSize = floor(img.width / itemsNumber);
+  itemSize = width / itemsNumber;
   
   let c = false;
   let l = false;
@@ -51,8 +50,8 @@ function draw() {
   for (var y = 0; y < img.height; y += imgItemSize) {
     for (var x = 0; x < img.width; x += imgItemSize) {
       
-      // Get index of the pixel (based by 4)
-      var index = (x + (y * img.width)) * 4;
+      // Get index of the pixel (based by 4) - center of the item
+      var index = (x + floor(imgItemSize * 0.5) + ((y + floor(imgItemSize * 0.5)) * img.width)) * 4;
       
       // Rgba color
       let r = pixels[index + 0];
@@ -62,26 +61,30 @@ function draw() {
 
       // Color
       c = color(r, g, b, a);
-      l = map(lightness(c), 0, 100, 0, 255);
+      // 0 - 1 based on the lightness of the pixel
       s = map(lightness(c), 0, 100, 0, 1);
+      l = map(lightness(c), 0, 100, 0, 255);
 
+      // Use the lightness as offset in animation
       let secOffset = s;
+      // Get 0 - 1 progression with offset
       let t = (sec + secOffset) % 1;
+      // Get 0 - 1 - 0 sinuosoidal progression
       let tBounce = (cos(t * TWO_PI) + 1) * 0.5;
 
-      // fill(255);
-      // rect(x, y, imgItemSize, imgItemSize);
+      let cX = x * itemSize/imgItemSize;
+      let cY = y * itemSize/imgItemSize;
       // fill(l);
-      fill(255);
-      circle(x + imgItemSize * 0.5, y + imgItemSize * 0.5, imgItemSize * s * tBounce);
+      // rect(cX, cY, itemSize);
+      circle(cX + itemSize * 0.5, cY + itemSize * 0.5, itemSize * s * tBounce);
     }
   }
 
-  // if (mX > 0 && mY > 0){
-    let cC = color(252, 163, 17, 255);
-    fill(cC);
+  // Draw mouse position
+  if (mX > 0 && mY > 0){
+    fill('#fca311');
     circle(mX, mY, 60);
-  // }
+  }
 
   recordSketchPost(8);
 }
