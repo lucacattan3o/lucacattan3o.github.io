@@ -1,0 +1,29 @@
+recordSketch(false);
+
+let fps = 60;
+
+function setup() {
+  createCanvas(1080, 1080);
+  responsiveSketch();
+  frameRate(fps);
+  recordSketchSetFps(fps);
+}
+
+function draw() {
+  recordSketchPre();
+
+  let mX = responsiveMouseX();
+  let mY = responsiveMouseY();
+
+  // background(255);
+
+  if (mX > 0 && mY > 0){
+    fill(0);
+    rectMode(CENTER);
+    rect(mX, mY, 40, 40);
+  }
+
+  recordSketchPost(8);
+}
+
+
