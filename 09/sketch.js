@@ -51,6 +51,7 @@ function draw() {
     for (var x = 0; x < img.width; x += imgItemSize) {
       
       // Get index of the pixel (based by 4) - center of the item
+      // var index = (x + (y * img.width)) * 4;
       var index = (x + floor(imgItemSize * 0.5) + ((y + floor(imgItemSize * 0.5)) * img.width)) * 4;
       
       // Rgba color
