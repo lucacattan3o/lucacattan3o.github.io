@@ -8,8 +8,6 @@ let itemSize = false;
 let img = false;
 let pixels = [];
 
-recordSketch(false);
-
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
@@ -33,12 +31,14 @@ function draw() {
 
   let sec = frameCount / fps * speed;
 
-  let mX = responsiveMouseX();
-  let mY = responsiveMouseY();
+  let mPos = responsiveMousePos();
+
+  recordSketchMouseRec(mPos);
+  mPos = recordSketchMouseGet(mPos);
 
   let itemsNumber = 1;
-  if (mX > 0){
-    itemsNumber = map(mX, 0, width, 1, items, true);
+  if (mPos.x > 0){
+    itemsNumber = map(mPos.x, 0, width, 1, items, true);
   }
 
   imgItemSize = floor(img.width / itemsNumber);
@@ -81,9 +81,9 @@ function draw() {
   }
 
   // Draw mouse position
-  if (mX > 0 && mY > 0){
+  if (mPos.x > 0 && mPos.y > 0){
     fill('#fca311');
-    circle(mX, mY, 60);
+    circle(mPos.x, mPos.y, 60);
   }
 
   recordSketchPost(8);

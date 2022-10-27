@@ -39,15 +39,7 @@ function responsiveCanvas(){
 
 function responsiveMousePos(){
   return {
-    x: responsiveMouseX(),
-    y: responsiveMouseY()
+    x: mouseX * (1 / responsiveScaleFactor),
+    y: mouseY * (1 / responsiveScaleFactor)
   };
-}
-
-function responsiveMouseX(){
-  return mouseX * (1 / responsiveScaleFactor);
-}
-
-function responsiveMouseY(){
-  return mouseY * (1 / responsiveScaleFactor);
 }

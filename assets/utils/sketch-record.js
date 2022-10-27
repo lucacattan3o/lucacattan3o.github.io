@@ -114,11 +114,11 @@ function recordSketchCheckUrl(){
   if (mouse && mouse == 'play'){
     let path = localStorage.getItem('mouseRecordPath');
     mouseRecordPath = JSON.parse(path);
-    if (path){
+    if (mouseRecordPath.length > 0){
       console.debug('Mouse Path: playing.');
       mousePlay = true;
     } else {
-      console.debug('Mouse Path: missing path, store path using ?mouse=record .');
+      console.debug('Mouse Path: missing path, store path using ?mouse=record');
     }
   }
 }
