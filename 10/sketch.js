@@ -1,6 +1,6 @@
 let items = 64;
 let fps = 30;
-let speed = 0.5;
+let speed = 0.25;
 
 function setup() {
   createCanvas(1080, 1080, WEBGL);
@@ -22,7 +22,7 @@ function draw() {
   normalMaterial();
   ambientLight(120);
 
-  directionalLight(color('#fff'), -1, 1, 0.5);
+  directionalLight(color('red'), -1, 1, 0.5);
 
   let sec = frameCount / fps * speed;
   let t = sec % 1;
@@ -46,7 +46,7 @@ function draw() {
     for (let j = 0; j < items; j++) {
       push();
         translate(i * itemSize, 0, j * itemSize);
-        box(itemSize * 0.5 * bounce);
+        box(itemSize * 1 * bounce);
       pop();        
     }
   }
