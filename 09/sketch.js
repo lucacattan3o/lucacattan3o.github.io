@@ -1,6 +1,6 @@
 let items = 64;
 let fps = 30;
-let speed = 0.25;
+let speed = 0.5;
 
 let imgItemSize = false;
 let itemSize = false;
