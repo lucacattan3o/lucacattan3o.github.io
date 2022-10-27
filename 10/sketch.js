@@ -15,6 +15,8 @@ function draw() {
   let mX = responsiveMouseX();
   let mY = responsiveMouseY();
 
+  // console.debug(mPos);
+
   // background(255);
 
   if (mX > 0 && mY > 0){

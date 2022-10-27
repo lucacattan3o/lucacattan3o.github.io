@@ -37,6 +37,13 @@ function responsiveCanvas(){
   domCanvas.style = "transform: scale(" + responsiveScaleFactor + ")";
 }
 
+function responsiveMousePos(){
+  return {
+    x: responsiveMouseX(),
+    y: responsiveMouseY()
+  };
+}
+
 function responsiveMouseX(){
   return mouseX * (1 / responsiveScaleFactor);
 }
