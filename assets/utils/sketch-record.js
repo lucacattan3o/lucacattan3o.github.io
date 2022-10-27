@@ -11,10 +11,6 @@ let mouseRecordPath = [];
 recordSketchSetFps(cFps);
 recordSketchCheckUrl();
 
-function recordSketch(status){
-  doRecord = status;
-}
-
 function recordSketchPre(){
   if (!doRecord){
     return;
@@ -57,11 +53,8 @@ function recordSketchSave(){
   capturer.stop();
 }
 
-function recordSketchMouseSave(){
-  localStorage.setItem('mouseRecordPath', JSON.stringify(mouseRecordPath));
-  console.debug('Mouse Path: stored ' + mouseRecordPath.length + ' points.');
-  noLoop();
-}
+// ** FPS **
+// ---------
 
 function recordSketchSetFps(fps){
   cFps = fps;
@@ -72,22 +65,35 @@ function recordSketchSetFps(fps){
   })
 }
 
-function recordSketchMouseRec(mX, mY){
+// ** MOUSE **
+// -----------
+
+function recordSketchMouseRec(pos){
   if (!mouseRecord){
     return; 
   }
-  mouseRecordPath.push({mX, mY});
+  mouseRecordPath.push(pos);
 }
-function recordSketchMouseGet(mX, mY){
+
+function recordSketchMouseGet(pos){
   if (mousePlay){
     if (mouseRecordPath[frameCount] !== undefined){
       return mouseRecordPath[frameCount];
     } else {
-      return {mX: 0, mY: 0};
+      return {x: 0, y: 0};
     }
   }
-  return {mX, mY};
+  return pos;
 }
+
+function recordSketchMouseSave(){
+  localStorage.setItem('mouseRecordPath', JSON.stringify(mouseRecordPath));
+  noLoop();
+  console.debug('Mouse Path: stored ' + mouseRecordPath.length + ' points.');
+}
+
+// ** URL PARAMS **
+// ----------------
 
 function recordSketchCheckUrl(){
   const queryString = window.location.search;
@@ -115,4 +121,8 @@ function recordSketchCheckUrl(){
       console.debug('Mouse Path: missing path, store path using ?mouse=record .');
     }
   }
+}
+
+function recordSketch(status){
+  doRecord = status;
 }
