@@ -1,9 +1,15 @@
 let cFps = 30;
 let capturer = false;
 
-recordSketchSetFps(cFps);
+let doRecord = false;
 
-let doRecord = false; 
+let mouseRecord = false;
+let mousePlay = false;
+
+let mouseRecordPath = [];
+
+recordSketchSetFps(cFps);
+recordSketchCheckUrl();
 
 function recordSketch(status){
   doRecord = status;
@@ -19,13 +25,16 @@ function recordSketchPre(){
 }
 
 function recordSketchPost(sec){
-  if (!doRecord){
-    return;
+  if (doRecord){
+    recordSketchCapture();
   }
-  recordSketchCapture();
   if (frameCount == (cFps * sec)){
-    noLoop();
-    recordSketchSave();
+    if (doRecord){
+      recordSketchSave();
+    }
+    if (mouseRecord){
+      recordSketchMouseSave();
+    }
   }
 }
 
@@ -43,8 +52,15 @@ function recordSketchSave(){
   if (!doRecord){
     return;
   }
+  noLoop();
   capturer.save();
   capturer.stop();
+}
+
+function recordSketchMouseSave(){
+  localStorage.setItem('mouseRecordPath', JSON.stringify(mouseRecordPath));
+  console.debug('Mouse Path: stored ' + mouseRecordPath.length + ' points.');
+  noLoop();
 }
 
 function recordSketchSetFps(fps){
@@ -54,4 +70,49 @@ function recordSketchSetFps(fps){
     framerate: cFps,
     verbose: true,
   })
+}
+
+function recordSketchMouseRec(mX, mY){
+  if (!mouseRecord){
+    return; 
+  }
+  mouseRecordPath.push({mX, mY});
+}
+function recordSketchMouseGet(mX, mY){
+  if (mousePlay){
+    if (mouseRecordPath[frameCount] !== undefined){
+      return mouseRecordPath[frameCount];
+    } else {
+      return {mX: 0, mY: 0};
+    }
+  }
+  return {mX, mY};
+}
+
+function recordSketchCheckUrl(){
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  
+  const record = urlParams.get('record');
+  if (record && record == 'true'){
+    doRecord = true;
+  }
+
+  const mouse = urlParams.get('mouse');
+  if (mouse && mouse == 'record'){
+    console.debug('Mouse Path: recording.');
+    mouseRecord = true;
+    doRecord = false;
+  }
+
+  if (mouse && mouse == 'play'){
+    let path = localStorage.getItem('mouseRecordPath');
+    mouseRecordPath = JSON.parse(path);
+    if (path){
+      console.debug('Mouse Path: playing.');
+      mousePlay = true;
+    } else {
+      console.debug('Mouse Path: missing path, store path using ?mouse=record .');
+    }
+  }
 }
