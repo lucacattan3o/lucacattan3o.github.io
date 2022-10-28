@@ -1,4 +1,4 @@
-let items = 64;
+let items = 20;
 let fps = 30;
 let speed = 0.25;
 
@@ -8,7 +8,8 @@ function setup() {
   frameRate(fps);
   recordSketchSetFps(fps);
 
-  ortho(-width / 2, width / 2, height / 2, -height / 2, -100, 10000);
+  // ortho(-width / 2, width / 2, height / 2, -height / 2, -100, 10000);
+  // ortho();
 }
 
 function draw() {
@@ -19,10 +20,12 @@ function draw() {
   mPos = recordSketchMouseGet(mPos);
 
   orbitControl();
-  normalMaterial();
-  ambientLight(120);
+  // normalMaterial();
+  ambientLight(150);
 
-  directionalLight(color('red'), -1, 1, 0.5);
+  directionalLight(color('red'), -1, -1, -1);
+  directionalLight(color('blue'), 1, 1, -1);
+  directionalLight(color('green'), 0, 0, -1);
 
   let sec = frameCount / fps * speed;
   let t = sec % 1;
@@ -33,20 +36,24 @@ function draw() {
   fill(255);
   orbitControl();
 
-  
-  let itemSize = 80;
+  let itemSize = width / items;
 
-  // rotateZ(-PI * 0.25);
-  translate(width * 0.5 - (itemSize * items), 0, 0);
-  rotateX(PI * 0.25);
-  rotateY(PI * 0.25);
+  // rotateX(PI * 0.25);
+  // rotateZ(PI * 0.25);
 
+  rotateX(PI * frameCount * 0.001);
+  rotateY(PI * frameCount * 0.001);
   
+  // Go to the top left
+  translate(- width * 0.5, - height * 0.5, 0);
+  translate(itemSize * 0.5, itemSize * 0.5, 0);
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
       push();
-        translate(i * itemSize, 0, j * itemSize);
-        box(itemSize * 1 * bounce);
+        translate(i * itemSize, j * itemSize, 0);
+        // rotateX(PI * 0.25 * t);
+        // rotateY(PI * 0.25 * t);
+        box(itemSize * 1.1 * bounce);
       pop();        
     }
   }
