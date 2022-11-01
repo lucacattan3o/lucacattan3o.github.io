@@ -20,12 +20,18 @@ function setup() {
   recordSketchSetFps(fps);
 
   let camDist = width;
-  camera(-camDist * 0.5, -camDist * 0.5, camDist, 0, 0, 0);
+  // camera(-camDist * 0.5, -camDist * 0.5, camDist, 0, 0, 0);
+  
+  // Standard othographic Camera
+  let cam = createCamera();
+  cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 5000);
+  cam.setPosition(-width * 2, -width * 2, width * 2);
+  cam.lookAt(0, 0, 0);
+  
   smooth();
   // debugMode();
 
-  // ortho(-width / 2, width / 2, height / 2, -height / 2, -100, 10000);
-  // ortho();
+  
 }
 
 function draw() {
@@ -38,7 +44,6 @@ function draw() {
   orbitControl();
   noStroke();
   // normalMaterial();
-  
   // background(0);
   // ambientLight(100);
   lightSetup(mPos);
@@ -58,24 +63,31 @@ function lightSetup(mPos){
   background(0);
   let itemSize = width / items;
   
-  ambientLight(50);
-  let lightDist = itemSize * 5;
-  pointLight(250, 100, 100, lightDist, -lightDist, lightDist);
-  pointLight(250, 100, 100, -lightDist, -lightDist, -lightDist);
-  
-  pointLight(100, 100, 250, lightDist, -lightDist, -lightDist);
-  pointLight(100, 100, 250, -lightDist, -lightDist, lightDist);
+  // Orthographic view
+  // rotateX(-frameCount * 0.01);
+  // rotateX(-PI * 0.25);
+  // rotateY(PI * 0.25);
 
-  // Gray Plane
-  specularMaterial(color(colors[4]));
+  ambientLight(250);
+  let lightDist = itemSize * 5;
+  // 4 lights in top corners
+  pointLight(255, 0, 0, lightDist, -lightDist, lightDist);
+  pointLight(255, 0, 0, -lightDist, -lightDist, -lightDist);
+  pointLight(0, 0, 255, lightDist, -lightDist, -lightDist);
+  pointLight(0, 0, 255, -lightDist, -lightDist, lightDist)
+  
+  // Point light test
+  // pointLight(250, 100, 100, lightDist, -lightDist, 0);
+
+  // Base plane
+  specularMaterial(color(colors[7]));
   shininess(100);
   push();
     translate(0, itemSize * 0.1, 0);  
     box(width, itemSize * 0.01, height);
   pop();
 
-  // Yellow box
-  // Traslate Up
+  // Blue box
   push();
     translate(0, -itemSize * 0.1, 0);
     specularMaterial(color(colors[2]));
@@ -83,6 +95,7 @@ function lightSetup(mPos){
     box(itemSize, itemSize * 0.2, itemSize);
   pop();
 
+  // Orange box
   push();
     translate(itemSize, -itemSize * 0.5, 0);
     specularMaterial(color(colors[3]));
@@ -90,11 +103,20 @@ function lightSetup(mPos){
     box(itemSize, itemSize, itemSize);
   pop();
 
+  // Sphere
   push();
     translate(0, -itemSize * 0.7, 0);
     specularMaterial(color(colors[4]));
     shininess(10);
     sphere(itemSize * 0.5);
+  pop();
+
+  // Moving box
+  push();
+    // X, Y, Z
+    translate(mPos.x - width * 0.5, - itemSize * 0.5, 0);
+    specularMaterial(color(colors[0]));
+    box(itemSize * 0.8);
   pop();
 }
 
