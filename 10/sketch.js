@@ -41,8 +41,8 @@ function draw() {
   // rotateX(PI * 0.25);
   // rotateZ(PI * 0.25);
 
-  rotateX(PI * frameCount * 0.001);
   rotateY(PI * frameCount * 0.001);
+  rotateX(PI * frameCount * 0.002);
   
   // Go to the top left
   translate(- width * 0.5, - height * 0.5, 0);
@@ -53,7 +53,13 @@ function draw() {
         translate(i * itemSize, j * itemSize, 0);
         // rotateX(PI * 0.25 * t);
         // rotateY(PI * 0.25 * t);
-        box(itemSize * 1.1 * bounce);
+        let d = dist(mPos.x, mPos.y, i * itemSize, j * itemSize);
+        let z = map(d, 0, width * 0.25, 0, 300, true);
+        let deep = map(d, 0, width * 0.25, itemSize * 8, itemSize * 0.8, true);
+        if (mPos.x !== 0 && mPos.y !== 0){
+          translate(0, 0, -z);
+        }
+        box(itemSize * 0.8, itemSize * 0.8, deep);
       pop();        
     }
   }
