@@ -30,8 +30,6 @@ function setup() {
   
   smooth();
   // debugMode();
-
-  
 }
 
 function draw() {
@@ -62,11 +60,6 @@ function draw() {
 function lightSetup(mPos){
   background(0);
   let itemSize = width / items;
-  
-  // Orthographic view
-  // rotateX(-frameCount * 0.01);
-  // rotateX(-PI * 0.25);
-  // rotateY(PI * 0.25);
 
   ambientLight(250);
   let lightDist = itemSize * 5;
@@ -75,9 +68,6 @@ function lightSetup(mPos){
   pointLight(255, 0, 0, -lightDist, -lightDist, -lightDist);
   pointLight(0, 0, 255, lightDist, -lightDist, -lightDist);
   pointLight(0, 0, 255, -lightDist, -lightDist, lightDist)
-  
-  // Point light test
-  // pointLight(250, 100, 100, lightDist, -lightDist, 0);
 
   // Base plane
   specularMaterial(color(colors[7]));
