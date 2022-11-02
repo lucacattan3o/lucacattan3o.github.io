@@ -1,16 +1,12 @@
 let items = 10;
 let fps = 30;
-let speed = 0.25;
+let speed = 0.125;
 
 let colors = [
   '#000000',
-  '#264653',
-  '#2a9d8f',
-  '#e9c46a',
-  '#f4a261',
-  '#e76f51',
-  '#fefae0',
-  '#ffffff'
+  '#fca311',
+  '#e5e5e5',
+  '#ffffff',
 ];
 
 function setup() {
@@ -29,6 +25,10 @@ function setup() {
   cam.lookAt(0, 0, 0);
   
   smooth();
+
+  // x: red
+  // y: green
+  // z: blue
   // debugMode();
 }
 
@@ -113,32 +113,52 @@ function drawBoxes(mPos){
   background(0);
   let itemSize = width / items;
 
-  ambientLight(50);
-  let lightDist = itemSize * 5;
+  ambientLight(90);
+
+  let sec = frameCount / fps * speed;
 
   // 4 lights in top corners
-  pointLight(255, 0, 0, lightDist, -lightDist, lightDist);
-  pointLight(255, 0, 0, -lightDist, -lightDist, -lightDist);
-  pointLight(0, 0, 255, lightDist, -lightDist, -lightDist);
-  pointLight(0, 0, 255, -lightDist, -lightDist, lightDist);
+  // pointLight(255, 0, 0, lightDist, -lightDist, lightDist);
+  // pointLight(255, 0, 0, -lightDist, -lightDist, -lightDist);
+  // pointLight(0, 0, 255, lightDist, -lightDist, -lightDist);
+  // pointLight(0, 0, 255, -lightDist, -lightDist, lightDist);
+  directionalLight(color(colors[1]), -0.5, 0.25, -0.5);
+  directionalLight(color(colors[2]), 0.5, 0.25, 0.5);
 
-  rotateY(frameCount * 0.01);
+  rotateY(frameCount * 0.001);
+  // rotateZ(frameCount * 0.001);
 
-  translate(- width * 0.5, 0, - height * 0.5);
+  translate(- width * 0.5, - width * 0.5, - height * 0.5);
   translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+
+  let center = createVector(
+    items * 0.5 * itemSize - itemSize * 0.5,
+    items * 0.5 * itemSize - itemSize * 0.5,
+    items * 0.5 * itemSize - itemSize * 0.5
+  );
 
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
-      push();
-        translate(i * itemSize, 0, j * itemSize);
-        // let d = dist(mPos.x, mPos.y, i * itemSize, j * itemSize);
-        // let z = map(d, 0, width * 0.25, 0, 300, true);
-        // let deep = map(d, 0, width * 0.25, itemSize * 8, itemSize * 0.8, true);
-        // if (mPos.x !== 0 && mPos.y !== 0){
-        //   translate(0, 0, -z);
-        // }
-        box(itemSize * 0.8, itemSize * 0.8);
-      pop();        
+      for (let w = 0; w < items; w++) {
+        push();
+          let x = i * itemSize;
+          let y = j * itemSize;
+          let z = w * itemSize; 
+
+          let pos = createVector(x, y, z);
+          let d = Math.abs(center.dist(pos));
+
+          translate(x, y, z);
+          
+          // Map it to the number of items (0-1)
+          let secOffset = map(d, 0, width, 0, 1, true);
+
+          let t = ((sec + secOffset)) % 1;
+          let bounce = (cos(t * TWO_PI) + 1) * 0.5;
+
+          box(itemSize * bounce * 0.9);
+        pop();
+      }     
     }
   }
 }
