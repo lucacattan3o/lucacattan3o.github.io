@@ -15,7 +15,8 @@ function setup() {
   frameRate(fps);
   recordSketchSetFps(fps);
 
-  let camDist = width;
+  // Prospective camera
+  // let camDist = width;
   // camera(-camDist * 0.5, -camDist * 0.5, camDist, 0, 0, 0);
   
   // Standard othographic Camera
@@ -125,7 +126,7 @@ function drawBoxes(mPos){
   directionalLight(color(colors[1]), -0.5, 0.25, -0.5);
   directionalLight(color(colors[2]), 0.5, 0.25, 0.5);
 
-  rotateY(frameCount * 0.001);
+  rotateY(-sec * TWO_PI * 0.05);
   // rotateZ(frameCount * 0.001);
 
   translate(- width * 0.5, - width * 0.5, - height * 0.5);
