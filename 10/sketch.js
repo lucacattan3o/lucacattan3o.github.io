@@ -1,4 +1,4 @@
-let items = 6;
+let items = 10;
 let fps = 30;
 let speed = 0.125;
 
@@ -54,7 +54,7 @@ function draw() {
   //   box(60);
   // }
 
-  recordSketchPost(8);
+  recordSketchPost(16);
 }
 
 function lightSetup(mPos){
@@ -121,7 +121,7 @@ function drawBoxes(mPos){
   directionalLight(color(colors[1]), -0.5, 0.25, -0.5);
   // White light
   directionalLight(color(colors[3]), 0.5, 0.25, 0.5);
-  rotateY(TWO_PI * sec * 0.5);
+  rotateY(TWO_PI * sec * 0.25);
   // rotateZ(frameCount * 0.001);
 
   translate(- width * 0.5, - width * 0.5, - height * 0.5);
