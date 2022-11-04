@@ -1,4 +1,4 @@
-let items = 10;
+let items = 6;
 let fps = 30;
 let speed = 0.125;
 
@@ -111,22 +111,17 @@ function lightSetup(mPos){
 }
 
 function drawBoxes(mPos){
-  background(0);
+  background(255);
   let itemSize = width / items;
 
   ambientLight(90);
 
   let sec = frameCount / fps * speed;
-
-  // 4 lights in top corners
-  // pointLight(255, 0, 0, lightDist, -lightDist, lightDist);
-  // pointLight(255, 0, 0, -lightDist, -lightDist, -lightDist);
-  // pointLight(0, 0, 255, lightDist, -lightDist, -lightDist);
-  // pointLight(0, 0, 255, -lightDist, -lightDist, lightDist);
+  // Yellow light
   directionalLight(color(colors[1]), -0.5, 0.25, -0.5);
-  directionalLight(color(colors[2]), 0.5, 0.25, 0.5);
-
-  rotateY(-sec * TWO_PI * 0.05);
+  // White light
+  directionalLight(color(colors[3]), 0.5, 0.25, 0.5);
+  rotateY(TWO_PI * sec * 0.5);
   // rotateZ(frameCount * 0.001);
 
   translate(- width * 0.5, - width * 0.5, - height * 0.5);
@@ -154,7 +149,7 @@ function drawBoxes(mPos){
           // Map it to the number of items (0-1)
           let secOffset = map(d, 0, width, 0, 1, true);
 
-          let t = ((sec + secOffset)) % 1;
+          let t = ((sec + secOffset) * 1) % 1;
           let bounce = (cos(t * TWO_PI) + 1) * 0.5;
 
           box(itemSize * bounce * 0.9);
