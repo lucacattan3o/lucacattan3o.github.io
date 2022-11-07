@@ -111,21 +111,27 @@ function lightSetup(mPos){
 }
 
 function drawBoxes(mPos){
-  background(255);
+  background(0);
   let itemSize = width / items;
 
-  ambientLight(90);
+  ambientLight(80);
 
   let sec = frameCount / fps * speed;
-  // Yellow light
-  directionalLight(color(colors[1]), -0.5, 0.25, -0.5);
-  // White light
-  directionalLight(color(colors[3]), 0.5, 0.25, 0.5);
+  
+  directionalLight(color('blue'), 0.5, 0.5, 0.5);
+  directionalLight(color('red'), -0.5, 0.5, -0.5);
+  directionalLight(color('orange'), 0, 0, -1);
+  
+  //directionalLight(color('red'), -1, 0.5, -0.5);
+  // directionalLight(color('green'), 1, 0.5, -0.5);
+  
   rotateY(TWO_PI * sec * 0.25);
   // rotateZ(frameCount * 0.001);
-
+  
   translate(- width * 0.5, - width * 0.5, - height * 0.5);
   translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+  
+  // directionalLight(color('green'), 0, 1, 0);
 
   let center = createVector(
     items * 0.5 * itemSize - itemSize * 0.5,
