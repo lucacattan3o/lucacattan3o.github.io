@@ -153,12 +153,12 @@ function drawBoxes(mPos){
           translate(x, y, z);
           
           // Map it to the number of items (0-1)
-          let secOffset = map(d, 0, width, 0, 1, true);
+          let secOffset = map(d, 0, width * 2, 0, 1, true);
 
           let t = ((sec + secOffset) * 1) % 1;
           let bounce = (cos(t * TWO_PI) + 1) * 0.5;
 
-          box(itemSize * bounce * 0.9);
+          box(itemSize * bounce * 1);
         pop();
       }     
     }
@@ -204,7 +204,7 @@ function growingBoxes(mPos){
         if (mPos.x !== 0 && mPos.y !== 0){
           translate(0, 0, -z);
         }
-        box(itemSize * 0.8, itemSize * 0.8, deep);
+        box(itemSize * 1, itemSize * 1, deep);
       pop();        
     }
   }
