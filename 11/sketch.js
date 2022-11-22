@@ -1,11 +1,16 @@
-let items = 40;
-let itemSize = 0;
-let noiseScale = 0.1;
+let items = 20;
+let cubeSizeFactor = 0.95;
+let noiseScale = 0.15;
 
 let fps = 30;
-let speed = 0.125;
+let speed = 0.05;
+let itemSize = 0;
+let cubeSize = 0;
 
-let colors = [
+let xOffset = 0;
+let yOffset = 0;
+
+let colorsB = [
   '#081C15',
   '#1B4332',
   '#2D6A4F',
@@ -18,6 +23,20 @@ let colors = [
   '#ffffff',
 ];
 
+let colors = [
+  '#f72585',
+  '#b5179e',
+  '#7209b7',
+  '#560bad',
+  '#480ca8',
+  '#3a0ca3',
+  '#3f37c9',
+  '#4361ee',
+  '#4895ef',
+  '#4cc9f0',
+  '#ffffff',
+];
+
 function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
@@ -27,11 +46,11 @@ function setup() {
   // Standard othographic Camera
   let cam = createCamera();
   cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
-  cam.setPosition(-width * 1.5, -width * 2, width * 2);
+  cam.setPosition(-width * 1.5, -width * 1.5, width * 2);
   cam.lookAt(0, 0, 0);
   
   smooth();
-  noiseSeed();
+  noiseSeed(1);
 
   // x: red
   // y: green
@@ -47,7 +66,7 @@ function draw() {
   mPos = recordSketchMouseGet(mPos);
 
   orbitControl();
-  noStroke();  
+  // noStroke();  
 
   drawBoxes(mPos);
 
@@ -57,6 +76,7 @@ function draw() {
 function drawBoxes(mPos){
   background(255);
   itemSize = width / items;
+  cubeSize = itemSize * cubeSizeFactor;
 
   ambientLight(180);
 
@@ -84,18 +104,42 @@ function drawBoxes(mPos){
       pop();  
     }
   }
+
+  keysLogic();
 }
 
 function drawBox(i, j){
-  let tmpI = (frameCount * 0.05) + i;
-  let n = noise(tmpI * noiseScale, j * noiseScale);
-  let size = Math.floor(n * (colors.length + 1));
+  let tmpI = (frameCount * speed) + i;
+  let n = noise(tmpI * noiseScale + xOffset, j * noiseScale + yOffset);
+  let height = n * (colors.length + 1);
+  let size = Math.floor(height);
   for (let z = 0; z < size; z++) {
     push();
-    translate(0, -itemSize * 1 * z, 0);
-    ambientMaterial(colors[z]);
-    box(itemSize * 0.95, itemSize * 1 * 0.95, itemSize * 0.95);
+      ambientMaterial(colors[z]);
+      translate(0, -itemSize * z, 0);
+      // Last step
+      if (z == size - 1){
+        let lastItemSize = height % 1;
+        let translateZ =  (cubeSize * 0.5) - (cubeSize * lastItemSize * 0.5);
+        translate(0, translateZ, 0);
+        box(cubeSize * 0.8, cubeSize * lastItemSize, cubeSize * 0.8);
+        // cylinder(cubeSize * 0.5, cubeSize * lastItemSize);
+      } else {
+        box(cubeSize);
+      }
     pop();
+  }
+}
+
+function keysLogic() {
+  if (keyIsDown(UP_ARROW)){
+    xOffset += 1 * noiseScale;
+  } else if (keyIsDown(DOWN_ARROW)) {
+    xOffset -= 1 * noiseScale;
+  } else if (keyIsDown(LEFT_ARROW)) {
+    yOffset += 1 * noiseScale;
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    yOffset -= 1 * noiseScale;
   }
 }
 
