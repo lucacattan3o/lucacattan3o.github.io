@@ -10,19 +10,6 @@ let cubeSize = 0;
 let xOffset = 0;
 let yOffset = 0;
 
-let colorsB = [
-  '#081C15',
-  '#1B4332',
-  '#2D6A4F',
-  '#40916C',
-  '#52B788',
-  '#74C69D',
-  '#95D5B2',
-  '#B7E4C7',
-  '#D8F3DC',
-  '#ffffff',
-];
-
 let colors = [
   '#f72585',
   '#b5179e',
@@ -51,11 +38,6 @@ function setup() {
   
   smooth();
   noiseSeed(1);
-
-  // x: red
-  // y: green
-  // z: blue
-  // debugMode();
 }
 
 function draw() {
@@ -79,16 +61,9 @@ function drawBoxes(mPos){
   cubeSize = itemSize * cubeSizeFactor;
 
   ambientLight(180);
-
-  let sec = frameCount / fps * speed;
-  
-  
-  // directionalLight(color('blue'), 0.5, 0.5, 0.5);
-  // directionalLight(color('red'), -0.5, 0.5, -0.5);
   directionalLight(color('white'), 0, 1, -0.5);
-  
-  // rotateX(TWO_PI * sec * 0.25);
-  // rotateZ(TWO_PI * sec * 0.25);
+
+  // let sec = frameCount / fps * speed;
   // rotateY(TWO_PI * sec * 0.25);
   
   translate(- width * 0.5, width * 0.125, - height * 0.5);
