@@ -133,13 +133,16 @@ function drawBox(i, j){
 
 function keysLogic() {
   if (keyIsDown(UP_ARROW)){
-    xOffset += 1 * noiseScale;
-  } else if (keyIsDown(DOWN_ARROW)) {
-    xOffset -= 1 * noiseScale;
-  } else if (keyIsDown(LEFT_ARROW)) {
     yOffset += 1 * noiseScale;
-  } else if (keyIsDown(RIGHT_ARROW)) {
+  }
+  if (keyIsDown(DOWN_ARROW)){
     yOffset -= 1 * noiseScale;
+  }
+  if (keyIsDown(LEFT_ARROW)){
+    xOffset += 1 * noiseScale;
+  }
+  if (keyIsDown(RIGHT_ARROW)){
+    xOffset -= 1 * noiseScale;
   }
 }
 
