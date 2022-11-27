@@ -17,6 +17,8 @@ let cubeSize = 0;
 let xOffset = 0;
 let yOffset = 0;
 
+let mPos = false;
+
 let colors = [
   '#f72585',
   '#b5179e',
@@ -49,7 +51,7 @@ function setup() {
 
 function draw() {
   recordSketchPre();
-  let mPos = responsiveMousePos();
+  mPos = responsiveMousePos();
 
   recordSketchMouseRec(mPos);
   mPos = recordSketchMouseGet(mPos);
@@ -60,16 +62,15 @@ function draw() {
   sec = frameCount / fps * speed;
   bounce = (cos(sec * TWO_PI) + 1) * 0.5;
 
-  drawBoxes(mPos);
+  drawBoxes();
 
   keysLogic();
-  mouseLogic(mPos);
+  mouseLogic();
 
   recordSketchPost(16);
-  noLoop();
 }
 
-function drawBoxes(mPos){
+function drawBoxes(){
   background(255);
   itemSize = width / items;
   cubeSize = itemSize * cubeSizeFactor;
@@ -102,17 +103,18 @@ function drawBox(i, j){
   // 0 - 1 noise value
   let n = noise(tmpI * noiseScale + xOffset, tmpJ * noiseScale + yOffset);
   // x numbers of colors
-  let height = n * (colors.length + 1);
+  let itemHeight = n * (colors.length + 1);
   // Bouncing height
   // height = height * bounce + 1;
-  let size = Math.floor(height);
+  itemHeight = itemHeight * map(mPos.y, height, 0, 0, 1, true);
+  let size = Math.floor(itemHeight);
   for (let z = 0; z < size; z++) {
     push();
       ambientMaterial(colors[z]);
       translate(0, -itemSize * z, 0);
       // Last step
       if (z == size - 1){
-        let lastItemSize = height % 1;
+        let lastItemSize = itemHeight % 1;
         let translateZ =  (cubeSize * 0.5) - (cubeSize * lastItemSize * 0.5);
         translate(0, translateZ, 0);
         box(cubeSize * 0.8, cubeSize * lastItemSize, cubeSize * 0.8);
@@ -143,11 +145,11 @@ function keysLogic(){
   }
 }
 
-function mouseLogic(mPos){
-  let mX = - (map(mPos.x, 0, width, 0, 1, true) - 0.5);
+function mouseLogic(){
+  let mX = - (map(mPos.x, 0, width, 0, 2, true) - 1);
   xOffset += mX * noiseScale;
-  let mY = - (map(mPos.y, 0, width, 0, 1, true) - 0.5);
-  yOffset += mY * noiseScale;
+  // let mY = - (map(mPos.y, 0, width, 0, 2, true) - 1);
+  // yOffset += mY * noiseScale;
 
   // Draw mouse position
   // if (mPos.x > 0 && mPos.y > 0){
