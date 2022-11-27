@@ -66,6 +66,7 @@ function draw() {
   mouseLogic(mPos);
 
   recordSketchPost(16);
+  noLoop();
 }
 
 function drawBoxes(mPos){
