@@ -1,4 +1,4 @@
-let items = 30;
+let items = 40;
 let cubeSizeFactor = 0.95;
 let noiseScale = 0.15;
 let keySpeed = 0.8;
@@ -6,7 +6,7 @@ let keySpeed = 0.8;
 let fps = 30;
 let speed = 0.125;
 let xSpeed = 0;
-let ySpeed = 0.25;
+let ySpeed = 0;
 
 let sec = 0;
 let bounce = 0;
@@ -63,7 +63,7 @@ function draw() {
   drawBoxes(mPos);
 
   keysLogic();
-  // mouseLogic(mPos);
+  mouseLogic(mPos);
 
   recordSketchPost(16);
 }
