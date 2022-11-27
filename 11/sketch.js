@@ -1,9 +1,16 @@
-let items = 20;
+let items = 30;
 let cubeSizeFactor = 0.95;
 let noiseScale = 0.15;
+let keySpeed = 0.8;
 
 let fps = 30;
-let speed = 0.05;
+let speed = 0.125;
+let xSpeed = 0;
+let ySpeed = 0.25;
+
+let sec = 0;
+let bounce = 0;
+
 let itemSize = 0;
 let cubeSize = 0;
 
@@ -50,7 +57,13 @@ function draw() {
   orbitControl();
   // noStroke();  
 
+  sec = frameCount / fps * speed;
+  bounce = (cos(sec * TWO_PI) + 1) * 0.5;
+
   drawBoxes(mPos);
+
+  keysLogic();
+  // mouseLogic(mPos);
 
   recordSketchPost(16);
 }
@@ -63,30 +76,34 @@ function drawBoxes(mPos){
   ambientLight(180);
   directionalLight(color('white'), 0, 1, -0.5);
 
-  // let sec = frameCount / fps * speed;
   // rotateY(TWO_PI * sec * 0.25);
   
-  translate(- width * 0.5, width * 0.125, - height * 0.5);
-  translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+  push();
+    translate(- width * 0.5, width * 0.125, - height * 0.5);
+    translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
 
-  for (let i = 0; i < items; i++) {
-    for (let j = 0; j < items; j++) {
-      push();
-        let x = i * itemSize;
-        let y = j * itemSize;
-        translate(x, 0, y);
-        drawBox(i, j);
-      pop();  
+    for (let i = 0; i < items; i++) {
+      for (let j = 0; j < items; j++) {
+        push();
+          let x = i * itemSize;
+          let y = j * itemSize;
+          translate(x, 0, y);
+          drawBox(i, j);
+        pop();  
+      }
     }
-  }
-
-  keysLogic();
+  pop();
 }
 
 function drawBox(i, j){
-  let tmpI = (frameCount * speed) + i;
-  let n = noise(tmpI * noiseScale + xOffset, j * noiseScale + yOffset);
+  let tmpI = (frameCount * xSpeed) + i;
+  let tmpJ = (frameCount * ySpeed) + j;
+  // 0 - 1 noise value
+  let n = noise(tmpI * noiseScale + xOffset, tmpJ * noiseScale + yOffset);
+  // x numbers of colors
   let height = n * (colors.length + 1);
+  // Bouncing height
+  // height = height * bounce + 1;
   let size = Math.floor(height);
   for (let z = 0; z < size; z++) {
     push();
@@ -106,19 +123,41 @@ function drawBox(i, j){
   }
 }
 
-function keysLogic() {
+// ** INTEREACTIONS **
+// -------------------
+
+function keysLogic(){
+  
   if (keyIsDown(UP_ARROW)){
-    yOffset += 1 * noiseScale;
+    yOffset += keySpeed * noiseScale;
   }
   if (keyIsDown(DOWN_ARROW)){
-    yOffset -= 1 * noiseScale;
+    yOffset -= keySpeed * noiseScale;
   }
   if (keyIsDown(LEFT_ARROW)){
-    xOffset += 1 * noiseScale;
+    xOffset += keySpeed * noiseScale;
   }
   if (keyIsDown(RIGHT_ARROW)){
-    xOffset -= 1 * noiseScale;
+    xOffset -= keySpeed * noiseScale;
   }
+}
+
+function mouseLogic(mPos){
+  let mX = - (map(mPos.x, 0, width, 0, 1, true) - 0.5);
+  xOffset += mX * noiseScale;
+  let mY = - (map(mPos.y, 0, width, 0, 1, true) - 0.5);
+  yOffset += mY * noiseScale;
+
+  // Draw mouse position
+  // if (mPos.x > 0 && mPos.y > 0){
+  //   push();
+  //     fill('#fca311');
+  //     noStroke();
+  //     rotateY(-TWO_PI * 0.125);
+  //     translate(mPos.x - width / 2 + 0, - 200, mPos.y - width / 2 + 0);
+  //     sphere(itemSize * 0.5);
+  //   pop();
+  // }
 }
 
 
