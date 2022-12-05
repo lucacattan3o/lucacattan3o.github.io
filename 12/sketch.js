@@ -3,6 +3,9 @@ let cubeSizeFactor = 0.6;
 let noiseScale = 0.5;
 let keySpeed = 0.05;
 
+let cubes = [];
+let minNumberCubes = 0;
+
 let fps = 30;
 let speed = 0.125;
 let xSpeed = 0;
@@ -37,16 +40,31 @@ function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  recordSketchSetFps(fps);  
   
-  // Standard othographic Camera
-  // let cam = createCamera();
-  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
-  // cam.setPosition(-width * 1.5, -width * 1.5, width * 2);
-  // cam.lookAt(0, 0, 0);
-  
-  smooth();
-  noiseSeed(1);
+  itemSize = width / items;
+  cubeSize = itemSize * cubeSizeFactor;
+
+  // smooth();
+  // noiseSeed(1);
+
+  addCubes();
+  minNumberCubes = cubes.length;
+}
+
+function addCubes(){
+  for (let l = 0; l < items; l++) {
+    addCubeLine(l);
+  }
+}
+
+function addCubeLine(line){
+  for (let i = 0; i < items; i++) {
+    for (let j = 0; j < items; j++) {
+      let c = new Cube(i, j, line);
+      cubes.push(c);
+    }
+  }
 }
 
 function draw() {
@@ -61,9 +79,6 @@ function draw() {
   sec = frameCount / fps * speed;
   bounce = (cos(sec * TWO_PI) + 1) * 0.5;
 
-  itemSize = width / items;
-  cubeSize = itemSize * cubeSizeFactor;
-
   drawBoxes();
 
   keysLogic();
@@ -74,54 +89,83 @@ function draw() {
 
 function drawBoxes(){
   background(0);
-  
-
+  noStroke();
   ambientLight(180);
   directionalLight(color('white'), 0, 1, -0.5);
-
-  // rotateY(TWO_PI * sec * 0.25);
   
-  push();
-    translate(- width * 0.5, -width * 0.5, - height * 0.5);
-    translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
-    translate(0, 0, - frameCount * 1.5);
+  translate(- width * 0.5, -width * 0.5, width * 0.5);
+  translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
 
-    for (let i = 0; i < items; i++) {
-      for (let j = 0; j < items; j++) {
-        for (let l = 0; l < items; l++) {
-          push();
-            let x = i * itemSize;
-            let y = j * itemSize;
-            let z = l * itemSize;
-            translate(x, z, y);
-            drawBox(i, j, l);
-          pop();  
-        }
-      }
+  // Remove cubes
+  let lastCubeLine = false;
+  cubes.forEach((cube, i) => {
+    if (cube.out){
+      cubes.splice(i, 1);
+    } else {
+      lastCubeLine = cube.l;
     }
-  pop();
-}
+  });
 
-function drawBox(i, j, l){
-  let tmpI = (frameCount * xSpeed) + i;
-  let tmpJ = (frameCount * ySpeed) + j;
-  // 0 - 1 noise value
-  let p = noise(tmpI * noiseScale + xOffset, tmpJ * noiseScale + yOffset, l * noiseScale);
+  if (cubes.length < Math.pow(items, 3)){
+    addCubeLine(lastCubeLine);
+  }
 
-  // let p = noise(i, j, l);
-  if (p > 0.6){
-    let tmpP = map(p, 0.6, 1, 0, 1, true);
-    let z = Math.floor(tmpP * colors.length);
-    ambientMaterial(colors[z]);
-    stroke(255);
-    strokeWeight(0.25);
-    // noStroke();
-    box(cubeSize);
+  for (let i = 0; i < cubes.length; i++) {
+    const cube = cubes[i];
+    cube.move();
+    cube.draw();
   }
 }
 
-// ** INTEREACTIONS **
-// -------------------
+// ** CLASSES **
+// -------------
+
+class Cube{
+  constructor(i, j, l){
+    this.i = i;
+    this.j = j;
+    this.l = l;
+    this.visible = false;
+    this.out = false;
+
+    this.x = this.i * itemSize;
+    this.y = this.j * itemSize;
+    this.z = - this.l * itemSize;
+
+    let c = Math.floor(random() * colors.length);
+    this.color = color(colors[c]);
+
+    this.limitZ = 100;
+
+    if (random() > 0.5){
+      this.visible = true;
+    }
+  }
+
+  move(){
+    this.z += map(mPos.y, 0, width, 0, 10, true);
+    if (this.z > this.limitZ){
+      this.out = true;
+    }
+  }
+
+  draw(){
+    if (!this.visible){
+      return false;
+    }
+    push();
+      translate(this.x, this.y, this.z);
+      ambientMaterial(this.color);
+      let sizeX = map(mPos.x, 0, width, 0, 1, true);
+      let sizeY = map(mPos.y, 0, width, 0, 1, true);
+      box(cubeSize * sizeX, cubeSize * sizeY, cubeSize);
+    pop();
+  }
+}
+
+
+// ** INTERACTIONS **
+// ------------------
 
 function keysLogic(){
   if (keyIsDown(UP_ARROW)){
