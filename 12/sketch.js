@@ -1,24 +1,14 @@
 let items = 20;
 let cubeSizeFactor = 0.6;
-let noiseScale = 0.5;
-let keySpeed = 0.05;
-
-let cubes = [];
-let minNumberCubes = 0;
-
 let fps = 30;
 let speed = 0.125;
-let xSpeed = 0;
-let ySpeed = 0;
 
+let cubes = [];
 let sec = 0;
 let bounce = 0;
 
 let itemSize = 0;
 let cubeSize = 0;
-
-let xOffset = 0;
-let yOffset = 0;
 
 let mPos = false;
 
@@ -81,9 +71,6 @@ function draw() {
 
   drawBoxes();
 
-  keysLogic();
-  // mouseLogic();
-
   recordSketchPost(16);
 }
 
@@ -96,7 +83,7 @@ function drawBoxes(){
   translate(- width * 0.5, -width * 0.5, width * 0.5);
   translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
 
-  // Remove cubes
+  // Remove out cubes
   let lastCubeLine = false;
   cubes.forEach((cube, i) => {
     if (cube.out){
@@ -106,10 +93,12 @@ function drawBoxes(){
     }
   });
 
+  // Add new line of cubes
   if (cubes.length < Math.pow(items, 3)){
     addCubeLine(lastCubeLine);
   }
 
+  // Move them
   for (let i = 0; i < cubes.length; i++) {
     const cube = cubes[i];
     cube.move();
@@ -158,46 +147,11 @@ class Cube{
       ambientMaterial(this.color);
       let sizeX = map(mPos.x, 0, width, 0, 1, true);
       let sizeY = map(mPos.y, 0, width, 0, 1, true);
+      sizeX = 0.1;
       box(cubeSize * sizeX, cubeSize * sizeY, cubeSize);
     pop();
   }
 }
 
-
-// ** INTERACTIONS **
-// ------------------
-
-function keysLogic(){
-  if (keyIsDown(UP_ARROW)){
-    yOffset -= keySpeed * noiseScale;
-  }
-  if (keyIsDown(DOWN_ARROW)){
-    yOffset += keySpeed * noiseScale;
-  }
-  if (keyIsDown(LEFT_ARROW)){
-    xOffset += keySpeed * noiseScale;
-  }
-  if (keyIsDown(RIGHT_ARROW)){
-    xOffset -= keySpeed * noiseScale;
-  }
-}
-
-function mouseLogic(){
-  let mX = - (map(mPos.x, 0, width, 0, 2, true) - 1);
-  xOffset += mX * noiseScale;
-  // let mY = - (map(mPos.y, 0, width, 0, 2, true) - 1);
-  // yOffset += mY * noiseScale;
-
-  // Draw mouse position
-  // if (mPos.x > 0 && mPos.y > 0){
-  //   push();
-  //     fill('#fca311');
-  //     noStroke();
-  //     rotateY(-TWO_PI * 0.125);
-  //     translate(mPos.x - width / 2 + 0, - 200, mPos.y - width / 2 + 0);
-  //     sphere(itemSize * 0.5);
-  //   pop();
-  // }
-}
 
 
