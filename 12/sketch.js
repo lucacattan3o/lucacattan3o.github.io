@@ -10,6 +10,7 @@ let bounce = 0;
 let itemSize = 0;
 let cubeSize = 0;
 
+let cam = false;
 let mPos = false;
 
 let colors = [
@@ -34,6 +35,9 @@ function setup() {
   
   itemSize = width / items;
   cubeSize = itemSize * cubeSizeFactor;
+
+  // cam = createCamera();
+  // perspective(PI/3, width/height, 0, 1000);
 
   // smooth();
   // noiseSeed(1);
@@ -71,7 +75,7 @@ function draw() {
 
   drawBoxes();
 
-  recordSketchPost(16);
+  recordSketchPost(12);
 }
 
 function drawBoxes(){
@@ -82,6 +86,13 @@ function drawBoxes(){
   
   translate(- width * 0.5, -width * 0.5, width * 0.5);
   translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+  
+  
+  // alter camera
+  // rotateY(-TWO_PI * 0.05 * sec);
+  // rotateX(TWO_PI * 0.01 * sec);
+  // translate(0, 0, -width * 2);
+  // rotateY(-TWO_PI * 0.25 * sec);
 
   // Remove out cubes
   let lastCubeLine = false;
@@ -126,13 +137,15 @@ class Cube{
 
     this.limitZ = 100;
 
-    if (random() > 0.5){
+    if (random() > 0.6){
       this.visible = true;
     }
   }
 
   move(){
+    let d = dist(width * 0.5, height * 0.5, mPos.x, mPos.y);
     this.z += map(mPos.y, 0, width, 0, 10, true);
+    // this.z += 2;
     if (this.z > this.limitZ){
       this.out = true;
     }
@@ -147,7 +160,8 @@ class Cube{
       ambientMaterial(this.color);
       let sizeX = map(mPos.x, 0, width, 0, 1, true);
       let sizeY = map(mPos.y, 0, width, 0, 1, true);
-      sizeX = 0.1;
+      sizeX = 0.5;
+      sizeY = 0.5;
       box(cubeSize * sizeX, cubeSize * sizeY, cubeSize);
     pop();
   }
