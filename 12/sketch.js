@@ -144,8 +144,13 @@ class Cube{
 
   move(){
     let d = dist(width * 0.5, height * 0.5, mPos.x, mPos.y);
-    this.z += map(mPos.y, 0, width, 0, 10, true);
-    // this.z += 2;
+    let increment = map(mPos.y, 0, width, 0, 10, true);
+    if (increment == 0){
+      increment = 2;
+    }
+    // increment = 2;
+    this.z += increment;
+    
     if (this.z > this.limitZ){
       this.out = true;
     }
@@ -160,8 +165,12 @@ class Cube{
       ambientMaterial(this.color);
       let sizeX = map(mPos.x, 0, width, 0, 1, true);
       let sizeY = map(mPos.y, 0, width, 0, 1, true);
-      sizeX = 0.5;
-      sizeY = 0.5;
+      if (sizeX == 0 && sizeY == 0){
+        sizeX = 0.5;
+        sizeY = 0.5;  
+      }
+      // sizeX = 0.5;
+      // sizeY = 0.5;
       box(cubeSize * sizeX, cubeSize * sizeY, cubeSize);
     pop();
   }
