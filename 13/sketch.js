@@ -1,14 +1,14 @@
-let items = 20;
-let cubeSizeFactor = 0.6;
+let items = 10;
+let boxSizeFactor = 0.8;
 let fps = 30;
 let speed = 0.125;
 
-let cubes = [];
+let boxes = [];
 let sec = 0;
 let bounce = 0;
 
 let itemSize = 0;
-let cubeSize = 0;
+let boxSize = 0;
 
 let mPos = false;
 
@@ -26,14 +26,32 @@ let colors = [
   '#ffffff',
 ];
 
+let Engine = Matter.Engine;
+let Render = Matter.Render;
+let Runner = Matter.Runner;
+let Bodies = Matter.Bodies;
+let Body = Matter.Body;
+let Composite = Matter.Composite;
+let Common = Matter.Common;
+let Mouse = Matter.Mouse;
+let MouseConstraint = Matter.MouseConstraint;
+let Constraint = Matter.Constraint;
+let Events = Matter.Events;
+let mConstraint = false;
+
+let canvas = false;
+let dragging = false;
+
 function setup() {
-  createCanvas(1080, 1080);
+  canvas = createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);  
   
   itemSize = width / items;
-  cubeSize = itemSize * cubeSizeFactor;
+  boxSize = itemSize * boxSizeFactor;
+
+  matterSetup();
 }
 
 function draw() {
@@ -43,5 +61,66 @@ function draw() {
   recordSketchMouseRec(mPos);
   mPos = recordSketchMouseGet(mPos);
 
+  background(255);
+  for (let index = 0; index < boxes.length; index++) {
+    boxes[index].move();
+    boxes[index].draw();
+  }
+
   recordSketchPost(12);
+}
+
+function matterSetup(){
+
+  // create an engine
+  engine = Engine.create();
+
+  // create runner
+  runner = Runner.create();
+
+  boxes = [];
+  canvas = createCanvas(windowWidth, windowHeight);
+
+  // Add wrapper
+  let border = 20;
+  let bottom = Bodies.rectangle(width / 2, height + border * 0.5, width, border, {isStatic: true});
+  Composite.add(engine.world, bottom);
+  let top = Bodies.rectangle(width / 2, 0 - border * 0.5, width, border, {isStatic: true});
+  Composite.add(engine.world, top);
+  let left = Bodies.rectangle(0 - border * 0.5, height / 2, border, height, {isStatic: true});
+  Composite.add(engine.world, left);
+  let right = Bodies.rectangle(width + border, height / 2, border, height, {isStatic: true});
+  Composite.add(engine.world, right);
+
+  // Boxes
+  for (let index = 0; index < ((items * items) - 5); index++) {
+    let size = boxSize;
+    let b = new Box(random(width), random(height), size, size);
+    boxes.push(b);
+  }
+
+  // Mouse Constraint
+  // https://youtu.be/W-ou_sVlTWk?t=429
+  let canvasMouse = Mouse.create(canvas.elt);
+  canvasMouse.pixelRatio = pixelDensity(); 
+  console.debug(canvasMouse);
+  let options = {
+    mouse: canvasMouse,
+  }
+  mConstraint = MouseConstraint.create(engine, options);
+  Composite.add(engine.world, mConstraint);
+  Events.on(mConstraint, "startdrag", function(e){
+    dragging = true;
+  });
+  Events.on(mConstraint, "enddrag", function(){
+    dragging = false;
+  });
+  Events.on(mConstraint, "mousedown", function(e){
+  });
+
+  // Gravity
+  engine.world.gravity.y = 0.5;
+
+  // run the engine
+  Runner.run(runner, engine);
 }
