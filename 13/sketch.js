@@ -1,5 +1,5 @@
-let items = 10;
-let boxSizeFactor = 0.8;
+let items = 20;
+let boxSizeFactor = 0.5;
 let fps = 30;
 let speed = 0.125;
 
@@ -23,7 +23,7 @@ let colors = [
   '#4361ee',
   '#4895ef',
   '#4cc9f0',
-  '#ffffff',
+  // '#ffffff',
 ];
 
 let Engine = Matter.Engine;
@@ -79,7 +79,6 @@ function matterSetup(){
   runner = Runner.create();
 
   boxes = [];
-  canvas = createCanvas(windowWidth, windowHeight);
 
   // Add wrapper
   let border = 20;
@@ -93,11 +92,19 @@ function matterSetup(){
   Composite.add(engine.world, right);
 
   // Boxes
-  for (let index = 0; index < ((items * items) - 5); index++) {
-    let size = boxSize;
-    let b = new Box(random(width), random(height), size, size);
-    boxes.push(b);
+  for (let i = 0; i <= items; i++) {
+    for (let j = 0; j <= items; j++) {
+      let x = itemSize * i - (itemSize * 0.5);
+      let y = itemSize * j - (itemSize * 0.5);
+      let b = new Box(x, y, boxSize, boxSize);
+      boxes.push(b);
+    }
   }
+  // for (let index = 0; index < (items * items); index++) {
+  //   let size = boxSize;
+  //   let b = new Box(random(width), random(height), size, size);
+  //   boxes.push(b);
+  // }
 
   // Mouse Constraint
   // https://youtu.be/W-ou_sVlTWk?t=429

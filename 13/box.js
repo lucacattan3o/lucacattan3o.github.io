@@ -6,7 +6,7 @@ class Box {
     this.height = height;
     let options = {
       friction: 0,
-      restitution: 0,
+      restitution: 1,
     }
     this.body = Bodies.rectangle(this.x, this.y, this.width, this.height, options);
     Composite.add(engine.world, this.body);
