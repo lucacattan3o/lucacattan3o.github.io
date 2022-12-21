@@ -1,5 +1,5 @@
 let items = 20;
-let boxSizeFactor = 0.5;
+let boxSizeFactor = 1;
 let fps = 30;
 let speed = 0.125;
 
