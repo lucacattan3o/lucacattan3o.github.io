@@ -1,5 +1,5 @@
-let items = 20;
-let boxSizeFactor = 1;
+let items = 10;
+let boxSizeFactor = 0.95;
 let fps = 30;
 let speed = 0.125;
 
@@ -39,6 +39,7 @@ let Constraint = Matter.Constraint;
 let Events = Matter.Events;
 let mConstraint = false;
 
+let canvasMouse = false;
 let canvas = false;
 let dragging = false;
 
@@ -52,22 +53,6 @@ function setup() {
   boxSize = itemSize * boxSizeFactor;
 
   matterSetup();
-}
-
-function draw() {
-  recordSketchPre();
-  mPos = responsiveMousePos();
-
-  recordSketchMouseRec(mPos);
-  mPos = recordSketchMouseGet(mPos);
-
-  background(255);
-  for (let index = 0; index < boxes.length; index++) {
-    boxes[index].move();
-    boxes[index].draw();
-  }
-
-  recordSketchPost(12);
 }
 
 function matterSetup(){
@@ -88,7 +73,7 @@ function matterSetup(){
   Composite.add(engine.world, top);
   let left = Bodies.rectangle(0 - border * 0.5, height / 2, border, height, {isStatic: true});
   Composite.add(engine.world, left);
-  let right = Bodies.rectangle(width + border, height / 2, border, height, {isStatic: true});
+  let right = Bodies.rectangle(width + border * 0.5, height / 2, border, height, {isStatic: true});
   Composite.add(engine.world, right);
 
   // Boxes
@@ -100,17 +85,39 @@ function matterSetup(){
       boxes.push(b);
     }
   }
-  // for (let index = 0; index < (items * items); index++) {
-  //   let size = boxSize;
-  //   let b = new Box(random(width), random(height), size, size);
-  //   boxes.push(b);
-  // }
 
+  addMouseConstraint();
+  
+  // Gravity
+  engine.world.gravity.y = 0;
+
+  // run the engine
+  Runner.run(runner, engine);
+}
+
+function draw() {
+  recordSketchPre();
+  mPos = responsiveMousePos();
+
+  recordSketchMouseRec(mPos);
+  mPos = recordSketchMouseGet(mPos);
+
+  background(255);
+  for (let index = 0; index < boxes.length; index++) {
+    boxes[index].move();
+    boxes[index].draw();
+  }
+
+  recordSketchPost(12);
+}
+
+function addMouseConstraint(){
   // Mouse Constraint
   // https://youtu.be/W-ou_sVlTWk?t=429
-  let canvasMouse = Mouse.create(canvas.elt);
-  canvasMouse.pixelRatio = pixelDensity(); 
-  console.debug(canvasMouse);
+  canvasMouse = Mouse.create(canvas.elt);
+  canvasMouse.pixelRatio = pixelDensity();
+  
+  setCanvasMouseScale();
   let options = {
     mouse: canvasMouse,
   }
@@ -124,10 +131,16 @@ function matterSetup(){
   });
   Events.on(mConstraint, "mousedown", function(e){
   });
-
-  // Gravity
-  engine.world.gravity.y = 0.5;
-
-  // run the engine
-  Runner.run(runner, engine);
 }
+
+function setCanvasMouseScale(){
+  let mouseScale = 1 + (1 / (responsiveScaleFactor / (1 - responsiveScaleFactor)));
+  canvasMouse.scale = {
+    x: mouseScale,
+    y: mouseScale,
+  }
+}
+
+addEventListener('resize', (event) => {
+  setCanvasMouseScale();
+});
