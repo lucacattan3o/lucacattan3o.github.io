@@ -1,4 +1,4 @@
-let items = 10;
+let items = 40;
 let boxSizeFactor = 0.95;
 let fps = 30;
 let speed = 0.125;
@@ -43,6 +43,13 @@ let canvasMouse = false;
 let canvas = false;
 let dragging = false;
 
+let img = false;
+let imgItemSize = false;
+
+function preload() {
+  img = loadImage('luca.jpg');
+}
+
 function setup() {
   canvas = createCanvas(1080, 1080);
   responsiveSketch();
@@ -53,6 +60,11 @@ function setup() {
   boxSize = itemSize * boxSizeFactor;
 
   matterSetup();
+
+  img.loadPixels();
+  pixels = img.pixels;
+
+  imgItemSize = floor(img.width / items);
 }
 
 function matterSetup(){
@@ -89,7 +101,7 @@ function matterSetup(){
   addMouseConstraint();
   
   // Gravity
-  engine.world.gravity.y = 0;
+  engine.world.gravity.y = 0.5;
 
   // run the engine
   Runner.run(runner, engine);
@@ -105,6 +117,7 @@ function draw() {
   background(255);
   for (let index = 0; index < boxes.length; index++) {
     boxes[index].move();
+    boxes[index].updateColor();
     boxes[index].draw();
   }
 
