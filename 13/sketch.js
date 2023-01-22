@@ -39,8 +39,8 @@ let Constraint = Matter.Constraint;
 let Events = Matter.Events;
 let mConstraint = false;
 
+let myCanvas = false;
 let canvasMouse = false;
-let canvas = false;
 let dragging = false;
 
 let img = false;
@@ -51,7 +51,7 @@ function preload() {
 }
 
 function setup() {
-  canvas = createCanvas(1080, 1080);
+  myCanvas = createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);  
@@ -110,6 +110,7 @@ function matterSetup(){
 function draw() {
   recordSketchPre();
   mPos = responsiveMousePos();
+  mPos.pressed = mouseIsPressed;
 
   recordSketchMouseRec(mPos);
   mPos = recordSketchMouseGet(mPos);
@@ -121,13 +122,30 @@ function draw() {
     boxes[index].draw();
   }
 
+  // if (mouseIsPressed){
+  //   console.debug(canvasMouse.button);
+  // }
+
+  if (mPos.pressed){
+    push();
+    translate(mPos.x, mPos.y);
+    fill('red');
+    circle(0, 0, 50);
+    // canvasMouse.sourceEvents.mouseDown = true;
+    // todo: aggiungere un constraint di un oggetto invisibile al posto del mouse
+    pop();
+  }
+
+  // console.debug(canvasMouse);
+  // noLoop();
+
   recordSketchPost(12);
 }
 
 function addMouseConstraint(){
   // Mouse Constraint
   // https://youtu.be/W-ou_sVlTWk?t=429
-  canvasMouse = Mouse.create(canvas.elt);
+  canvasMouse = Mouse.create(myCanvas.elt);
   canvasMouse.pixelRatio = pixelDensity();
   
   setCanvasMouseScale();
