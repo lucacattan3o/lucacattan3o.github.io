@@ -24,6 +24,7 @@ function setup() {
 
   radius = width * 0.1;
   amplitude = width * 0.2;
+  background(255);
 }
 
 function draw() {
@@ -36,7 +37,7 @@ function draw() {
 
   // let sec = frameCount / fps * 0.125;
   // radius = width * 0.25 + cos(sec) * 100;
-  // radius += 2;
+  radius += 0.2;
   amplitude += 0.5;
   zOff += 0.01;
 
