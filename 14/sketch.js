@@ -1,11 +1,12 @@
 let fps = 30;
 
-let gridItemsCount = 20;
+let gridItemsCount = 8;
 let gridItemSize;
 let vectors = [];
 
 let particles = [];
-let particlesCount = 700;
+let particlesCount = 600;
+let zOff = 0;
 
 function setup() {
   createCanvas(1080, 1080);
@@ -15,48 +16,29 @@ function setup() {
 
   gridItemSize = width / gridItemsCount;
 
-  noiseDetail(0.0001);
-
-  for (let gx = 0; gx < gridItemsCount; gx++) {
-    for (let gy = 0; gy < gridItemsCount; gy++) {
-      let x = gridItemSize * gx + gridItemSize * 0.5;
-      let y = gridItemSize * gy + gridItemSize * 0.5;
-
-      let pos = createVector(x, y);
-
-      // Noise 0 - 1
-      let n = noise(x, y);
-
-      let force = new p5.Vector(0, gridItemSize * 0.5);
-      force.setHeading(TWO_PI * n);
-
-      vectors.push({
-        pos: pos,
-        force: force,
-        n: n,
-      })
-    }
-  }
-
-  for (let i = 0; i < particlesCount; i++) {
-    let px = random(0, width);
-    let py = random(0, height);
-    let particle = new Particle(px, py);
-    particles.push(particle);
-  }
+  noiseDetail(8);
 
   background(0);
 }
 
 function draw() {
   recordSketchPre();
-  
-  // drawDebug();
+
+  drawDebug();
+  addParticles();
   drawParticles();
-  // background(0);
-  
   
   recordSketchPost(12);
+  zOff += 0.005;
+}
+
+function addParticles(){
+  for (let i = 0; i < 5; i++) {
+    let px = random(width);
+    let py = random(height);
+    let particle = new Particle(px, py);
+    particles.push(particle);
+  }
 }
 
 function drawParticles(){
@@ -67,35 +49,52 @@ function drawParticles(){
 }
 
 function drawDebug(){
-  stroke(255);
+  background(0);
+  stroke(255, 0, 0);
+  strokeWeight(1);
   noFill();
-  vectors.forEach(vector => {
-    push();
-      stroke(255 * vector.n);
-      translate(vector.pos.x, vector.pos.y);
-      circle(0, 0, gridItemSize);
-      line(0, 0, vector.force.x, vector.force.y);
-    pop();
-  });
+  
+  for (let i = 0; i <= gridItemsCount; i++) {
+    for (let j = 0; j <= gridItemsCount; j++) {
+      let pos = createVector(i * gridItemSize, j * gridItemSize);
+      let n = noiseVectorByPosision(pos);
+      push();
+        translate(pos.x, pos.y);
+        // rect(0, 0, gridItemSize);
+        circle(0, 0, gridItemSize);
+        n.setMag(gridItemSize * 0.5);
+        fill(255, 0, 0);
+        circle(0, 0, 10);
+        line(0, 0, n.x, n.y);
+      pop();
+    }
+  }
+}
+
+function noiseVectorByPosision(pos){
+  let nx = pos.x / gridItemSize;
+  let ny = pos.y / gridItemSize;
+  let n = noise(nx, ny, zOff);
+  return new p5.Vector.fromAngle(TWO_PI * n);
 }
 
 class Particle{
   constructor(x, y){
     this.pos = createVector(x, y);
+    this.posPrev = createVector(this.pos.x, this.pos.y);
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
     this.size = 2;
+    this.color = 255;
   }
 
   update(){
+    this.posPrev.set(this.pos);
     // Update the velocity based on flow field
-    let nx = this.pos.x / gridItemSize;
-    let ny = this.pos.y / gridItemSize;
-    let n = noise(nx, ny);
-    let flowForce = new p5.Vector.fromAngle(TWO_PI * n);
+    let flowForce = noiseVectorByPosision(this.pos);
+    
     this.acc.add(flowForce);
-
-    this.vel.add(flowForce);
+    this.vel.add(this.acc);
     this.vel.limit(4);
     this.pos.add(this.vel);
     this.acc.mult(0);
@@ -106,22 +105,27 @@ class Particle{
   limit(){
     if (this.pos.x > width){
       this.pos.x = 0;
+      this.posPrev.x = 0;
     }
     if (this.pos.x < 0){
       this.pos.x = width;
+      this.posPrev.x = width;
     }
     if (this.pos.y > height){
       this.pos.y = 0;
+      this.posPrev.y = 0;
     }
     if (this.pos.y < 0){
       this.pos.y = height;
+      this.posPrev.y = height;
     }
   }
 
   draw(){
-    stroke(255, 50);
-    noFill();
-    point(this.pos.x, this.pos.y);
+    // noFill();
+    stroke(this.color);
+    strokeWeight(1);
+    line(this.posPrev.x, this.posPrev.y, this.pos.x, this.pos.y);
   }
 
 }
