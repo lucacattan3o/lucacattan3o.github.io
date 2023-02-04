@@ -81,6 +81,7 @@ class Particle{
     this.pos = createVector(x, y);
     this.vel = p5.Vector.random2D();
     this.vel.mult(8);
+    this.size = 2;
   }
 
   update(){
@@ -102,7 +103,8 @@ class Particle{
 
   draw(){
     stroke(255);
-    circle(this.pos.x, this.pos.y, 5);
+    noFill();
+    circle(this.pos.x, this.pos.y, this.size);
   }
 
 }
