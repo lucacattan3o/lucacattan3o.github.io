@@ -5,7 +5,7 @@ let gridItemSize;
 let vectors = [];
 
 let particles = [];
-let particlesCount = 50;
+let particlesCount = 700;
 
 function setup() {
   createCanvas(1080, 1080);
@@ -15,9 +15,7 @@ function setup() {
 
   gridItemSize = width / gridItemsCount;
 
-  let detail = 1;
-  let amp = 0.2;
-  noiseDetail(detail, amp);
+  noiseDetail(0.0001);
 
   for (let gx = 0; gx < gridItemsCount; gx++) {
     for (let gy = 0; gy < gridItemsCount; gy++) {
@@ -30,7 +28,7 @@ function setup() {
       let n = noise(x, y);
 
       let force = new p5.Vector(0, gridItemSize * 0.5);
-      force.setHeading(PI * n);
+      force.setHeading(TWO_PI * n);
 
       vectors.push({
         pos: pos,
@@ -54,13 +52,18 @@ function draw() {
   recordSketchPre();
   
   // drawDebug();
-  background(0);
+  drawParticles();
+  // background(0);
+  
+  
+  recordSketchPost(12);
+}
+
+function drawParticles(){
   particles.forEach(particle => {
     particle.update();
     particle.draw();
   });
-  
-  recordSketchPost(12);
 }
 
 function drawDebug(){
@@ -79,14 +82,28 @@ function drawDebug(){
 class Particle{
   constructor(x, y){
     this.pos = createVector(x, y);
-    this.vel = p5.Vector.random2D();
-    this.vel.mult(8);
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
     this.size = 2;
   }
 
   update(){
-    this.pos.add(this.vel);
+    // Update the velocity based on flow field
+    let nx = this.pos.x / gridItemSize;
+    let ny = this.pos.y / gridItemSize;
+    let n = noise(nx, ny);
+    let flowForce = new p5.Vector.fromAngle(TWO_PI * n);
+    this.acc.add(flowForce);
 
+    this.vel.add(flowForce);
+    this.vel.limit(4);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+
+    this.limit();
+  }
+
+  limit(){
     if (this.pos.x > width){
       this.pos.x = 0;
     }
@@ -102,9 +119,9 @@ class Particle{
   }
 
   draw(){
-    stroke(255);
+    stroke(255, 50);
     noFill();
-    circle(this.pos.x, this.pos.y, this.size);
+    point(this.pos.x, this.pos.y);
   }
 
 }
