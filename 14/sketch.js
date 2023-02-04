@@ -19,21 +19,22 @@ function setup() {
   noiseDetail(8);
 
   background(0);
+  addParticles(400);
 }
 
 function draw() {
   recordSketchPre();
 
-  drawDebug();
-  addParticles();
+  // drawDebug();
+  
   drawParticles();
   
   recordSketchPost(12);
   zOff += 0.005;
 }
 
-function addParticles(){
-  for (let i = 0; i < 5; i++) {
+function addParticles(count){
+  for (let i = 0; i < count; i++) {
     let px = random(width);
     let py = random(height);
     let particle = new Particle(px, py);
@@ -123,7 +124,7 @@ class Particle{
 
   draw(){
     // noFill();
-    stroke(this.color);
+    stroke(255, 50);
     strokeWeight(1);
     line(this.posPrev.x, this.posPrev.y, this.pos.x, this.pos.y);
   }
