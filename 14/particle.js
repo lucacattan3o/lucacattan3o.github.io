@@ -5,7 +5,9 @@ class Particle{
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
     this.size = 2;
-    this.color = 255;
+    // let sColors = shuffle(colors);
+    // this.color = sColors[0];
+    this.color = '#fff';
   }
 
   update(){
@@ -45,8 +47,7 @@ class Particle{
     // noFill();
     let cx = map(this.pos.x, 0, width, 0, 255);
     let cy = map(this.pos.y, 0, height, 0, 255);
-    // let c = color(255, cx, cy);
-    let c = color(255);
+    let c = color(this.color);
     c.setAlpha(100);
     stroke(c);
     strokeWeight(1);

@@ -1,12 +1,26 @@
 let fps = 30;
 
-let gridItemsCount = 8;
+let gridItemsCount = 4;
 let gridItemSize;
 let vectors = [];
 
 let particles = [];
 let particlesCount = 600;
 let zOff = 0;
+
+let colors = [
+  '#f72585',
+  '#b5179e',
+  '#7209b7',
+  '#560bad',
+  '#480ca8',
+  '#3a0ca3',
+  '#3f37c9',
+  '#4361ee',
+  '#4895ef',
+  '#4cc9f0',
+  '#ffffff',
+];
 
 function setup() {
   createCanvas(1080, 1080);
@@ -30,7 +44,7 @@ function draw() {
   drawParticles();
   
   recordSketchPost(12);
-  zOff += 0.005;
+  zOff += 0.002;
 }
 
 function addParticles(count){
