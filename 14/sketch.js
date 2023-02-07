@@ -33,18 +33,19 @@ function setup() {
   noiseDetail(2);
 
   background(0);
-  addParticles(400);
 }
 
 function draw() {
   recordSketchPre();
 
-  // drawDebug();
+  drawDebug();
   
   drawParticles();
   
   recordSketchPost(12);
   zOff += 0.002;
+
+  addParticles(5);
 }
 
 function addParticles(count){
@@ -59,7 +60,8 @@ function addParticles(count){
 function drawParticles(){
   particles.forEach(particle => {
     particle.update();
-    particle.draw();
+    //particle.draw();
+    particle.debug();
   });
 }
 
