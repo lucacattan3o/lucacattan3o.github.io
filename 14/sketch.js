@@ -38,7 +38,7 @@ function setup() {
 function draw() {
   recordSketchPre();
 
-  drawDebug();
+  // drawDebug();
   
   drawParticles();
   
@@ -60,8 +60,8 @@ function addParticles(count){
 function drawParticles(){
   particles.forEach(particle => {
     particle.update();
-    //particle.draw();
-    particle.debug();
+    particle.draw();
+    //particle.debug();
   });
 }
 

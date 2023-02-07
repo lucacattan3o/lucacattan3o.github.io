@@ -62,7 +62,7 @@ class Particle{
     c.setAlpha(100);
     stroke(c);
     strokeWeight(1);
-    line(this.posPrev.x, this.posPrev.y, this.pos.x, this.pos.y);
+    point(this.pos.x, this.pos.y);
   }
 
   addPoint(x, y){
