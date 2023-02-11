@@ -48,9 +48,9 @@ function draw() {
 
   drawDebug();
   
-  drawParticles();
+  // drawParticles();
   
-  recordSketchPost(20);
+  recordSketchPost(10);
   zOff += 0.005;
 
   // Perfect for debug
