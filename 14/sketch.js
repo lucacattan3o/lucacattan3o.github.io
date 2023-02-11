@@ -52,7 +52,7 @@ function draw() {
   
   drawParticles();
   
-  recordSketchPost(15);
+  recordSketchPost(20);
   //zOff += 0.001;
 }
 
