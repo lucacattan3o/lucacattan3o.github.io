@@ -1,6 +1,6 @@
 let fps = 30;
 
-let gridItemsCount = 2;
+let gridItemsCount = 4;
 let gridItemSize;
 let vectors = [];
 
@@ -41,19 +41,20 @@ function setup() {
   noiseDetail(2);
 
   background(0);
-
-  addParticles(500);
 }
 
 function draw() {
   recordSketchPre();
 
-  // drawDebug();
+  drawDebug();
   
   drawParticles();
   
   recordSketchPost(20);
-  //zOff += 0.001;
+  zOff += 0.005;
+
+  // Perfect for debug
+  addParticles(5);
 }
 
 function addParticles(count){
@@ -68,14 +69,14 @@ function addParticles(count){
 function drawParticles(){
   particles.forEach(particle => {
     particle.update();
-    particle.draw();
-    // particle.debug();
+    // particle.draw();
+    particle.debug();
   });
 }
 
 function drawDebug(){
   background(0);
-  strokeWeight(1);
+  strokeWeight(2);
   noFill();
   for (let i = 0; i <= gridItemsCount; i++) {
     for (let j = 0; j <= gridItemsCount; j++) {
@@ -83,15 +84,29 @@ function drawDebug(){
       let n = noiseVectorByPosision(pos);
       push();
         translate(pos.x, pos.y);
+        let c = color(255);
+        c.setAlpha(40);
+        stroke(c);
+        // rectMode(CENTER);
         // rect(0, 0, gridItemSize);
-        stroke(255, 0, 0, 100);
         circle(0, 0, gridItemSize);
         n.setMag(gridItemSize * 0.4);
-        fill(255, 0, 0);
-        circle(0, 0, gridItemSize * 0.1);
-        strokeWeight(2);
-        stroke(255, 0, 0);
+        strokeWeight(1);
+        stroke(255);
         line(0, 0, n.x, n.y);
+        fill(0);
+        // noStroke();
+        circle(0, 0, gridItemSize * 0.08);
+
+        // Arrow
+        let end = n.copy();
+        end.setMag(gridItemSize * 0.35);
+        end.rotate(-0.15);
+        line(n.x, n.y, end.x, end.y);
+        end.rotate(0.3);
+        line(n.x, n.y, end.x, end.y);
+
+
       pop();
     }
   }

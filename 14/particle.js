@@ -4,7 +4,7 @@ class Particle{
     this.posPrev = createVector(this.pos.x, this.pos.y);
     
     this.points = [];
-    this.nPoint = 5;
+    this.nPoint = 1;
 
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
@@ -14,7 +14,7 @@ class Particle{
     this.color = sColors[0];
     // this.color = '#fff';
     this.color = color(this.color);
-    this.color.setAlpha(10);
+    // this.color.setAlpha(10);
   }
 
   update(){
