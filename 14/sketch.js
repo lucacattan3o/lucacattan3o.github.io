@@ -1,11 +1,10 @@
 let fps = 30;
 
-let gridItemsCount = 8;
+let gridItemsCount = 2;
 let gridItemSize;
 let vectors = [];
 
 let particles = [];
-let particlesCount = 600;
 let zOff = 0;
 
 let colors = [
@@ -21,6 +20,15 @@ let colors = [
   '#4cc9f0',
   '#ffffff',
 ];
+
+function noiseVectorByPosision(pos){
+  let nx = pos.x / gridItemSize;
+  let ny = pos.y / gridItemSize;
+  let n = noise(nx, ny, zOff);
+  let vector = new p5.Vector.fromAngle(TWO_PI * n);
+  vector.setMag(1);
+  return vector;
+}
 
 function setup() {
   createCanvas(1080, 1080);
@@ -45,7 +53,7 @@ function draw() {
   drawParticles();
   
   recordSketchPost(15);
-  zOff += 0.001;
+  //zOff += 0.001;
 }
 
 function addParticles(count){
@@ -69,9 +77,6 @@ function drawDebug(){
   background(0);
   strokeWeight(1);
   noFill();
-
-  
-  
   for (let i = 0; i <= gridItemsCount; i++) {
     for (let j = 0; j <= gridItemsCount; j++) {
       let pos = createVector(i * gridItemSize, j * gridItemSize);
@@ -90,13 +95,4 @@ function drawDebug(){
       pop();
     }
   }
-}
-
-function noiseVectorByPosision(pos){
-  let nx = pos.x / gridItemSize;
-  let ny = pos.y / gridItemSize;
-  let n = noise(nx, ny, zOff);
-  let vector = new p5.Vector.fromAngle(TWO_PI * n);
-  vector.setMag(1);
-  return vector;
 }

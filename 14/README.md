@@ -13,5 +13,8 @@ With this set up, you can add to scene a lot a particles!
 A particle is a simulation of a body (position, velocity, acceleration) with the ability to react to a force applied.
 The force applied changes the acceleration, the acceleration changes the velocity, the velocity updates the position (BOOM): a simple but effective simulation af a body moving in space (3).
 
+Drawing the position of all the particles moving trough the flow field will results in this natural visualisation (1).
+
+All writtin in vanilla javascript and p5.js.
 
 `#creativecoding #processing #p5js #generative`
