@@ -10,8 +10,11 @@ class Particle{
     this.acc = createVector(0, 0);
     this.size = 4;
     let sColors = shuffle(colors);
+
     this.color = sColors[0];
     // this.color = '#fff';
+    this.color = color(this.color);
+    this.color.setAlpha(10);
   }
 
   update(){
@@ -55,14 +58,14 @@ class Particle{
   }
 
   draw(){
-    // noFill();
-    // let cx = map(this.pos.x, 0, width, 0, 255);
-    // let cy = map(this.pos.y, 0, height, 0, 255);
-    let c = color(this.color);
-    c.setAlpha(100);
-    stroke(c);
+    noFill();
+    stroke(this.color);
     strokeWeight(1);
-    point(this.pos.x, this.pos.y);
+    beginShape();
+    this.points.forEach(pos => {
+      vertex(pos.x, pos.y)
+    });
+    endShape();
   }
 
   addPoint(x, y){
@@ -73,10 +76,8 @@ class Particle{
   }
 
   debug(){
-    let c = color(this.color);
-    // c.setAlpha(50);
-    stroke(c);
-    strokeWeight(3);
+    stroke(this.color);
+    strokeWeight(5);
     beginShape();
     this.points.forEach(pos => {
       vertex(pos.x, pos.y)
