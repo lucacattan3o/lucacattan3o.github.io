@@ -1,6 +1,6 @@
 let fps = 30;
 
-let gridItemsCount = 4;
+let gridItemsCount = 2;
 let gridItemSize;
 let vectors = [];
 
@@ -46,15 +46,17 @@ function setup() {
 function draw() {
   recordSketchPre();
 
-  drawDebug();
+  // drawDebug();
+  // zOff += 0.005;
+  // addParticles(5);
   
-  // drawParticles();
-  
-  recordSketchPost(10);
-  zOff += 0.005;
+  drawParticles();
 
-  // Perfect for debug
-  addParticles(5);
+  if (particles.length < 1000){
+    addParticles(20);
+  }
+  
+  recordSketchPost(20);
 }
 
 function addParticles(count){
@@ -69,8 +71,8 @@ function addParticles(count){
 function drawParticles(){
   particles.forEach(particle => {
     particle.update();
-    // particle.draw();
-    particle.debug();
+    particle.draw();
+    // particle.debug();
   });
 }
 

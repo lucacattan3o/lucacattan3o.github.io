@@ -14,12 +14,19 @@ class Particle{
     this.color = sColors[0];
     // this.color = '#fff';
     this.color = color(this.color);
-    // this.color.setAlpha(10);
+    this.startAlpha = 0;
+    this.alpha = this.startAlpha;
+    this.maxAlpha = 40;
   }
 
   update(){
-    // this.posPrev.set(this.pos);
+    if (this.alpha <= this.maxAlpha){
+      this.alpha += 2;
+      this.color.setAlpha(this.alpha);
+    }
+
     this.addPoint(this.pos.x, this.pos.y);
+
     // Update the velocity based on flow field
     let flowForce = noiseVectorByPosision(this.pos);
     
