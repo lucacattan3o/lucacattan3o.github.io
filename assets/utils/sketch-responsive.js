@@ -5,6 +5,7 @@ let responsiveScaleFactor;
 const responsiveCanvasMargin = 80;
 
 function responsiveSketch(){
+  pixelDensity(1);
   setVars();
   responsiveCanvas(); 
 }

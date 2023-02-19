@@ -5,6 +5,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 ## Some ideas for the future
 
 - [ ] Circle packing + image
+- [ ] Cirlce packing + matter.js
 - [ ] Growing and shrinking circles (matter.js)
 - [ ] Minority (matter.js)
 - [ ] Eccentric trees
