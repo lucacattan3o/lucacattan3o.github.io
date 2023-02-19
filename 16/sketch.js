@@ -10,14 +10,16 @@ let colors = [
 
 let circles = [];
 let tot = 10;
+let monoSynth;
 
 function setup() {
-  createCanvas(1080, 1080);
+  myCanvas = createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
 
   matterSetup();
+  monoSynth = new p5.MonoSynth();
 }
 
 function draw() {
