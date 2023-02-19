@@ -54,7 +54,6 @@ class Circle{
   }
 
   draw(){
-    noStroke();
     fill(this.color);
     circle(this.pos.x, this.pos.y, this.radius * 2);
   }
