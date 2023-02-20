@@ -16,7 +16,7 @@ class Circle{
     }
     this.body = Bodies.circle(this.pos.x, this.pos.y, 10, options);
   
-    // mBody.setVelocity(this.body, {x: random(-3, 3), y: random(-3, 3)});
+    mBody.setVelocity(this.body, {x: random(-3, 3), y: random(-3, 3)});
     Composite.add(engine.world, this.body);    
   }
 
