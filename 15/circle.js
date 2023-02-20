@@ -4,36 +4,54 @@ class Circle{
     
     let sColors = shuffle(colors);
     this.color = sColors[0];
-    
-    this.radius = 1;
-    this.speed = 1;
 
     // Space between circles
-    this.offset = 5;
+    this.offset = 0;
     
     this.growing = true;
+
+    let options = {
+      friction: 0,
+      restitution: 1,
+    }
+    this.body = Bodies.circle(this.pos.x, this.pos.y, 10, options);
+  
+    // mBody.setVelocity(this.body, {x: random(-1, 1), y: random(-1, 1)});
+    Composite.add(engine.world, this.body);    
   }
 
   update(){
-    this.edge();
-    this.overlapping();
-
     if (this.growing){
-      this.radius += this.speed;
+      this.edge();
+      this.overlapping();
+      mBody.scale(this.body, 1.05, 1.05);
     }
   }
 
+  playSound(){
+    let note = random(['F3', 'G4']);
+    // note = 'A4';
+    // note velocity (volume, from 0 to 1)
+    // let velocity = random();
+    // time from now (in seconds)
+    let time = 0;
+    // note duration (in seconds)
+    let dur = 1/6;
+
+    monoSynth.play(note, 0.5, time, dur);
+  }
+
   edge(){
-    if (this.pos.x + this.radius + this.offset > width){
+    if (this.body.position.x + this.body.circleRadius > width){
       this.growing = false;
     }
-    if (this.pos.x - this.radius - this.offset < 0){
+    if (this.body.position.x - this.body.circleRadius < 0){
       this.growing = false;
     }
-    if (this.pos.y + this.radius + this.offset > height){
+    if (this.body.position.y + this.body.circleRadius > height){
       this.growing = false;
     }
-    if (this.pos.y - this.radius - this.offset < 0){
+    if (this.body.position.y - this.body.circleRadius < 0){
       this.growing = false;
     }
   }
@@ -43,8 +61,8 @@ class Circle{
     if (this.growing){
       for (const other of circles){
         if (this !== other){
-          let d = dist(this.pos.x, this.pos.y, other.pos.x, other.pos.y);
-          if (d < (this.radius + other.radius + this.offset)){
+          let d = dist(this.body.position.x, this.body.position.y, other.body.position.x, other.body.position.y);
+          if (d < (this.body.circleRadius + other.body.circleRadius)){
             this.growing = false;
             break;
           }
@@ -55,7 +73,7 @@ class Circle{
 
   draw(){
     fill(this.color);
-    circle(this.pos.x, this.pos.y, this.radius * 2);
+    circle(this.body.position.x, this.body.position.y, this.body.circleRadius * 1.5);
   }
 
 }

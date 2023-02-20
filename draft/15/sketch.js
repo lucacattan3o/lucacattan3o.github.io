@@ -10,16 +10,14 @@ let colors = [
 
 let circles = [];
 let tot = 10;
-let monoSynth;
 
 function setup() {
-  myCanvas = createCanvas(1080, 1080);
+  createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
 
-  matterSetup();
-  monoSynth = new p5.MonoSynth();
+  background(0);
 }
 
 function draw() {
@@ -62,8 +60,8 @@ function createNewCircle(){
 function freeSpace(x, y){
   let valid = true;
   for (const circle of circles){
-    let d = dist(x, y, circle.body.position.x, circle.body.position.y);
-    if (d < circle.body.circleRadius){
+    let d = dist(x, y, circle.pos.x, circle.pos.y);
+    if (d < circle.radius){
       valid = false;
       break;
     }
