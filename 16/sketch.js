@@ -1,5 +1,5 @@
 let items = 60;
-let cubeSizeFactor = 0.6;
+let cubeSizeFactor = 0.7;
 let noiseScale = 0.15;
 let keySpeed = 0.8;
 
@@ -19,7 +19,7 @@ let zOffset = 0;
 let mPos = false;
 
 let colors = [
-  // '#001219',
+  '#001219',
   '#005f73',
   '#0a9396',
   '#94d2bd',
@@ -67,9 +67,9 @@ function draw() {
   sec = frameCount / fps * speed;
   bounce = (cos(sec * TWO_PI) + 1) * 0.5;
 
-  drawBoxes();
+  zOffset += 0.01;
 
-  zOffset += 0.05;
+  drawBoxes();
 
   // keysLogic();
   // mouseLogic();
@@ -141,7 +141,7 @@ function isPartOfShape(x, y, z){
   let shapeRadius = radius + (n * amplitude);
   shapeRadius = radius + n * radius;
 
-  if (d < shapeRadius && d > shapeRadius * 0.5){
+  if (d < shapeRadius && d > shapeRadius * 0.8){
     return d - shapeRadius;
   }
   return false;
