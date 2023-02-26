@@ -1,5 +1,5 @@
-let items = 40;
-let cubeSizeFactor = 0.8;
+let items = 60;
+let cubeSizeFactor = 0.6;
 let noiseScale = 0.15;
 let keySpeed = 0.8;
 
@@ -81,12 +81,13 @@ function drawBoxes(){
   background(0);
   itemSize = width / items;
   cubeSize = itemSize * cubeSizeFactor;
-  radius = width * 0.2;
+  radius = width * 0.15;
 
   ambientLight(180);
   directionalLight(color('white'), 0, 1, -0.5);
   
   push();
+    // rotateY(frameCount * 0.05);
     translate(- width * 0.5, -width * 0.5, - height * 0.5);
 
     for (let i = 0; i < items; i++) {
@@ -98,7 +99,7 @@ function drawBoxes(){
             let z = k * itemSize;
             translate(x, z, y);
 
-            let nC = Math.floor(((z * 0.005 + zOffset) % 1) * colors.length);
+            let nC = Math.floor(((z * 0.001 + zOffset) % 1) * colors.length);
 
             let d = isPartOfShape(x, y, z);
             if (d){
@@ -131,15 +132,16 @@ function isPartOfShape(x, y, z){
   let diff = item.sub(center);
   diff.setMag(10);
 
-  let n = noise(diff.x + 500, diff.y + 500, z * 0.005 + 500 + zOffset);
+  let n = noise(diff.x + 500, diff.y + 500, z * 0.001 + 500 + zOffset);
   // let n = noise(z * 0.0005 + zOffset);
   // let k = z / itemSize;
   // let n = (cos(k + zOffset * 5) + 1) * 0.5;
 
-  let amplitude = itemSize * 4;
+  let amplitude = itemSize * 2;
   let shapeRadius = radius + (n * amplitude);
+  shapeRadius = radius + n * radius;
 
-  if (d < shapeRadius && d > shapeRadius * 0.7){
+  if (d < shapeRadius && d > shapeRadius * 0.5){
     return d - shapeRadius;
   }
   return false;
