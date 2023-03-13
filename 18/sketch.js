@@ -52,7 +52,13 @@ function createItems(){
       }
     }
   }
+  
+  items.forEach(item => {
+    item.searchNeighbors();
+  });
+
   console.debug(items[0]);
+
 }
 
 function draw() {
@@ -81,5 +87,6 @@ function drawItems(){
 
   items.forEach(item => {
     item.draw();
+    item.drawConnections();
   });
 }
