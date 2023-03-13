@@ -54,7 +54,7 @@ function draw() {
 
       // let n = noise(i * noiseDetail, j * noiseDetail, zOffset);
       let b = brightness(c);
-      let index = floor(map(b, 0, 255, 0, chars.length, true));
+      let index = floor(map(b, 0, 200, 0, chars.length, true));
       
       push();
         translate(x, y);
@@ -86,7 +86,6 @@ function draw() {
 
 function mouseClicked() {
   setBackground();
-  console.debug('setbackground!');
 }
 
 function setBackground(){
