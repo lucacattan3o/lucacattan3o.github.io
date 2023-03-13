@@ -1,10 +1,11 @@
 let fps = 30;
 
-let items = 10;
+let nItems = 10;
+let items = [];
 
 let sec;
 let bounce;
-let speed = 1;
+let speed = 0.125;
 
 let colors = [
   '#f72585',
@@ -25,6 +26,33 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
+
+  // Standard othographic Camera
+  let cam = createCamera();
+  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
+  cam.setPosition(-width * 0.5, 0, 0);
+  cam.lookAt(0, 0, 0);
+  
+  createItems();
+}
+
+function createItems(){
+  itemSize = width / nItems;
+  cubeSize = itemSize * 0.9;
+
+  for (let i = 0; i < nItems; i++) {
+    for (let j = 0; j < nItems; j++) {
+      for (let k = 0; k < nItems; k++) {
+        let x = i * itemSize;
+        let y = j * itemSize;
+        let z = k * itemSize;
+
+        let item = new Item(x, y, z);
+        items.push(item);
+      }
+    }
+  }
+  console.debug(items[0]);
 }
 
 function draw() {
@@ -45,27 +73,13 @@ function draw() {
 
 function drawItems(){
   background(0);
-  itemSize = width / items;
-  cubeSize = itemSize * 0.9;
 
-  push();
-    translate(- width * 0.5, - width * 0.5, - height * 0.5);
-    translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+  rotateY(sec);
 
-    for (let i = 0; i < items; i++) {
-      for (let j = 0; j < items; j++) {
-        for (let k = 0; k < items; k++) {
-          push();
-            let x = i * itemSize;
-            let y = j * itemSize;
-            let z = k * itemSize;
-            translate(x, z, y);
-            noStroke();
-            ambientMaterial(colors[8]);
-            sphere(2, 5, 5);
-          pop(); 
-        } 
-      }
-    }
-  pop();
+  translate(- width * 0.5, - width * 0.5, - width * 0.5);
+  translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
+
+  items.forEach(item => {
+    item.draw();
+  });
 }
