@@ -1,7 +1,9 @@
 let fps = 30;
 
 let nItems = 10;
+
 let items = [];
+let connections = {};
 
 let sec;
 let bounce;
@@ -40,6 +42,7 @@ function createItems(){
   itemSize = width / nItems;
   cubeSize = itemSize * 0.9;
 
+  let unique = 0;
   for (let i = 0; i < nItems; i++) {
     for (let j = 0; j < nItems; j++) {
       for (let k = 0; k < nItems; k++) {
@@ -47,18 +50,34 @@ function createItems(){
         let y = j * itemSize;
         let z = k * itemSize;
 
-        let item = new Item(x, y, z);
+        let item = new Item(x, y, z, unique);
+        unique++;
         items.push(item);
       }
     }
   }
   
   items.forEach(item => {
-    item.searchNeighbors();
-  });
+    let neigs = items.filter((other) => {
+      if (other !== item){
+        let distance = item.pos.dist(other.pos);
+        if (distance < itemSize * 1.1){
+          return true;
+        }
+        return false;
+      }
+    });
 
-  console.debug(items[0]);
+    neigs.forEach(n => {
+      let string = item.unique + '-' + n.unique;
+      if (item.unique > n.unique){
+        string = n.unique + '-' + item.unique;
+      }
+      connections[string] = string;
+    });
+  })
 
+  connections = Object.values(connections);
 }
 
 function draw() {
@@ -87,6 +106,19 @@ function drawItems(){
 
   items.forEach(item => {
     item.draw();
-    item.drawConnections();
+  });
+
+  connections.forEach(con => {
+    let vertex = con.split('-');
+    let a = vertex[0];
+    let b = vertex[1];
+    let pointA = items[a];
+    let pointB = items[b];
+    stroke(color(255, 100));
+    strokeWeight(0.5);
+    line(
+      pointA.pos.x, pointA.pos.y, pointA.pos.z,
+      pointB.pos.x, pointB.pos.y, pointB.pos.z,
+    );
   });
 }
