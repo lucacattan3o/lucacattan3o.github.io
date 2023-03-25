@@ -105,6 +105,7 @@ function drawItems(){
   translate(itemSize * 0.5, itemSize * 0.5, itemSize * 0.5);
 
   items.forEach(item => {
+    item.update();
     item.draw();
   });
 
