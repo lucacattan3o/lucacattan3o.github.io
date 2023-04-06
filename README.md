@@ -7,7 +7,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 - [ ] Space and time
 - [ ] Camera interactions (fullscreen)
 - [ ] Circle packing + image
-- [x] Cirlce packing + matter.js
+- [x] Circle packing + matter.js
 - [ ] Growing and shrinking circles (matter.js)
 - [ ] Minority (matter.js)
 - [ ] Eccentric trees
@@ -17,3 +17,4 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 - [ ] Easy random particles
 - [ ] Planets with [mutual attraction](https://www.youtube.com/watch?v=GjbKsOkN1Oc)
 - [ ] Typography with [glifi](https://www.domestika.org/it/courses/2729-coding-creativo-realizza-visual-con-javascript/units/9672-tipo-di-schizzo#course_lesson_28444)
+- [ ] Animating with microphone or audio sound
