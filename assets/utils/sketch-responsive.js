@@ -45,6 +45,7 @@ function responsiveSketch(options){
   responsiveMaxWidth = width;
   responsiveMaxHeight = height;
 
+  pixelDensity(1);
   responsiveCanvas(); 
 }
 
