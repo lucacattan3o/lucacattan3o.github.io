@@ -2,6 +2,15 @@
 
 Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucacattan3o/)
 
+## Before next WS
+- [ ] Sketch Responsive
+  - [ ] Store all vars in an object
+  - [ ] Add [JSDoc](https://jsdoc.app/)
+- [ ] Sketch record
+ - [ ] Adapt to p5.js editor
+ - [ ] Add [JSDoc](https://jsdoc.app/)
+- [ ] Add fullscreen toggle
+
 ## Some ideas for the future
 
 - [ ] Space and time
