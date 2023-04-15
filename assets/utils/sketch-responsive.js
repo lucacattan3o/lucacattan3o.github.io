@@ -2,16 +2,18 @@
 * @file A simple plugin library to make your p5.js sketch responsive
 * It works also in p5.js editor
 * @author Luca Cattaneo <luca.cattaneo@mekit.it>
+* {@link https://lucacattan3o.github.io/}
 * @copyright Luca Cattaneo 2023
 * @license MIT License
 */
 
-// todo: define a global object to store all the variables
-
-let responsiveMaxWidth, responsiveMaxHeight;
-let responsiveDomCanvas;
-let responsiveScaleFactor;
-let responsiveCanvasMargin;
+let rSketch = {
+  maxWidth: null,
+  maxHeight: null,
+  domEl: null,
+  scaleFactor: 1,
+  margin: 0,
+};
 
 /**
  * Make your sketch resposive
@@ -25,6 +27,7 @@ function responsiveSketch(options){
   let defaultSettings = {
     el: document.getElementsByTagName('main')[0],
     margin: 80,
+    pixelDensity: 1,
   };
 
   if (!options) options = {};
@@ -39,13 +42,12 @@ function responsiveSketch(options){
     }
   }
 
-  responsiveCanvasMargin = settings.margin;
-  responsiveDomCanvas = settings.el;
+  rSketch.margin = settings.margin;
+  rSketch.domEl = settings.el;
+  rSketch.maxWidth = width;
+  rSketch.maxHeight = height;
 
-  responsiveMaxWidth = width;
-  responsiveMaxHeight = height;
-
-  pixelDensity(1);
+  pixelDensity(settings.pixelDensity);
   responsiveCanvas(); 
 }
 
@@ -60,8 +62,8 @@ function responsiveSketch(options){
  */
 function responsiveMousePos(){
   return {
-    x: mouseX * (1 / responsiveScaleFactor),
-    y: mouseY * (1 / responsiveScaleFactor)
+    x: mouseX * (1 / rSketch.scaleFactor),
+    y: mouseY * (1 / rSketch.scaleFactor)
   };
 }
 
@@ -76,19 +78,17 @@ function windowResized() {
  * Scale the sketch
  */
 function responsiveCanvas(){
-  responsiveScaleFactor = 1;
-
-  let availableWidth = window.innerWidth - responsiveCanvasMargin;
-  let availableHeight = window.innerHeight - responsiveCanvasMargin;
+  let availableWidth = window.innerWidth - rSketch.margin;
+  let availableHeight = window.innerHeight - rSketch.margin;
   
-  let scaleFactorW = availableWidth / responsiveMaxWidth;
-  let scaleFactorH = availableHeight / responsiveMaxHeight;
+  let scaleFactorW = availableWidth / rSketch.maxWidth;
+  let scaleFactorH = availableHeight / rSketch.maxHeight;
   
   let minScaleFactor = Math.min(scaleFactorW, scaleFactorH);
   if (minScaleFactor < 1){
-    responsiveScaleFactor = minScaleFactor;
+    rSketch.scaleFactor = minScaleFactor;
   }
   
-  responsiveDomCanvas.style = "transform: scale(" + responsiveScaleFactor + ")";
+  rSketch.domEl.style = "transform: scale(" + rSketch.scaleFactor + ")";
 }
 

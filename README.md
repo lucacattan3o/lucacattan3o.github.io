@@ -4,7 +4,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 
 ## Before next WS
 - [ ] Sketch Responsive
-  - [ ] Store all vars in an object
+  - [x] Store all vars in an object
   - [ ] Add [JSDoc](https://jsdoc.app/)
 - [ ] Sketch record
  - [ ] Adapt to p5.js editor

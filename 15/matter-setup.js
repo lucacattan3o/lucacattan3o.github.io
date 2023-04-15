@@ -68,7 +68,7 @@ function addMouseConstraint(){
 }
 
 function setCanvasMouseScale(){
-  let mouseScale = 1 + (1 / (responsiveScaleFactor / (1 - responsiveScaleFactor)));
+  let mouseScale = 1 + (1 / (rSketch.scaleFactor / (1 - rSketch.scaleFactor)));
   canvasMouse.scale = {
     x: mouseScale,
     y: mouseScale,
