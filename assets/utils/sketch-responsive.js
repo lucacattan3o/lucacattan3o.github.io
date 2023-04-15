@@ -1,8 +1,9 @@
 /**
 * @file A simple plugin library to make your p5.js sketch responsive
-* It works also in p5.js editor
+* - It works also in p5.js editor
 * @author Luca Cattaneo <luca.cattaneo@mekit.it>
 * {@link https://lucacattan3o.github.io/}
+* @version 1.0.0
 * @copyright Luca Cattaneo 2023
 * @license MIT License
 */
@@ -24,6 +25,7 @@ let rSketch = {
  */
 function responsiveSketch(options){
 
+  // Default settings
   let defaultSettings = {
     el: document.getElementsByTagName('main')[0],
     margin: 80,
@@ -47,7 +49,10 @@ function responsiveSketch(options){
   rSketch.maxWidth = width;
   rSketch.maxHeight = height;
 
-  pixelDensity(settings.pixelDensity);
+  if (settings.pixelDensity !== null){
+    pixelDensity(settings.pixelDensity);
+  }
+  
   responsiveCanvas(); 
 }
 
