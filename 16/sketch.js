@@ -36,9 +36,9 @@ function setup() {
   let cam = createCamera();
   // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
   cam.setPosition(
-    - width * 0.7,
+    - width * 0.9,
     - width * 0,
-    - width * 0.7);
+    - width * 0.9);
   cam.lookAt(0, 0, 0);
 
   itemSize = width / nItems;
@@ -99,7 +99,7 @@ function draw() {
   recordSketchPre();
 
   sec = frameCount / fps * speed;
-  bounce = (cos(sec * TWO_PI) + 1) * 0.5;
+  bounce = (cos(sec * TWO_PI) + 1) * 0.25;
   
   orbitControl();
   
@@ -110,13 +110,13 @@ function draw() {
   
   drawItems();
 
-  recordSketchPost(5);
+  recordSketchPost(18);
 }
 
 function drawItems(){
   background(0);
 
-  rotateY(sec * TWO_PI * 0.25);
+  rotateY(sec * TWO_PI * 0.125);
 
   push();
     translate(- width * 0.5, - width * 0.5, - width * 0.5);

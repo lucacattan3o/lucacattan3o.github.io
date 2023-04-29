@@ -55,7 +55,7 @@ class Item{
       translate(this.pos.x, this.pos.z, this.pos.y);
       noStroke();
       ambientMaterial(this.color);
-      sphere(itemSize * 0.04, 10, 10);
+      sphere(itemSize * 0.05, 10, 10);
     pop();
   }
 }
