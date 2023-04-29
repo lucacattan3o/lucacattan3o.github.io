@@ -1,6 +1,6 @@
 let fps = 30;
 
-let nItems = 8;
+let nItems = 16;
 
 let items = [];
 let connections = {};
@@ -66,7 +66,7 @@ function createItems(){
     }
   }
   connections = [];
-  05-createConnections();
+  createConnections();
 }
 
 function createConnections(){
@@ -110,7 +110,7 @@ function draw() {
   
   drawItems();
 
-  recordSketchPost(16);
+  recordSketchPost(5);
 }
 
 function drawItems(){
