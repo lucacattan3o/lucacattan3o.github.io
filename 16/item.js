@@ -13,7 +13,7 @@ class Item{
   }
 
   update(){
-    // this.attractToCenter();
+    this.attractToCenter();
 
     // https://p5js.org/examples/simulate-forces.html
     // Velocity changes according to acceleration
@@ -25,15 +25,25 @@ class Item{
   }
 
   attractToCenter(){
-    let center = createVector(0, 0, 0);
-    let dir = this.pos.sub(center);
-    dir.setMag(1);
+    let tmpPos = this.pos.copy();
+    let dir = tmpPos.sub(worldCenter);
+    dir.setMag(-0.1);
 
     if (this.unique == 915){
       // console.debug(this.unique);
-      console.debug(dir);
+      //console.debug(dir);
+      // noLoop();
     }
-    // this.applyForce(dir);
+    this.applyForce(dir);
+  }
+
+  isEnd(){
+    let tmpPos = this.pos.copy();
+    let dist = tmpPos.sub(worldCenter);
+    if (dist.mag() < 100){
+      return true;
+    }
+    return false;
   }
 
   applyForce(force){
@@ -45,7 +55,7 @@ class Item{
       translate(this.pos.x, this.pos.z, this.pos.y);
       noStroke();
       ambientMaterial(this.color);
-      sphere(2, 10, 10);
+      sphere(itemSize * 0.04, 10, 10);
     pop();
   }
 }
