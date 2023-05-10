@@ -15,6 +15,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 
 - [ ] Space and time
 - [ ] Camera interactions (fullscreen)
+- [ ] Hands interactions + sound + font
 - [ ] Circle packing + image
 - [x] Circle packing + matter.js
 - [ ] Growing and shrinking circles (matter.js)
