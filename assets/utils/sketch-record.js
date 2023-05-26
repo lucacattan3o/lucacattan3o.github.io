@@ -42,9 +42,12 @@ function recordSketchPost(sec){
     if (sketchRecord.export){
       recordSketchSave();
     }
-    if (sketchRecord.mouseRecord){
-      recordSketchMouseSave();
-    }
+    console.debug('end!');
+    // todo: per ogni vars con record su true devo salvare
+    console.debug(sketchRecord.vars);
+    // if (sketchRecord.mouseRecord){
+    //   recordSketchMouseSave();
+    // }
   }
 }
 

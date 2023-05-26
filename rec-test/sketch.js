@@ -23,5 +23,5 @@ function draw() {
     circle(mPos.x, mPos.y, 200);
   }
 
-  recordSketchPost(8);
+  recordSketchPost(2);
 }
