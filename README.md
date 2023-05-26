@@ -7,7 +7,9 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
   - [x] Store all vars in an object
   - [ ] Add [JSDoc](https://jsdoc.app/)
 - [ ] Sketch record
- - [ ] Adapt to p5.js editor
+ - [x] Adapt to p5.js editor (not possible)
+ - [ ] Refactory
+ - [ ] Try recording music
  - [ ] Add [JSDoc](https://jsdoc.app/)
 - [ ] Add fullscreen toggle
 
@@ -18,6 +20,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 - [ ] Hands interactions + sound + font
 - [ ] Circle packing + image
 - [x] Circle packing + matter.js
+- [ ] Typo + matter.js
 - [ ] Growing and shrinking circles (matter.js)
 - [ ] Minority (matter.js)
 - [ ] Eccentric trees
