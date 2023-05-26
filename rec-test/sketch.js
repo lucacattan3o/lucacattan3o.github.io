@@ -14,12 +14,10 @@ function draw() {
 
   mPos = responsiveMousePos();
 
-  // todo: do this in a single function, why not?
-  // Store, if requested, the mouse position
-  recordSketchMouseRec(mPos);
-
-  // Override, if stored, the mouse position
-  mPos = recordSketchMouseGet(mPos);
+  // Super funzione che registra la variabile
+  // se c'è in funzione play, la sovrascrive
+  mPos = recordSketchData('mouse', mPos);
+  test = recordSketchData('test', [155, 200, 325]);
 
   if (mPos.x !== 0 && mPos.y !== 0){
     circle(mPos.x, mPos.y, 200);

@@ -1,66 +1,106 @@
-let cFps = 30;
-let capturer = false;
 
-let doRecord = false;
 
-let mouseRecord = false;
-let mousePlay = false;
 
-let mouseRecordPath = [];
+let sketchRecord = {
+  fps: 30,
+  capturer: false,
+  // instead of record
+  export: false,
+  // keys
+  vars: {},
+  // storage
+  storage: {},
+  // mouse
+  mouseRecord: false,
+  mousePlay: false,
+  mouseStorage: [],
+  // music
+  musicRecord: false,
+  musicPlay: false,
+  musicStorage: [],
+};
 
-recordSketchSetFps(cFps);
 recordSketchCheckUrl();
 
+// ** PRE AND POST **
+// ------------------
+
 function recordSketchPre(){
-  if (!doRecord){
+  if (!sketchRecord.export){
     return;
   }
   if (frameCount == 1){
-    capturer.start();
+    sketchRecord.capturer.start();
   }
 }
 
 function recordSketchPost(sec){
-  if (doRecord){
+  if (sketchRecord.export){
     recordSketchCapture();
   }
-  if (frameCount == (cFps * sec)){
-    if (doRecord){
+  if (frameCount == (sketchRecord.fps * sec)){
+    if (sketchRecord.export){
       recordSketchSave();
     }
-    if (mouseRecord){
+    if (sketchRecord.mouseRecord){
       recordSketchMouseSave();
     }
   }
+}
+
+// ** STORE DATA **
+// ----------------
+
+function recordSketchData(name, data){
+  recordSketchDataStore(name, data);
+  return recordSketchDataGet(name, data);
+}
+
+function recordSketchDataStore(name, data){
+  if (sketchRecord.vars[name] !== undefined && !sketchRecord.vars[name].record){
+    return; 
+  }
+  if (sketchRecord.vars[name] !== undefined){
+    sketchRecord.storage[name].push(data);
+  }
+}
+
+function recordSketchDataGet(name, data){
+  if (sketchRecord.vars[name] !== undefined && sketchRecord.vars[name].play){
+    if (sketchRecord.storage[name][frameCount] !== undefined){
+      return sketchRecord.storage[name][frameCount];
+    }
+  }
+  return data;
 }
 
 // ** UTILS **
 // -----------
 
 function recordSketchCapture(){
-  if (!doRecord){
+  if (!sketchRecord.export){
     return;
   }
-  capturer.capture(canvas);
+  sketchRecord.capturer.capture(canvas);
 }
 
 function recordSketchSave(){
-  if (!doRecord){
+  if (!sketchRecord.export){
     return;
   }
   noLoop();
-  capturer.save();
-  capturer.stop();
+  sketchRecord.capturer.save();
+  sketchRecord.capturer.stop();
 }
 
 // ** FPS **
 // ---------
 
 function recordSketchSetFps(fps){
-  cFps = fps;
-  capturer = new CCapture({
+  sketchRecord.fps = fps;
+  sketchRecord.capturer = new CCapture({
     format: 'webm',
-    framerate: cFps,
+    framerate: sketchRecord.fps,
     verbose: true,
   })
 }
@@ -69,16 +109,17 @@ function recordSketchSetFps(fps){
 // -----------
 
 function recordSketchMouseRec(pos){
-  if (!mouseRecord){
+  if (!sketchRecord.mouseRecord){
     return; 
   }
-  mouseRecordPath.push(pos);
+  sketchRecord.mouseStorage.push(pos);
+  // console.debug('Mouse path stored: ' + frameCount);
 }
 
 function recordSketchMouseGet(pos){
-  if (mousePlay){
-    if (mouseRecordPath[frameCount] !== undefined){
-      return mouseRecordPath[frameCount];
+  if (sketchRecord.mousePlay){
+    if (sketchRecord.mouseStorage[frameCount] !== undefined){
+      return sketchRecord.mouseStorage[frameCount];
     } else {
       return {x: 0, y: 0};
     }
@@ -87,9 +128,9 @@ function recordSketchMouseGet(pos){
 }
 
 function recordSketchMouseSave(){
-  localStorage.setItem('mouseRecordPath', JSON.stringify(mouseRecordPath));
+  localStorage.setItem('sketchRecordMouse', JSON.stringify(sketchRecord.mouseStorage));
   noLoop();
-  console.debug('Mouse Path: stored ' + mouseRecordPath.length + ' points.');
+  console.debug('Mouse Path: stored ' + sketchRecord.mouseStorage.length + ' points.');
 }
 
 // ** URL PARAMS **
@@ -99,30 +140,43 @@ function recordSketchCheckUrl(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   
-  const record = urlParams.get('record');
-  if (record && record == 'true'){
-    doRecord = true;
+  // const exp = urlParams.get('export');
+  if (urlParams.get('export') == 'true'){
+    sketchRecord.export = true;
   }
 
-  const mouse = urlParams.get('mouse');
-  if (mouse && mouse == 'record'){
-    console.debug('Mouse Path: recording.');
-    mouseRecord = true;
-    doRecord = false;
-  }
+  // per ogni coppia
+  for (const [name, value] of urlParams.entries()) {
+    if (name == 'export'){
+      continue;
+    }
+    if (value == 'record'){
+      sketchRecord.vars[name] = {};
+      sketchRecord.vars[name].record = true;
+      sketchRecord.storage[name] = [];
+      console.debug('Recording: ' + name);
+      // While recording, we can't export
+      sketchRecord.export = false;
+    }
 
-  if (mouse && mouse == 'play'){
-    let path = localStorage.getItem('mouseRecordPath');
-    mouseRecordPath = JSON.parse(path);
-    if (mouseRecordPath.length > 0){
-      console.debug('Mouse Path: playing.');
-      mousePlay = true;
-    } else {
-      console.debug('Mouse Path: missing path, store path using ?mouse=record');
+    if (value == 'play'){
+      sketchRecord.vars[name] = {};
+      sketchRecord.vars[name].play = false;
+      let storage = localStorage.getItem('sketchRecord_' + name);
+      if (storage){
+        sketchRecord.storage[name] = JSON.parse(storage);
+        if (sketchRecord.storage[name].length > 0){
+          console.debug('Playing: ' + name);
+          sketchRecord.vars[name].play = true;
+        }
+      }
+      if (!sketchRecord.vars[name].play){
+        console.debug('Missing storage, store data using ?' + name + '=record');
+      }
     }
   }
 }
 
 function recordSketch(status){
-  doRecord = status;
+  sketchRecord.export = status;
 }
