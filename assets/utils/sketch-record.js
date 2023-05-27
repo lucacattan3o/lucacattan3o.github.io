@@ -10,14 +10,6 @@ let sketchRecord = {
   vars: {},
   // storage
   storage: {},
-  // mouse
-  mouseRecord: false,
-  mousePlay: false,
-  mouseStorage: [],
-  // music
-  musicRecord: false,
-  musicPlay: false,
-  musicStorage: [],
 };
 
 recordSketchCheckUrl();
@@ -38,16 +30,34 @@ function recordSketchPost(sec){
   if (sketchRecord.export){
     recordSketchCapture();
   }
+
+  let endRec = false;
   if (frameCount == (sketchRecord.fps * sec)){
+    // Export mode
     if (sketchRecord.export){
-      recordSketchSave();
+      recordSketchExport();
+      endRec = true;
+    } else {
+      // Check all vars to store in local storage
+      let names = Object.keys(sketchRecord.vars);
+      names.forEach(name => {
+        if (sketchRecord.vars[name] !== undefined && sketchRecord.vars[name].record){
+          endRec = true;
+          if (sketchRecord.storage[name] !== undefined){
+            let str = JSON.stringify(sketchRecord.storage[name]);
+            localStorage.setItem('sketchRecord_' + name, str);
+            console.debug('Stored ' + name + ': ' + sketchRecord.storage[name].length + ' frames.');
+          } else {
+            console.debug('Stored ' + name + ': missing.');
+          }
+        }
+      });
     }
-    console.debug('end!');
-    // todo: per ogni vars con record su true devo salvare
-    console.debug(sketchRecord.vars);
-    // if (sketchRecord.mouseRecord){
-    //   recordSketchMouseSave();
-    // }
+    if (endRec){
+      noLoop();
+      console.debug('Record: end!');
+    }
+    
   }
 }
 
@@ -87,17 +97,16 @@ function recordSketchCapture(){
   sketchRecord.capturer.capture(canvas);
 }
 
-function recordSketchSave(){
+function recordSketchExport(){
   if (!sketchRecord.export){
     return;
   }
-  noLoop();
   sketchRecord.capturer.save();
   sketchRecord.capturer.stop();
 }
 
-// ** FPS **
-// ---------
+// ** BUILD **
+// -----------
 
 function recordSketchSetFps(fps){
   sketchRecord.fps = fps;
@@ -106,34 +115,6 @@ function recordSketchSetFps(fps){
     framerate: sketchRecord.fps,
     verbose: true,
   })
-}
-
-// ** MOUSE **
-// -----------
-
-function recordSketchMouseRec(pos){
-  if (!sketchRecord.mouseRecord){
-    return; 
-  }
-  sketchRecord.mouseStorage.push(pos);
-  // console.debug('Mouse path stored: ' + frameCount);
-}
-
-function recordSketchMouseGet(pos){
-  if (sketchRecord.mousePlay){
-    if (sketchRecord.mouseStorage[frameCount] !== undefined){
-      return sketchRecord.mouseStorage[frameCount];
-    } else {
-      return {x: 0, y: 0};
-    }
-  }
-  return pos;
-}
-
-function recordSketchMouseSave(){
-  localStorage.setItem('sketchRecordMouse', JSON.stringify(sketchRecord.mouseStorage));
-  noLoop();
-  console.debug('Mouse Path: stored ' + sketchRecord.mouseStorage.length + ' points.');
 }
 
 // ** URL PARAMS **
@@ -178,8 +159,4 @@ function recordSketchCheckUrl(){
       }
     }
   }
-}
-
-function recordSketch(status){
-  sketchRecord.export = status;
 }

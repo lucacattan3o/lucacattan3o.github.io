@@ -17,11 +17,18 @@ function draw() {
   // Super funzione che registra la variabile
   // se c'è in funzione play, la sovrascrive
   mPos = recordSketchData('mouse', mPos);
-  test = recordSketchData('test', [155, 200, 325]);
+  mPressed = recordSketchData('pressed', mouseIsPressed);
 
   if (mPos.x !== 0 && mPos.y !== 0){
+    if (mPressed){
+      fill(0);
+      stroke(255);
+    } else {
+      fill(255);
+      stroke(0);
+    }
     circle(mPos.x, mPos.y, 200);
   }
 
-  recordSketchPost(2);
+  recordSketchPost(4);
 }
