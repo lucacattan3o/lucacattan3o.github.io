@@ -1,34 +1,61 @@
-let fps = 60;
+
+let fps = 30;
 
 let mPos;
+let music, mT;
+let amp, fft, spec;
+let smooth = 0.7;
+
+function preload(){
+  music = loadSound('fm-belfast.mp3', function(){
+    amp = new p5.Amplitude();
+    amp.setInput(music);
+    
+    fft = new p5.FFT(smooth, 16);
+    fft.setInput(music);
+  });
+}
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
+  background(0);
+}
+
+function keyPressed() {
+  console.debug(keyCode);   
+  if (keyCode === 32) {
+    if (music.isLooping()){
+      music.stop();
+    } else {
+      music.loop();
+    }  
+  }
 }
 
 function draw() {
+  
+
   recordSketchPre();
 
   mPos = responsiveMousePos();
+  spec = fft.analyze();
 
-  // Super funzione che registra la variabile
-  // se c'è in funzione play, la sovrascrive
   mPos = recordSketchData('mouse', mPos);
-  mPressed = recordSketchData('pressed', mouseIsPressed);
+  spec = recordSketchData('spec', spec);
+  
+  // drawBars();
 
   if (mPos.x !== 0 && mPos.y !== 0){
-    if (mPressed){
-      fill(0);
-      stroke(255);
-    } else {
-      fill(255);
-      stroke(0);
-    }
-    circle(mPos.x, mPos.y, 200);
+    noFill();
+    stroke(255);
+    fill(0);
+    circle(mPos.x, mPos.y, 200 * getMusicEnergy(4));
   }
 
-  recordSketchPost(4);
+  recordSketchPost(4, () => {
+    music.stop();
+  });
 }

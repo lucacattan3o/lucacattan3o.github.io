@@ -26,7 +26,7 @@ function recordSketchPre(){
   }
 }
 
-function recordSketchPost(sec){
+function recordSketchPost(sec, onEnd){
   if (sketchRecord.export){
     recordSketchCapture();
   }
@@ -56,8 +56,10 @@ function recordSketchPost(sec){
     if (endRec){
       noLoop();
       console.debug('Record: end!');
+      if (onEnd !== undefined){
+        onEnd();
+      }
     }
-    
   }
 }
 
@@ -124,26 +126,27 @@ function recordSketchCheckUrl(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   
-  // const exp = urlParams.get('export');
   if (urlParams.get('export') == 'true'){
     sketchRecord.export = true;
   }
 
-  // per ogni coppia
-  for (const [name, value] of urlParams.entries()) {
-    if (name == 'export'){
-      continue;
-    }
-    if (value == 'record'){
+  let record = urlParams.get('record');
+  if (record){
+    let names = record.split(',');
+    names.forEach(name => {
       sketchRecord.vars[name] = {};
       sketchRecord.vars[name].record = true;
       sketchRecord.storage[name] = [];
       console.debug('Recording: ' + name);
       // While recording, we can't export
       sketchRecord.export = false;
-    }
+    });
+  }
 
-    if (value == 'play'){
+  let play = urlParams.get('play');
+  if (play){
+    let names = play.split(',');
+    names.forEach(name => {
       sketchRecord.vars[name] = {};
       sketchRecord.vars[name].play = false;
       let storage = localStorage.getItem('sketchRecord_' + name);
@@ -157,6 +160,6 @@ function recordSketchCheckUrl(){
       if (!sketchRecord.vars[name].play){
         console.debug('Missing storage, store data using ?' + name + '=record');
       }
-    }
+    });
   }
 }
