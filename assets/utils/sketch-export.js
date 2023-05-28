@@ -82,66 +82,47 @@ function sketchExportReadParams(){
   let play = urlParams.get('play');
   if (play){
     let names = play.split(',');
-    names.forEach(name => {
-      sExport.vars[name] = {};
-      sExport.vars[name].play = false;
-      let storage = localStorage.getItem('sketchRecord_' + name);
-      if (storage){
-        sExport.storage[name] = JSON.parse(storage);
-        if (sExport.storage[name].length > 0){
-          console.debug('Playing: ' + name);
-          sExport.vars[name].play = true;
-          sExport.playback = true;
+    let storage = localStorage.getItem('sketchRecordStorage');
+    if (storage){
+      storage = JSON.parse(storage);
+      console.debug(storage);
+      names.forEach(name => {
+        sExport.vars[name] = {};
+        sExport.vars[name].play = false;
+        
+        if (storage[name] !== undefined){
+          sExport.storage[name] = storage[name];
+          if (sExport.storage[name].length > 0){
+            console.debug('Playing: ' + name);
+            sExport.vars[name].play = true;
+            sExport.playback = true;
+          }
+        }
+        if (!sExport.vars[name].play){
+          console.debug('Missing storage, store data using ?' + name + '=record');
+        }
+      });
+      if (sExport.playback){
+        if (typeof sExport.onPlaybackStart == 'function'){
+          sExport.onPlaybackStart();
         }
       }
-      if (!sExport.vars[name].play){
-        console.debug('Missing storage, store data using ?' + name + '=record');
-      }
-    });
-    if (sExport.playback){
-      if (typeof sExport.onPlaybackStart == 'function'){
-        sExport.onPlaybackStart();
-      }
     }
+    
   }
 }
 
 // ** RECORDING **
 // --------------------
 
-function sketchRecordStart(){
-  if (sExport.export){
-    console.debug('RecordSketch: recording started');
-    // todo: check if already started?
-    sExport.capturer.start();
-    sExport.frameCountDelay = frameCount;
-  }
-}
-
-function sketchRecordStop(onEnd){
-  let endRec = false;
-  // Export mode
-  if (!sExport.export){
-    // Check all vars to store in local storage
-    let names = Object.keys(sExport.vars);
-    names.forEach(name => {
-      if (sExport.vars[name] !== undefined && sExport.vars[name].record){
-        endRec = true;
-        if (sExport.storage[name] !== undefined){
-          let str = JSON.stringify(sExport.storage[name]);
-          localStorage.setItem('sketchExport_' + name, str);
-          console.debug('Stored ' + name + ': ' + sExport.storage[name].length + ' frames.');
-        } else {
-          console.debug('Stored ' + name + ': missing.');
-        }
-      }
-    });
-  }
-  if (endRec){
+function sketchRecordStop(){
+  if (!sExport.export && sExport.record){
+    console.debug('SketchExport: recording stopped');
     noLoop();
-    console.debug('RecordSketch: recording stopped');
-    if (onEnd !== undefined){
-      onEnd();
+    // Save all data in the storage
+    if (sExport.storage){
+      localStorage.setItem('sketchRecordStorage', JSON.stringify(sExport.storage));
+      console.debug('SketchExport: storage saved');
     }
   }
 }
@@ -190,10 +171,20 @@ function sketchExport(){
   sExport.capturer.capture(canvas);
 }
 
-function sketchExportSave(){
+function sketchExportStart(){
+  if (sExport.export){
+    // todo: check if already started?
+    sExport.capturer.start();
+    sExport.frameCountDelay = frameCount;
+    console.debug('SketchExport: export started');
+  }
+}
+
+function sketchExportEnd(){
   if (!sExport.export){
     return;
   }
   sExport.capturer.save();
   sExport.capturer.stop();
+  console.debug('SketchExport: export ended');
 }

@@ -31,6 +31,7 @@ function setup() {
   background(0);
 }
 
+/*
 function keyPressed() {  
   if (keyCode === 32) {
     if (!music.isLooping()){
@@ -41,14 +42,9 @@ function keyPressed() {
       sketchRecordStop();
     }  
   }
-}
+}*/
 
 function draw() {
-
-  if (frameCount == 1){
-    sketchRecordStart();
-  }
-
   mPos = responsiveMousePos();
   spec = fft.analyze();
 
@@ -67,8 +63,12 @@ function draw() {
   }
 
   sketchExport();
+  if (frameCount == 1){
+    // questo non è necessario?
+    sketchExportStart();
+  }
   if (frameCount == 3 * fps){
     sketchRecordStop();
-    sketchExportSave();
+    sketchExportEnd();
   }
 }
