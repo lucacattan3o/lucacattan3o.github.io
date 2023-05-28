@@ -10,6 +10,8 @@ let sketchRecord = {
   vars: {},
   // storage
   storage: {},
+  // offset in recording
+  frameCountDelay: 0,
 };
 
 recordSketchCheckUrl();
@@ -17,6 +19,7 @@ recordSketchCheckUrl();
 // ** PRE AND POST **
 // ------------------
 
+/*
 function recordSketchPre(){
   if (!sketchRecord.export){
     return;
@@ -26,39 +29,66 @@ function recordSketchPre(){
   }
 }
 
-function recordSketchPost(sec, onEnd){
+function recordSketchPost(sec = false, onEnd = null){
   if (sketchRecord.export){
     recordSketchCapture();
   }
-
-  let endRec = false;
-  if (frameCount == (sketchRecord.fps * sec)){
-    // Export mode
-    if (sketchRecord.export){
-      recordSketchExport();
-      endRec = true;
-    } else {
-      // Check all vars to store in local storage
-      let names = Object.keys(sketchRecord.vars);
-      names.forEach(name => {
-        if (sketchRecord.vars[name] !== undefined && sketchRecord.vars[name].record){
-          endRec = true;
-          if (sketchRecord.storage[name] !== undefined){
-            let str = JSON.stringify(sketchRecord.storage[name]);
-            localStorage.setItem('sketchRecord_' + name, str);
-            console.debug('Stored ' + name + ': ' + sketchRecord.storage[name].length + ' frames.');
-          } else {
-            console.debug('Stored ' + name + ': missing.');
-          }
-        }
-      });
+  
+  if (sec){
+    if ((frameCount + sketchRecord.frameCountDelay) == (sketchRecord.fps * sec)){
+      recordSketchEnd(onEnd); 
     }
-    if (endRec){
-      noLoop();
-      console.debug('Record: end!');
-      if (onEnd !== undefined){
-        onEnd();
+  }
+}*/
+
+function recordSketchFrameCapture(){
+  if (sketchRecord.export){
+    recordSketchCapture();
+  }
+}
+
+// ** START AND STOP **
+// --------------------
+
+function recordSketchStart(onStart){
+  if (sketchRecord.export){
+    console.debug('RecordSketch: recording started');
+    // todo: check if already started?
+    sketchRecord.capturer.start();
+    sketchRecord.frameCountDelay = frameCount;
+  }
+  if (onStart !== undefined){
+    onStart();
+  }
+}
+
+function recordSketchStop(onEnd){
+  let endRec = false;
+  // Export mode
+  if (sketchRecord.export){
+    recordSketchExport();
+    endRec = true;
+  } else {
+    // Check all vars to store in local storage
+    let names = Object.keys(sketchRecord.vars);
+    names.forEach(name => {
+      if (sketchRecord.vars[name] !== undefined && sketchRecord.vars[name].record){
+        endRec = true;
+        if (sketchRecord.storage[name] !== undefined){
+          let str = JSON.stringify(sketchRecord.storage[name]);
+          localStorage.setItem('sketchRecord_' + name, str);
+          console.debug('Stored ' + name + ': ' + sketchRecord.storage[name].length + ' frames.');
+        } else {
+          console.debug('Stored ' + name + ': missing.');
+        }
       }
+    });
+  }
+  if (endRec){
+    noLoop();
+    console.debug('RecordSketch: recording stopped');
+    if (onEnd !== undefined){
+      onEnd();
     }
   }
 }
@@ -96,10 +126,14 @@ function recordSketchCapture(){
   if (!sketchRecord.export){
     return;
   }
+  if (frameCount == 1){
+    sketchRecord.capturer.start();
+  }
   sketchRecord.capturer.capture(canvas);
 }
 
 function recordSketchExport(){
+  console.debug('recordSketchExport');
   if (!sketchRecord.export){
     return;
   }

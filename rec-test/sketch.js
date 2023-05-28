@@ -24,22 +24,19 @@ function setup() {
   background(0);
 }
 
-function keyPressed() {
-  console.debug(keyCode);   
+function keyPressed() {  
   if (keyCode === 32) {
-    if (music.isLooping()){
-      music.stop();
-    } else {
+    if (!music.isLooping()){
       music.loop();
+      recordSketchStart();
+    } else {
+      music.stop();
+      recordSketchStop();
     }  
   }
 }
 
 function draw() {
-  
-
-  recordSketchPre();
-
   mPos = responsiveMousePos();
   spec = fft.analyze();
 
@@ -55,7 +52,5 @@ function draw() {
     circle(mPos.x, mPos.y, 200 * getMusicEnergy(4));
   }
 
-  recordSketchPost(4, () => {
-    music.stop();
-  });
+  recordSketchFrameCapture();
 }
