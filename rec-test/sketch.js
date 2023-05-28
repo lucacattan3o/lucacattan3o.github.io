@@ -21,6 +21,9 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   recordSketchSetFps(fps);
+  sketchRecord.onPlaybackEnd = () => {
+    recordSketchExportSave();
+  };
   background(0);
 }
 
@@ -37,6 +40,11 @@ function keyPressed() {
 }
 
 function draw() {
+
+  if (frameCount == 1){
+    recordSketchStart();
+  }
+
   mPos = responsiveMousePos();
   spec = fft.analyze();
 
@@ -49,8 +57,13 @@ function draw() {
     noFill();
     stroke(255);
     fill(0);
-    circle(mPos.x, mPos.y, 200 * getMusicEnergy(4));
+    let radius = width * 0.1;
+    let bounce = width * 0.05 * getMusicEnergy(4);
+    circle(mPos.x, mPos.y, radius + bounce);
   }
 
-  recordSketchFrameCapture();
+  recordSketchExport();
+  if (frameCount == 3 * fps){
+    recordSketchStop();
+  }
 }

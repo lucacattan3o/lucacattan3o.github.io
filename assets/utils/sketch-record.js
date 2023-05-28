@@ -4,14 +4,19 @@
 let sketchRecord = {
   fps: 30,
   capturer: false,
-  // instead of record
+  // status
   export: false,
+  record: false,
+  playback: false,
+  playbackFinished: false,
   // keys
   vars: {},
   // storage
   storage: {},
   // offset in recording
   frameCountDelay: 0,
+  // events
+  onPlaybackEnd: false,
 };
 
 recordSketchCheckUrl();
@@ -41,12 +46,6 @@ function recordSketchPost(sec = false, onEnd = null){
   }
 }*/
 
-function recordSketchFrameCapture(){
-  if (sketchRecord.export){
-    recordSketchCapture();
-  }
-}
-
 // ** START AND STOP **
 // --------------------
 
@@ -65,10 +64,7 @@ function recordSketchStart(onStart){
 function recordSketchStop(onEnd){
   let endRec = false;
   // Export mode
-  if (sketchRecord.export){
-    recordSketchExport();
-    endRec = true;
-  } else {
+  if (!sketchRecord.export){
     // Check all vars to store in local storage
     let names = Object.keys(sketchRecord.vars);
     names.forEach(name => {
@@ -111,18 +107,24 @@ function recordSketchDataStore(name, data){
 }
 
 function recordSketchDataGet(name, data){
-  if (sketchRecord.vars[name] !== undefined && sketchRecord.vars[name].play){
+  if (sketchRecord.playback && sketchRecord.vars[name] !== undefined){
     if (sketchRecord.storage[name][frameCount] !== undefined){
       return sketchRecord.storage[name][frameCount];
+    } else {
+      sketchRecord.playbackFinished = true;
+      noLoop();
+      if (typeof sketchRecord.onPlaybackEnd == 'function'){
+        sketchRecord.onPlaybackEnd();
+      }
     }
   }
   return data;
 }
 
-// ** UTILS **
-// -----------
+// ** EXPORT **
+// ------------
 
-function recordSketchCapture(){
+function recordSketchExport(){
   if (!sketchRecord.export){
     return;
   }
@@ -132,8 +134,7 @@ function recordSketchCapture(){
   sketchRecord.capturer.capture(canvas);
 }
 
-function recordSketchExport(){
-  console.debug('recordSketchExport');
+function recordSketchExportSave(){
   if (!sketchRecord.export){
     return;
   }
@@ -174,6 +175,7 @@ function recordSketchCheckUrl(){
       console.debug('Recording: ' + name);
       // While recording, we can't export
       sketchRecord.export = false;
+      sketchRecord.record = true;
     });
   }
 
@@ -189,6 +191,7 @@ function recordSketchCheckUrl(){
         if (sketchRecord.storage[name].length > 0){
           console.debug('Playing: ' + name);
           sketchRecord.vars[name].play = true;
+          sketchRecord.playback = true;
         }
       }
       if (!sketchRecord.vars[name].play){
