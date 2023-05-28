@@ -72,7 +72,7 @@ function sketchExportReadParams(){
       sExport.vars[name] = {};
       sExport.vars[name].record = true;
       sExport.storage[name] = [];
-      console.debug('Recording: ' + name);
+      console.debug('SketchExport: recording ' + name);
       // While recording, we can't export
       sExport.export = false;
       sExport.record = true;
@@ -85,7 +85,6 @@ function sketchExportReadParams(){
     let storage = localStorage.getItem('sketchRecordStorage');
     if (storage){
       storage = JSON.parse(storage);
-      console.debug(storage);
       names.forEach(name => {
         sExport.vars[name] = {};
         sExport.vars[name].play = false;
@@ -93,13 +92,13 @@ function sketchExportReadParams(){
         if (storage[name] !== undefined){
           sExport.storage[name] = storage[name];
           if (sExport.storage[name].length > 0){
-            console.debug('Playing: ' + name);
+            console.debug('SketchExport: playing ' + name);
             sExport.vars[name].play = true;
             sExport.playback = true;
           }
         }
         if (!sExport.vars[name].play){
-          console.debug('Missing storage, store data using ?' + name + '=record');
+          console.debug('SketchExport: missing storage; store data using ?' + name + '=record');
         }
       });
       if (sExport.playback){
@@ -114,6 +113,13 @@ function sketchExportReadParams(){
 
 // ** RECORDING **
 // --------------------
+
+function sketchRecordStart(){
+  if (!sExport.export && sExport.record){
+    sExport.frameCountDelay = frameCount;
+    console.debug('SketchExport: recording started');
+  } 
+}
 
 function sketchRecordStop(){
   if (!sExport.export && sExport.record){
@@ -149,7 +155,6 @@ function sketchRecordDataGet(name, data){
     if (sExport.storage[name][frameCount] !== undefined){
       return sExport.storage[name][frameCount];
     } else {
-      noLoop();
       if (typeof sExport.onPlaybackEnd == 'function'){
         sExport.onPlaybackEnd();
       }
@@ -175,7 +180,6 @@ function sketchExportStart(){
   if (sExport.export){
     // todo: check if already started?
     sExport.capturer.start();
-    sExport.frameCountDelay = frameCount;
     console.debug('SketchExport: export started');
   }
 }
@@ -187,4 +191,5 @@ function sketchExportEnd(){
   sExport.capturer.save();
   sExport.capturer.stop();
   console.debug('SketchExport: export ended');
+  noLoop();
 }
