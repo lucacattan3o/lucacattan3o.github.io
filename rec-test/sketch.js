@@ -20,10 +20,14 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
-  sketchRecord.onPlaybackEnd = () => {
-    recordSketchExportSave();
-  };
+
+  sketchExportSetup({
+    fps: fps,
+    onPlaybackEnd: () => {
+      sketchExportSave();
+    }
+  });
+
   background(0);
 }
 
@@ -31,10 +35,10 @@ function keyPressed() {
   if (keyCode === 32) {
     if (!music.isLooping()){
       music.loop();
-      recordSketchStart();
+      sketchRecordStart();
     } else {
       music.stop();
-      recordSketchStop();
+      sketchRecordStop();
     }  
   }
 }
@@ -42,14 +46,14 @@ function keyPressed() {
 function draw() {
 
   if (frameCount == 1){
-    recordSketchStart();
+    sketchRecordStart();
   }
 
   mPos = responsiveMousePos();
   spec = fft.analyze();
 
-  mPos = recordSketchData('mouse', mPos);
-  spec = recordSketchData('spec', spec);
+  mPos = sketchRecordData('mouse', mPos);
+  spec = sketchRecordData('spec', spec);
   
   // drawBars();
 
@@ -62,8 +66,9 @@ function draw() {
     circle(mPos.x, mPos.y, radius + bounce);
   }
 
-  recordSketchExport();
+  sketchExport();
   if (frameCount == 3 * fps){
-    recordSketchStop();
+    sketchRecordStop();
+    sketchExportSave();
   }
 }
