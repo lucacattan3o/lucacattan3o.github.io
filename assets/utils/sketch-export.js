@@ -46,6 +46,13 @@ function sketchExportSetup(options){
       settings[key] = defaultSettings[key];
     }
   }
+  
+  if (settings.onPlaybackStart){
+    sExport.onPlaybackStart = settings.onPlaybackStart;
+  }
+  if (settings.onPlaybackEnd){
+    sExport.onPlaybackEnd = settings.onPlaybackEnd;
+  }
 
   sExport.fps = settings.fps;
   sExport.capturer = new CCapture({
