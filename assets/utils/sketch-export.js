@@ -11,6 +11,7 @@ let sExport = {
   export: false,
   record: false,
   playback: false,
+  playbackEnded: false,
   // keys
   vars: {},
   // storage
@@ -159,10 +160,7 @@ function sketchRecordDataGet(name, data){
     if (sExport.storage[name][frameCount] !== undefined){
       return sExport.storage[name][frameCount];
     } else {
-      // todo: move elsewhere - it's called twice
-      if (typeof sExport.onPlaybackEnd == 'function'){
-        sExport.onPlaybackEnd();
-      }
+      sExport.playbackEnded = true;
     }
   }
   return data;
@@ -175,10 +173,14 @@ function sketchExport(){
   if (!sExport.export){
     return;
   }
-  if (frameCount == 1){
-    sExport.capturer.start();
-  }
+
   sExport.capturer.capture(canvas);
+  
+  if (sExport.playbackEnded){
+    if (typeof sExport.onPlaybackEnd == 'function'){
+      sExport.onPlaybackEnd();
+    }
+  }
 }
 
 function sketchExportStart(){

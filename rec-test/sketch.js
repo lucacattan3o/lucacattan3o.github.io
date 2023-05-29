@@ -59,16 +59,19 @@ function draw() {
     let radius = width * 0.05;
     let bounce1 = width * 0.1 * getMusicEnergy(4);
     let bounce2 = width * 0.1 * getMusicEnergy(8);
+    let w = radius + bounce1;
+    let h = radius + bounce2;
     rectMode(CENTER); 
-    rect(mPos.x, mPos.y, radius + bounce1, radius + bounce2);
+    rect(mPos.x, mPos.y, w, h);
+    rect(width - mPos.x, height - mPos.y, w, h);
   }
 
-  sketchExport();
   if (frameCount == 1){
-    // questo forse non è necessario?
     sketchExportStart();
+    // sketchRecordStart();
   }
-  if (frameCount == 3 * fps){
+  sketchExport();
+  if (frameCount == 6 * fps){
     // sketchRecordStop();
     // sketchExportEnd();
   }
