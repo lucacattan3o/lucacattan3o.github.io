@@ -30,7 +30,9 @@ function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps
+  });
 
   // Standard othographic Camera
   let cam = createCamera();
@@ -96,8 +98,6 @@ function createConnections(){
 }
 
 function draw() {
-  recordSketchPre();
-
   sec = frameCount / fps * speed;
   bounce = (cos(sec * TWO_PI) + 1) * 0.25;
   
@@ -110,7 +110,14 @@ function draw() {
   
   drawItems();
 
-  recordSketchPost(18);
+
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport(18);
+  if (frameCount == 18 * fps){
+    sketchExportEnd();
+  }
 }
 
 function drawItems(){
