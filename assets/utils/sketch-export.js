@@ -6,7 +6,6 @@
 */
 
 let sExport = {
-  fps: 30,
   capturer: false,
   // status
   export: false,
@@ -18,21 +17,19 @@ let sExport = {
   storage: {},
   // offset in recording
   frameCountDelay: 0,
-  // events
-  onPlaybackStart: false,
-  onPlaybackEnd: false,
 };
 
 // ** SETUP **
 // -----------
 
 function sketchExportSetup(options){
-
   // Default settings
   let defaultSettings = {
     format: 'webm',
     verbose: true,
     fps: 30,
+    onPlaybackStart: null,
+    onPlaybackEnd: null,
   };
 
   if (!options) options = {};
@@ -162,6 +159,7 @@ function sketchRecordDataGet(name, data){
     if (sExport.storage[name][frameCount] !== undefined){
       return sExport.storage[name][frameCount];
     } else {
+      // todo: move elsewhere - it's called twice
       if (typeof sExport.onPlaybackEnd == 'function'){
         sExport.onPlaybackEnd();
       }
