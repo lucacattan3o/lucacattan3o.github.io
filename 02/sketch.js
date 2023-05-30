@@ -1,15 +1,16 @@
 let items = 16;
-recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(30);
+  sketchExportSetup({
+    fps: 30,
+  });
   background(0);
 }
 
 function draw() {
-  recordSketchPre();
 
   const gridItemSize = width / items;
   const itemSize = gridItemSize * 0.8;
@@ -46,7 +47,13 @@ function draw() {
     }
   }
 
-  recordSketchPost(8);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * 30){
+    sketchExportEnd();
+  }
 }
 
 function angleOffset(index, tot){

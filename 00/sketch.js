@@ -2,18 +2,17 @@ let items = 10;
 let x = 0;
 let y = 0;
 
-recordSketch(false);
-
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(30);
+  sketchExportSetup({
+    fps: 30
+  })
   background(0);
 }
 
 function draw() {
-  recordSketchPre();
-
   stroke(255);
   let itemSize = width / items;
   strokeWeight(2);
@@ -34,11 +33,14 @@ function draw() {
     y++;
   }
 
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
   if (y >= items){
     noLoop();
-    recordSketchSave();
+    sketchExportEnd();
   }
-  recordSketchCapture();
 }
 
 
