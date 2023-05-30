@@ -1,6 +1,6 @@
 /**
 * A wrapper library for CCapture.js that helps exporting your sketch as a video
-* It can also be used to record some variables over time and play them while exporting
+* It can also be used to record multiple variables over time and play them while exporting
 * @author Luca Cattaneo <luca.cattaneo@mekit.it>
 * @version 1.0.0
 * @license MIT
