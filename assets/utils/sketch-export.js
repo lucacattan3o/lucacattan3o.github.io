@@ -1,28 +1,34 @@
 /**
-* A wrapper library for CCapture.js that help export your sketch as a video
+* A wrapper library for CCapture.js that helps exporting your sketch as a video
+* It can also be used to record some variables over time and play them while exporting
 * @author Luca Cattaneo <luca.cattaneo@mekit.it>
-* @version 1.0.1
+* @version 1.0.0
 * @license MIT
 */
 
+"use strict";
+
 let sExport = {
   capturer: false,
-  // status
   export: false,
   record: false,
   playback: false,
   playbackEnded: false,
-  // keys
   vars: {},
-  // storage
   storage: {},
-  // offset in recording
   frameCountDelay: 0,
 };
 
-// ** SETUP **
-// -----------
-
+/**
+ * Set the configurations for the export
+ * @summary Use this function inside p5.js setup() function 
+ * @param {Object} options - custom options
+ * @param {Bolean} options.format - inherit from CCapture.js
+ * @param {Bolean} options.verbose - inherit from CCapture.js
+ * @param {Number} options.fps - export frame rate
+ * @param {Function} options.onPlaybackStart - a callback fired when the playback has started
+ * @param {Function} options.onPlaybackEnd - a callback fired when the playback has ended
+ */
 function sketchExportSetup(options){
   // Default settings
   let defaultSettings = {
@@ -62,6 +68,17 @@ function sketchExportSetup(options){
   sketchExportReadParams();
 }
 
+/**
+ * Read the url params to start the export or recording
+ * Exporting example
+ * ?export=true
+ * Recording example
+ * ?record=mouse,
+ * Playing
+ * ?play=mouse
+ * Playing + Exporting
+ * ?play=mouse&export=true
+ */
 function sketchExportReadParams(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -116,59 +133,25 @@ function sketchExportReadParams(){
   }
 }
 
-// ** RECORDING **
-// --------------------
-
-function sketchRecordStart(){
-  if (!sExport.export && sExport.record){
-    sExport.frameCountDelay = frameCount;
-    console.debug('SketchExport: recording started');
-  } 
-}
-
-function sketchRecordStop(){
-  if (!sExport.export && sExport.record){
-    console.debug('SketchExport: recording stopped');
-    noLoop();
-    // Save all data in the storage
-    if (sExport.storage){
-      localStorage.setItem('sketchRecordStorage', JSON.stringify(sExport.storage));
-      console.debug('SketchExport: storage saved');
-    }
-  }
-}
-
-// ** STORE DATA **
-// ----------------
-
-function sketchRecordData(name, data){
-  sketchRecordDataStore(name, data);
-  return sketchRecordDataGet(name, data);
-}
-
-function sketchRecordDataStore(name, data){
-  if (sExport.vars[name] !== undefined && !sExport.vars[name].record){
-    return; 
-  }
-  if (sExport.vars[name] !== undefined){
-    sExport.storage[name].push(data);
-  }
-}
-
-function sketchRecordDataGet(name, data){
-  if (sExport.playback && sExport.vars[name] !== undefined){
-    if (sExport.storage[name][frameCount] !== undefined){
-      return sExport.storage[name][frameCount];
-    } else {
-      sExport.playbackEnded = true;
-    }
-  }
-  return data;
-}
-
 // ** EXPORT **
 // ------------
 
+/**
+ * Instantiate the CCapture.js capturer
+ * Use this function inside draw() before sketchExport()
+ */
+function sketchExportStart(){
+  if (!sExport.export){
+    return;
+  }
+  sExport.capturer.start();
+  console.debug('SketchExport: export started');
+}
+
+/**
+ * Capture each frame of the canvas with CCapture.js
+ * Use this function inside draw() after sketchExportStart()
+ */
 function sketchExport(){
   if (!sExport.export){
     return;
@@ -183,14 +166,10 @@ function sketchExport(){
   }
 }
 
-function sketchExportStart(){
-  if (sExport.export){
-    // todo: check if already started?
-    sExport.capturer.start();
-    console.debug('SketchExport: export started');
-  }
-}
-
+/**
+ * Terminate the export with CCapture.js
+ * Use this function inside draw() after sketchExport()
+ */
 function sketchExportEnd(){
   if (!sExport.export){
     return;
@@ -199,4 +178,82 @@ function sketchExportEnd(){
   sExport.capturer.stop();
   console.debug('SketchExport: export ended');
   noLoop();
+}
+
+// ** RECORDING **
+// ---------------
+
+/**
+ * Use this function inside draw() to start your recording at a specific frame
+ * Example
+ * if (frameCount == 1){
+ *   sketchExportStart();
+ * }
+ */
+function sketchRecordStart(){
+  if (!sExport.export && sExport.record){
+    sExport.frameCountDelay = frameCount;
+    console.debug('SketchExport: recording started');
+  } 
+}
+
+/**
+ * Use this function inside draw() to stop your recording at a specific frame
+ * Example
+ * if (frameCount == 6 * fps){
+ *   sketchRecordStop();
+ * }
+ */
+function sketchRecordStop(){
+  if (!sExport.export && sExport.record){
+    console.debug('SketchExport: recording stopped');
+    noLoop();
+    // Save all data in the storage
+    if (sExport.storage){
+      localStorage.setItem('sketchRecordStorage', JSON.stringify(sExport.storage));
+      console.debug('SketchExport: storage saved');
+    }
+  }
+}
+
+/**
+ * Record and get the variable value over time
+ * @param {string} name - machine name to be used in the url; see sketchExportReadParams() 
+ * @param {mixed} data - value to be stored
+ * @returns {mixed} the original value or the playblack value during playing
+ */
+function sketchRecordData(name, data){
+  sketchRecordDataStore(name, data);
+  return sketchRecordDataGet(name, data);
+}
+
+/**
+ * Record the variable value over time
+ * @param {string} name - machine name
+ * @param {mixed} data - value to be stored
+ */
+function sketchRecordDataStore(name, data){
+  if (sExport.vars[name] !== undefined && !sExport.vars[name].record){
+    return; 
+  }
+  if (sExport.vars[name] !== undefined){
+    sExport.storage[name].push(data);
+  }
+}
+
+/**
+ * Get the variable value over time
+ * @param {string} name - machine name
+ * @param {mixed} data - value to be stored
+ * @returns {mixed} the original value or the playblack value during playing
+ */
+function sketchRecordDataGet(name, data){
+  if (sExport.playback && sExport.vars[name] !== undefined){
+    if (sExport.storage[name][frameCount] !== undefined){
+      return sExport.storage[name][frameCount];
+    } else {
+      sExport.playbackEnded = true;
+    }
+  }
+  return data;
 }
