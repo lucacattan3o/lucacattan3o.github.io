@@ -31,7 +31,9 @@ function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);  
+  sketchExportSetup({
+    fps: fps
+  });
   
   itemSize = width / items;
   cubeSize = itemSize * cubeSizeFactor;
@@ -62,11 +64,9 @@ function addCubeLine(line){
 }
 
 function draw() {
-  recordSketchPre();
-  mPos = responsiveMousePos();
 
-  recordSketchMouseRec(mPos);
-  mPos = recordSketchMouseGet(mPos);
+  mPos = responsiveMousePos();
+  mPos = sketchRecordData('mouse', mPos);
 
   orbitControl();
 
@@ -75,7 +75,15 @@ function draw() {
 
   drawBoxes();
 
-  recordSketchPost(12);
+  if (frameCount == 1){
+    sketchRecordStart();
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 12 * fps){
+    sketchRecordStop();
+    sketchExportEnd();
+  }
 }
 
 function drawBoxes(){

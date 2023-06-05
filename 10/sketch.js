@@ -13,7 +13,9 @@ function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps,
+  });
   
   // Standard othographic Camera
   let cam = createCamera();
@@ -30,18 +32,24 @@ function setup() {
 }
 
 function draw() {
-  recordSketchPre();
   let mPos = responsiveMousePos();
 
-  recordSketchMouseRec(mPos);
-  mPos = recordSketchMouseGet(mPos);
+  mPos = sketchRecordData('mouse', mPos);
 
   orbitControl();
   noStroke();  
 
   drawBoxes(mPos);
 
-  recordSketchPost(16);
+  if (frameCount == 1){
+    sketchRecordStart();
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 16 * fps){
+    sketchRecordStop();
+    sketchExportEnd();
+  }
 }
 
 function drawBoxes(mPos){
