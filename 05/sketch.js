@@ -3,16 +3,17 @@ let sec = 0;
 let fps = 30;
 let speed = 0.125;
 
-recordSketch(false);
-
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
+  sketchExportSetup({
+    fps: fps,
+  });
 }
 
 function draw() {
-  recordSketchPre();
+
   let sec = frameCount / fps * speed;
 
   const padding = width * 0.25 / items;
@@ -69,9 +70,13 @@ function draw() {
     }
   }
 
-  // noLoop();
-
-  recordSketchPost(12);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 12 * fps){
+    sketchExportEnd();
+  }
 }
 
 function animateItem(t, tBounce, itemSize){

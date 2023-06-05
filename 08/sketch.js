@@ -4,7 +4,7 @@ let x = 0;
 let y = 0;
 let itemSize = false;
 let fps = 30;
-let speed = 0.125;
+let itemSpeed = 0.125;
 
 let colors = [
   '#000000',
@@ -15,13 +15,13 @@ let colors = [
 
 let itemList = [];
 
-recordSketch(false);
-
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps
+  });
   background(255);
   itemSize = width / items;
 
@@ -37,7 +37,6 @@ function setupItemList(){
 }
 
 function draw() {
-  recordSketchPre();
   rectMode(CENTER);
   strokeCap(ROUND);
 
@@ -49,7 +48,13 @@ function draw() {
     pop();  
   });
 
-  recordSketchPost(8);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * fps){
+    sketchExportEnd();
+  }
 }
 
 

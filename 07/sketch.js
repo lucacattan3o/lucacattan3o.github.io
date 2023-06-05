@@ -12,25 +12,15 @@ let colors = [
   '#ffffff',
 ];
 
-// colors = [
-//   // '#000000',
-//   // '#780000',
-//   '#c1121f',
-//   '#fdf0d5',
-//   '#003049',
-//   '#669bbc',
-//   // '#ffffff'
-// ];
-
 let itemList = [];
-
-recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps,
+  });
   background(255);
   itemSize = width / items;
   setupItemList();
@@ -45,7 +35,6 @@ function setupItemList(){
 }
 
 function draw() {
-  recordSketchPre();
   rectMode(CENTER);
   strokeCap(ROUND);
 
@@ -57,16 +46,19 @@ function draw() {
       drawItem();
     pop();
   } else {
-    // noLoop();
     if (frameCount % (fps * 5) == 0){
       background(255,255,255);
       setupItemList();
     }
-    // recordSketchSave();
   }
 
-  recordSketchPost(15);
-  // recordSketchCapture();
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 15 * fps){
+    sketchExportEnd();
+  }
 }
 
 function drawItem(){

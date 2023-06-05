@@ -18,8 +18,8 @@ class Item {
     noStroke();
 
     this.sec = frameCount / fps;
-    this.time = this.sec * speed;
-    this.timeSlow = this.sec * speed * 0.5;
+    this.time = this.sec * itemSpeed;
+    this.timeSlow = this.sec * itemSpeed * 0.5;
     // Linear 0 - 1
     this.t = (this.time + this.secOffset) % 1;
     this.tSlow = (this.timeSlow + this.secOffset) % 1;

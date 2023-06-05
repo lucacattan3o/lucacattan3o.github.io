@@ -1,16 +1,16 @@
 let items = 32;
-recordSketch(false);
 
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(30);
+  sketchExportSetup({
+    fps: 30,
+  });
   background(0);
 }
 
 function draw() {
-  recordSketchPre();
-
   const padding = width * 0.125 / items;
   const paddingTot = padding * (items + 1);
   const itemSize = (width - paddingTot) / items;
@@ -50,7 +50,13 @@ function draw() {
     }
   }
 
-  recordSketchPost(8);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * 30){
+    sketchExportEnd();
+  }
 }
 
 function angleOffset(index, tot){

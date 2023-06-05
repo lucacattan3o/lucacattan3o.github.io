@@ -12,8 +12,9 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
-
+  sketchExportSetup({
+    fps: fps,
+  });
   img.loadPixels();
   pixels = img.pixels;
 }
@@ -23,7 +24,6 @@ function preload() {
 }
 
 function draw() {
-  recordSketchPre();
 
   background(0);
   noStroke();
@@ -33,8 +33,7 @@ function draw() {
 
   let mPos = responsiveMousePos();
 
-  recordSketchMouseRec(mPos);
-  mPos = recordSketchMouseGet(mPos);
+  mPos = sketchRecordData('mouse', mPos);
 
   let itemsNumber = 1;
   if (mPos.x > 0){
@@ -87,7 +86,15 @@ function draw() {
     circle(mPos.x, mPos.y, 60);
   }
 
-  recordSketchPost(8);
+  if (frameCount == 1){
+    sketchRecordStart();
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * fps){
+    sketchRecordStop();
+    sketchExportEnd();
+  }
 }
 
 
