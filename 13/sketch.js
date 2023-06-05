@@ -11,7 +11,9 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps,
+  })
 
   let detail = 1;
   let amp = 0.2;
@@ -24,7 +26,6 @@ function setup() {
 }
 
 function draw() {
-  recordSketchPre();
   
   translate(width * 0.5, height * 0.5);
   strokeWeight(1);
@@ -54,8 +55,12 @@ function draw() {
   }
   endShape(CLOSE);
 
-  recordSketchPost(8);
-  if (frameCount >= (8 * fps)) {
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * fps){
+    sketchExportEnd();
     noLoop();
   }
 }

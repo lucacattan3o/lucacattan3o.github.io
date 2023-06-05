@@ -20,15 +20,15 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps
+  });
 
   capture = createCapture(VIDEO);
   capture.hide();
 }
 
 function draw() {
-  recordSketchPre();
-
   sketchMargin = width * margin;
   sketchWidth = width - sketchMargin;
 
@@ -81,7 +81,13 @@ function draw() {
 
   // zOffset += 0.005;
 
-  recordSketchPost(8);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 8 * fps){
+    sketchExportEnd();
+  }
 }
 
 function mouseClicked() {

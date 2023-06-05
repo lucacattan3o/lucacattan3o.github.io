@@ -34,7 +34,9 @@ function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps,
+  });
 
   gridItemSize = width / gridItemsCount;
 
@@ -44,7 +46,6 @@ function setup() {
 }
 
 function draw() {
-  recordSketchPre();
 
   // drawDebug();
   // zOff += 0.005;
@@ -56,7 +57,13 @@ function draw() {
     addParticles(20);
   }
   
-  recordSketchPost(20);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 20 * fps){
+    sketchExportEnd();
+  }
 }
 
 function addParticles(count){

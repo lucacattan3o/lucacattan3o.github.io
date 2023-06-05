@@ -37,7 +37,9 @@ function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps
+  });
   
   cam = createCamera();
   cam.setPosition(0, -width, 1);
@@ -55,11 +57,7 @@ function setup() {
 }
 
 function draw() {
-  recordSketchPre();
   mPos = responsiveMousePos();
-
-  recordSketchMouseRec(mPos);
-  mPos = recordSketchMouseGet(mPos);
 
   orbitControl();
   // noStroke();  
@@ -74,7 +72,13 @@ function draw() {
   // keysLogic();
   // mouseLogic();
 
-  recordSketchPost(16);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 16 * fps){
+    sketchExportEnd();
+  }
 }
 
 function drawBoxes(){

@@ -16,14 +16,15 @@ function setup() {
   myCanvas = createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
-  recordSketchSetFps(fps);
+  sketchExportSetup({
+    fps: fps,
+  });
 
   matterSetup();
   monoSynth = new p5.MonoSynth();
 }
 
 function draw() {
-  recordSketchPre();
   background(0);
 
   let cFrameCount = 1;
@@ -53,7 +54,13 @@ function draw() {
     circle.draw();
   });
 
-  recordSketchPost(20);
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 20 * fps){
+    sketchExportEnd();
+  }
 }
 
 function createNewCircle(){
