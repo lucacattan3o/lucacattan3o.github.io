@@ -1,62 +1,24 @@
 class Item{
-  constructor(x, y, z, freq){
-    this.pos = createVector(x, y, z);
-    this.vel = createVector(0, 0, 0);
-    this.acc = createVector(0, 0, 0);
-
+  constructor(z, height, radius, freq){
+    this.pos = createVector(0, 0, z);
+    this.radius = radius;
+    this.height = height;
     this.freq = floor(Math.abs(freq));
-
     let c = floor(map(this.freq - 1, 0, 15, 0, colors.length, true));
     this.color = colors[c];
-
-    this.size = width * 0.1;
   }
 
   update(){
-    // this.attractToCenter();
-
-    // https://p5js.org/examples/simulate-forces.html
-    // Velocity changes according to acceleration
-    // this.vel.add(this.acc);
-    // position changes by velocity
-    // this.pos.add(this.vel);
-    // We must clear acceleration each frame
-    // this.acc.mult(0);
     // this.pos.x = this.pos.x + 2 * getMusicEnergy(this.freq);
-  }
-
-  attractToCenter(){
-    let tmpPos = this.pos.copy();
-    let dir = tmpPos.sub(worldCenter);
-    dir.setMag(-0.1);
-
-    if (this.unique == 915){
-      // console.debug(this.unique);
-      //console.debug(dir);
-      // noLoop();
-    }
-    this.applyForce(dir);
-  }
-
-  isEnd(){
-    let tmpPos = this.pos.copy();
-    let dist = tmpPos.sub(worldCenter);
-    if (dist.mag() < 100){
-      return true;
-    }
-    return false;
-  }
-
-  applyForce(force){
-    this.acc.add(force);
-  }
+    // this.radius = map(mPos.x, 0, width, 0, this.radius, true);
+  } 
 
   draw(){
     push();
       translate(this.pos.x, this.pos.z, this.pos.y);
       noStroke();
       ambientMaterial(this.color);
-      sphere(this.size * getMusicEnergy(this.freq), 10, 10);
+      cylinder(this.radius + (this.radius * 0.5) * getMusicEnergy(this.freq), this.height, 64, 10);
     pop();
   }
 }

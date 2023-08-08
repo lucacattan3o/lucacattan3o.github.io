@@ -27,6 +27,19 @@ let colors = [
   '#ffffff',
 ];
 
+colors = [
+  "#2d00f7",
+  "#6a00f4",
+  "#8900f2",
+  "#a100f2",
+  "#b100e8",
+  "#bc00dd",
+  "#d100d1",
+  "#db00b6",
+  "#e500a4",
+  "#f20089"
+];
+
 let music;
 let amp, fft, spec;
 let smooth = 0.7;
@@ -65,25 +78,15 @@ function setup() {
 
 function createItems(){
 
-  let radius = width * 0.5;
+  let radius = width * 0.4;
   let vh = radius / nCircles;
 
-  for (let i = 0; i < nItems; i++) {
-    for (let j = 0; j <= nCircles; j++) {
-      let dist = Math.abs(map(j, 0, nCircles, -1, 1));
-      let slice = TWO_PI / nItems;
-      // Traslate to the center of the box
-      let x = radius * cos(i * slice);
-      let y = radius * sin(i * slice);
-      let z = (- radius * 0.5) + j * vh;
-
-      let freq = map(j, 0, nCircles, -15, 15, true);
-      
-      // radius = radius;
-      // console.debug(freq);
-      let item = new Item(x, y, z, freq);
-      items.push(item);
-    }
+  for (let i = 0; i <= nCircles; i++) {
+    let z = (- radius) + i * vh * 2;
+    let freq = map(i, 0, nCircles, -15, 15, true);
+    rad = radius * sin(PI * i / nCircles);
+    let item = new Item(z, vh * 0.7, rad, freq);
+    items.push(item);
   }
 }
 
@@ -115,7 +118,9 @@ function draw() {
 function drawItems(){
   background(0);
 
-  rotateY(sec * TWO_PI * 0.125);
+  rotateY(sec * TWO_PI * 0.5);
+  rotateX(sec * TWO_PI * 0.5);
+  // rotateZ(sec * TWO_PI * 0.25);
 
   push();
 
