@@ -27,6 +27,20 @@ let colors = [
   '#ffffff',
 ];
 
+let music;
+let amp, fft, spec;
+let smooth = 0.7;
+
+function preload(){
+  music = loadSound('fm-belfast.mp3', function(){
+    amp = new p5.Amplitude();
+    amp.setInput(music);
+    
+    fft = new p5.FFT(smooth, 16);
+    fft.setInput(music);
+  });
+}
+
 function setup() {
   createCanvas(1080, 1080, WEBGL);
   responsiveSketch();
@@ -44,7 +58,6 @@ function setup() {
     - width * 0.9);
   cam.lookAt(0, 0, 0);
 
-  itemSize = width * 0.4;
   worldCenter = createVector(width * 0.5, width * 0.5, width * 0.5);
   
   createItems();
@@ -53,53 +66,31 @@ function setup() {
 function createItems(){
 
   let radius = width * 0.5;
-  let unique = 0;
   let vh = radius / nCircles;
 
   for (let i = 0; i < nItems; i++) {
-    for (let j = 0; j < nCircles; j++) {
+    for (let j = 0; j <= nCircles; j++) {
+      let dist = Math.abs(map(j, 0, nCircles, -1, 1));
       let slice = TWO_PI / nItems;
       // Traslate to the center of the box
       let x = radius * cos(i * slice);
       let y = radius * sin(i * slice);
       let z = (- radius * 0.5) + j * vh;
 
-      let item = new Item(x, y, z, unique);
-      unique++;
+      let freq = map(j, 0, nCircles, -15, 15, true);
+      
+      // radius = radius;
+      // console.debug(freq);
+      let item = new Item(x, y, z, freq);
       items.push(item);
     }
   }
-  // connections = [];
-  // createConnections();
-}
-
-function createConnections(){
-  connections = [];
-
-  items.forEach(item => {
-    let neigs = items.filter((other) => {
-      if (other !== item){
-        let distance = item.pos.dist(other.pos);
-        if (distance > 0 && distance < itemSize * 1.1){
-          return true;
-        }
-        return false;
-      }
-    });
-
-    neigs.forEach(n => {
-      let string = item.unique + '-' + n.unique;
-      if (item.unique > n.unique){
-        string = n.unique + '-' + item.unique;
-      }
-      connections[string] = string;
-    });
-  })
-
-  connections = Object.values(connections);
 }
 
 function draw() {
+
+  spec = fft.analyze();
+
   sec = frameCount / fps * speed;
   bounce = (cos(sec * TWO_PI) + 1) * 0.25;
   
@@ -127,7 +118,6 @@ function drawItems(){
   rotateY(sec * TWO_PI * 0.125);
 
   push();
-    // translate(- width * 0.5, - width * 0.5, - width * 0.5);
 
     ambientMaterial('#fff');
     // sphere(400, 10, 10);
@@ -138,29 +128,17 @@ function drawItems(){
       item.update();
       item.draw();
     }
-
-    // push();
-    //   translate(worldCenter.x, worldCenter.y, worldCenter.z);
-    //   // sphere(200, 10, 10);
-    // pop();
-
-    // drawConnections();
-
   pop();
 }
 
-function drawConnections(){
-  connections.forEach(con => {
-    let vertex = con.split('-');
-    let a = vertex[0];
-    let b = vertex[1];
-    let pointA = items[a];
-    let pointB = items[b];
-    stroke(color(255, 100));
-    strokeWeight(0.5);
-    line(
-      pointA.pos.x, pointA.pos.y, pointA.pos.z,
-      pointB.pos.x, pointB.pos.y, pointB.pos.z,
-    );
-  });
+function keyPressed() {  
+  if (keyCode === 32) {
+    if (!music.isLooping()){
+      music.loop();
+      sketchRecordStart();
+    } else {
+      music.stop();
+      sketchRecordStop();
+    }  
+  }
 }

@@ -1,15 +1,15 @@
 class Item{
-  constructor(x, y, z, unique){
+  constructor(x, y, z, freq){
     this.pos = createVector(x, y, z);
     this.vel = createVector(0, 0, 0);
     this.acc = createVector(0, 0, 0);
 
-    this.unique = unique;
+    this.freq = floor(Math.abs(freq));
 
-    let c = floor(random(0, colors.length));
+    let c = floor(map(this.freq - 1, 0, 15, 0, colors.length, true));
     this.color = colors[c];
 
-    this.neighbors = [];
+    this.size = width * 0.1;
   }
 
   update(){
@@ -17,11 +17,12 @@ class Item{
 
     // https://p5js.org/examples/simulate-forces.html
     // Velocity changes according to acceleration
-    this.vel.add(this.acc);
+    // this.vel.add(this.acc);
     // position changes by velocity
-    this.pos.add(this.vel);
+    // this.pos.add(this.vel);
     // We must clear acceleration each frame
-    this.acc.mult(0);
+    // this.acc.mult(0);
+    // this.pos.x = this.pos.x + 2 * getMusicEnergy(this.freq);
   }
 
   attractToCenter(){
@@ -55,7 +56,7 @@ class Item{
       translate(this.pos.x, this.pos.z, this.pos.y);
       noStroke();
       ambientMaterial(this.color);
-      sphere(itemSize * 0.05, 10, 10);
+      sphere(this.size * getMusicEnergy(this.freq), 10, 10);
     pop();
   }
 }
