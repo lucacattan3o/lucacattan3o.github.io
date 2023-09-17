@@ -37,8 +37,14 @@ function createItems(){
   let unique = 0;
   for (let i = 0; i < nItems; i++) {
     for (let j = 0; j < nItems; j++) {
-      let x = i * itemSize + itemSize * 0.5;
-      let y = j * itemSize + itemSize * 0.5;
+      let x; 
+      let y; 
+
+      x = i * itemSize + itemSize * 0.5;
+      y = j * itemSize + itemSize * 0.5;
+
+      x = random(width);
+      y = random(height);
 
       let item = new Item(x, y);
       unique++;
