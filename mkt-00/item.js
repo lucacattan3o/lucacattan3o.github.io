@@ -32,7 +32,7 @@ class Item{
     
     // test sulla velocità che si riduce sempre
     if (mouseIsPressed){
-      this.vel.setMag(8);
+      this.vel.setMag(4);
     } else {
       if (this.vel.mag() > 3){
         this.vel.setMag(this.vel.mag() * 0.99);
