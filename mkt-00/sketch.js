@@ -1,5 +1,5 @@
-let fps = 30;
-let nItems = 8;
+let fps = 60;
+let nItems = 10;
 
 let items = [];
 
@@ -20,6 +20,8 @@ let colors = [
   '#4cc9f0',
   '#ffffff',
 ];
+
+colors = ["#ffbe0b","#fb5607","#ff006e","#8338ec","#3a86ff"];
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -58,7 +60,7 @@ function draw() {
   // sec = frameCount / fps * speed;
   // bounce = (cos(sec * TWO_PI) + 1) * 0.25;
 
-  background(0);
+  background(255);
 
   drawItems();
 
