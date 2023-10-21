@@ -27,22 +27,68 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
-    fps: fps
+    fps: fps,
+    name: 'video'
   });
   background(0);
 }
 
 function draw() {
+  blendMode(BLEND);
+  background(0);
+
+  // blendMode(BLEND);
+  // drawGrid(items, 0.25, -0.5, gridOne);
+
+  // blendMode(MULTIPLY);
+  blendMode(BLEND);
+  drawGrid(items, 0.25, -1, gridOne);
+
+  // blendMode(MULTIPLY);
+  blendMode(DIFFERENCE);
+  drawGrid(items, 0.5, -2, gridTwo);
+
+  // blendMode(EXCLUSION);
+  // drawGrid(items / 2, 0.25, -0.5, gridTwo);
+
+  // noLoop();
+
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 2 * fps){
+    sketchExportEnd();
+  }
+}
+
+function gridBlack(itemSize){
+  fill(255);
+  noStroke();
+  rect(0, 0, itemSize);
+}
+
+function gridOne(itemSize){
+  fill(colors[2]);
+  noStroke();
+  rect(0, 0, itemSize);
+}
+
+function gridTwo(itemSize){
+  noStroke();
+  fill(255);
+  // noFill();
+  // stroke(colors[0]);
+  // strokeWeight(itemSize * 0.05);
+  circle(0, 0, itemSize * 2);
+}
+
+function drawGrid(items, speed, offMultiply, drawCallback){
   const padding = width * 0.125 / items;
   const paddingTot = padding * (items + 1);
   const itemSize = (width - paddingTot) / items;
 
-  blendMode(BLEND);
-  noStroke();
-  background(colors[0]);
-  fill(colors[0]);
   rectMode(CENTER);
-
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
       let x = (itemSize + padding) * i + padding;
@@ -61,46 +107,16 @@ function draw() {
       // Map it to the number of items
       let offset = map(d, 0, width, 0, 1);
       // Bounce with offset
-      let bounce = getLoopBounce(0.25, offset * 1);
+      let bounce = getLoopBounce(speed, offset * offMultiply);
   
       push();
         translate(x, y);
         scale(bounce);
-        // rect(0, 0, itemSize, itemSize);
-      pop();
-
-      let bounce2 = getLoopBounce(0.25, offset * 2);
-      push();
-        noFill();  
-        blendMode(DIFFERENCE);
-        fill(colors[2]);
-        fill(255);
-        // noFill();
-        // strokeWeight(2);
-        // stroke(255);
-        translate(x, y);
-        scale(bounce2);
-        // rect(0, 0, itemSize * 2);
-        circle(0, 0, itemSize * 2);
+        drawCallback(itemSize);
       pop();
     }
   }
-
-  // noLoop();
-
-  // blendMode(DIFFERENCE);
-  // translate(width * 0.5, height * 0.5);
-  // fill(colors[6]);
-  // let size = width * 0.5 * getLoopBounce(0.125);
-  // rectMode(CORNERS);
-  // rect(0, 0, size);
-
-  if (frameCount == 1){
-    sketchExportStart();
-  }
-  sketchExport();
-  if (frameCount == 2 * fps){
-    sketchExportEnd();
-  }
 }
+
+
 
