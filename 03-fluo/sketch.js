@@ -27,6 +27,7 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
+    // format: 'gif',
     fps: fps,
   });
   background(0);
@@ -68,6 +69,18 @@ function draw() {
         scale(bounce);
         rect(0, 0, itemSize, itemSize);
       pop();
+
+      let bounce2 = getLoopBounce(0.25, offset * 1);
+      push();
+        noFill();  
+        blendMode(DIFFERENCE);
+        fill('#fff');
+        strokeWeight(2);
+        translate(x, y);
+        scale(bounce2);
+        // rect(0, 0, itemSize * 4);
+        circle(0, 0, itemSize * 4);
+      pop();
     }
   }
 
@@ -82,7 +95,7 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 8 * fps){
+  if (frameCount == 2 * fps){
     sketchExportEnd();
   }
 }
