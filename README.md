@@ -31,3 +31,11 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 - [ ] Planets with [mutual attraction](https://www.youtube.com/watch?v=GjbKsOkN1Oc)
 - [ ] Typography with [glifi](https://www.domestika.org/it/courses/2729-coding-creativo-realizza-visual-con-javascript/units/9672-tipo-di-schizzo#course_lesson_28444)
 - [ ] Animating with microphone or audio sound
+
+## Note
+
+- [ ] Pass file name to sketch export
+
+`ffmpeg -i video.webm video.mp4`
+
+`ffmpeg -i video.mp4 -vf fps=30 out%d.png`

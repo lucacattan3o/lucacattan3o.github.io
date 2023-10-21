@@ -27,8 +27,7 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
-    // format: 'gif',
-    fps: fps,
+    fps: fps
   });
   background(0);
 }
@@ -40,7 +39,7 @@ function draw() {
 
   blendMode(BLEND);
   noStroke();
-  background(colors[2]);
+  background(colors[0]);
   fill(colors[0]);
   rectMode(CENTER);
 
@@ -67,22 +66,27 @@ function draw() {
       push();
         translate(x, y);
         scale(bounce);
-        rect(0, 0, itemSize, itemSize);
+        // rect(0, 0, itemSize, itemSize);
       pop();
 
-      let bounce2 = getLoopBounce(0.25, offset * 1);
+      let bounce2 = getLoopBounce(0.25, offset * 2);
       push();
         noFill();  
         blendMode(DIFFERENCE);
-        fill('#fff');
-        strokeWeight(2);
+        fill(colors[2]);
+        fill(255);
+        // noFill();
+        // strokeWeight(2);
+        // stroke(255);
         translate(x, y);
         scale(bounce2);
-        // rect(0, 0, itemSize * 4);
-        circle(0, 0, itemSize * 4);
+        // rect(0, 0, itemSize * 2);
+        circle(0, 0, itemSize * 2);
       pop();
     }
   }
+
+  // noLoop();
 
   // blendMode(DIFFERENCE);
   // translate(width * 0.5, height * 0.5);

@@ -37,6 +37,7 @@ function sketchExportSetup(options){
     fps: 30,
     onPlaybackStart: null,
     onPlaybackEnd: null,
+    name: null,
   };
 
   if (!options) options = {};
@@ -50,6 +51,8 @@ function sketchExportSetup(options){
       settings[key] = defaultSettings[key];
     }
   }
+
+  console.debug(settings);
   
   if (settings.onPlaybackStart){
     sExport.onPlaybackStart = settings.onPlaybackStart;
@@ -63,6 +66,7 @@ function sketchExportSetup(options){
     format: settings.format,
     framerate: settings.fps,
     verbose: settings.verbose,
+    name: settings.name,
   })
 
   sketchExportReadParams();
