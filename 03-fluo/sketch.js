@@ -46,7 +46,7 @@ function draw() {
 
   // blendMode(MULTIPLY);
   blendMode(DIFFERENCE);
-  drawGrid(items, 0.5, -2, gridTwo);
+  drawGrid(items, 0.25, -4, gridTwo);
 
   // blendMode(EXCLUSION);
   // drawGrid(items / 2, 0.25, -0.5, gridTwo);
@@ -69,14 +69,14 @@ function gridBlack(itemSize){
 }
 
 function gridOne(itemSize){
-  fill(colors[2]);
+  fill(colors[0]);
   noStroke();
   rect(0, 0, itemSize);
 }
 
 function gridTwo(itemSize){
   noStroke();
-  fill(255);
+  fill(colors[0]);
   // noFill();
   // stroke(colors[0]);
   // strokeWeight(itemSize * 0.05);
