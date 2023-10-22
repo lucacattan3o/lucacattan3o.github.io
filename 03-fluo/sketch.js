@@ -1,4 +1,4 @@
-let items = 32;
+let items;
 let fps = 16;
 
 let colors = [
@@ -36,15 +36,19 @@ function setup() {
 function draw() {
   blendMode(BLEND);
   background(0);
-  // background(colors[0]);
+  // background(colors[2]);
 
   // blendMode(BLEND);
   // drawGrid(items, 0.25, -0.5, gridOne);
 
+  items = 16;
   // blendMode(MULTIPLY);
   blendMode(BLEND);
   // blendMode(DIFFERENCE);
-  drawGrid(items, 0.25, -4, gridOne);
+  drawGrid(items, 0.25, -2, gridOne);
+
+  items = 32;
+  drawGrid(items, 0.25, -2, gridTwo);
 
   // blendMode(MULTIPLY);
   // blendMode(DIFFERENCE);
@@ -71,24 +75,28 @@ function gridBlack(itemSize){
 }
 
 function gridOne(itemSize, bounce){
-  
-  // noStroke();
-  noFill();
-  stroke(colors[0]);
-  strokeWeight(itemSize * 0.05);
-  rect(0, 0, itemSize);
-  scale(bounce);
-  fill(colors[2]);
-  rect(0, 0, itemSize);
+  push();
+    scale(bounce);
+    noStroke();
+    fill(colors[0]);
+    rect(0, 0, itemSize);
+  pop();
+
+  // noFill();
+  // stroke(colors[8]);
+  // // scale(1 - bounce);
+  // strokeWeight(itemSize * 0.05);
+  // rect(0, 0, itemSize * (1 - bounce));
 }
 
-function gridTwo(itemSize){
-  noStroke();
-  fill(colors[0]);
-  // noFill();
-  // stroke(colors[0]);
-  // strokeWeight(itemSize * 0.05);
-  circle(0, 0, itemSize * 2);
+function gridTwo(itemSize, bounce){
+  push();
+    noFill();  
+    stroke(colors[2]);
+    // stroke(255)
+    strokeWeight(itemSize * 0.05);
+    rect(0, 0, itemSize * 2 * bounce);
+  pop();
 }
 
 function drawGrid(items, speed, offMultiply, drawCallback){
