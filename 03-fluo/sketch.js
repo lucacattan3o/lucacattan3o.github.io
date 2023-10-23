@@ -22,6 +22,12 @@ let colors = [
   [29,  199, 242],
 ];
 
+let bgColorStart = colors[2];
+let bgColorEnd   = colors[14];
+
+let itemColorStart = colors[0];
+let itemColorEnd   = colors[8];
+
 function setup() {
   createCanvas(1080, 1080);
   responsiveSketch();
@@ -34,34 +40,12 @@ function setup() {
 }
 
 function draw() {
-  // blendMode(BLEND);
-  //background(colors[2]);
-
+  // Animated background
   let bc = getColorBounce();
-  let c = lerpColor(color(colors[2]), color(colors[14]), bc);
+  let c = lerpColor(color(bgColorStart), color(bgColorEnd), bc);
   background(c);
-  // background(colors[2]);
-
-  // blendMode(BLEND);
-  // drawGrid(items, 0.25, -0.5, gridOne);
-
-  // blendMode(MULTIPLY);
-  // blendMode(BLEND);
-  // blendMode(DIFFERENCE);
   
-  drawGrid(items, 0.5, -1, gridDouble);
-
-  // items = 32;
-  // drawGrid(items, 0.25, -2, gridTwo);
-
-  // blendMode(MULTIPLY);
-  // blendMode(DIFFERENCE);
-  // drawGrid(items, 0.25, -4, gridTwo);
-
-  // blendMode(EXCLUSION);
-  // drawGrid(items / 2, 0.25, -0.5, gridTwo);
-
-  // noLoop();
+  drawGrid();
 
   if (frameCount == 1){
     sketchExportStart();
@@ -73,8 +57,56 @@ function draw() {
 }
 
 function getColorBounce(){
-  return (getLoopBounce(0.25, 0) + 1) * 0.5;
+  let b = getLoopBounce(0.25, 0);
+  return (b + 1) * 0.5;
 }
+
+function drawGrid(){
+  const padding = width * 0.125 / items;
+  const paddingTot = padding * (items + 1);
+  const itemSize = (width - paddingTot) / items;
+
+  rectMode(CENTER);
+  for (let i = 0; i < items; i++) {
+    for (let j = 0; j < items; j++) {
+      let x = (itemSize + padding) * i + padding;
+      let y = (itemSize + padding) * j + padding;
+      
+      // Go to the center of the item
+      x = x + itemSize * 0.5;
+      y = y + itemSize * 0.5;
+
+      // Calculate di angle / multiple of framerate
+      let angle = frameCount / 30 * 1;
+
+      // Add some angle offset based on the position
+      // Calculate the distance with the center of the sketch
+      let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
+      // Map it to the number of items
+      let offset = map(d, 0, width, 0, 1);
+      
+      // Bounce with offset
+      let bounce = getLoopBounce(0.5, offset * -1);
+      // Mapped to 0 - 1
+      let b = (bounce + 1) * 0.5;
+  
+      // Color transition
+      let bc = getColorBounce();
+      let c = lerpColor(color(itemColorStart), color(itemColorEnd), bc);
+
+      push();
+        translate(x, y);
+        fill(c);
+        noStroke();
+        rectMode(CENTER); 
+        rect(0, 0, itemSize * b);
+      pop();
+    }
+  }
+}
+
+// ** OLD **
+// ---------
 
 function gridBlack(itemSize){
   fill(255);
@@ -106,68 +138,5 @@ function gridTwo(itemSize, bounce){
     rect(0, 0, itemSize * 2 * bounce);
   pop();
 }
-
-function gridDouble(itemSize, bounce){
-
-  let b = (bounce + 1) * 0.5;
-  
-  push();
-    rectMode(CORNERS);
-    translate(-itemSize * 0.5, -itemSize * 0.5);
-
-    // Quadratino di sfondo
-    // 
-    // fill(colors[2]);
-    // rect(0, 0, itemSize);
-    
-    // di lato
-    let bc = getColorBounce();
-    let c = lerpColor(color(colors[0]), color(colors[8]), bc);
-    fill(c);
-    noStroke();
-    // rect(0, 0, itemSize * b, itemSize);
-
-    // simmetrico
-    translate(itemSize * 0.5, itemSize * 0.5);
-    rectMode(CENTER); 
-    // rotate(b);
-    rect(0, 0, itemSize * b);
-  pop();
-}
-
-function drawGrid(items, speed, offMultiply, drawCallback){
-  const padding = width * 0.125 / items;
-  const paddingTot = padding * (items + 1);
-  const itemSize = (width - paddingTot) / items;
-
-  rectMode(CENTER);
-  for (let i = 0; i < items; i++) {
-    for (let j = 0; j < items; j++) {
-      let x = (itemSize + padding) * i + padding;
-      let y = (itemSize + padding) * j + padding;
-      
-      // Go to the center of the item
-      x = x + itemSize * 0.5;
-      y = y + itemSize * 0.5;
-
-      // Calculate di angle / multiple of framerate
-      let angle = frameCount / 30 * 1;
-
-      // Add some angle offset based on the position
-      // Calculate the distance with the center of the sketch
-      let d = Math.abs(dist(x, y, width * 0.5, height * 0.5));
-      // Map it to the number of items
-      let offset = map(d, 0, width, 0, 1);
-      // Bounce with offset
-      let bounce = getLoopBounce(speed, offset * offMultiply);
-  
-      push();
-        translate(x, y);
-        drawCallback(itemSize, bounce);
-      pop();
-    }
-  }
-}
-
 
 
