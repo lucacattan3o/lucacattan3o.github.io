@@ -1,4 +1,4 @@
-let items = 31;
+let items = 17;
 let fps = 8;
 
 let colors = [
@@ -22,14 +22,14 @@ let colors = [
   [29,  199, 242],
 ];
 
-let bgColorStart = colors[2];
-let bgColorEnd   = colors[14];
+let bgColorStart   = colors[2];
+let bgColorEnd     = colors[14];
 
 let itemColorStart = colors[0];
 let itemColorEnd   = colors[8];
 
 function setup() {
-  createCanvas(1080, 1080);
+  createCanvas(1080 * 2, 1080 * 2);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
