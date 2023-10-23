@@ -29,7 +29,7 @@ let itemColorStart = colors[0];
 let itemColorEnd   = colors[8];
 
 function setup() {
-  createCanvas(1080 * 2, 1080 * 2);
+  createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({

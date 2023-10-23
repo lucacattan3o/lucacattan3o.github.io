@@ -51,8 +51,6 @@ function sketchExportSetup(options){
       settings[key] = defaultSettings[key];
     }
   }
-
-  console.debug(settings);
   
   if (settings.onPlaybackStart){
     sExport.onPlaybackStart = settings.onPlaybackStart;
