@@ -1,4 +1,4 @@
-let items;
+let items = 64;
 let fps = 16;
 
 let colors = [
@@ -35,20 +35,19 @@ function setup() {
 
 function draw() {
   blendMode(BLEND);
-  background(0);
+  background(colors[2]);
   // background(colors[2]);
 
   // blendMode(BLEND);
   // drawGrid(items, 0.25, -0.5, gridOne);
 
-  items = 16;
   // blendMode(MULTIPLY);
   blendMode(BLEND);
   // blendMode(DIFFERENCE);
-  drawGrid(items, 0.25, -2, gridOne);
+  drawGrid(items, 0.5, -1, gridDouble);
 
-  items = 32;
-  drawGrid(items, 0.25, -2, gridTwo);
+  // items = 32;
+  // drawGrid(items, 0.25, -2, gridTwo);
 
   // blendMode(MULTIPLY);
   // blendMode(DIFFERENCE);
@@ -96,6 +95,31 @@ function gridTwo(itemSize, bounce){
     // stroke(255)
     strokeWeight(itemSize * 0.05);
     rect(0, 0, itemSize * 2 * bounce);
+  pop();
+}
+
+function gridDouble(itemSize, bounce){
+
+  let b = (bounce + 1) * 0.5;
+  
+  push();
+    rectMode(CORNERS);
+    translate(-itemSize * 0.5, -itemSize * 0.5);
+
+    // Quadratino di sfondo
+    noStroke();
+    fill(colors[2]);
+    rect(0, 0, itemSize);
+    
+    // di lato
+    fill(colors[0]); 
+    // rect(0, 0, itemSize * b, itemSize);
+
+    // simmetrico
+    translate(itemSize * 0.5, itemSize * 0.5);
+    rectMode(CENTER); 
+    // rotate(b);
+    rect(0, 0, itemSize * b);
   pop();
 }
 
