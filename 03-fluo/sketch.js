@@ -1,5 +1,5 @@
-let items = 64;
-let fps = 16;
+let items = 31;
+let fps = 8;
 
 let colors = [
   [245, 255, 78 ],
@@ -34,16 +34,21 @@ function setup() {
 }
 
 function draw() {
-  blendMode(BLEND);
-  background(colors[2]);
+  // blendMode(BLEND);
+  //background(colors[2]);
+
+  let bc = getColorBounce();
+  let c = lerpColor(color(colors[2]), color(colors[14]), bc);
+  background(c);
   // background(colors[2]);
 
   // blendMode(BLEND);
   // drawGrid(items, 0.25, -0.5, gridOne);
 
   // blendMode(MULTIPLY);
-  blendMode(BLEND);
+  // blendMode(BLEND);
   // blendMode(DIFFERENCE);
+  
   drawGrid(items, 0.5, -1, gridDouble);
 
   // items = 32;
@@ -62,9 +67,13 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 2 * fps){
+  if (frameCount == 4 * fps){
     sketchExportEnd();
   }
+}
+
+function getColorBounce(){
+  return (getLoopBounce(0.25, 0) + 1) * 0.5;
 }
 
 function gridBlack(itemSize){
@@ -107,12 +116,15 @@ function gridDouble(itemSize, bounce){
     translate(-itemSize * 0.5, -itemSize * 0.5);
 
     // Quadratino di sfondo
-    noStroke();
-    fill(colors[2]);
-    rect(0, 0, itemSize);
+    // 
+    // fill(colors[2]);
+    // rect(0, 0, itemSize);
     
     // di lato
-    fill(colors[0]); 
+    let bc = getColorBounce();
+    let c = lerpColor(color(colors[0]), color(colors[8]), bc);
+    fill(c);
+    noStroke();
     // rect(0, 0, itemSize * b, itemSize);
 
     // simmetrico
