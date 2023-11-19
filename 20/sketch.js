@@ -1,9 +1,9 @@
-let fps = 60;
+let fps = 30;
 
-let itemsX = 3;
-let itemsY = 3;
+let itemsX = 4;
+let itemsY = 4;
 
-let itemSize;
+let itemList = [];
 
 let colors = [
   '#f72585',
@@ -19,14 +19,31 @@ let colors = [
   '#ffffff',
 ];
 
+let font;
+
+function preload() {
+  font = loadFont('fonts/AlfaSlabOne-Regular.ttf');
+}
+
 function setup() {
-  createCanvas(1080, 1080);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
     fps: fps
   });
   // noLoop();
+
+  setupItemList();
+}
+
+function setupItemList(){
+  itemList = [];
+  for (let i = 0; i < itemsX; i++) {
+    for (let j = 0; j < itemsY; j++) { 
+      itemList.push(new Item(i, j));
+    }
+  }
 }
 
 function draw() {
@@ -34,12 +51,16 @@ function draw() {
   let mPos = responsiveMousePos();
 
   if (mPos.x !== 0 && mPos.y !== 0){
-    itemsX = map(mPos.x, 0, width,  2, 20, true);
-    itemsY = map(mPos.y, 0, height, 2, 20, true);
+    itemsX = floor(map(mPos.x, 0, width,  3, 16, true));
+    itemsY = floor(map(mPos.y, 0, height, 2, 16, true));
+    setupItemList();
   }
 
-  itemSizeX = width / itemsX;
-  itemSizeY = height / itemsY;
+  itemW = width / itemsX;
+  itemH = height / itemsY;
+
+  let iW = itemW;
+  let iH = itemH;
 
   background(0);
   noStroke();
@@ -50,48 +71,42 @@ function draw() {
 
   let x = 0;
   let y = 0;
+  let delta = 0;
+
+  // la posizione e la dimensione dell'item
+  // è governata dallo sketch, che li aggiorna in continuazione
+  // l'item sa chi è in fase di creazione (da capire)
 
   for (let i = 0; i < itemsX; i++) {
 
-    let itemSizeH = itemSizeX + (getLoopBounce(0.5 * 0.5, i / itemsX) * itemSizeX * 0.5);
+    // iW = itemW + (getLoopBounce(0.5 * 0.5, i / itemsX) * itemW * 0.8);
 
     for (let j = 0; j < itemsY; j++) {
-      push();
-      translate(x, y);
 
-      let itemSizeV = itemSizeY + (getLoopBounce(0.5 * 0.5, j / itemsY) * itemSizeY * 0.5);
-        
-      // Grid
-      strokeWeight(2);
-      stroke(250);
-      if (i % 2 == 1){
-        if (j % 2 == 1){
-          fill(colors[0]);
-        } else {
-          fill(colors[2]);
-        }
-      } else {
-        if (j % 2 == 1){
-          fill(colors[2]);
-        } else {
-          fill(colors[0]);
-        }
-      }
-      rect(0, 0, itemSizeH, itemSizeV);
-      
-      pop();
+      iH = itemH + (getLoopBounce(0.5 * 0.5, j / itemsY) * itemH * 0.8);      
+     
+      itemList[delta].update(x, y, iW, iH);
 
-      y += itemSizeV;
+      y += iH;
       if (j >= itemsY - 1){
         y = 0;
       }
+
+      delta++;
     }
 
-    x += itemSizeH;
+    x += iW;
     if (i >= itemsX - 1) {
       x = 0;
     }    
   }
+
+  itemList.forEach(item => {
+    item.draw();
+    // console.debug(item.x, item.y);
+  });
+
+  // noLoop();
 
   if (frameCount == 1){
     sketchExportStart();
