@@ -38,11 +38,17 @@ function setup() {
 }
 
 let obj = {
-  itemsX: 3,
-  itemsY: 3,
+  word: 'LUCA',
+  itemsX: 4,
+  itemsY: 2,
   showGrid: true,
   addBounceX: false,
   addBounceY: false,
+  resize: false,
+  scaleX: 1,
+  scaleY: 1,
+  translateX: 0,
+  translateY: 0,
 };
 
 let itemsX = obj.itemsX;
@@ -50,20 +56,32 @@ let itemsY = obj.itemsY;
 
 function setupLil(){
   const gui = new GUI();
-  
+
+  gui.add(obj, 'word');
+
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(3).max(3 * 5).step(1);
-  grid.add(obj, 'itemsY').min(3).max(3 * 5).step(1);
+  grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
+  grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1);
   grid.add(obj, 'showGrid');
 
   const anim = gui.addFolder('Bounce');
   anim.add(obj, 'addBounceX');
   anim.add(obj, 'addBounceY');
 
+  const resize = gui.addFolder('Resize');
+  resize.add(obj, 'resize');
+  resize.add(obj, 'scaleX').min(1).max(1.8);
+  resize.add(obj, 'scaleY').min(1).max(1.5);
+  resize.add(obj, 'translateX').min(-0.2).max(0.2);
+  resize.add(obj, 'translateY').min(-0.2).max(0.2);
+
   gui.onChange( event => {
     if (event.property == 'itemsX' || event.property == 'itemsY'){
       itemsX = event.object.itemsX;
       itemsY = event.object.itemsY;
+      setupItemList();
+    }
+    if (event.property == 'word'){
       setupItemList();
     }
   });
@@ -142,7 +160,7 @@ function draw() {
     // console.debug(item.x, item.y);
   });
 
-  // noLoop();
+  
 
   if (frameCount == 1){
     sketchExportStart();

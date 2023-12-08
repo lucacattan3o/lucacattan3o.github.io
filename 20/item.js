@@ -5,7 +5,7 @@ class Item{
 
     this.size = 10;
 
-    this.word = 'UAO';
+    this.word = obj.word;
 
     this.count = floor(this.i / this.word.length);
     
@@ -22,7 +22,6 @@ class Item{
         this.color = colors[0];
       }
     }
-
     
     this.letter = this.word.charAt(this.i % this.word.length);
 
@@ -76,8 +75,19 @@ class Item{
       pop();
       push();
         translate(this.w * 0.5, this.h * 0.5);
-        translate(0, -this.h * 0.15);
-        scale(this.scaleX * 1.1, this.scaleY * 1.1);
+
+        if (obj.resize){
+          translate(this.w * obj.translateX, this.h * obj.translateY);
+          scale(this.scaleX * obj.scaleX, this.scaleY * obj.scaleY);
+        } else {
+          if (fontData[this.letter] !== undefined){
+            let data = fontData[this.letter];
+            translate(this.w * data.x, this.h * data.y);
+            scale(this.scaleX * data.scaleX, this.scaleY * data.scaleY);
+          } else {
+            scale(this.scaleX, this.scaleY);
+          }
+        }
         textAlign(CENTER, CENTER);
         textFont(font);
         textSize(this.size);
