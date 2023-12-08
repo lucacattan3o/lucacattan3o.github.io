@@ -11,15 +11,19 @@ class Item{
     
     if (this.j % 2 == 1){
       if (this.count % 2 == 1){
-        this.color = colors[0];
+        // this.color = colors[0];
+        this.aBcolor = true;
       } else {
-        this.color = colors[2];
+        // this.color = colors[2];
+        this.aBcolor = false;
       }
     } else {
       if (this.count % 2 == 1){
-        this.color = colors[2];
+        // this.color = colors[2];
+        this.aBcolor = false;
       } else {
-        this.color = colors[0];
+        //this.color = colors[0];
+        this.aBcolor = true;
       }
     }
     
@@ -70,31 +74,42 @@ class Item{
         
         scale(this.scaleX, this.scaleY);
         noStroke();
-        fill(this.color);
+        // fill(this.color);
         // circle(0, 0, this.size);
       pop();
-      push();
-        translate(this.w * 0.5, this.h * 0.5);
 
-        if (obj.resize){
-          translate(this.w * obj.translateX, this.h * obj.translateY);
-          scale(this.scaleX * obj.scaleX, this.scaleY * obj.scaleY);
-        } else {
-          if (fontData[this.letter] !== undefined){
-            let data = fontData[this.letter];
-            translate(this.w * data.x, this.h * data.y);
-            scale(this.scaleX * data.scaleX, this.scaleY * data.scaleY);
+      if (obj.showLetters){
+        push();
+          translate(this.w * 0.5, this.h * 0.5);
+
+          if (obj.resize){
+            translate(this.w * obj.translateX, this.h * obj.translateY);
+            scale(this.scaleX * obj.scaleX, this.scaleY * obj.scaleY);
           } else {
-            scale(this.scaleX, this.scaleY);
+            if (fontData[this.letter] !== undefined){
+              let data = fontData[this.letter];
+              translate(this.w * data.x, this.h * data.y);
+              scale(this.scaleX * data.scaleX, this.scaleY * data.scaleY);
+            } else {
+              scale(this.scaleX, this.scaleY);
+            }
           }
-        }
-        textAlign(CENTER, CENTER);
-        textFont(font);
-        textSize(this.size);
-        fill(this.color);
-        noStroke();
-        text(this.letter, 0, 0);
-      pop();
+          textAlign(CENTER, CENTER);
+          textFont(font);
+          textSize(this.size);
+
+          let c = false;
+          if (this.aBcolor){
+            c = colors[0];
+          } else {
+            c = colors[2];
+          }
+
+          fill(c);
+          noStroke();
+          text(this.letter, 0, 0);
+        pop();
+      }
     pop();
   }
 }

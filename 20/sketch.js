@@ -19,6 +19,7 @@ let colors = [
 let font;
 
 let GUI = lil.GUI;
+let gui, loadButton;
 
 function preload() {
   font = loadFont('fonts/AlfaSlabOne-Regular.ttf');
@@ -37,27 +38,43 @@ function setup() {
   setupItemList();
 }
 
+let preset = {};
+
 let obj = {
-  word: 'LUCA',
-  itemsX: 4,
-  itemsY: 2,
-  showGrid: true,
+  word: 'WOW',
+  itemsX: 6,
+  itemsY: 8,
+  showGrid: false,
+  showLetters: true,
   addBounceX: false,
+  bounceXmulti: 1,
+  bounceYmulti: 1,
   addBounceY: false,
   resize: false,
   scaleX: 1,
   scaleY: 1,
   translateX: 0,
   translateY: 0,
+  shuffleColors: false,
+  savePreset() {
+		preset = gui.save();
+    localStorage.setItem('guiSettings', JSON.stringify(preset));
+		loadButton.enable();
+	},
+	loadPreset() {
+		gui.load(preset);
+	}
 };
 
 let itemsX = obj.itemsX;
 let itemsY = obj.itemsY;
 
 function setupLil(){
-  const gui = new GUI();
+  gui = new GUI();
 
   gui.add(obj, 'word');
+  gui.add(obj, 'showLetters');
+  gui.add(obj, 'shuffleColors');
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
@@ -66,14 +83,21 @@ function setupLil(){
 
   const anim = gui.addFolder('Bounce');
   anim.add(obj, 'addBounceX');
+  anim.add(obj, 'bounceXmulti').min(1).max(3).step(1);
   anim.add(obj, 'addBounceY');
+  anim.add(obj, 'bounceYmulti').min(1).max(3).step(1);
 
   const resize = gui.addFolder('Resize');
   resize.add(obj, 'resize');
-  resize.add(obj, 'scaleX').min(1).max(1.8);
+  resize.add(obj, 'scaleX').min(0.7).max(1.8);
   resize.add(obj, 'scaleY').min(1).max(1.5);
   resize.add(obj, 'translateX').min(-0.2).max(0.2);
   resize.add(obj, 'translateY').min(-0.2).max(0.2);
+  resize.close();
+
+  gui.add(obj, 'savePreset' );
+  loadButton = gui.add(obj, 'loadPreset');
+  loadButton.disable();
 
   gui.onChange( event => {
     if (event.property == 'itemsX' || event.property == 'itemsY'){
@@ -85,6 +109,11 @@ function setupLil(){
       setupItemList();
     }
   });
+  
+  let saved = localStorage.getItem('guiSettings');
+  if (saved){
+    gui.load(JSON.parse(saved));
+  };
 }
 
 function setupItemList(){
@@ -126,17 +155,18 @@ function draw() {
   // l'item sa chi è in fase di creazione (da capire)
 
   for (let i = 0; i < itemsX; i++) {
-
-    iW = itemW;
-    if (obj.addBounceX){
-      iW += getLoopBounce(0.5 * 0.5, i / itemsX) * itemW * 0.8;
-    }
-
     for (let j = 0; j < itemsY; j++) {
+      
+      iW = itemW;
+      if (obj.addBounceX){
+        let delayX = i / itemsX * obj.bounceXmulti;
+        iW += getLoopBounce(0.5 * 0.5, delayX) * itemW * 0.8;
+      }
 
       iH = itemH;
       if (obj.addBounceY){
-        iH += getLoopBounce(0.5 * 0.5, j / itemsY) * itemH * 0.8;      
+        let delayY = j / itemsY * obj.bounceYmulti;
+        iH += getLoopBounce(0.5 * 0.5, delayY) * itemH * 0.8;      
       }
      
       itemList[delta].update(x, y, iW, iH);
@@ -160,7 +190,13 @@ function draw() {
     // console.debug(item.x, item.y);
   });
 
-  
+  if (obj.shuffleColors){
+    let sec = frameCount / fps;
+    if (sec % 2 == 0){
+      colors = shuffle(colors);
+      setupItemList();
+    }
+  }
 
   if (frameCount == 1){
     sketchExportStart();

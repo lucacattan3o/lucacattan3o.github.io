@@ -1,20 +1,14 @@
 let fontData = {
-  U: {
-    scaleX: 1.3,
-    scaleY: 1.25,
-    x: 0,
-    y: -0.165,
-  },
   A: {
     scaleX: 1.248,
-    scaleY: 1.2725,
+    scaleY: 1.275,
     x: 0,
     y: -0.164,
   },
-  O: {
-    scaleX: 1.291,
+  C: {
+    scaleX: 1.4168,
     scaleY: 1.2295,
-    x: 0,
+    x: -0.0016,
     y: -0.1588,
   },
   L: {
@@ -23,10 +17,22 @@ let fontData = {
     x: -0.0064,
     y: -0.164,
   },
-  C: {
-    scaleX: 1.4168,
-    scaleY: 1.2295,
-    x: -0.0016,
+  O: {
+    scaleX: 1.291,
+    scaleY: 1.235,
+    x: 0,
     y: -0.1588,
+  },
+  U: {
+    scaleX: 1.3,
+    scaleY: 1.25,
+    x: 0,
+    y: -0.17,
+  },
+  W: {
+    scaleX: 0.8294,
+    scaleY: 1.275,
+    x: 0,
+    y: -0.164,
   }
 }
