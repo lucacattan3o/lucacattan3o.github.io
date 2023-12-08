@@ -40,7 +40,9 @@ function setup() {
 let obj = {
   itemsX: 3,
   itemsY: 3,
-  showGrid: false,
+  showGrid: true,
+  addBounceX: false,
+  addBounceY: false,
 };
 
 let itemsX = obj.itemsX;
@@ -49,22 +51,21 @@ let itemsY = obj.itemsY;
 function setupLil(){
   const gui = new GUI();
   
-  const grid = gui.addFolder( 'Grid' );
+  const grid = gui.addFolder('Grid');
   grid.add(obj, 'itemsX').min(3).max(3 * 5).step(1);
   grid.add(obj, 'itemsY').min(3).max(3 * 5).step(1);
   grid.add(obj, 'showGrid');
 
+  const anim = gui.addFolder('Bounce');
+  anim.add(obj, 'addBounceX');
+  anim.add(obj, 'addBounceY');
+
   gui.onChange( event => {
-    
     if (event.property == 'itemsX' || event.property == 'itemsY'){
       itemsX = event.object.itemsX;
       itemsY = event.object.itemsY;
       setupItemList();
     }
-    // event.object     // object that was modified
-    // event.property   // string, name of property
-    // event.value      // new value of controller
-    // event.controller // controller that was modified
   });
 }
 
@@ -78,9 +79,7 @@ function setupItemList(){
 }
 
 function draw() {
-
-  let mPos = responsiveMousePos();
-
+  // let mPos = responsiveMousePos();
   // if (mPos.x !== 0 && mPos.y !== 0){
   //   itemsX = floor(map(mPos.x, 0, width,  3, 16, true));
   //   itemsY = floor(map(mPos.y, 0, height, 2, 16, true));
@@ -110,11 +109,17 @@ function draw() {
 
   for (let i = 0; i < itemsX; i++) {
 
-    iW = itemW; //+ (getLoopBounce(0.5 * 0.5, i / itemsX) * itemW * 0.8);
+    iW = itemW;
+    if (obj.addBounceX){
+      iW += getLoopBounce(0.5 * 0.5, i / itemsX) * itemW * 0.8;
+    }
 
     for (let j = 0; j < itemsY; j++) {
 
-      iH = itemH + (getLoopBounce(0.5 * 0.5, j / itemsY) * itemH * 0.8);      
+      iH = itemH;
+      if (obj.addBounceY){
+        iH += getLoopBounce(0.5 * 0.5, j / itemsY) * itemH * 0.8;      
+      }
      
       itemList[delta].update(x, y, iW, iH);
 
