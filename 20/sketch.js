@@ -63,7 +63,10 @@ let obj = {
 	},
 	loadPreset() {
 		gui.load(preset);
-	}
+	},
+  clearStorage(){
+    localStorage.removeItem('guiSettings');
+  },
 };
 
 let itemsX = obj.itemsX;
@@ -98,6 +101,7 @@ function setupLil(){
   gui.add(obj, 'savePreset' );
   loadButton = gui.add(obj, 'loadPreset');
   loadButton.disable();
+  gui.add(obj, 'clearStorage');
 
   gui.onChange( event => {
     if (event.property == 'itemsX' || event.property == 'itemsY'){
