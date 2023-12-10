@@ -3,7 +3,13 @@ let fps = 30;
 let itemList = [];
 let abColor = true;
 
-let colors = ["#ffbe0b","#fb5607","#ff006e","#8338ec","#3a86ff"];
+let colors = [
+  "#ffbe0b",
+  "#fb5607",
+  "#ff006e",
+  "#8338ec",
+  "#06d6a0"
+];
 
 let font;
 

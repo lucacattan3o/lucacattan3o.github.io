@@ -94,6 +94,7 @@ class Item{
               scale(this.scaleX, this.scaleY);
             }
           }
+          scale(0.95, 0.95);
           textAlign(CENTER, CENTER);
           textFont(font);
           textSize(this.size);
