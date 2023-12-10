@@ -98,9 +98,9 @@ function setupLil(){
 
   const anim = gui.addFolder('Bounce');
   anim.add(obj, 'addBounceX');
-  anim.add(obj, 'bounceXmulti').min(1).max(3).step(1);
+  anim.add(obj, 'bounceXmulti').min(1).max(2).step(1);
   anim.add(obj, 'addBounceY');
-  anim.add(obj, 'bounceYmulti').min(1).max(3).step(1);
+  anim.add(obj, 'bounceYmulti').min(1).max(2).step(1);
 
   const resize = gui.addFolder('Resize');
   resize.add(obj, 'resize');
@@ -182,7 +182,7 @@ function draw() {
       iH = itemH;
       if (obj.addBounceY){
         let delayY = j / itemsY * obj.bounceYmulti;
-        iH += getLoopBounce(0.5 * 0.5, delayY) * itemH * 0.8;      
+        iH += getLoopBounce(0.5 * 0.5, delayY + 0.25) * itemH * 0.8;      
       }
      
       itemList[delta].update(x, y, iW, iH);
