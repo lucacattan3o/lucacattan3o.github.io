@@ -60,7 +60,7 @@ class Item{
   draw(){
     push();
       translate(this.x, this.y);
-      strokeWeight(2);
+      strokeWeight(5);
       stroke(250);
       // fill(this.color);
       noFill();

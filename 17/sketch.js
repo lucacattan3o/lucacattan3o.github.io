@@ -36,24 +36,24 @@ function setup() {
 let preset = {};
 
 let obj = {
-  word: 'WOW',
+  word: 'UAO',
   itemsX: 6,
   itemsY: 8,
   showGrid: false,
   showLetters: true,
-  addBounceX: false,
+  addBounceX: true,
   bounceXmulti: 1,
   bounceYmulti: 1,
-  addBounceY: false,
+  addBounceY: true,
   resize: false,
   scaleX: 1,
   scaleY: 1,
   translateX: 0,
   translateY: 0,
-  animateColors: false,
+  animateColors: true,
   color0: 0,
-  color1: 1,
-  color2: 2,
+  color1: 2,
+  color2: 1,
   color3: 3,
   savePreset() {
 		preset = gui.save();
