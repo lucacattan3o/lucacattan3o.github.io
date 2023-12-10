@@ -1,6 +1,7 @@
 let fps = 30;
 
 let itemList = [];
+let abColor = true;
 
 let colors = [
   '#f72585',
@@ -56,6 +57,10 @@ let obj = {
   translateX: 0,
   translateY: 0,
   shuffleColors: false,
+  color0: 0,
+  color1: 1,
+  color2: 2,
+  color3: 3,
   savePreset() {
 		preset = gui.save();
     localStorage.setItem('guiSettings', JSON.stringify(preset));
@@ -83,6 +88,13 @@ function setupLil(){
   grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
   grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1);
   grid.add(obj, 'showGrid');
+
+  const colsA = gui.addFolder('Colors: set A');
+  colsA.add(obj, 'color0').min(0).max(colors.length - 1).step(1);
+  colsA.add(obj, 'color1').min(0).max(colors.length - 1).step(1);
+  const colsB = gui.addFolder('Colors: set B');
+  colsB.add(obj, 'color2').min(0).max(colors.length - 1).step(1);
+  colsB.add(obj, 'color3').min(0).max(colors.length - 1).step(1);
 
   const anim = gui.addFolder('Bounce');
   anim.add(obj, 'addBounceX');
@@ -197,8 +209,7 @@ function draw() {
   if (obj.shuffleColors){
     let sec = frameCount / fps;
     if (sec % 2 == 0){
-      colors = shuffle(colors);
-      setupItemList();
+      abColor = !abColor;
     }
   }
 

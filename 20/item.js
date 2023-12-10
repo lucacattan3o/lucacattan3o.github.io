@@ -99,10 +99,18 @@ class Item{
           textSize(this.size);
 
           let c = false;
-          if (this.aBcolor){
-            c = colors[0];
+          if (abColor){
+            if (this.aBcolor){
+              c = colors[obj.color0];
+            } else {
+              c = colors[obj.color1];
+            }
           } else {
-            c = colors[2];
+            if (this.aBcolor){
+              c = colors[obj.color2];
+            } else {
+              c = colors[obj.color3];
+            }
           }
 
           fill(c);
