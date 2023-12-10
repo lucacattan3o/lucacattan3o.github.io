@@ -99,19 +99,34 @@ class Item{
           textSize(this.size);
 
           let c = false;
-          if (abColor){
+          let cAnim = (getLoopBounce(0.5 * 0.5) + 1) * 0.5;
+          if (obj.animateColors){
+            if (this.aBcolor){
+              c = lerpColor(color(colors[obj.color0]), color(colors[obj.color2]), cAnim);
+            } else {
+              c = lerpColor(color(colors[obj.color1]), color(colors[obj.color3]), cAnim);
+            }
+          } else {
             if (this.aBcolor){
               c = colors[obj.color0];
             } else {
               c = colors[obj.color1];
             }
-          } else {
-            if (this.aBcolor){
-              c = colors[obj.color2];
-            } else {
-              c = colors[obj.color3];
-            }
           }
+          // let c = false;
+          // if (abColor){
+          //   if (this.aBcolor){
+          //     c = colors[obj.color0];
+          //   } else {
+          //     c = colors[obj.color1];
+          //   }
+          // } else {
+          //   if (this.aBcolor){
+          //     c = colors[obj.color2];
+          //   } else {
+          //     c = colors[obj.color3];
+          //   }
+          // }
 
           fill(c);
           noStroke();

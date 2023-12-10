@@ -3,19 +3,7 @@ let fps = 30;
 let itemList = [];
 let abColor = true;
 
-let colors = [
-  '#f72585',
-  '#b5179e',
-  '#7209b7',
-  '#560bad',
-  '#480ca8',
-  '#3a0ca3',
-  '#3f37c9',
-  '#4361ee',
-  '#4895ef',
-  '#4cc9f0',
-  '#ffffff',
-];
+let colors = ["#ffbe0b","#fb5607","#ff006e","#8338ec","#3a86ff"];
 
 let font;
 
@@ -56,7 +44,7 @@ let obj = {
   scaleY: 1,
   translateX: 0,
   translateY: 0,
-  shuffleColors: false,
+  animateColors: false,
   color0: 0,
   color1: 1,
   color2: 2,
@@ -82,7 +70,7 @@ function setupLil(){
 
   gui.add(obj, 'word');
   gui.add(obj, 'showLetters');
-  gui.add(obj, 'shuffleColors');
+  gui.add(obj, 'animateColors');
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
@@ -206,12 +194,12 @@ function draw() {
     // console.debug(item.x, item.y);
   });
 
-  if (obj.shuffleColors){
-    let sec = frameCount / fps;
-    if (sec % 2 == 0){
-      abColor = !abColor;
-    }
-  }
+  // if (obj.animateColors){
+  //   let sec = frameCount / fps;
+  //   if (sec % 2 == 0){
+  //     abColor = !abColor;
+  //   }
+  // }
 
   if (frameCount == 1){
     sketchExportStart();
