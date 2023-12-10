@@ -1,149 +1,217 @@
 let fps = 30;
 
-let nItems = 32;
-let nCircles = 32;
-
-let items = [];
-let connections = {};
-let mPos;
-
-let worldCenter;
-
-let sec;
-let bounce;
-let speed = 0.125;
+let itemList = [];
+let abColor = true;
 
 let colors = [
-  '#f72585',
-  '#b5179e',
-  '#7209b7',
-  '#560bad',
-  '#480ca8',
-  '#3a0ca3',
-  '#3f37c9',
-  '#4361ee',
-  '#4895ef',
-  '#4cc9f0',
-  '#ffffff',
+  "#ffbe0b",
+  "#fb5607",
+  "#ff006e",
+  "#8338ec",
+  "#06d6a0"
 ];
 
-colors = [
-  "#2d00f7",
-  "#6a00f4",
-  "#8900f2",
-  "#a100f2",
-  "#b100e8",
-  "#bc00dd",
-  "#d100d1",
-  "#db00b6",
-  "#e500a4",
-  "#f20089"
-];
+let font;
 
-let music;
-let amp, fft, spec;
-let smooth = 0.7;
+let GUI = lil.GUI;
+let gui, loadButton;
 
-function preload(){
-  music = loadSound('fm-belfast.mp3', function(){
-    amp = new p5.Amplitude();
-    amp.setInput(music);
-    
-    fft = new p5.FFT(smooth, 16);
-    fft.setInput(music);
-  });
+function preload() {
+  font = loadFont('fonts/AlfaSlabOne-Regular.ttf');
 }
 
 function setup() {
-  createCanvas(1080, 1080, WEBGL);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
     fps: fps
   });
+  // noLoop();
 
-  // Standard othographic Camera
-  let cam = createCamera();
-  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
-  cam.setPosition(
-    - width * 0.9,
-    - width * 0,
-    - width * 0.9);
-  cam.lookAt(0, 0, 0);
-
-  worldCenter = createVector(width * 0.5, width * 0.5, width * 0.5);
-  
-  createItems();
+  setupLil();
+  setupItemList();
 }
 
-function createItems(){
+let preset = {};
 
-  let radius = width * 0.4;
-  let vh = radius / nCircles;
+let obj = {
+  word: 'WOW',
+  itemsX: 6,
+  itemsY: 8,
+  showGrid: false,
+  showLetters: true,
+  addBounceX: false,
+  bounceXmulti: 1,
+  bounceYmulti: 1,
+  addBounceY: false,
+  resize: false,
+  scaleX: 1,
+  scaleY: 1,
+  translateX: 0,
+  translateY: 0,
+  animateColors: false,
+  color0: 0,
+  color1: 1,
+  color2: 2,
+  color3: 3,
+  savePreset() {
+		preset = gui.save();
+    localStorage.setItem('guiSettings', JSON.stringify(preset));
+		loadButton.enable();
+	},
+	loadPreset() {
+		gui.load(preset);
+	},
+  clearStorage(){
+    localStorage.removeItem('guiSettings');
+  },
+};
 
-  for (let i = 0; i <= nCircles; i++) {
-    let z = (- radius) + i * vh * 2;
-    let freq = map(i, 0, nCircles, -15, 15, true);
-    rad = radius * sin(PI * i / nCircles);
-    let item = new Item(z, vh * 0.7, rad, freq);
-    items.push(item);
+let itemsX = obj.itemsX;
+let itemsY = obj.itemsY;
+
+function setupLil(){
+  gui = new GUI();
+
+  gui.add(obj, 'word');
+  gui.add(obj, 'showLetters');
+  gui.add(obj, 'animateColors');
+
+  const grid = gui.addFolder('Grid');
+  grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
+  grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1);
+  grid.add(obj, 'showGrid');
+
+  const colsA = gui.addFolder('Colors: set A');
+  colsA.add(obj, 'color0').min(0).max(colors.length - 1).step(1);
+  colsA.add(obj, 'color1').min(0).max(colors.length - 1).step(1);
+  const colsB = gui.addFolder('Colors: set B');
+  colsB.add(obj, 'color2').min(0).max(colors.length - 1).step(1);
+  colsB.add(obj, 'color3').min(0).max(colors.length - 1).step(1);
+
+  const anim = gui.addFolder('Bounce');
+  anim.add(obj, 'addBounceX');
+  anim.add(obj, 'bounceXmulti').min(1).max(2).step(1);
+  anim.add(obj, 'addBounceY');
+  anim.add(obj, 'bounceYmulti').min(1).max(2).step(1);
+
+  const resize = gui.addFolder('Resize');
+  resize.add(obj, 'resize');
+  resize.add(obj, 'scaleX').min(0.7).max(1.8);
+  resize.add(obj, 'scaleY').min(1).max(1.5);
+  resize.add(obj, 'translateX').min(-0.2).max(0.2);
+  resize.add(obj, 'translateY').min(-0.2).max(0.2);
+  resize.close();
+
+  gui.add(obj, 'savePreset' );
+  loadButton = gui.add(obj, 'loadPreset');
+  loadButton.disable();
+  gui.add(obj, 'clearStorage');
+
+  gui.onChange( event => {
+    if (event.property == 'itemsX' || event.property == 'itemsY'){
+      itemsX = event.object.itemsX;
+      itemsY = event.object.itemsY;
+      setupItemList();
+    }
+    if (event.property == 'word'){
+      setupItemList();
+    }
+  });
+  
+  let saved = localStorage.getItem('guiSettings');
+  if (saved){
+    gui.load(JSON.parse(saved));
+  };
+}
+
+function setupItemList(){
+  itemList = [];
+  for (let i = 0; i < itemsX; i++) {
+    for (let j = 0; j < itemsY; j++) { 
+      itemList.push(new Item(i, j));
+    }
   }
 }
 
 function draw() {
+  // let mPos = responsiveMousePos();
+  // if (mPos.x !== 0 && mPos.y !== 0){
+  //   itemsX = floor(map(mPos.x, 0, width,  3, 16, true));
+  //   itemsY = floor(map(mPos.y, 0, height, 2, 16, true));
+  //   setupItemList();
+  // }
 
-  spec = fft.analyze();
+  itemW = width / itemsX;
+  itemH = height / itemsY;
 
-  sec = frameCount / fps * speed;
-  bounce = (cos(sec * TWO_PI) + 1) * 0.25;
-  
-  orbitControl();
-  
-  ambientLight(255);
-  directionalLight(color(255), 0, 1, -0.5);
+  let iW = itemW;
+  let iH = itemH;
 
-  mPos = responsiveMousePos();
-  
-  drawItems();
+  background(0);
+  noStroke();
+
+  // textFont('monospace');
+  // textSize(itemSize * 1.1);
+  // textAlign(CENTER, CENTER);
+
+  let x = 0;
+  let y = 0;
+  let delta = 0;
+
+  // la posizione e la dimensione dell'item
+  // è governata dallo sketch, che li aggiorna in continuazione
+  // l'item sa chi è in fase di creazione (da capire)
+
+  for (let i = 0; i < itemsX; i++) {
+    for (let j = 0; j < itemsY; j++) {
+      
+      iW = itemW;
+      if (obj.addBounceX){
+        let delayX = i / itemsX * obj.bounceXmulti;
+        iW += getLoopBounce(0.5 * 0.5, delayX) * itemW * 0.8;
+      }
+
+      iH = itemH;
+      if (obj.addBounceY){
+        let delayY = j / itemsY * obj.bounceYmulti;
+        iH += getLoopBounce(0.5 * 0.5, delayY + 0.25) * itemH * 0.8;      
+      }
+     
+      itemList[delta].update(x, y, iW, iH);
+
+      y += iH;
+      if (j >= itemsY - 1){
+        y = 0;
+      }
+
+      delta++;
+    }
+
+    x += iW;
+    if (i >= itemsX - 1) {
+      x = 0;
+    }    
+  }
+
+  itemList.forEach(item => {
+    item.draw();
+    // console.debug(item.x, item.y);
+  });
+
+  // if (obj.animateColors){
+  //   let sec = frameCount / fps;
+  //   if (sec % 2 == 0){
+  //     abColor = !abColor;
+  //   }
+  // }
 
   if (frameCount == 1){
     sketchExportStart();
   }
-  sketchExport(18);
-  if (frameCount == 18 * fps){
+  sketchExport();
+  if (frameCount == 8 * fps){
     sketchExportEnd();
-  }
-}
-
-function drawItems(){
-  background(0);
-
-  rotateY(sec * TWO_PI * 0.5);
-  rotateX(sec * TWO_PI * 0.5);
-  // rotateZ(sec * TWO_PI * 0.25);
-
-  push();
-
-    ambientMaterial('#fff');
-    // sphere(400, 10, 10);
-
-    // Reverse loop
-    for (let i = items.length - 1; i >= 0; i--) {
-      const item = items[i];
-      item.update();
-      item.draw();
-    }
-  pop();
-}
-
-function keyPressed() {  
-  if (keyCode === 32) {
-    if (!music.isLooping()){
-      music.loop();
-      sketchRecordStart();
-    } else {
-      music.stop();
-      sketchRecordStop();
-    }  
   }
 }
