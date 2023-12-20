@@ -36,25 +36,30 @@ function setup() {
 let preset = {};
 
 let obj = {
-  word: 'C',
-  itemsX: 1,
-  itemsY: 1,
-  showGrid: true,
+  word: 'fluo',
+  itemsX: 4,
+  itemsY: 2,
+  showGrid: false,
   showLetters: true,
+  
   addBounceX: false,
   bounceXmulti: 1,
-  bounceYmulti: 1,
   addBounceY: false,
+  bounceYmulti: 1,
+  
   resize: false,
   scaleX: 1,
   scaleY: 1,
   translateX: 0,
   translateY: 0,
-  animateColors: false,
-  color0: 0,
-  color1: 2,
-  color2: 1,
-  color3: 3,
+  // animateColors: false,
+
+  palette: 'A',
+  mode: 'Static',
+  color0: colors[0],
+  color1: colors[1],
+  color2: colors[2],
+  color3: colors[3],
   savePreset() {
 		preset = gui.save();
     localStorage.setItem('guiSettings', JSON.stringify(preset));
@@ -74,35 +79,39 @@ let itemsY = obj.itemsY;
 function setupLil(){
   gui = new GUI();
 
-  gui.add(obj, 'word');
-  gui.add(obj, 'showLetters');
-  gui.add(obj, 'animateColors');
+  gui.add(obj, 'word').name('Text');
+  gui.add(obj, 'showLetters').name('Show Letters');
+  gui.add(obj, 'showGrid').name('Show Grid');
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1);
-  grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1);
-  grid.add(obj, 'showGrid');
+  grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1).name('Items X');
+  grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1).name('Items Y');
 
-  const colsA = gui.addFolder('Colors: set A');
-  colsA.add(obj, 'color0').min(0).max(colors.length - 1).step(1);
-  colsA.add(obj, 'color1').min(0).max(colors.length - 1).step(1);
-  const colsB = gui.addFolder('Colors: set B');
-  colsB.add(obj, 'color2').min(0).max(colors.length - 1).step(1);
-  colsB.add(obj, 'color3').min(0).max(colors.length - 1).step(1);
+  const colsMain = gui.addFolder('Colors');
+  colsMain.add(obj, 'palette', [ 'A', 'B']).name('Palette');
+  colsMain.add(obj, 'mode', [ 'Static', 'Gradient Animation']).name('Mode');
+  // colsMain.add(obj, 'animateColors').name('Gradient Animation');
+
+  const colsA = gui.addFolder('Palette - A');
+  colsA.addColor(obj, 'color0').name('Color 1');
+  colsA.addColor(obj, 'color1').name('Color 2');
+  const colsB = gui.addFolder('Palette - B');
+  colsB.addColor(obj, 'color2').name('Color 1');
+  colsB.addColor(obj, 'color3').name('Color 2');
 
   const anim = gui.addFolder('Bounce');
-  anim.add(obj, 'addBounceX');
-  anim.add(obj, 'bounceXmulti').min(1).max(2).step(1);
-  anim.add(obj, 'addBounceY');
-  anim.add(obj, 'bounceYmulti').min(1).max(2).step(1);
+  anim.add(obj, 'addBounceX').name('Add Bounce X');
+  anim.add(obj, 'bounceXmulti').min(1).max(2).step(1).name('Multiply X');
+  anim.add(obj, 'addBounceY').name('Add Bounce Y');
+  anim.add(obj, 'bounceYmulti').min(1).max(2).step(1).name('Multiply Y');
 
-  const resize = gui.addFolder('Resize');
-  resize.add(obj, 'resize');
-  resize.add(obj, 'scaleX').min(0.7).max(1.8);
-  resize.add(obj, 'scaleY').min(1).max(1.5);
-  resize.add(obj, 'translateX').min(-0.2).max(0.2);
-  resize.add(obj, 'translateY').min(-0.2).max(0.2);
-  resize.close();
+  // const resize = gui.addFolder('Resize');
+  // resize.add(obj, 'resize');
+  // resize.add(obj, 'scaleX').min(0.7).max(1.8);
+  // resize.add(obj, 'scaleY').min(1).max(1.5);
+  // resize.add(obj, 'translateX').min(-0.2).max(0.2);
+  // resize.add(obj, 'translateY').min(-0.2).max(0.2);
+  // resize.close();
 
   gui.add(obj, 'savePreset' );
   loadButton = gui.add(obj, 'loadPreset');

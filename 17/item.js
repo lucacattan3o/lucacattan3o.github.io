@@ -28,6 +28,7 @@ class Item{
     }
     
     this.letter = this.word.charAt(this.i % this.word.length);
+    this.letter = this.letter.toUpperCase();
 
     /*
     if (i % 2 == 1){
@@ -69,7 +70,7 @@ class Item{
         push();
         translate(this.w * 0.5, this.h * 0.5);
         rectMode(CENTER);
-        rect(0, 0, this.w * 0.92, this.h * 0.94);
+        // rect(0, 0, this.w * 0.92, this.h * 0.94);
         pop();
       }
 
@@ -106,17 +107,25 @@ class Item{
 
           let c = false;
           let cAnim = (getLoopBounce(0.5 * 0.5) + 1) * 0.5;
-          if (obj.animateColors){
+          if (obj.mode == 'Gradient Animation'){
             if (this.aBcolor){
-              c = lerpColor(color(colors[obj.color0]), color(colors[obj.color2]), cAnim);
+              c = lerpColor(color(obj.color0), color(obj.color2), cAnim);
             } else {
-              c = lerpColor(color(colors[obj.color1]), color(colors[obj.color3]), cAnim);
+              c = lerpColor(color(obj.color1), color(obj.color3), cAnim);
             }
           } else {
-            if (this.aBcolor){
-              c = colors[obj.color0];
+            if (obj.palette == 'A'){
+              if (this.aBcolor){
+                c = obj.color0;
+              } else {
+                c = obj.color1;
+              }
             } else {
-              c = colors[obj.color1];
+              if (this.aBcolor){
+                c = obj.color2;
+              } else {
+                c = obj.color3;
+              }
             }
           }
           // let c = false;
