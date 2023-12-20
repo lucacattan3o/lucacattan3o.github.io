@@ -61,11 +61,11 @@ class Item{
   draw(){
     push();
       translate(this.x, this.y);
-      strokeWeight(5);
       stroke(250);
       // fill(this.color);
       noFill();
       if (obj.showGrid){
+        strokeWeight(4);
         rect(0, 0, this.w, this.h);
         push();
         translate(this.w * 0.5, this.h * 0.5);

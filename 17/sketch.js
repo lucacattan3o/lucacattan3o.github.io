@@ -36,9 +36,9 @@ function setup() {
 let preset = {};
 
 let obj = {
-  word: 'fluo',
-  itemsX: 4,
-  itemsY: 2,
+  word: 'uao',
+  itemsX: 6,
+  itemsY: 4,
   showGrid: false,
   showLetters: true,
   
@@ -177,14 +177,20 @@ function draw() {
     for (let j = 0; j < itemsY; j++) {
       
       iW = itemW;
-      if (obj.addBounceX){
-        let delayX = i / itemsX * obj.bounceXmulti;
+      if (obj.addBounceX && itemsX >= 2){
+        let delayX = i / itemsX;
+        if (itemsX > 2){
+          delayX = i / itemsX * obj.bounceXmulti;
+        }
         iW += getLoopBounce(0.5 * 0.5, delayX) * itemW * 0.8;
       }
 
       iH = itemH;
-      if (obj.addBounceY){
-        let delayY = j / itemsY * obj.bounceYmulti;
+      if (obj.addBounceY && itemsY >= 2){
+        let delayY = j / itemsY;
+        if (itemsY > 2){
+          delayY = j / itemsY * obj.bounceYmulti;
+        }
         iH += getLoopBounce(0.5 * 0.5, delayY + 0.25) * itemH * 0.8;      
       }
      
