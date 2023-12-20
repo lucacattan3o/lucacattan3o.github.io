@@ -22,10 +22,13 @@ $font-family-base:      $font-family-monospace;
 
 $size-unit: 1rem;
 
-$link-color: $black;
+$link-color: $white;
 
 $font-size-root:              null;
 $font-size-base:              1rem; // Assumes the browser default, typically `16px`
 $font-size-xs:                $font-size-base * .7;
 $font-size-sm:                $font-size-base * .875;
 $font-size-lg:                $font-size-base * 1.25;
+
+$body-bg: $gray-800;
+$body-color: $gray-300;
