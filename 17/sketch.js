@@ -1,3 +1,7 @@
+// format: open close controller > wide - narrow
+// mode > animation > hide palette
+// footer > ig tag
+
 let fps = 30;
 
 let itemList = [];
