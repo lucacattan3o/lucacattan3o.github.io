@@ -1,6 +1,3 @@
-// footer > ig tag
-// format: open close controller > wide - narrow
-
 let fps = 30;
 
 let itemList = [];

@@ -70,7 +70,7 @@ class Item{
         push();
         translate(this.w * 0.5, this.h * 0.5);
         rectMode(CENTER);
-        // rect(0, 0, this.w * 0.92, this.h * 0.94);
+        rect(0, 0, this.w * 0.92, this.h * 0.94);
         pop();
       }
 
