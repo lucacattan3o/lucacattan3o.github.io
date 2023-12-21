@@ -58,7 +58,7 @@ let obj = {
   palette: 'A',
   mode: 'Static',
   color0: colors[0],
-  color1: colors[1],
+  color1: colors[4],
   color2: colors[2],
   color3: colors[3],
   savePreset() {
