@@ -107,7 +107,7 @@ class Item{
 
           let c = false;
           let cAnim = (getLoopBounce(0.5 * 0.5) + 1) * 0.5;
-          if (obj.mode == 'Gradient Animation'){
+          if (obj.mode == 'Animated'){
             if (this.aBcolor){
               c = lerpColor(color(obj.color0), color(obj.color2), cAnim);
             } else {

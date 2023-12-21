@@ -1,6 +1,5 @@
-// format: open close controller > wide - narrow
-// mode > animation > hide palette
 // footer > ig tag
+// format: open close controller > wide - narrow
 
 let fps = 30;
 
@@ -29,7 +28,8 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
-    fps: fps
+    fps: fps,
+    name: 'video'
   });
   // noLoop();
 
@@ -65,17 +65,32 @@ let obj = {
   color2: colors[2],
   color3: colors[3],
   savePreset() {
-		preset = gui.save();
-    localStorage.setItem('guiSettings', JSON.stringify(preset));
-		loadButton.enable();
+		saveToStorage();
+		// loadButton.enable();
 	},
 	loadPreset() {
 		gui.load(preset);
 	},
+  export() {
+    saveToStorage();
+    let url = window.location.href;    
+    if (url.indexOf('?') > -1){
+      url += '&export=true';
+    } else {
+      url += '?export=true';
+    }
+    window.location.href = url;
+  },
   clearStorage(){
     localStorage.removeItem('guiSettings');
+    window.location = window.location.href.split("?")[0];
   },
 };
+
+function saveToStorage(){
+  preset = gui.save();
+  localStorage.setItem('guiSettings', JSON.stringify(preset));
+}
 
 let itemsX = obj.itemsX;
 let itemsY = obj.itemsY;
@@ -92,9 +107,8 @@ function setupLil(){
   grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1).name('Items Y');
 
   const colsMain = gui.addFolder('Colors');
-  colsMain.add(obj, 'palette', [ 'A', 'B']).name('Palette');
-  colsMain.add(obj, 'mode', [ 'Static', 'Gradient Animation']).name('Mode');
-  // colsMain.add(obj, 'animateColors').name('Gradient Animation');
+  colsMain.add(obj, 'mode', [ 'Static', 'Animated']).name('Mode');
+  let guiPalette = colsMain.add(obj, 'palette', [ 'A', 'B']).name('Palette');
 
   const colsA = gui.addFolder('Palette - A');
   colsA.addColor(obj, 'color0').name('Color 1');
@@ -117,10 +131,11 @@ function setupLil(){
   // resize.add(obj, 'translateY').min(-0.2).max(0.2);
   // resize.close();
 
-  gui.add(obj, 'savePreset' );
-  loadButton = gui.add(obj, 'loadPreset');
-  loadButton.disable();
-  gui.add(obj, 'clearStorage');
+  gui.add(obj, 'savePreset' ).name('Save Preset');
+  // loadButton = gui.add(obj, 'loadPreset').name('Load');
+  // loadButton.disable();
+  gui.add(obj, 'export').name('Export video');
+  gui.add(obj, 'clearStorage').name('Clear');
 
   gui.onChange( event => {
     if (event.property == 'itemsX' || event.property == 'itemsY'){
@@ -130,6 +145,14 @@ function setupLil(){
     }
     if (event.property == 'word'){
       setupItemList();
+    }
+
+    if (event.property == 'mode'){
+      if (obj.mode == 'Animated'){
+        guiPalette.hide();
+      } else {
+        guiPalette.show();
+      }
     }
   });
   
