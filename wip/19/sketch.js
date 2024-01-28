@@ -1,6 +1,6 @@
 let fps = 10;
 
-let items = 64;
+let items = 24;
 
 let margin = 0.1;
 let sketchWidth;
