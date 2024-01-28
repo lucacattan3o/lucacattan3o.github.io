@@ -6,14 +6,13 @@ let GUI = lil.GUI;
 let gui, loadButton;
 
 function setup() {
-  createCanvas(1080, 1080);
+  createCanvas(1080, 1980);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
     fps: fps,
     name: 'video'
   });
-  // noLoop();
 
   background(0);
   colorMode(HSB, 100);
@@ -25,8 +24,8 @@ function setup() {
 let preset = {};
 
 let obj = {
-  itemsX: 6,
-  itemsY: 4,
+  itemsX: 5,
+  itemsY: 15,
   showGrid: false,
 
   savePreset() {
