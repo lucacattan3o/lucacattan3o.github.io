@@ -1,21 +1,12 @@
 let fps = 60;
 
 let itemList = [];
-let abColor = true;
-
-let colors = [
-  "#ffbe0b",
-  "#fb5607",
-  "#ff006e",
-  "#8338ec",
-  "#06d6a0"
-];
 
 let GUI = lil.GUI;
 let gui, loadButton;
 
 function setup() {
-  createCanvas(1080, 1920);
+  createCanvas(1080, 1080);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
@@ -37,16 +28,7 @@ let obj = {
   itemsX: 6,
   itemsY: 4,
   showGrid: false,
-  
-  addBounceX: false,
-  bounceXspeed: 0.5,
-  addBounceY: false,
-  bounceYspeed: 0.5,
 
-  color0: colors[0],
-  color1: colors[4],
-  color2: colors[2],
-  color3: colors[3],
   savePreset() {
 		saveToStorage();
 		// loadButton.enable();
@@ -82,18 +64,8 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(1).max(3 * 5).step(1).name('Items X');
-  grid.add(obj, 'itemsY').min(1).max(3 * 5).step(1).name('Items Y');
-
-  const colsA = gui.addFolder('Palette - A');
-  colsA.addColor(obj, 'color0').name('Color 1');
-  colsA.addColor(obj, 'color1').name('Color 2');
-
-  const anim = gui.addFolder('Bounce');
-  anim.add(obj, 'addBounceX').name('Add Bounce X');
-  anim.add(obj, 'bounceXspeed').name('Speed X');
-  anim.add(obj, 'addBounceY').name('Add Bounce Y');
-  anim.add(obj, 'bounceYspeed').name('Speed Y');
+  grid.add(obj, 'itemsX').min(3).max(3 * 5).step(1).name('Items X');
+  grid.add(obj, 'itemsY').min(3).max(3 * 5).step(1).name('Items Y');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   // loadButton = gui.add(obj, 'loadPreset').name('Load');
@@ -151,10 +123,6 @@ function draw() {
   let y = 0;
   let delta = 0;
 
-  // la posizione e la dimensione dell'item
-  // è governata dallo sketch, che li aggiorna in continuazione
-  // l'item sa chi è in fase di creazione (da capire)
-
   let speedAnimX = map(getLoopBounce(0.25)      , -1, 1, 0.125, 0.25); 
   let speedAnimy = map(getLoopBounce(0.25, 0.5), -1, 1, 0.125, 0.25); 
 
@@ -162,13 +130,13 @@ function draw() {
     for (let j = 0; j < itemsY; j++) {
       
       iW = itemW;
-      if (obj.addBounceX && itemsX >= 2){
+      if (itemsX >= 2){
         let delayX = i / itemsX;
         iW += getLoopBounce(0.5 * 0.5 * speedAnimX, delayX) * itemW * 0.8;
       }
 
       iH = itemH;
-      if (obj.addBounceY && itemsY >= 2){
+      if (itemsY >= 2){
         let delayY = j / itemsY;
         iH += getLoopBounce(0.5 * 0.5 * speedAnimy, delayY) * itemH * 0.8;      
       }
@@ -195,7 +163,7 @@ function draw() {
 
   let sec = frameCount / fps;
   if (sec % 1 == 0){
-    console.debug(sec);
+    // console.debug(sec);
   }
 
   if (frameCount == 1){

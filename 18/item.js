@@ -53,7 +53,7 @@ class Item{
         push();
         translate(this.w * 0.5, this.h * 0.5);
         rectMode(CENTER);
-        // rect(0, 0, this.w * 0.92, this.h * 0.94);
+        rect(0, 0, this.w * 0.92, this.h * 0.94);
         pop();
       }
 
@@ -66,30 +66,18 @@ class Item{
 
       if (!this.edge){
         push();
-          translate(this.w * 0.5, this.h * 0.5);
-          // translate(0, -this.h * 0.2);
-          
+          translate(this.w * 0.5, this.h * 0.5);    
           scale(this.scaleX, this.scaleY);
           scale(0.8, 0.8);
           // noStroke();
           if (this.abColor){
             this.color = obj.color0;
             stroke(col);
-            // fill(col);
             fill(0);
             circle(0, 0, this.size);
-          } else {
-            this.color = obj.color1;
-
-            
-            stroke(col2);
-            fill(col);
-            rectMode(CENTER);
-            // rect(0, 0, this.size);
           }
         pop();
       }
-
 
     pop();
   }
