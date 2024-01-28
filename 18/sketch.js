@@ -127,6 +127,7 @@ function setupLil(){
 }
 
 function setupItemList(){
+  background(0);
   itemList = [];
   for (let i = 0; i < itemsX; i++) {
     for (let j = 0; j < itemsY; j++) { 
@@ -198,7 +199,7 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 26 * fps){
+  if (frameCount == 18 * fps){
     sketchExportEnd();
   }
 }

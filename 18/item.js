@@ -57,6 +57,13 @@ class Item{
         pop();
       }
 
+      let ac = map(getLoopBounce(0.25 * 0.25), -1, 1, 0, 100);
+      let col = color(ac, 100, 100);
+      ac += 20;
+      let ab = ac % 100;
+      let col2 = color(ab, 100, 100);
+      strokeWeight(2);
+
       if (!this.edge){
         push();
           translate(this.w * 0.5, this.h * 0.5);
@@ -67,21 +74,16 @@ class Item{
           // noStroke();
           if (this.abColor){
             this.color = obj.color0;
-
-            let ac = map(getLoopBounce(0.25 * 0.25), -1, 1, 0, 100);
-            let col = color(ac, 100, 100);
             stroke(col);
+            fill(col2);
             fill(0);
             circle(0, 0, this.size);
           } else {
             this.color = obj.color1;
 
-            let ab = map(getLoopBounce(0.25 * 0.25), -1, 1, 0, 100);
-            ab += 30;
-            ab = ab % 100;
-            let col2 = color(ab, 100, 100);
+            
             stroke(col2);
-            fill(0);
+            fill(col);
             rectMode(CENTER);
             // rect(0, 0, this.size);
           }
