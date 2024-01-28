@@ -21,7 +21,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1320, 1080);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
