@@ -1,4 +1,4 @@
-let fps = 30;
+let fps = 60;
 
 let itemList = [];
 let abColor = true;
@@ -144,7 +144,7 @@ function draw() {
   let iW = itemW;
   let iH = itemH;
 
-  // background(0, 10);
+  background(0, 1);
   noStroke();
 
   let x = 0;
@@ -155,19 +155,22 @@ function draw() {
   // è governata dallo sketch, che li aggiorna in continuazione
   // l'item sa chi è in fase di creazione (da capire)
 
+  let speedAnimX = map(getLoopBounce(0.25)      , -1, 1, 0.125, 0.25); 
+  let speedAnimy = map(getLoopBounce(0.25, 0.5), -1, 1, 0.125, 0.25); 
+
   for (let i = 0; i < itemsX; i++) {
     for (let j = 0; j < itemsY; j++) {
       
       iW = itemW;
       if (obj.addBounceX && itemsX >= 2){
         let delayX = i / itemsX;
-        iW += getLoopBounce(0.5 * 0.5 * obj.bounceXspeed, delayX) * itemW * 0.8;
+        iW += getLoopBounce(0.5 * 0.5 * speedAnimX, delayX) * itemW * 0.8;
       }
 
       iH = itemH;
       if (obj.addBounceY && itemsY >= 2){
         let delayY = j / itemsY;
-        iH += getLoopBounce(0.5 * 0.5 * obj.bounceYspeed, delayY) * itemH * 0.8;      
+        iH += getLoopBounce(0.5 * 0.5 * speedAnimy, delayY) * itemH * 0.8;      
       }
      
       itemList[delta].update(x, y, iW, iH);
@@ -199,7 +202,7 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 18 * fps){
+  if (frameCount == 30 * fps){
     sketchExportEnd();
   }
 }

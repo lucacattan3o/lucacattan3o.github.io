@@ -75,7 +75,7 @@ class Item{
           if (this.abColor){
             this.color = obj.color0;
             stroke(col);
-            fill(col2);
+            // fill(col);
             fill(0);
             circle(0, 0, this.size);
           } else {
