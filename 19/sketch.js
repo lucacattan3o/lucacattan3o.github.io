@@ -1,12 +1,15 @@
-let fps = 60;
+let fps = 30;
 
 let obj = {
-  itemsX: 5,
-  itemsY: 15,
+  nItemsH: 15,
+  nItemsS: 10,
+  nItemsB: 10,
+  cilRadius: 0.5,
+  cilHeight: 0.6
 };
 
 function setup() {
-  createCanvas(1080, 1980);
+  createCanvas(1080, 1980, WEBGL);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
@@ -14,10 +17,77 @@ function setup() {
     name: 'video'
   });
   setupLil();
+
+  colorMode(HSB, 360, 100, 100);
+
+  // Standard othographic Camera
+  let cam = createCamera();
+  cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
+  cam.lookAt(0, 0, 0);
 }
 
 function draw() {
+  background(10);
+  // orbitControl();
+  ambientLight(255);
   
+  let cRad = width * obj.cilRadius;
+  let cHeight = height * obj.cilHeight;
+  let bri = 0;
+  
+  // incremento della tinta
+  let deltaH = 360 / obj.nItemsH;
+  // incremento della saturazione
+  let deltaS = 100 / obj.nItemsS;
+  // incremento della brillanza
+  let deltaB = 100 / obj.nItemsB;
+  
+  rotateX(PI * 0.25);
+  // rotateX(-getLoop(0.125) * PI * 0.25);
+  rotateZ(getLoop(0.25 * 0.125) * TWO_PI);
+
+  // box(obj.nItemsS * 10);
+  
+  for (iB = 0; iB < obj.nItemsB; iB++){
+    push();
+      let zPos = map(iB, 0, obj.nItemsB, -cHeight * 0.5, cHeight * 0.5, true);
+      translate(0, 0, zPos);
+      // tinta di partenza
+      let hue = 0;
+      
+      for (iH = 0; iH < obj.nItemsH; iH++){
+        let sat = 0;
+        
+        for (iS = 0; iS < obj.nItemsS; iS++){
+          
+          let radius = map(iS, 0, obj.nItemsS, 0, cRad); 
+          
+          push();
+            rotateZ(TWO_PI / obj.nItemsH * iH); 
+            
+            // noStroke();
+            stroke('#fff');
+            let c = color(hue, sat, bri);
+            ambientMaterial(c);
+            translate(radius, 0, 0);
+            
+            let minSize = width * 0.25 * 0.25 * 0.25 * 0.25;
+            let itemSize = minSize + (width * iS * iS * 1/1000);
+            box(itemSize);
+          pop();
+
+          // Incremento la saturazione
+          sat += deltaS;
+        }
+        
+        // Incremento la tinta
+        hue += deltaH;
+      }
+      // Incremento la brillanza
+      bri += deltaB;
+
+    pop();
+  }
 }  
 
 // ** LIL **
@@ -54,8 +124,12 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(1).max(20).step(1).name('Items X');
-  grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
+  grid.add(obj, 'nItemsH').min(2).max(36).step(1).name('Items H');
+  grid.add(obj, 'nItemsS').min(1).max(20).step(1).name('Items S');
+  grid.add(obj, 'nItemsB').min(1).max(20).step(1).name('Items B');
+
+  grid.add(obj, 'cilRadius').min(0).max(1).name('cilRadius');
+  grid.add(obj, 'cilHeight').min(0).max(1).name('cilHeight');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'export').name('Export video');
