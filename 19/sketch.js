@@ -1,5 +1,10 @@
 let fps = 30;
 
+// parameters
+// shape
+// stroke: off | white | black
+// animations
+
 let obj = {
   nItemsH: 15,
   nItemsS: 10,
@@ -7,6 +12,10 @@ let obj = {
 
   cilRadius: 0.5,
   cilHeight: 0.6,
+  itemSize: 0.5,
+
+  radStart: 0,
+  radEnd: 0,
 
   displace: 0,
 
@@ -49,43 +58,66 @@ function draw() {
   
   rotateX(PI * 0.25);
   // rotateX(-getLoop(0.25) * PI * 0.25);
-  rotateZ(getLoop(0.25 * 0.125) * TWO_PI);
+  let rz = getLoop(0.25 * 0.125) * TWO_PI;
+  rotateZ(rz);
 
   translate(0, 0, obj.translateZ * cHeight);
   
-  for (iB = 0; iB < obj.nItemsB; iB++){
+  for (iB = 0; iB <= obj.nItemsB; iB++){
     push();
       let zPos = map(iB, 0, obj.nItemsB, -cHeight * 0.5, cHeight * 0.5, true);
       translate(0, 0, zPos);
       // tinta di partenza
       let hue = 0;
       
-      for (iH = 0; iH < obj.nItemsH; iH++){
+      for (iH = 0; iH <= obj.nItemsH; iH++){
         let sat = 0;
 
         // H Displace
         translate(0, 0, obj.displace * iH / obj.nItemsH * cHeight / obj.nItemsH);
         
-        for (iS = 0; iS < obj.nItemsS; iS++){
+        for (iS = 0; iS <= obj.nItemsS; iS++){
           
           let radius = map(iS, 0, obj.nItemsS, 0, cRad); 
-          
+
+          // Standard angle
+          let angZ = TWO_PI / obj.nItemsH * iH;
+
           push();
-            rotateZ(TWO_PI / obj.nItemsH * iH); 
+            rotateZ(angZ); 
             
             noStroke();
-            stroke('#000');
+            // stroke('#000');
             // stroke('#fff');
             let c = color(hue, sat, bri);
             ambientMaterial(c);
             translate(radius, 0, 0);
             
-            let minSize = width * 0.25 * 0.25 * 0.25 * 0.25;
-            let itemSize = minSize + (width * iS * iS * 1/1000);
-            // box(width * 0.25 * 0.25);
+            let minSize = width * obj.itemSize * 0.25 * 0.25 * 0.25;
+            let itemSize = minSize;
+            
+            let d = 0;  
+            // delay in base alla saturazione
+            d = iS / obj.nItemsS * 0.5 * 0.5;
+            // delay in base alla brillanza
+            // d = iB / obj.nItemsB * 0.5;
+            // delay in base alla tonalità
+            //d = d + iH / obj.nItemsH * 0.5;
+
+            let bounce = getLoopBounce(0.125, d);
+
+            let render = true;
+            if (((rz + angZ) % PI) > PI * obj.radStart && ((rz + angZ) % TWO_PI) < PI * obj.radEnd){
+              render = false;
+            }
+
+            // Straight
             // rotateZ(-TWO_PI / obj.nItemsH * iH);
-            box(itemSize);
-            // sphere(width * 0.25 * 0.25);
+
+            if (render){
+              // box(itemSize);
+              sphere(itemSize * bounce);
+            }
           pop();
 
           // Incremento la saturazione
@@ -97,8 +129,15 @@ function draw() {
       }
       // Incremento la brillanza
       bri += deltaB;
-
     pop();
+  }
+
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 12 * fps){
+    sketchExportEnd();
   }
 }  
 
@@ -137,14 +176,19 @@ function setupLil(){
 
   const gCols = gui.addFolder('Numbers');
   gCols.add(obj, 'nItemsH').min(2).max(36).step(1).name('Items Hue');
-  gCols.add(obj, 'nItemsB').min(1).max(20).step(1).name('Items Brigthness');
+  gCols.add(obj, 'nItemsB').min(1).max(20).step(1).name('Items Saturation');
+  gCols.add(obj, 'nItemsS').min(1).max(20).step(1).name('Items Brightness');
 
   const gSize = gui.addFolder('Size');
-  gSize.add(obj, 'nItemsS').min(1).max(20).step(1).name('Item Size');
+  gSize.add(obj, 'itemSize').min(0.1).max(4).name('Item Size');
   gSize.add(obj, 'cilRadius').min(0.1).max(1).name('Cilinder Radius');
   gSize.add(obj, 'cilHeight').min(0.1).max(1).name('Cilinder Height');
 
   gui.add(obj, 'displace').min(-1).max(1).name('Displace');
+
+  const gSlice = gui.addFolder('Slice');
+  gSlice.add(obj, 'radStart').min(0).max(1).step(0.125).name('Start');
+  gSlice.add(obj, 'radEnd').min(0).max(1).step(0.125).name('End');
 
   const gPos = gui.addFolder('Position');
   gPos.add(obj, 'translateZ').min(-1).max(1).name('Translate Z');
