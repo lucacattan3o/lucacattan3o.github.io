@@ -4,8 +4,13 @@ let obj = {
   nItemsH: 15,
   nItemsS: 10,
   nItemsB: 10,
+
   cilRadius: 0.5,
-  cilHeight: 0.6
+  cilHeight: 0.6,
+
+  displace: 0,
+
+  translateZ: 0,
 };
 
 function setup() {
@@ -43,10 +48,10 @@ function draw() {
   let deltaB = 100 / obj.nItemsB;
   
   rotateX(PI * 0.25);
-  // rotateX(-getLoop(0.125) * PI * 0.25);
+  // rotateX(-getLoop(0.25) * PI * 0.25);
   rotateZ(getLoop(0.25 * 0.125) * TWO_PI);
 
-  // box(obj.nItemsS * 10);
+  translate(0, 0, obj.translateZ * cHeight);
   
   for (iB = 0; iB < obj.nItemsB; iB++){
     push();
@@ -57,6 +62,9 @@ function draw() {
       
       for (iH = 0; iH < obj.nItemsH; iH++){
         let sat = 0;
+
+        // H Displace
+        translate(0, 0, obj.displace * iH / obj.nItemsH * cHeight / obj.nItemsH);
         
         for (iS = 0; iS < obj.nItemsS; iS++){
           
@@ -65,15 +73,19 @@ function draw() {
           push();
             rotateZ(TWO_PI / obj.nItemsH * iH); 
             
-            // noStroke();
-            stroke('#fff');
+            noStroke();
+            stroke('#000');
+            // stroke('#fff');
             let c = color(hue, sat, bri);
             ambientMaterial(c);
             translate(radius, 0, 0);
             
             let minSize = width * 0.25 * 0.25 * 0.25 * 0.25;
             let itemSize = minSize + (width * iS * iS * 1/1000);
+            // box(width * 0.25 * 0.25);
+            // rotateZ(-TWO_PI / obj.nItemsH * iH);
             box(itemSize);
+            // sphere(width * 0.25 * 0.25);
           pop();
 
           // Incremento la saturazione
@@ -123,13 +135,20 @@ obj.clearStorage = function() {
 function setupLil(){
   gui = new GUI();
 
-  const grid = gui.addFolder('Grid');
-  grid.add(obj, 'nItemsH').min(2).max(36).step(1).name('Items H');
-  grid.add(obj, 'nItemsS').min(1).max(20).step(1).name('Items S');
-  grid.add(obj, 'nItemsB').min(1).max(20).step(1).name('Items B');
+  const gCols = gui.addFolder('Numbers');
+  gCols.add(obj, 'nItemsH').min(2).max(36).step(1).name('Items Hue');
+  gCols.add(obj, 'nItemsB').min(1).max(20).step(1).name('Items Brigthness');
 
-  grid.add(obj, 'cilRadius').min(0).max(1).name('cilRadius');
-  grid.add(obj, 'cilHeight').min(0).max(1).name('cilHeight');
+  const gSize = gui.addFolder('Size');
+  gSize.add(obj, 'nItemsS').min(1).max(20).step(1).name('Item Size');
+  gSize.add(obj, 'cilRadius').min(0.1).max(1).name('Cilinder Radius');
+  gSize.add(obj, 'cilHeight').min(0.1).max(1).name('Cilinder Height');
+
+  gui.add(obj, 'displace').min(-1).max(1).name('Displace');
+
+  const gPos = gui.addFolder('Position');
+  gPos.add(obj, 'translateZ').min(-1).max(1).name('Translate Z');
+
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'export').name('Export video');
