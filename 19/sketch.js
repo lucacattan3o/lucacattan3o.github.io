@@ -23,7 +23,7 @@ let obj = {
 };
 
 function setup() {
-  createCanvas(1080, 1980, WEBGL);
+  createCanvas(1080, 1920, WEBGL);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
@@ -136,7 +136,7 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 12 * fps){
+  if (frameCount == 20 * fps){
     sketchExportEnd();
   }
 }  
