@@ -3,20 +3,20 @@
 Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucacattan3o/)
 
 ## Before next WS
-- [ ] Sketch Responsive
+- [x] Sketch Responsive
   - [x] Store all vars in an object
-  - [ ] Add [JSDoc](https://jsdoc.app/)
+  - [x] Add [JSDoc](https://jsdoc.app/)
 - [ ] Sketch record
  - [x] Adapt to p5.js editor (not possible)
- - [ ] Refactory
- - [ ] Try recording music
+ - [x] Refactory
+ - [x] Try recording music
  - [ ] Add [JSDoc](https://jsdoc.app/)
 - [ ] Add fullscreen toggle
 
 ## Some ideas for the future
 
 - [ ] Space and time
-- [ ] Camera interactions (fullscreen)
+- [ ] Camera interactions + matter.js dispersion
 - [ ] Hands interactions + sound + font
 - [ ] Circle packing + image
 - [x] Circle packing + matter.js
@@ -34,7 +34,7 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 
 ## Note
 
-- [ ] Pass file name to sketch export
+- [x] Pass file name to sketch export
 
 `ffmpeg -i video.webm video.mp4`
 
