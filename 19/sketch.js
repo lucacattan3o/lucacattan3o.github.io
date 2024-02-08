@@ -6,7 +6,7 @@ let fps = 30;
 // animations
 
 let obj = {
-  nItemsH: 16,
+  nItemsH: 24,
   nItemsS: 8,
   nItemsB: 8,
 
@@ -19,7 +19,14 @@ let obj = {
 
   displace: 0,
 
+  animate: true,
+  delayH: false,
+  delayS: true,
+  delayB: false,
+
   translateZ: 0,
+  rotateX: 0.125,
+  rotateZ: 0,
 };
 
 function setup() {
@@ -42,24 +49,24 @@ function setup() {
 
 function draw() {
   background(10);
-  // orbitControl();
   ambientLight(255);
+  // orbitControl();
   
   let cRad = width * obj.cilRadius;
   let cHeight = height * obj.cilHeight;
   let bri = 0;
   
-  // incremento della tinta
+  // Hue increment
   let deltaH = 360 / obj.nItemsH;
-  // incremento della saturazione
+  // Saturation increment
   let deltaS = 100 / obj.nItemsS;
-  // incremento della brillanza
+  // Brightness increment
   let deltaB = 100 / obj.nItemsB;
   
-  rotateX(PI * 0.25);
-  // rotateX(-getLoop(0.25) * PI * 0.25);
+  rotateX(TWO_PI * obj.rotateX);
   let rz = getLoop(0.25 * 0.125) * TWO_PI;
-  rotateZ(rz);
+  rotateZ(rz + TWO_PI * obj.rotateZ);
+  // rotateX(-getLoop(0.25) * PI * 0.25);
 
   translate(0, 0, obj.translateZ * cHeight);
   
@@ -67,14 +74,14 @@ function draw() {
     push();
       let zPos = map(iB, 0, obj.nItemsB, -cHeight * 0.5, cHeight * 0.5, true);
       translate(0, 0, zPos);
-      // tinta di partenza
+      
       let hue = 0;
       
       for (iH = 0; iH <= obj.nItemsH; iH++){
         let sat = 0;
 
         // H Displace
-        translate(0, 0, obj.displace * iH / obj.nItemsH * cHeight / obj.nItemsH);
+        // translate(0, 0, obj.displace * iH / obj.nItemsH * cHeight / obj.nItemsH);
         
         for (iS = 0; iS <= obj.nItemsS; iS++){
           
@@ -87,8 +94,6 @@ function draw() {
             rotateZ(angZ); 
             
             noStroke();
-            // stroke('#000');
-            // stroke('#fff');
             let c = color(hue, sat, bri);
             ambientMaterial(c);
             translate(radius, 0, 0);
@@ -97,15 +102,23 @@ function draw() {
             let itemSize = minSize;
             
             let d = 0;  
-            // delay in base alla saturazione
-            // d = iS / obj.nItemsS * 0.5 * 0.5;
-            // delay in base alla brillanza
-            // d = iB / obj.nItemsB * 0.5;
-            // delay in base alla tonalità
-            //d = d + iH / obj.nItemsH * 0.5;
+            // delay based on Saturation
+            if (obj.delayS){
+              d += iS / obj.nItemsS * 0.5 * 0.5;
+            }
+            // delay based on Brightness
+            if (obj.delayB){
+              d += iB / obj.nItemsB * 0.5 * 0.5;
+            }
+            // delay based on Hue
+            if (obj.delayH){
+              d += iH / obj.nItemsH * 0.5;
+            }
 
             let bounce = 1;
-            // let bounce = getLoopBounce(0.125, d);
+            if (obj.animate){
+              bounce = getLoopBounce(0.125, d);
+            }
 
             let render = false;
             if (
@@ -114,23 +127,19 @@ function draw() {
               render = true;
             }
 
-            // Straight
-            // rotateZ(-TWO_PI / obj.nItemsH * iH);
-
             if (render){
-              // box(itemSize);
               sphere(itemSize * bounce);
             }
           pop();
 
-          // Incremento la saturazione
+          // Saturation
           sat += deltaS;
         }
         
-        // Incremento la tinta
+        // Hue
         hue += deltaH;
       }
-      // Incremento la brillanza
+      // Brightness
       bri += deltaB;
     pop();
   }
@@ -187,13 +196,21 @@ function setupLil(){
   gSize.add(obj, 'cilRadius').min(0.1).max(1).name('Radius');
   gSize.add(obj, 'cilHeight').min(0.1).max(1).name('Height');
 
+  const gAnimate = gui.addFolder('Animation');
+  gAnimate.add(obj, 'animate').name('Animate');
+  gAnimate.add(obj, 'delayH').name('Delay H');
+  gAnimate.add(obj, 'delayS').name('Delay S');
+  gAnimate.add(obj, 'delayB').name('Delay B');
+
   // gui.add(obj, 'displace').min(-1).max(1).name('Displace');
 
-  const gClip = gui.addFolder('Clip');
+  const gClip = gui.addFolder('Clip').close();
   gClip.add(obj, 'radStart').min(0).max(1).step(0.125).name('Start');
   gClip.add(obj, 'radEnd').min(0).max(1).step(0.125).name('End');
 
-  const gPos = gui.addFolder('Position');
+  const gPos = gui.addFolder('Position').close();
+  gPos.add(obj, 'rotateX').min(0).max(1).name('Rotate X');
+  gPos.add(obj, 'rotateZ').min(0).max(1).name('Rotate Z');
   gPos.add(obj, 'translateZ').min(-1).max(1).name('Translate Z');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
