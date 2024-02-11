@@ -15,7 +15,8 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 
 ## Some ideas for the future
 
-- [ ] Space and time
+- [ ] Falling sand (3d?)
+- [ ] Random walker animated
 - [ ] Camera interactions + matter.js dispersion
 - [ ] Hands interactions + sound + font
 - [ ] Circle packing + image
