@@ -1,10 +1,5 @@
 let fps = 30;
 
-// parameters
-// shape
-// stroke: off | white | black
-// animations
-
 let obj = {
   nItemsH: 24,
   nItemsS: 8,
