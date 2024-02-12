@@ -61,8 +61,7 @@ function draw() {
   rotateX(TWO_PI * obj.rotateX);
   let rz = getLoop(0.25 * 0.125) * TWO_PI;
   rotateZ(rz + TWO_PI * obj.rotateZ);
-  // rotateX(-getLoop(0.25) * PI * 0.25);
-
+  
   translate(0, 0, obj.translateZ * cHeight);
   
   for (iB = 0; iB <= obj.nItemsB; iB++){
