@@ -142,7 +142,7 @@ function draw() {
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 20 * fps){
+  if (frameCount == 14 * fps){
     sketchExportEnd();
   }
 }  
