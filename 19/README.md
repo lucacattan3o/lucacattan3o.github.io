@@ -1,20 +1,22 @@
 #Sketch 19
 
-This is a tool to show the HSB color space. I started working at it this summer in Denmark when I was learning a lot about colors: @70magenta was sending me several documents with theory and practical examples.
+This summer in Denmark, on rainy days, I started working on this tool to represent the HSB color space. Piergiuseppe Molinar (@70magenta) sent me several documents on color theory during those days, and I absorbed everything with great curiosity.
 
+HSB stands for hue, saturation and brightness: it is a far more human-friendly way of describing color than RGB (red, green, blue).
 
-HSB stands for hue-saturation-brightness, and is a far more human-friendly way of describing color than RGB.
+The tool is created in #p5.js in #WEBGL (3D) mode.
+The color space is represented as a cylinder made up of many small colored spheres.
 
-Hue is a number from 0 to 360 and it's easy to represent it as a color wheel: 0° is  red, 120° is green, 240° is blue, 360° is red again.
+. Hue is represented by the angle of rotation of each element, from 0 to 360°;
+. Saturation is represented by the distance from the center of each circle: at the center the saturation is 0, at the outside it is 100%;
+. Brightness is represented by the vertical position of each element. At the top it is 100, at the bottom it is 0;
 
-Saturation is a number from 0 to 100. 100  means 100% saturation = the richest possible version of that color (the items at the external edges of the cylinder). In the center you have instead 0 saturation.
+Thanks to lil-gui (a very simple and powerful library that generates controllers on the right) it is possible to control and modify:
 
-Brighhtenes is a number from 0 to 100. 0 means no brightness = black. In the cylinder it is represented by the vertical axis. On top you have 100 brightness.
+. how many parts to divide the space according to the three parameters;
+. the position and size of the spheres and cylinder;
+. the animation and in particular the delay based on the various parameters (this is the part that I enjoy the most).
 
-Using the slider you can choose how many subdivisions of these three parameters you want to explore this color space.
+Link in bio to play with it
 
-Animating all the items with a delay based on the parameter you can get some super nice effect.
-
-Try it ;)
-
-`#creativecoding #processing #p5js #generative #creativecodeart`
+`#creativecoding #processing #p5js #generative #creativecodeart #webgl #colors #hsb #rgb`
