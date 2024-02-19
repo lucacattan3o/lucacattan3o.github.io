@@ -5,10 +5,10 @@ let obj = {
   itemsY: 16,
 };
 
-let itemSizeH, itemSizeW;
+let itemSizeH, itemSizeW, aspectRatio, itemSizeMin;
 
 function setup() {
-  createCanvas(1080, 1980);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
@@ -19,16 +19,17 @@ function setup() {
 }
 
 function draw() {
+  background(0);
   itemSizeW = width / obj.itemsX;
   itemSizeH = height / obj.itemsY;
+  
+  aspectRatio = itemSizeW / itemSizeH;
+  itemSizeMin = Math.min(itemSizeW, itemSizeH);
 
   for (let i = 0; i < obj.itemsX; i++) {
     for (let j = 0; j < obj.itemsY; j++) {
-      let n = noise(i, j);
-
       let x = i * itemSizeW;
       let y = j * itemSizeH;
-
       push();
         translate(x, y);
         drawItem(i, j);
@@ -39,11 +40,24 @@ function draw() {
 
 function drawItem(i, j){
 
-  
+  // test scaling
+  if (aspectRatio > 1){
+    scale(aspectRatio, 1);
+  }
+  if (aspectRatio < 1){
+    scale(1, 1 / aspectRatio);
+  }
 
-  rect(0, 0, itemSizeW, itemSizeH);
-  translate(itemSizeW * 0.5, itemSizeH * 0.5)
-  circle(0, 0, itemSizeH);
+  let n = noise(i * 0.1, j * 0.1);
+
+  noFill();
+  noStroke();
+  fill(n * 255);
+  rect(0, 0, itemSizeMin);
+  
+  // translate(itemSizeMin * 0.5, itemSizeMin * 0.5);
+  // fill(255);
+  // circle(0, 0, itemSizeMin);
 }
 
 // ** LIL **
