@@ -36,8 +36,6 @@ function draw() {
   itemSizeW = width / nItemsW;
   itemSizeH = height / nItemsH;
 
-  // todo: remove this lines..
-  // aspectRatio = itemSizeW / itemSizeH;
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
   lineSize = itemSizeMin / obj.lines;
 
@@ -54,23 +52,11 @@ function draw() {
 }  
 
 function drawItem(i, j){
-
-  // test scaling
-  // if (aspectRatio > 1){
-  //   scale(aspectRatio, 1);
-  // }
-  // if (aspectRatio < 1){
-  //   scale(1, 1 / aspectRatio);
-  // }
-
   let n = noise(i * 0.1, j * 0.1);
   let nInt = floor(n * 10);
 
   noFill();
   noStroke();
-  // fill(n * 255);
-  // rect(0, 0, itemSizeMin);
-
   translate(itemSizeMin * 0.5, itemSizeMin * 0.5);
   push();
 
@@ -103,10 +89,6 @@ function drawItem(i, j){
   fill(255);
   textSize(itemSizeMin * 0.2);
   // text(nInt, 0, 0);
-  
-  // translate(itemSizeMin * 0.5, itemSizeMin * 0.5);
-  // fill(255);
-  // circle(0, 0, itemSizeMin);
 }
 
 function drawItemLines(){
@@ -166,10 +148,7 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
-  // grid.add(obj, 'itemsX').min(1).max(20).step(1).name('Items X');
-  // grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
   grid.add(obj, 'lines').min(1).max(colors.length).step(1).name('Lines');
-
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'export').name('Export video');
