@@ -13,7 +13,7 @@ let obj = {
   lines: colors.length,
 };
 
-let nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
+let items, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
 
 function setup() {
   createCanvas(1080, 1920);
@@ -26,10 +26,12 @@ function setup() {
   setupLil();
 
   comDiv = gcd(width, height);
+
+ setupGrid();
 }
 
-function draw() {
-  background(0);
+function setupGrid(){
+  items = [];
   nItemsW = width / comDiv * obj.density;
   nItemsH = height / comDiv * obj.density;
 
@@ -41,75 +43,16 @@ function draw() {
 
   for (let i = 0; i < nItemsW; i++) {
     for (let j = 0; j < nItemsH; j++) {
-      let x = i * itemSizeW;
-      let y = j * itemSizeH;
-      push();
-        translate(x, y);
-        drawItem(i, j);
-      pop();
+      let item = new Item(i, j);
+      items.push(item);
     }
   }
-}  
-
-function drawItem(i, j){
-  let n = noise(i * 0.1, j * 0.1);
-  let nInt = floor(n * 10);
-
-  noFill();
-  noStroke();
-  translate(itemSizeMin * 0.5, itemSizeMin * 0.5);
-  push();
-
-  if (nInt == 4){
-    drawItemLines();
-  }
-  if (nInt == 7){
-    rotate(PI * 1.5);
-    drawItemLines();
-  }
-
-  if (nInt == 3){
-    drawItemCurve();
-  }
-  if (nInt == 5){
-    rotate(HALF_PI);
-    drawItemCurve();
-  }
-  if (nInt == 6){
-    rotate(PI);
-    drawItemCurve();
-  }
-  if (nInt == 2){
-    rotate(PI * 1.5);
-    drawItemCurve();
-  }
-
-  pop();
-
-  fill(255);
-  textSize(itemSizeMin * 0.2);
-  // text(nInt, 0, 0);
 }
 
-function drawItemLines(){
-  translate(-itemSizeMin * 0.5, -itemSizeMin * 0.5);
-  for (let i = 0; i < obj.lines; i++) {
-    let x = i * lineSize;
-    push();
-      translate(x, 0);
-      fill(colors[i]);
-      rect(0, 0, lineSize, itemSizeMin);
-    pop();
-  }
-}
-
-function drawItemCurve(){
-  translate(-itemSizeMin * 0.5, -itemSizeMin * 0.5);
-  for (let i = 0; i < obj.lines; i++) {
-    let ii = obj.lines - i;
-    let radius = ii * lineSize * 2;
-    fill(colors[ii - 1]);
-    arc(0, 0, radius, radius, 0, HALF_PI);
+function draw() {
+  background(0);
+  for (let i = 0; i < items.length; i++) {
+    items[i].draw();
   }
 }
 
@@ -154,8 +97,11 @@ function setupLil(){
   gui.add(obj, 'export').name('Export video');
   gui.add(obj, 'clearStorage').name('Clear');
 
-  // gui.onChange( event => {
-  // });
+  gui.onChange( event => {
+    if (event.property == 'density' || event.property == 'lines'){
+      setupGrid();
+    }
+  });
   
   let saved = localStorage.getItem('guiSettings19');
   if (saved){
