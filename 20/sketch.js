@@ -1,20 +1,19 @@
 let fps = 60;
 
-let obj = {
-  itemsX: 9,
-  itemsY: 16,
-  lines: 5,
-};
-
 let colors = [
   "#ffbe0b",
-  "#fb5607",
+  // "#fb5607",
   "#ff006e",
   "#8338ec",
   "#3a86ff"
 ];
 
-let itemSizeH, itemSizeW, aspectRatio, itemSizeMin;
+let obj = {
+  density: 1,
+  lines: colors.length,
+};
+
+let nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
 
 function setup() {
   createCanvas(1080, 1920);
@@ -25,19 +24,25 @@ function setup() {
     name: 'video'
   });
   setupLil();
+
+  comDiv = gcd(width, height);
 }
 
 function draw() {
   background(0);
-  itemSizeW = width / obj.itemsX;
-  itemSizeH = height / obj.itemsY;
-  
-  aspectRatio = itemSizeW / itemSizeH;
+  nItemsW = width / comDiv * obj.density;
+  nItemsH = height / comDiv * obj.density;
+
+  itemSizeW = width / nItemsW;
+  itemSizeH = height / nItemsH;
+
+  // todo: remove this lines..
+  // aspectRatio = itemSizeW / itemSizeH;
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
   lineSize = itemSizeMin / obj.lines;
 
-  for (let i = 0; i < obj.itemsX; i++) {
-    for (let j = 0; j < obj.itemsY; j++) {
+  for (let i = 0; i < nItemsW; i++) {
+    for (let j = 0; j < nItemsH; j++) {
       let x = i * itemSizeW;
       let y = j * itemSizeH;
       push();
@@ -51,12 +56,12 @@ function draw() {
 function drawItem(i, j){
 
   // test scaling
-  if (aspectRatio > 1){
-    scale(aspectRatio, 1);
-  }
-  if (aspectRatio < 1){
-    scale(1, 1 / aspectRatio);
-  }
+  // if (aspectRatio > 1){
+  //   scale(aspectRatio, 1);
+  // }
+  // if (aspectRatio < 1){
+  //   scale(1, 1 / aspectRatio);
+  // }
 
   let n = noise(i * 0.1, j * 0.1);
   let nInt = floor(n * 10);
@@ -68,7 +73,6 @@ function drawItem(i, j){
 
   translate(itemSizeMin * 0.5, itemSizeMin * 0.5);
   push();
-  
 
   if (nInt == 4){
     drawItemLines();
@@ -161,16 +165,18 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(1).max(20).step(1).name('Items X');
-  grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
-  grid.add(obj, 'lines').min(1).max(5).step(1).name('Lines');
+  grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
+  // grid.add(obj, 'itemsX').min(1).max(20).step(1).name('Items X');
+  // grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
+  grid.add(obj, 'lines').min(1).max(colors.length).step(1).name('Lines');
 
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'export').name('Export video');
   gui.add(obj, 'clearStorage').name('Clear');
 
-  // gui.onChange( event => {});
+  // gui.onChange( event => {
+  // });
   
   let saved = localStorage.getItem('guiSettings19');
   if (saved){
@@ -182,3 +188,7 @@ function saveToStorage(){
   preset = gui.save();
   localStorage.setItem('guiSettings19', JSON.stringify(preset));
 };
+
+function gcd(k, n) {
+  return k ? gcd(n % k, k) : n;
+}
