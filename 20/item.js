@@ -9,6 +9,10 @@ class Item{
 
     this.n = noise(i * 0.1, j * 0.1);
     this.nInt = floor(this.n * 10);
+    this.end = false;
+    setTimeout(() => {
+      this.end = true;
+    }, 4000)
   }
 
   draw(){
@@ -50,8 +54,6 @@ class Item{
         default:
           break;
       }
-
-
     pop();
   }
 
@@ -62,7 +64,11 @@ class Item{
       push();
         translate(x, 0);
         fill(colors[i]);
-        rect(0, 0, lineSize, this.size);
+        if (this.end){
+          rect(0, 0, lineSize, this.size);
+        } else {
+          rect(0, 0, lineSize, this.size * getLoop(0.25));
+        }
       pop();
     }
   }
@@ -73,7 +79,12 @@ class Item{
       let ii = obj.lines - i;
       let radius = ii * lineSize * 2;
       fill(colors[ii - 1]);
-      arc(0, 0, radius, radius, 0, HALF_PI);
+      
+      if (this.end){
+        arc(0, 0, radius, radius, 0, HALF_PI);
+      } else {
+        arc(0, 0, radius, radius, 0, HALF_PI * getLoop(0.25));
+      }
     }
   }
 }
