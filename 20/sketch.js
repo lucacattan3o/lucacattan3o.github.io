@@ -14,7 +14,7 @@ let obj = {
   vel: 1,
 };
 
-let items, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
+let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
 
 function setup() {
   createCanvas(1080, 1920);
@@ -42,22 +42,12 @@ function setupGrid(){
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
   lineSize = itemSizeMin / obj.lines;
 
-  for (let i = 0; i < nItemsW; i++) {
-    for (let j = 0; j < nItemsH; j++) {
-      let item = new Item(i, j);
-      items.push(item);
-    }
-  }
+  walker = new Walker(nItemsW, nItemsH);
+  console.debug(walker);
 }
 
 function draw() {
-  background(0);
-  for (let i = 0; i < items.length; i++) {
-    items[i].update();
-    items[i].draw();
-  }
-  // items[0].update();
-  // items[0].draw();
+  walker.draw();
 }
 
 // ** LIL **

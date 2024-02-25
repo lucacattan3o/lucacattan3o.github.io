@@ -1,26 +1,35 @@
 class Item{
-  constructor(i, j){
+  constructor(i, j, dir){
     this.i = i;
     this.j = j;
 
+    if (dir == undefined){
+      this.n = noise(i * 0.1, j * 0.1);
+      this.dir = floor(this.n * 10);
+    } else {
+      this.dir = dir;
+    }
+    
     this.size = itemSizeMin;
     this.x = this.i * this.size;
-    this.y = this.j * this.size;
+    this.y = this.j * this.size;    
 
-    this.n = noise(i * 0.1, j * 0.1);
-    this.nInt = floor(this.n * 10);
-
+    this.anim = false;
     this.f = 0;
     this.a = 0;
     this.incr = 1 / fps / obj.vel;
     this.end = false;
+  }
+
+  start(){
+    this.anim = true;
     setTimeout(() => {
       this.end = true;
     }, obj.vel * 1000);
   }
 
   update(){
-    if (!this.end){
+    if (this.anim && !this.end){
       this.f++;
       this.a += this.incr;
     }
@@ -32,7 +41,7 @@ class Item{
       translate(this.size * 0.5, this.size * 0.5);
       noStroke();
       
-      switch (this.nInt) {
+      switch (this.dir) {
         case 6:
           this.drawCurve();
           break;
