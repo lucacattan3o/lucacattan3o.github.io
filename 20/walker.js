@@ -3,8 +3,6 @@ class Walker{
   constructor(nItemsW, nItemsH){
     this.nItemsW = nItemsW;
     this.nItemsH = nItemsH;
-    this.startI = null;
-    this.startJ = null;
     this.items = [];
     
     this.directions =  [
@@ -20,10 +18,24 @@ class Walker{
     for (let i = 0; i < this.nItemsW; i++) {
       for (let j = 0; j < this.nItemsH; j++) {
         let item = new Item(i, j);
-        item.start();
+        // item.start();
         this.items.push(item);
       }
     }
+
+    // Starting point
+    let startI = floor(random(nItemsW));
+    let startJ = floor(random(nItemsH));
+    let startDir = random(this.startDirs);
+
+    // Current
+    this.cIndex = this.getIndexFromCoord(startI, startJ);
+    this.items[this.cIndex].setDirection(startDir);
+    this.items[this.cIndex].start();
+  }
+
+  getIndexFromCoord(i, j){
+    return i * this.nItemsH + j;
   }
 
   draw(){

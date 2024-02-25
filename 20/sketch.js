@@ -43,7 +43,6 @@ function setupGrid(){
   lineSize = itemSizeMin / obj.lines;
 
   walker = new Walker(nItemsW, nItemsH);
-  console.debug(walker);
 }
 
 function draw() {

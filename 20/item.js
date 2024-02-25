@@ -21,6 +21,10 @@ class Item{
     this.end = false;
   }
 
+  setDirection(dir){
+    this.dir = dir;
+  }
+
   start(){
     this.anim = true;
     setTimeout(() => {
@@ -61,12 +65,26 @@ class Item{
           this.drawCurve();
           break;
 
-        case 4:
+        // Alto
+        case '2':
+          rotate(PI);
           this.drawLine();
           break;
 
-        case 5:
+        // Basso
+        case '8':
+          this.drawLine();
+          break;
+
+        // Sinistra
+        case '4':
           rotate(PI * 0.5);
+          this.drawLine();
+          break;
+
+        // Destra
+        case '6':
+          rotate(-PI * 0.5);
           this.drawLine();
           break;
         
