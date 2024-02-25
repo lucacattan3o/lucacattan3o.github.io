@@ -1,24 +1,22 @@
 class Item{
-  constructor(i, j, dir){
+  constructor(i, j, index){
     this.i = i;
     this.j = j;
+    this.index = index;
 
-    if (dir == undefined){
-      this.n = noise(i * 0.1, j * 0.1);
-      this.dir = floor(this.n * 10);
-    } else {
-      this.dir = dir;
-    }
+    this.dir = null;
     
     this.size = itemSizeMin;
     this.x = this.i * this.size;
     this.y = this.j * this.size;    
 
     this.anim = false;
+    this.end = false;
     this.f = 0;
     this.a = 0;
-    this.incr = 1 / fps / obj.vel;
-    this.end = false;
+    this.incr = 1 / fps / obj.vel * 10;
+
+    this.debug = true;
   }
 
   setDirection(dir){
@@ -27,15 +25,18 @@ class Item{
 
   start(){
     this.anim = true;
-    setTimeout(() => {
-      this.end = true;
-    }, obj.vel * 1000);
   }
 
   update(){
-    if (this.anim && !this.end){
-      this.f++;
-      this.a += this.incr;
+    if (this.anim) {
+      if (this.a < 1){
+        this.f++;
+        this.a += this.incr;
+      } else {
+        this.end = true;
+        this.anim = false;
+        walker.next();
+      }
     }
   }
 
@@ -44,6 +45,22 @@ class Item{
       translate(this.x, this.y);
       translate(this.size * 0.5, this.size * 0.5);
       noStroke();
+
+      if (this.debug){
+        push();
+          noFill();
+          stroke(255);
+          strokeWeight(1);
+          rectMode(CENTER);
+          rect(0, 0, this.size * 0.9, this.size * 0.9);
+          fill(255);
+          textAlign(CENTER, CENTER);
+          textSize(this.size * 0.3);
+          text(this.index, 0, 0);
+          textSize(this.size * 0.15);
+          text(this.i + ' - ' + this.j, 0, this.size * 0.25);
+        pop();
+      }
       
       switch (this.dir) {
         case 6:
