@@ -11,6 +11,7 @@ let colors = [
 let obj = {
   density: 1,
   lines: colors.length,
+  vel: 1,
 };
 
 let items, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
@@ -52,8 +53,11 @@ function setupGrid(){
 function draw() {
   background(0);
   for (let i = 0; i < items.length; i++) {
+    items[i].update();
     items[i].draw();
   }
+  // items[0].update();
+  // items[0].draw();
 }
 
 // ** LIL **
@@ -93,12 +97,19 @@ function setupLil(){
   grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
   grid.add(obj, 'lines').min(1).max(colors.length).step(1).name('Lines');
 
+  const anim = gui.addFolder('Animation');
+  anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
+
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'export').name('Export video');
   gui.add(obj, 'clearStorage').name('Clear');
 
   gui.onChange( event => {
-    if (event.property == 'density' || event.property == 'lines'){
+    if (
+      event.property == 'density' ||
+      event.property == 'lines' || 
+      event.property == 'vel'
+    ){
       setupGrid();
     }
   });

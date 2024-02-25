@@ -9,10 +9,21 @@ class Item{
 
     this.n = noise(i * 0.1, j * 0.1);
     this.nInt = floor(this.n * 10);
+
+    this.f = 0;
+    this.a = 0;
+    this.incr = 1 / fps / obj.vel;
     this.end = false;
     setTimeout(() => {
       this.end = true;
-    }, 4000)
+    }, obj.vel * 1000);
+  }
+
+  update(){
+    if (!this.end){
+      this.f++;
+      this.a += this.incr;
+    }
   }
 
   draw(){
@@ -67,7 +78,7 @@ class Item{
         if (this.end){
           rect(0, 0, lineSize, this.size);
         } else {
-          rect(0, 0, lineSize, this.size * getLoop(0.25));
+          rect(0, 0, lineSize, this.size * this.a);
         }
       pop();
     }
@@ -83,7 +94,7 @@ class Item{
       if (this.end){
         arc(0, 0, radius, radius, 0, HALF_PI);
       } else {
-        arc(0, 0, radius, radius, 0, HALF_PI * getLoop(0.25));
+        arc(0, 0, radius, radius, 0, HALF_PI * this.a);
       }
     }
   }
