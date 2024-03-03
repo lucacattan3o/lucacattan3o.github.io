@@ -30,6 +30,7 @@ class Item{
   update(){
     if (this.anim) {
       if (this.a < 1){
+        this.incr = 1 / fps / obj.vel * 10;
         this.f++;
         this.a += this.incr;
       } else {

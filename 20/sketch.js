@@ -40,12 +40,11 @@ function setupGrid(){
   itemSizeH = height / nItemsH;
 
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
-  lineSize = itemSizeMin / obj.lines;
-
   walker = new Walker(nItemsW, nItemsH);
 }
 
 function draw() {
+  lineSize = itemSizeMin / obj.lines;
   walker.draw();
 }
 
@@ -95,9 +94,7 @@ function setupLil(){
 
   gui.onChange( event => {
     if (
-      event.property == 'density' ||
-      event.property == 'lines' || 
-      event.property == 'vel'
+      event.property == 'density'
     ){
       setupGrid();
     }
