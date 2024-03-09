@@ -11,10 +11,10 @@ let colors = [
 let obj = {
   density: 1,
   lines: colors.length,
-  vel: 4,
+  vel: 2,
 };
 
-let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;
+let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, innerSize, offset, comDiv;
 
 function setup() {
   createCanvas(1080, 1920);
@@ -44,7 +44,9 @@ function setupGrid(){
 }
 
 function draw() {
-  lineSize = itemSizeMin / obj.lines;
+  innerSize = itemSizeMin * 0.4;   
+  lineSize = innerSize / obj.lines;
+  offset = (itemSizeMin - innerSize) * 0.5;
   walker.draw();
 }
 

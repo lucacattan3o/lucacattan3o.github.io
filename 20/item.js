@@ -8,7 +8,7 @@ class Item{
     
     this.size = itemSizeMin;
     this.x = this.i * this.size;
-    this.y = this.j * this.size;    
+    this.y = this.j * this.size; 
 
     this.anim = false;
     this.end = false;
@@ -16,7 +16,7 @@ class Item{
     this.a = 0;
     this.incr = 1 / fps / obj.vel * 10;
 
-    this.debug = true;
+    this.debug = false;
     this.inverted = false;
   }
 
@@ -54,13 +54,13 @@ class Item{
           stroke(255);
           strokeWeight(1);
           rectMode(CENTER);
-          rect(0, 0, this.size * 0.9, this.size * 0.9);
+          rect(0, 0, this.size, this.size);
           fill(255);
           textAlign(CENTER, CENTER);
           textSize(this.size * 0.3);
           text(this.index, 0, 0);
-          textSize(this.size * 0.15);
-          text(this.i + ' - ' + this.j, 0, this.size * 0.25);
+          // textSize(this.size * 0.15);
+          // text(this.i + ' - ' + this.j, 0, this.size * 0.25);
         pop();
       }
       
@@ -131,7 +131,6 @@ class Item{
           rotate(-PI * 0.5);
           this.drawLine();
           break;
-        
       
         default:
           break;
@@ -141,6 +140,7 @@ class Item{
 
   drawLine(){
     translate(-this.size * 0.5, -this.size * 0.5);
+    translate(offset, 0);
     for (let i = 0; i < obj.lines; i++) {
       let x = i * lineSize;
       push();
@@ -159,13 +159,11 @@ class Item{
     translate(-this.size * 0.5, -this.size * 0.5);
     for (let i = 0; i < obj.lines; i++) {
       let ii = obj.lines - i;
-      let radius = ii * lineSize * 2;
+      let radius = ii * lineSize * 2 + (offset * 2);
       if (this.inverted){
         ii = i + 1;
       }
       fill(colors[ii - 1]);
-      
-      
       if (this.end){
         arc(0, 0, radius, radius, 0, HALF_PI);
       } else {
@@ -175,6 +173,8 @@ class Item{
           arc(0, 0, radius, radius, 0, HALF_PI * this.a);
         }
       }
+      fill(0);
+      arc(0, 0, offset * 2, offset * 2, 0, HALF_PI);
     }
   }
 }

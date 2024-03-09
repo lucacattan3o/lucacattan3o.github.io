@@ -30,7 +30,6 @@ class Walker{
       this.cI = item.i;
       this.cJ = item.j;
       this.cDir = random(this.startDirs);
-      this.cDir = 'dx';
       this.cIndex = this.getIndex(this.cI, this.cJ);
       this.items[this.cIndex].setDirection(this.cDir);
       this.items[this.cIndex].start();
@@ -49,7 +48,7 @@ class Walker{
     if (this.items[next] !== undefined){
       // if next is already occupied
       if (this.items[next].end){
-        // this.startWalker();
+        this.startWalker();
       } else {
         this.cI = this.items[next].i;
         this.cJ = this.items[next].j;
