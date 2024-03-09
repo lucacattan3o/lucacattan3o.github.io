@@ -61,7 +61,7 @@ class Walker{
 
   changeDirection(){
     let dir = this.cDir;
-    if (random() > 0.5){
+    if (random() > 0.1){
       switch (dir) {
         case 'sx':
           if (random() > 0.5){
@@ -146,7 +146,6 @@ class Walker{
   }
 
   draw(){
-    background(0);
     for (let i = 0; i < this.items.length; i++) {
       this.items[i].update();
       this.items[i].draw();

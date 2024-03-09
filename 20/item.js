@@ -173,7 +173,7 @@ class Item{
           arc(0, 0, radius, radius, 0, HALF_PI * this.a);
         }
       }
-      fill(0);
+      fill(obj.background);
       arc(0, 0, offset * 2, offset * 2, 0, HALF_PI);
     }
   }

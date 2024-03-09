@@ -12,6 +12,7 @@ let obj = {
   density: 1,
   lines: colors.length,
   vel: 2,
+  background: '#000000',
 };
 
 let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, innerSize, offset, comDiv;
@@ -44,9 +45,12 @@ function setupGrid(){
 }
 
 function draw() {
-  innerSize = itemSizeMin * 0.4;   
+  background(obj.background);
+
+  innerSize = itemSizeMin * 0.8;   
   lineSize = innerSize / obj.lines;
   offset = (itemSizeMin - innerSize) * 0.5;
+
   walker.draw();
 }
 
@@ -86,6 +90,9 @@ function setupLil(){
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
   grid.add(obj, 'lines').min(1).max(colors.length).step(1).name('Lines');
+
+  const guiColors = gui.addFolder('guiColors');
+  guiColors.addColor(obj, 'background').name('Color');
 
   const anim = gui.addFolder('Animation');
   anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
