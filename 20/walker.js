@@ -67,8 +67,6 @@ class Walker{
       } else {
         end = true;
       }
-      // console.debug(this.cI, this.cJ);
-      // console.debug(this.cIndex);
     } else {
       end = true;
     }
