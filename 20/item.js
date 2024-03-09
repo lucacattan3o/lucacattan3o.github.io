@@ -84,9 +84,30 @@ class Item{
           rotate(PI);
           this.drawCurve();
           break;
+
+        case 'up-to-sx':
+          this.inverted = true;
+          rotate(PI * 1.5);
+          this.drawCurve();
+          break;
         
         case 'dx-to-dw':
           rotate(PI * 1.5);
+          this.drawCurve();
+          break;
+        
+        case 'dx-to-up':
+          this.inverted = true;
+          this.drawCurve();
+          break;
+
+        case 'dw-to-dx':
+          this.inverted = true;
+          rotate(PI * 0.5);
+          this.drawCurve();
+          break;
+        
+        case 'dw-to-sx':
           this.drawCurve();
           break;
 

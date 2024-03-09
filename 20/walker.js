@@ -30,7 +30,7 @@ class Walker{
       this.cI = item.i;
       this.cJ = item.j;
       this.cDir = random(this.startDirs);
-      this.cDir = 'sx';
+      this.cDir = 'dx';
       this.cIndex = this.getIndex(this.cI, this.cJ);
       this.items[this.cIndex].setDirection(this.cDir);
       this.items[this.cIndex].start();
@@ -42,17 +42,9 @@ class Walker{
   }
 
   next(){
-
-    let tmpDir = this.cDir;
-    switch (this.cDir) {
-      case 'sx-to-up':
-        tmpDir = 'up';
-        break;
-      case 'sx-to-dw':
-        tmpDir = 'dw';
-        break;
+    if (this.cDir.substring(2, 6) == '-to-'){
+      this.cDir = this.cDir.substring(6, 8);
     }
-    this.cDir = tmpDir;
     let next = this.getNextIndex(this.cI, this.cJ, this.cDir); 
     if (this.items[next] !== undefined){
       // if next is already occupied
@@ -70,16 +62,35 @@ class Walker{
 
   changeDirection(){
     let dir = this.cDir;
-    if (random() > 0.7){
+    if (random() > 0.5){
       switch (dir) {
-        case 'sx': // sx
+        case 'sx':
           if (random() > 0.5){
             dir = 'sx-to-up';
           } else {
             dir = 'sx-to-dw';
           }
-          dir = 'sx-to-dw';
-          console.debug(dir);
+          break;
+        case 'dx':
+          if (random() > 0.5){
+          } else {
+            dir = 'dx-to-dw';
+          }
+          dir = 'dx-to-up';
+          break;
+        case 'up':
+          if (random() > 0.5){
+            dir = 'up-to-sx';
+          } else {
+            dir = 'up-to-dx';
+          }
+          break;
+        case 'dw':
+          if (random() > 0.5){
+            dir = 'dw-to-sx';
+          } else {
+            dir = 'dw-to-dx';
+          }
           break;
       
         default:
