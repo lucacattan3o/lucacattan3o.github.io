@@ -48,28 +48,36 @@ class Walker{
           occupied++;
         }
       });
-      if (occupied >= 2){
+      if (occupied >= 4){
         return false;
       }
 
       return true;
     })
+    let end = false;
     if (nextFree.length > 0){
       let item = random(nextFree);
       this.cI = item.i;
       this.cJ = item.j;
-      this.cDir = this.getValidRandomDirection(this.cI, this.cJ);
-      this.cIndex = this.getIndex(this.cI, this.cJ);
-      this.items[this.cIndex].setDirection(this.cDir);
-      this.items[this.cIndex].start();
+      this.cDir = this.getValidStartRandomDirection(this.cI, this.cJ);
+      if (this.cDir){
+        this.cIndex = this.getIndex(this.cI, this.cJ);
+        this.items[this.cIndex].setDirection(this.cDir);
+        this.items[this.cIndex].start();
+      } else {
+        end = true;
+      }
       // console.debug(this.cI, this.cJ);
       // console.debug(this.cIndex);
     } else {
+      end = true;
+    }
+    if (end){
       console.debug('Finish!');
     }
   }
 
-  getValidRandomDirection(i, j){
+  getValidStartRandomDirection(i, j){
     let dirs = shuffle(this.startDirs);
     let validDir = null;
     for (let d = 0; d < dirs.length; d++) {
@@ -83,6 +91,13 @@ class Walker{
     return validDir;
   }
 
+  // getValidRandomDirection(i, j, dir){
+  //   let nn = this.getNextIndex(i, j, dir);
+  //   if (this.items[nn].end){
+  //     return dir;
+  //   }
+  // }
+
   next(){
     if (this.cDir.substring(2, 6) == '-to-'){
       this.cDir = this.cDir.substring(6, 8);
@@ -95,7 +110,20 @@ class Walker{
       } else {
         this.cI = this.items[next].i;
         this.cJ = this.items[next].j;
+
+        // let origDir = this.cDir;
         this.cDir = this.changeDirection();
+        
+        // la nuova direzione è valida o ce ne sarebbe una migliore?
+        // controllo il prossimo
+        // let nn = this.getNextIndex(this.cI, this.cJ, newDir);
+        // if (this.items[nn].end){
+        //   console.debug('Non valida');
+        //   let valid = this.getValidRandomDirection(this.cI, this.cJ, origDir);
+        //   if (valid){
+        //     this.cDir = valid;
+        //   }
+        // }
         this.items[next].setDirection(this.cDir);
         this.items[next].start();
       }
@@ -105,39 +133,40 @@ class Walker{
   changeDirection(){
     let dir = this.cDir;
     if (random() > 0.5){
-      switch (dir) {
-        case 'sx':
-          if (random() > 0.5){
-            dir = 'sx-to-up';
-          } else {
-            dir = 'sx-to-dw';
-          }
-          break;
-        case 'dx':
-          if (random() > 0.5){
-          } else {
-            dir = 'dx-to-dw';
-          }
-          dir = 'dx-to-up';
-          break;
-        case 'up':
-          if (random() > 0.5){
-            dir = 'up-to-sx';
-          } else {
-            dir = 'up-to-dx';
-          }
-          break;
-        case 'dw':
-          if (random() > 0.5){
-            dir = 'dw-to-sx';
-          } else {
-            dir = 'dw-to-dx';
-          }
-          break;
-      
-        default:
-          break;
-      }
+      return dir;
+    }
+    switch (dir) {
+      case 'sx':
+        if (random() > 0.5){
+          dir = 'sx-to-up';
+        } else {
+          dir = 'sx-to-dw';
+        }
+        break;
+      case 'dx':
+        if (random() > 0.5){
+        } else {
+          dir = 'dx-to-dw';
+        }
+        dir = 'dx-to-up';
+        break;
+      case 'up':
+        if (random() > 0.5){
+          dir = 'up-to-sx';
+        } else {
+          dir = 'up-to-dx';
+        }
+        break;
+      case 'dw':
+        if (random() > 0.5){
+          dir = 'dw-to-sx';
+        } else {
+          dir = 'dw-to-dx';
+        }
+        break;
+    
+      default:
+        break;
     }
     return dir;
   }
