@@ -23,13 +23,42 @@ class Walker{
 
   startWalker(){
     let nextFree = this.items.filter((item) => {
-      return !item.end;
+
+      if (item.end){
+        return false;
+      }
+
+      // controllo sx, dx, up, dw
+      let i = item.i;
+      let j = item.j;
+
+      let nears = [
+        { ni: -1, nj: 0},
+        { ni: 1,  nj: 0},
+        { ni: 0,  nj: -1},
+        { ni: 0,  nj: 1},
+      ];
+      
+      let occupied = 0;
+      nears.forEach((near) => {
+        let ni = i + near.ni;
+        let nj = j + near.nj;
+        let index = this.getIndex(ni, nj);
+        if (this.items[index] !== undefined && this.items[index].end){
+          occupied++;
+        }
+      });
+      if (occupied >= 2){
+        return false;
+      }
+
+      return true;
     })
     if (nextFree.length > 0){
       let item = random(nextFree);
       this.cI = item.i;
       this.cJ = item.j;
-      this.cDir = random(this.startDirs);
+      this.cDir = this.getValidRandomDirection(this.cI, this.cJ);
       this.cIndex = this.getIndex(this.cI, this.cJ);
       this.items[this.cIndex].setDirection(this.cDir);
       this.items[this.cIndex].start();
@@ -38,6 +67,20 @@ class Walker{
     } else {
       console.debug('Finish!');
     }
+  }
+
+  getValidRandomDirection(i, j){
+    let dirs = shuffle(this.startDirs);
+    let validDir = null;
+    for (let d = 0; d < dirs.length; d++) {
+      let dir = dirs[d];
+      let index = this.getNextIndex(i, j, dir);
+      if (!this.items[index].end){
+        validDir = dir; 
+        break;
+      }
+    }
+    return validDir;
   }
 
   next(){
@@ -61,7 +104,7 @@ class Walker{
 
   changeDirection(){
     let dir = this.cDir;
-    if (random() > 0.1){
+    if (random() > 0.5){
       switch (dir) {
         case 'sx':
           if (random() > 0.5){
