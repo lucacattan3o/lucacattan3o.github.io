@@ -11,7 +11,7 @@ let colors = [
 let obj = {
   density: 1,
   lines: colors.length,
-  vel: 1,
+  vel: 4,
 };
 
 let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, comDiv;

@@ -17,6 +17,7 @@ class Item{
     this.incr = 1 / fps / obj.vel * 10;
 
     this.debug = true;
+    this.inverted = false;
   }
 
   setDirection(dir){
@@ -64,44 +65,48 @@ class Item{
       }
       
       switch (this.dir) {
-        case 6:
+        case '--':
           this.drawCurve();
           break;
 
-        case 7:
+        case 'sx-to-up':
           rotate(PI * 0.5);
           this.drawCurve();
           break;
-        
-        case 8:
+
+        case 'sx-to-dw':
+          this.inverted = true;
           rotate(PI);
           this.drawCurve();
           break;
         
-        case 3:
+        case 'up-to-dx':
+          rotate(PI);
+          this.drawCurve();
+          break;
+        
+        case 'dx-to-dw':
           rotate(PI * 1.5);
           this.drawCurve();
           break;
 
-        // Alto
-        case '2':
+        // lines
+
+        case 'up':
           rotate(PI);
           this.drawLine();
           break;
 
-        // Basso
-        case '8':
+        case 'dw':
           this.drawLine();
           break;
 
-        // Sinistra
-        case '4':
+        case 'sx':
           rotate(PI * 0.5);
           this.drawLine();
           break;
 
-        // Destra
-        case '6':
+        case 'dx':
           rotate(-PI * 0.5);
           this.drawLine();
           break;
@@ -134,12 +139,20 @@ class Item{
     for (let i = 0; i < obj.lines; i++) {
       let ii = obj.lines - i;
       let radius = ii * lineSize * 2;
+      if (this.inverted){
+        ii = i + 1;
+      }
       fill(colors[ii - 1]);
+      
       
       if (this.end){
         arc(0, 0, radius, radius, 0, HALF_PI);
       } else {
-        arc(0, 0, radius, radius, 0, HALF_PI * this.a);
+        if (this.inverted){
+          arc(0, 0, radius, radius, HALF_PI * (1 - this.a), HALF_PI);
+        } else {
+          arc(0, 0, radius, radius, 0, HALF_PI * this.a);
+        }
       }
     }
   }
