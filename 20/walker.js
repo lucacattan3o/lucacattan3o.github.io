@@ -28,28 +28,30 @@ class Walker{
         return false;
       }
 
-      // controllo sx, dx, up, dw
-      let i = item.i;
-      let j = item.j;
-
-      let nears = [
-        { ni: -1, nj: 0},
-        { ni: 1,  nj: 0},
-        { ni: 0,  nj: -1},
-        { ni: 0,  nj: 1},
-      ];
-      
-      let occupied = 0;
-      nears.forEach((near) => {
-        let ni = i + near.ni;
-        let nj = j + near.nj;
-        let index = this.getIndex(ni, nj);
-        if (this.items[index] !== undefined && this.items[index].end){
-          occupied++;
+      if (!obj.fill){
+        // controllo sx, dx, up, dw
+        let i = item.i;
+        let j = item.j;
+  
+        let nears = [
+          { ni: -1, nj: 0},
+          { ni: 1,  nj: 0},
+          { ni: 0,  nj: -1},
+          { ni: 0,  nj: 1},
+        ];
+        
+        let occupied = 0;
+        nears.forEach((near) => {
+          let ni = i + near.ni;
+          let nj = j + near.nj;
+          let index = this.getIndex(ni, nj);
+          if (this.items[index] !== undefined && this.items[index].end){
+            occupied++;
+          }
+        });
+        if (occupied >= 4){
+          return false;
         }
-      });
-      if (occupied >= 4){
-        return false;
       }
 
       return true;
@@ -59,14 +61,27 @@ class Walker{
       let item = random(nextFree);
       this.cI = item.i;
       this.cJ = item.j;
-      this.cDir = this.getValidStartRandomDirection(this.cI, this.cJ);
-      if (this.cDir){
-        this.cIndex = this.getIndex(this.cI, this.cJ);
-        this.items[this.cIndex].setDirection(this.cDir);
-        this.items[this.cIndex].start();
+
+      let valDir = this.getValidStartRandomDirection(this.cI, this.cJ);
+      if (valDir){
+        this.cDir = valDir;
       } else {
-        end = true;
+        this.cDir = random(this.startDirs);
       }
+      this.cIndex = this.getIndex(this.cI, this.cJ);
+      this.items[this.cIndex].setDirection(this.cDir);
+      this.items[this.cIndex].start();
+
+      // qui è da sistemare
+      // se non trova una direzione valida si ferma..
+      // this.cDir = this.getValidStartRandomDirection(this.cI, this.cJ);
+      // if (this.cDir){
+      //   this.cIndex = this.getIndex(this.cI, this.cJ);
+      //   this.items[this.cIndex].setDirection(this.cDir);
+      //   this.items[this.cIndex].start();
+      // } else {
+      //   // end = true;
+      // }
     } else {
       end = true;
     }
@@ -130,7 +145,7 @@ class Walker{
 
   changeDirection(){
     let dir = this.cDir;
-    if (random() > 0.5){
+    if (random() > obj.changeDirFreq){
       return dir;
     }
     switch (dir) {

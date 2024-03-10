@@ -6,7 +6,9 @@ let obj = {
   density: 1,
   lines: 5,
   size: 0.8,
-  vel: 2,
+  changeDirFreq: 0.5,
+  fill: false,
+  vel: 0.5,
   background: '#000000',
   color0: "#390099",
   color1: "#9e0059",
@@ -98,8 +100,6 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'density').min(1).max(3).step(1).name('Density');
-  grid.add(obj, 'lines').min(1).max(5).step(1).name('Lines');
-  grid.add(obj, 'size').min(0.2).max(1).step(0.1).name('Size');
 
   const guiColors = gui.addFolder('Colors');
   guiColors.addColor(obj, 'background').name('Background');
@@ -108,6 +108,12 @@ function setupLil(){
   guiColors.addColor(obj, 'color2').name('Color 2');
   guiColors.addColor(obj, 'color3').name('Color 3');
   guiColors.addColor(obj, 'color4').name('Color 4');
+
+  const guiWalker = gui.addFolder('Walker');
+  guiWalker.add(obj, 'lines').min(1).max(5).step(1).name('N. lines');
+  guiWalker.add(obj, 'size').min(0.2).max(1).step(0.1).name('Size');
+  guiWalker.add(obj, 'changeDirFreq').min(0).max(1).step(0.1).name('Change Direction');
+  guiWalker.add(obj, 'fill').name('Fill every spot');
 
   const anim = gui.addFolder('Animation');
   anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
