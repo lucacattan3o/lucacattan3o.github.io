@@ -113,7 +113,7 @@ function setupLil(){
   guiWalker.add(obj, 'lines').min(1).max(5).step(1).name('N. lines');
   guiWalker.add(obj, 'size').min(0.2).max(1).step(0.1).name('Size');
   guiWalker.add(obj, 'changeDirFreq').min(0).max(1).step(0.1).name('Change Direction');
-  guiWalker.add(obj, 'fill').name('Fill every spot');
+  guiWalker.add(obj, 'fill').name('Fill single spots');
 
   const anim = gui.addFolder('Animation');
   anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
