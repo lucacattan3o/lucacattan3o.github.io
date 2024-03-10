@@ -1,18 +1,18 @@
 let fps = 60;
 
-let colors = [
-  "#390099",
-  "#9e0059",
-  "#ff0054",
-  "#ff5400",
-  "#ffbd00"
-];
+let colors = [];
 
 let obj = {
   density: 1,
-  lines: colors.length,
+  lines: 5,
+  size: 0.8,
   vel: 2,
   background: '#000000',
+  color0: "#390099",
+  color1: "#9e0059",
+  color2: "#ff0054",
+  color3: "#ff5400",
+  color4: "#ffbd00"
 };
 
 let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, innerSize, offset, comDiv;
@@ -27,12 +27,21 @@ function setup() {
   });
   setupLil();
 
+  colors = [
+    obj.color0,
+    obj.color1,
+    obj.color2,
+    obj.color3,
+    obj.color4,
+  ];
+
   comDiv = gcd(width, height);
 
- setupGrid();
+  setupGrid();
 }
 
 function setupGrid(){
+
   items = [];
   nItemsW = width / comDiv * obj.density;
   nItemsH = height / comDiv * obj.density;
@@ -47,7 +56,7 @@ function setupGrid(){
 function draw() {
   background(obj.background);
 
-  innerSize = itemSizeMin * 0.8;   
+  innerSize = itemSizeMin * obj.size;   
   lineSize = innerSize / obj.lines;
   offset = (itemSizeMin - innerSize) * 0.5;
 
@@ -88,11 +97,17 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
-  grid.add(obj, 'lines').min(1).max(colors.length).step(1).name('Lines');
+  grid.add(obj, 'density').min(1).max(3).step(1).name('Density');
+  grid.add(obj, 'lines').min(1).max(5).step(1).name('Lines');
+  grid.add(obj, 'size').min(0.2).max(1).step(0.1).name('Size');
 
-  const guiColors = gui.addFolder('guiColors');
-  guiColors.addColor(obj, 'background').name('Color');
+  const guiColors = gui.addFolder('Colors');
+  guiColors.addColor(obj, 'background').name('Background');
+  guiColors.addColor(obj, 'color0').name('Color 0');
+  guiColors.addColor(obj, 'color1').name('Color 1');
+  guiColors.addColor(obj, 'color2').name('Color 2');
+  guiColors.addColor(obj, 'color3').name('Color 3');
+  guiColors.addColor(obj, 'color4').name('Color 4');
 
   const anim = gui.addFolder('Animation');
   anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
@@ -102,10 +117,12 @@ function setupLil(){
   gui.add(obj, 'clearStorage').name('Clear');
 
   gui.onChange( event => {
-    if (
-      event.property == 'density'
-    ){
+    if (event.property == 'density'){
       setupGrid();
+    }
+    if (event.property.substring(0, 5) == 'color'){
+      let delta = parseInt(event.property.substring(5, 6));
+      colors[delta] = event.value;
     }
   });
   
