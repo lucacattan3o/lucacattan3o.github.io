@@ -2,8 +2,7 @@ let fps = 60;
 
 let colors = [];
 
-// restart
-// save png
+// show debug
 
 let obj = {
   density: 1,
@@ -11,13 +10,14 @@ let obj = {
   size: 0.8,
   changeDirFreq: 0.5,
   fill: false,
-  vel: 0.5,
+  speed: 3,
   background: '#000000',
   color0: "#390099",
   color1: "#9e0059",
   color2: "#ff0054",
   color3: "#ff5400",
-  color4: "#ffbd00"
+  color4: "#ffbd00",
+  showDebug: false,
 };
 
 let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, innerSize, offset, comDiv;
@@ -121,6 +121,7 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'density').min(1).max(3).step(1).name('Density');
+  grid.add(obj, 'showDebug').name('Show Grid');
 
   const guiColors = gui.addFolder('Colors');
   guiColors.addColor(obj, 'background').name('Background');
@@ -137,13 +138,13 @@ function setupLil(){
   guiWalker.add(obj, 'fill').name('Fill also single spots');
 
   const anim = gui.addFolder('Animation');
-  anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
+  anim.add(obj, 'speed').min(1).max(8).step(1).name('Speed');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
+  gui.add(obj, 'startOver').name('Play Again');
 
   let exportBtn = gui.add(obj, 'export').name('Export Video');
-
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   if (urlParams.get('export') == 'true'){
@@ -151,9 +152,7 @@ function setupLil(){
     exportBtn.disable();
     exportBtn.name('Exporting...');
   }
-
   
-  gui.add(obj, 'startOver').name('Play Again');
   gui.add(obj, 'saveImage').name('Save Image');
 
   gui.onChange( event => {

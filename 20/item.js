@@ -14,9 +14,8 @@ class Item{
     this.end = false;
     this.f = 0;
     this.a = 0;
-    this.incr = 1 / fps / obj.vel * 10;
+    this.incr = 1 / fps / (1 / obj.speed);
 
-    this.debug = false;
     this.inverted = false;
   }
 
@@ -30,8 +29,8 @@ class Item{
 
   update(){
     if (this.anim) {
-      if (this.a < 1){
-        this.incr = 1 / fps / obj.vel * 10;
+      if (this.a <= 1){
+        this.incr = 1 / fps / (1 / obj.speed);
         this.f++;
         this.a += this.incr;
       } else {
@@ -48,7 +47,7 @@ class Item{
       translate(this.size * 0.5, this.size * 0.5);
       noStroke();
 
-      if (this.debug){
+      if (obj.showDebug){
         push();
           noFill();
           stroke(255);
