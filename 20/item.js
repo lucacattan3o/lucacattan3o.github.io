@@ -29,10 +29,14 @@ class Item{
 
   update(){
     if (this.anim) {
-      if (this.a <= 1){
+      if (this.a < 1){
         this.incr = 1 / fps / (1 / obj.speed);
         this.f++;
         this.a += this.incr;
+        // fix
+        if (this.a > 1){
+          this.a = 1;
+        }
       } else {
         this.end = true;
         this.anim = false;

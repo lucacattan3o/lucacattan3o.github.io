@@ -1,4 +1,4 @@
-let fps = 60;
+let fps = 30;
 
 let colors = [];
 
@@ -7,7 +7,7 @@ let colors = [];
 let obj = {
   density: 1,
   lines: 5,
-  size: 0.8,
+  size: 1,
   changeDirFreq: 0.5,
   fill: false,
   speed: 7,
