@@ -2,6 +2,9 @@ let fps = 60;
 
 let colors = [];
 
+// restart
+// save png
+
 let obj = {
   density: 1,
   lines: 5,
@@ -18,6 +21,7 @@ let obj = {
 };
 
 let walker, nItemsH, nItemsW, itemSizeH, itemSizeW, aspectRatio, itemSizeMin, innerSize, offset, comDiv;
+let walkerEnd = false;
 
 function setup() {
   createCanvas(1080, 1920);
@@ -45,8 +49,8 @@ function setup() {
 function setupGrid(){
 
   items = [];
-  nItemsW = width / comDiv * obj.density;
-  nItemsH = height / comDiv * obj.density;
+  nItemsW = ceil(width / comDiv * obj.density);
+  nItemsH = ceil(height / comDiv * obj.density);
 
   itemSizeW = width / nItemsW;
   itemSizeH = height / nItemsH;
@@ -63,6 +67,14 @@ function draw() {
   offset = (itemSizeMin - innerSize) * 0.5;
 
   walker.draw();
+
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (walkerEnd){
+    sketchExportEnd();
+  }
 }
 
 // ** LIL **
@@ -91,9 +103,18 @@ obj.export = function() {
 };
 
 obj.clearStorage = function() {
-  localStorage.removeItem('guiSettings19');
+  localStorage.removeItem('guiSettings20');
   window.location = window.location.href.split("?")[0];
 };
+
+obj.startOver = function(){
+  saveToStorage();
+  window.location = window.location.href.split("?")[0];
+};
+
+obj.saveImage = function(){
+  saveCanvas("visual", "png");
+}
 
 function setupLil(){
   gui = new GUI();
@@ -113,14 +134,27 @@ function setupLil(){
   guiWalker.add(obj, 'lines').min(1).max(5).step(1).name('N. lines');
   guiWalker.add(obj, 'size').min(0.2).max(1).step(0.1).name('Size');
   guiWalker.add(obj, 'changeDirFreq').min(0).max(1).step(0.1).name('Change Direction');
-  guiWalker.add(obj, 'fill').name('Fill single spots');
+  guiWalker.add(obj, 'fill').name('Fill also single spots');
 
   const anim = gui.addFolder('Animation');
   anim.add(obj, 'vel').min(0.25).max(2).step(0.25).name('Velocity');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
-  gui.add(obj, 'export').name('Export video');
-  gui.add(obj, 'clearStorage').name('Clear');
+  gui.add(obj, 'clearStorage').name('Clear Preset');
+
+  let exportBtn = gui.add(obj, 'export').name('Export Video');
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  if (urlParams.get('export') == 'true'){
+    console.debug('test');
+    exportBtn.disable();
+    exportBtn.name('Exporting...');
+  }
+
+  
+  gui.add(obj, 'startOver').name('Play Again');
+  gui.add(obj, 'saveImage').name('Save Image');
 
   gui.onChange( event => {
     if (event.property == 'density'){
@@ -132,7 +166,7 @@ function setupLil(){
     }
   });
   
-  let saved = localStorage.getItem('guiSettings19');
+  let saved = localStorage.getItem('guiSettings20');
   if (saved){
     gui.load(JSON.parse(saved));
   };
@@ -140,7 +174,7 @@ function setupLil(){
 
 function saveToStorage(){
   preset = gui.save();
-  localStorage.setItem('guiSettings19', JSON.stringify(preset));
+  localStorage.setItem('guiSettings20', JSON.stringify(preset));
 };
 
 function gcd(k, n) {

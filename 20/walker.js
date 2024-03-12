@@ -86,6 +86,7 @@ class Walker{
       end = true;
     }
     if (end){
+      walkerEnd = true;
       console.debug('Finish!');
     }
   }
