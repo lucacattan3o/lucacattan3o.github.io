@@ -10,7 +10,7 @@ let obj = {
   size: 0.8,
   changeDirFreq: 0.5,
   fill: false,
-  speed: 3,
+  speed: 7,
   background: '#000000',
   color0: "#390099",
   color1: "#9e0059",
@@ -124,7 +124,7 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'density').min(1).max(3).step(1).name('Density');
+  grid.add(obj, 'density').min(1).max(4).step(1).name('Density');
   grid.add(obj, 'showDebug').name('Show Grid');
 
   const guiColors = gui.addFolder('Colors');
