@@ -112,6 +112,10 @@ obj.startOver = function(){
   window.location = window.location.href.split("?")[0];
 };
 
+obj.stopExport = function(){
+  walkerEnd = true;
+};
+
 obj.saveImage = function(){
   saveCanvas("visual", "png");
 }
@@ -151,6 +155,8 @@ function setupLil(){
     console.debug('test');
     exportBtn.disable();
     exportBtn.name('Exporting...');
+
+    gui.add(obj, 'stopExport').name('Stop Export');
   }
   
   gui.add(obj, 'saveImage').name('Save Image');
