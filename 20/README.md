@@ -6,7 +6,7 @@ Inspired by some visuals created by @andrewmcwhae (check out his great work!), I
 
 A random walker is a mathematical model of a path that consists of a succession of random steps.
 
-Adding animations took a few days, but it was definitely worth it :)
+Adding animations took several hours, but it was definitely worth it :)
 
 Link in bio to play with it
 
