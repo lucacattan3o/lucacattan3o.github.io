@@ -1,6 +1,6 @@
 let fps = 10;
 
-let items = 24;
+let items = 40;
 
 let margin = 0.1;
 let sketchWidth;
@@ -53,8 +53,8 @@ function draw() {
       let c = getVideoColorAtPosition(i, j);
 
       // let n = noise(i * noiseDetail, j * noiseDetail, zOffset);
-      let b = brightness(c);
-      let index = floor(map(b, 0, 200, 0, chars.length, true));
+      // let b = brightness(c);
+      // let index = floor(map(b, 0, 200, 0, chars.length, true));
       
       push();
         translate(x, y);
@@ -67,14 +67,17 @@ function draw() {
         // fill(b);
         // rect(0, 0, itemSize * 1);
         
-        fill(255);
+        if (c){
+          fill(255);
+          rect(0, 0, itemSize * 0.8);
+        }
         // if (index == 7 || index == 8){
         //   noFill();
         // }
         // if (index == 12){
         //   fill(0, 255, 0);
         // }
-        text(chars.charAt(index), 0, 0);
+        // text(chars.charAt(index), 0, 0);
       pop();
     }
   }
@@ -127,15 +130,12 @@ function getVideoColorAtPosition(i, j){
     let back = color(r, g, b, a);
 
     let d = colorDistance(c, back);
-    if (d > 150){
+    if (d > 100){
       return c;
-    } else {
-      return color(0);
     }
   }
 
-  // Color
-  return c;
+  return null;
 }
 
 function colorDistance(first, second) {
