@@ -29,7 +29,6 @@ class Walker{
       }
 
       if (!obj.fill){
-        // controllo sx, dx, up, dw
         let i = item.i;
         let j = item.j;
   
@@ -53,10 +52,8 @@ class Walker{
           return false;
         }
       }
-
       return true;
     })
-    let end = false;
     if (nextFree.length > 0){
       let item = random(nextFree);
       this.cI = item.i;
@@ -72,20 +69,7 @@ class Walker{
       this.items[this.cIndex].setDirection(this.cDir);
       this.items[this.cIndex].start();
 
-      // qui è da sistemare
-      // se non trova una direzione valida si ferma..
-      // this.cDir = this.getValidStartRandomDirection(this.cI, this.cJ);
-      // if (this.cDir){
-      //   this.cIndex = this.getIndex(this.cI, this.cJ);
-      //   this.items[this.cIndex].setDirection(this.cDir);
-      //   this.items[this.cIndex].start();
-      // } else {
-      //   // end = true;
-      // }
     } else {
-      end = true;
-    }
-    if (end){
       walkerEnd = true;
       console.debug('Finish!');
     }
@@ -105,39 +89,18 @@ class Walker{
     return validDir;
   }
 
-  // getValidRandomDirection(i, j, dir){
-  //   let nn = this.getNextIndex(i, j, dir);
-  //   if (this.items[nn].end){
-  //     return dir;
-  //   }
-  // }
-
   next(){
     if (this.cDir.substring(2, 6) == '-to-'){
       this.cDir = this.cDir.substring(6, 8);
     }
     let next = this.getNextIndex(this.cI, this.cJ, this.cDir); 
     if (this.items[next] !== undefined){
-      // if next is already occupied
       if (this.items[next].end){
         this.startWalker();
       } else {
         this.cI = this.items[next].i;
         this.cJ = this.items[next].j;
-
-        // let origDir = this.cDir;
         this.cDir = this.changeDirection();
-        
-        // la nuova direzione è valida o ce ne sarebbe una migliore?
-        // controllo il prossimo
-        // let nn = this.getNextIndex(this.cI, this.cJ, newDir);
-        // if (this.items[nn].end){
-        //   console.debug('Non valida');
-        //   let valid = this.getValidRandomDirection(this.cI, this.cJ, origDir);
-        //   if (valid){
-        //     this.cDir = valid;
-        //   }
-        // }
         this.items[next].setDirection(this.cDir);
         this.items[next].start();
       }
@@ -227,7 +190,6 @@ class Walker{
         break;
     }
 
-    // console.debug(nextI, nextJ);
     return this.getIndex(nextI, nextJ);
   }
 

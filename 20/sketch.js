@@ -2,8 +2,6 @@ let fps = 30;
 
 let colors = [];
 
-// show debug
-
 let obj = {
   density: 1,
   lines: 5,
