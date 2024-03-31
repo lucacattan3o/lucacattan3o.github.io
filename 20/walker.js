@@ -22,6 +22,10 @@ class Walker{
   }
 
   startWalker(){
+    if (this.items.length == 0){
+      return;
+    }
+
     let nextFree = this.items.filter((item) => {
 
       if (item.end){
@@ -52,8 +56,11 @@ class Walker{
           return false;
         }
       }
+
       return true;
     })
+
+    // console.debug(nextFree.length);
     if (nextFree.length > 0){
       let item = random(nextFree);
       this.cI = item.i;
