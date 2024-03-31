@@ -10,6 +10,11 @@ let colors = [
   "#00f5d4"
 ];
 
+// parameters
+// hue start
+// hue end
+// speed of all parameters
+
 let hue;
 
 function setup() {
