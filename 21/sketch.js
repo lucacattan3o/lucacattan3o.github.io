@@ -1,88 +1,55 @@
-let fps = 10;
-
-let items = 40;
-
-let margin = 0.1;
-let sketchWidth;
-let sketchMargin;
+let fps = 60;
 let itemSize;
+let cI = 0;
 
-let noiseDetail = 0.1;
-let zOffset = 0;
-
-let chars = " ·.:,;#'+*`=?!¬”#^˜·$%/()";
-chars = '  ·”#^˜·$%/()';
-
-let capture;
-let backgroundPixels = null;
+let colors = [
+  "#9b5de5",
+  "#f15bb5",
+  "#fee440",
+  "#00bbf9",
+  "#00f5d4"
+];
 
 function setup() {
-  createCanvas(1080, 1080);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
     fps: fps
   });
-
-  capture = createCapture(VIDEO);
-  capture.hide();
+  background(0);
+  itemSize = width * 0.5;
 }
 
 function draw() {
-  sketchMargin = width * margin;
-  sketchWidth = width - sketchMargin;
 
-  itemSize = sketchWidth / items;
-
-  capture.loadPixels();
-
-  background(0);
-  rectMode(CENTER);
-  noStroke();
-  translate(sketchMargin * 0.5, sketchMargin * 0.5);
-
-  textFont('monospace');
-  textSize(itemSize * 1.1);
-  textAlign(CENTER, CENTER);
-
-  for (let i = 0; i < items; i++) {
-    for (let j = 0; j < items; j++) {
-      let x = i * itemSize;
-      let y = j * itemSize;
-
-      let c = getVideoColorAtPosition(i, j);
-
-      // let n = noise(i * noiseDetail, j * noiseDetail, zOffset);
-      // let b = brightness(c);
-      // let index = floor(map(b, 0, 200, 0, chars.length, true));
-      
-      push();
-        translate(x, y);
-        translate(itemSize * 0.5, itemSize * 0.5);
-        // Grid
-        noFill();
-        // stroke(200);
-        // rect(0, 0, itemSize),
-        
-        // fill(b);
-        // rect(0, 0, itemSize * 1);
-        
-        if (c){
-          fill(255);
-          rect(0, 0, itemSize * 0.8);
-        }
-        // if (index == 7 || index == 8){
-        //   noFill();
-        // }
-        // if (index == 12){
-        //   fill(0, 255, 0);
-        // }
-        // text(chars.charAt(index), 0, 0);
-      pop();
+  background(0, 1);
+  
+  bx = getLoopBounce(0.5);
+  by = getLoopBounce(0.25);
+  
+  br = getLoopBounce(1, 0.5);
+  or = itemSize * 0.2 * br;
+  
+  x = width  * 0.2 * bx;
+  y = height * 0.3 * by;
+  
+  push();
+    translate(width * 0.5, height * 0.5);
+    noFill();  
+    stroke(colors[cI]);
+    strokeWeight(itemSize * 0.005);
+    circle(x, y, itemSize + or);
+  pop();
+  
+  
+  let sec = frameCount / fps;
+  if (sec % 4 == 0){
+    cI++;
+    if (cI > colors.length){
+      cI = 0;
     }
   }
-
-  // zOffset += 0.005;
 
   if (frameCount == 1){
     sketchExportStart();
@@ -91,56 +58,4 @@ function draw() {
   if (frameCount == 8 * fps){
     sketchExportEnd();
   }
-}
-
-function mouseClicked() {
-  setBackground();
-}
-
-function setBackground(){
-  backgroundPixels = capture.pixels;
-}
-
-function getVideoColorAtPosition(i, j){
-
-  let videoSize = capture.height / items;
-  let videoMargin = floor((capture.width - capture.height) * 0.5);
-
-  let x = floor(capture.width - (i * videoSize) - videoMargin);
-  let y = floor(j * videoSize);
-
-  // Get index of the pixel (based by 4)
-  let pIndex = (y * capture.width + x) * 4;
-
-  // Rgba color
-  let r = capture.pixels[pIndex + 0];
-  let g = capture.pixels[pIndex + 1];
-  let b = capture.pixels[pIndex + 2];
-  let a = capture.pixels[pIndex + 3];
-
-  let c = color(r, g, b, a);
-
-  if (backgroundPixels){
-    // Rgba color
-    let r = backgroundPixels[pIndex + 0];
-    let g = backgroundPixels[pIndex + 1];
-    let b = backgroundPixels[pIndex + 2];
-    let a = backgroundPixels[pIndex + 3];  
-
-    let back = color(r, g, b, a);
-
-    let d = colorDistance(c, back);
-    if (d > 100){
-      return c;
-    }
-  }
-
-  return null;
-}
-
-function colorDistance(first, second) {
-  let r = abs(red(first) - red(second));
-  let g = abs(green(first) - green(second));
-  let b = abs(blue(first) - blue(second));
-  return r + g + b;
 }
