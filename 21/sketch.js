@@ -63,7 +63,7 @@ function draw() {
   by = getLoopBounce(speedY);
   
   br = getLoopBounce(0.5 * 0.5 * 0.5, 0.5);
-  br = getMusicEnergy(2);
+  // br = getMusicEnergy(2);
 
   // br = 0;
 
@@ -93,12 +93,11 @@ function draw() {
     strokeWeight(itemSize * 0.005);
     circle(0, 0, itemSize * 0.4 + or);
 
-    noFill();
-    stroke(hue, 100, 100);
-    rectMode(CENTER);
+    // noFill();
+    // stroke(hue, 100, 100);
+    // rectMode(CENTER);
     // rotate(PI * 0.01 * frameCount);
-
-    rect(0, 0, sx * 2, sy * 2, 0);
+    // rect(0, 0, sx * 2, sy * 2, 0);
 
   pop();
   
