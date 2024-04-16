@@ -1,6 +1,7 @@
 let fps = 30;
 
-let nItems = 50;
+let nItems = 16 * 2;
+let nItemsV = 16 * 4;
 
 let mPos;
 
@@ -38,36 +39,33 @@ function setup() {
   // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
   cam.setPosition(
     - width * 0.9,
-    - width * 0.4,
+    - width * 0.7,
     - width * 0.9);
   cam.lookAt(0, 0, 0);
 
-  itemSize = width * 0.01;
-  radius = width * 0.4;
-  worldCenter = createVector(width * 0.5, width * 0.5, width * 0.5);
+  itemSize = width * 0.005;
+  radius = width * 0.5;
+  worldCenter = createVector(0, 0, 0);
 
   setupItems();
 }
 
 function setupItems(){
-  let unique = 0;
-
   let slice = TWO_PI / nItems;
+  let sliceV = TWO_PI / nItemsV;
   for (let i = 0; i < nItems; i++) {
-    for (let j = 0; j < nItems; j++) {
+    for (let j = 0; j < nItemsV; j++) {
       let alpha = i * slice;
-      let beta = j * slice;
+      let beta = j * sliceV;
 
       let x = sin(alpha) * cos(beta) * radius;
       let y = sin(alpha) * sin(beta) * radius;
       let z = cos(alpha) * radius;
 
-      let item = new Item(x, y, z, unique);
-      unique++;
+      let item = new Item(x, y, z, beta);
       items.push(item);
     }
   }
-  console.debug(items);
 }
 
 function draw() {  
@@ -79,8 +77,6 @@ function draw() {
   mPos = responsiveMousePos();
 
   drawItems();
-
-  
 
   if (frameCount == 1){
     sketchExportStart();

@@ -93,11 +93,11 @@ function draw() {
     strokeWeight(itemSize * 0.005);
     circle(0, 0, itemSize * 0.4 + or);
 
-    // noFill();
-    // stroke(hue, 100, 100);
-    // rectMode(CENTER);
-    // rotate(PI * 0.01 * frameCount);
-    // rect(0, 0, sx * 2, sy * 2, 0);
+    noFill();
+    stroke(hue, 100, 100);
+    rectMode(CENTER);
+    rotate(PI * 0.01 * frameCount);
+    rect(0, 0, sx * 2, sy * 2, 0);
 
   pop();
   

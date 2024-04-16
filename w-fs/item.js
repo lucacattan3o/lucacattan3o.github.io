@@ -1,13 +1,15 @@
 class Item{
-  constructor(x, y, z, unique){
+  constructor(x, y, z, alpha){
     this.pos = createVector(x, y, z);
     this.vel = createVector(0, 0, 0);
     this.acc = createVector(0, 0, 0);
 
-    this.unique = unique;
+    this.alpha = alpha;
 
-    let c = floor(random(0, colors.length));
-    this.color = colors[c];
+    let c = floor(map(this.alpha,0, TWO_PI, 0, colors.length, true));
+    let hue = map(this.alpha,0, TWO_PI, 0, 360);
+    colorMode(HSB);
+    this.color = color(hue, 100, 100);
   }
 
   update(){
@@ -49,11 +51,13 @@ class Item{
   }
 
   draw(){
+    stroke(255);
+    line(0, 0, 0, this.pos.x, this.pos.z, this.pos.y);
     push();
       translate(this.pos.x, this.pos.z, this.pos.y);
       noStroke();
       ambientMaterial(this.color);
-      sphere(itemSize * 1, 10, 10);
+      sphere(itemSize * 1, 20, 20);
     pop();
   }
 }
