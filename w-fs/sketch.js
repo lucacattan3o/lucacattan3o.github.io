@@ -1,6 +1,6 @@
 let fps = 30;
 
-let nItems = 16;
+let nItems = 50;
 
 let mPos;
 
@@ -8,7 +8,8 @@ let worldCenter;
 
 let sec;
 let bounce;
-let speed = 0.125;
+let items = [];
+let itemSize, radius;
 
 let colors = [
   '#f72585',
@@ -37,15 +38,37 @@ function setup() {
   // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
   cam.setPosition(
     - width * 0.9,
-    - width * 0,
+    - width * 0.4,
     - width * 0.9);
   cam.lookAt(0, 0, 0);
 
-  itemSize = width / nItems;
+  itemSize = width * 0.01;
+  radius = width * 0.4;
   worldCenter = createVector(width * 0.5, width * 0.5, width * 0.5);
 
+  setupItems();
 }
 
+function setupItems(){
+  let unique = 0;
+
+  let slice = TWO_PI / nItems;
+  for (let i = 0; i < nItems; i++) {
+    for (let j = 0; j < nItems; j++) {
+      let alpha = i * slice;
+      let beta = j * slice;
+
+      let x = sin(alpha) * cos(beta) * radius;
+      let y = sin(alpha) * sin(beta) * radius;
+      let z = cos(alpha) * radius;
+
+      let item = new Item(x, y, z, unique);
+      unique++;
+      items.push(item);
+    }
+  }
+  console.debug(items);
+}
 
 function draw() {  
   orbitControl();
@@ -54,8 +77,10 @@ function draw() {
   directionalLight(color(255), 0, 1, -0.5);
 
   mPos = responsiveMousePos();
+
+  drawItems();
+
   
-  drawSphere();
 
   if (frameCount == 1){
     sketchExportStart();
@@ -66,18 +91,20 @@ function draw() {
   }
 }
 
-function drawSphere(){
+function drawItems(){
   background(0);
 
-  rotateY(sec * TWO_PI * 0.125);
+  rotateY(frameCount * 0.004);
+
+  ambientMaterial(colors[2]);
+  // sphere(100, 10, 10);
+  
 
   push();
-    translate(- width * 0.5, - width * 0.5, - width * 0.5);
-
     // Reverse loop
     for (let i = items.length - 1; i >= 0; i--) {
       const item = items[i];
-      item.update();
+      // item.update();
       item.draw();
     }
   pop();
