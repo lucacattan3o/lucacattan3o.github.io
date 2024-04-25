@@ -18,7 +18,7 @@ let palette = [
 let mPos;
 
 function setup() {
-  createCanvas(1080, 1980);
+  createCanvas(1080, 1920);
   responsiveSketch();
   frameRate(fps);
   let now = new Date();
@@ -27,7 +27,7 @@ function setup() {
     name: 'video-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes(),
   });
   setupLil();
-  palette = shuffle(palette);
+  // palette = shuffle(palette);
 }
 
 function draw() {
