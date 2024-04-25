@@ -19,7 +19,15 @@ function setup() {
 }
 
 function draw() {
-  
+
+
+  if (frameCount == 1){
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == 16 * fps){
+    sketchExportEnd();
+  }
 }  
 
 // ** LIL **
@@ -73,8 +81,8 @@ function setupLil(){
   grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
-  gui.add(obj, 'export').name('Export video');
   gui.add(obj, 'clearStorage').name('Clear');
+  gui.add(obj, 'startOver').name('Play Again');
 
   let exportBtn = gui.add(obj, 'export').name('Export Video');
   const queryString = window.location.search;
