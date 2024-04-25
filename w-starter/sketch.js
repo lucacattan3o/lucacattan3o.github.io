@@ -5,6 +5,8 @@ let obj = {
   itemsY: 15,
 };
 
+let storageName = 'gui-x';
+
 function setup() {
   createCanvas(1080, 1980);
   responsiveSketch();
@@ -46,9 +48,22 @@ obj.export = function() {
 };
 
 obj.clearStorage = function() {
-  localStorage.removeItem('guiSettings19');
+  localStorage.removeItem(storageName);
   window.location = window.location.href.split("?")[0];
 };
+
+obj.startOver = function(){
+  saveToStorage();
+  window.location = window.location.href.split("?")[0];
+};
+
+obj.stopExport = function(){
+  walkerEnd = true;
+};
+
+obj.saveImage = function(){
+  saveCanvas("visual", "png");
+}
 
 function setupLil(){
   gui = new GUI();
@@ -61,9 +76,22 @@ function setupLil(){
   gui.add(obj, 'export').name('Export video');
   gui.add(obj, 'clearStorage').name('Clear');
 
+  let exportBtn = gui.add(obj, 'export').name('Export Video');
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  if (urlParams.get('export') == 'true'){
+    console.debug('test');
+    exportBtn.disable();
+    exportBtn.name('Exporting...');
+
+    gui.add(obj, 'stopExport').name('Stop Export');
+  }
+  
+  gui.add(obj, 'saveImage').name('Save Image');
+
   // gui.onChange( event => {});
   
-  let saved = localStorage.getItem('guiSettings19');
+  let saved = localStorage.getItem(storageName);
   if (saved){
     gui.load(JSON.parse(saved));
   };
@@ -71,5 +99,5 @@ function setupLil(){
 
 function saveToStorage(){
   preset = gui.save();
-  localStorage.setItem('guiSettings19', JSON.stringify(preset));
+  localStorage.setItem(storageName, JSON.stringify(preset));
 };
