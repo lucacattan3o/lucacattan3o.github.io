@@ -21,12 +21,12 @@ function setup() {
   createCanvas(1080, 1980);
   responsiveSketch();
   frameRate(fps);
+  let now = new Date();
   sketchExportSetup({
     fps: fps,
-    name: 'video'
+    name: 'video-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes(),
   });
   setupLil();
-
   palette = shuffle(palette);
 }
 
