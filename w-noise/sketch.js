@@ -183,7 +183,7 @@ obj.startOver = function(){
 };
 
 obj.stopExport = function(){
-  walkerEnd = true;
+  sketchExportEnd();
 };
 
 obj.saveImage = function(){
