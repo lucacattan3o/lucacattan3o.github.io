@@ -36,7 +36,7 @@ function setup() {
   let now = new Date();
   sketchExportSetup({
     fps: fps,
-    name: 'video-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes(),
+    name: getFileName('video'),
   });
   setupLil();
   // palette = shuffle(palette);
@@ -61,10 +61,12 @@ function draw() {
         translate(x, y);
 
         // -- Item start -- 
-        let noiseScale = 0.1;
-        // let z = map(getLoopBounce(0.125), -1, 1, 0, 1); 
-        let n = noise(i * noiseScale, j * noiseScale);
+        let noiseScale  = 0.1;
+        let noiseScale2 = 0.05;
         
+        let n = noise(i * noiseScale, j * noiseScale);
+        let n2 = noise(i * noiseScale2 + 100, j * noiseScale2 + 100);
+
         // Construction grid
         push();
           noFill();
@@ -72,79 +74,121 @@ function draw() {
           stroke(200);
           // rect(0, 0, itemSize, itemSize);
         pop();
+
+        // Original setup
+        // drawSquare(   n, palette[2], 0.5, 0.7);
+        drawSquare(   n, palette[2], 0.5, 0.6);
+        drawTriangle( n, palette[0], 0.4, 0.5);
+        drawArrow(    n, palette[5], 0.3, 0.4);
+        drawPlus(     n, palette[4], 0.1, 0.25);
+
+        // New layer
+        if (n < 0.3 || n > 0.4){
+          drawDots(     n2, palette[3], 0.2, 0.3);
+          drawRhombus(  n2, palette[4], 0.7, 0.8);
+          drawCircle(   n2, palette[1], 0.5 , 0.55);
+        }
         
-        push();
-          if (n > 0.3 && n <= 0.4){
-            // arrow
-            stroke(palette[5]);
-            strokeWeight(itemSize * 0.1);
-            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.1);
-            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.1, itemSize * 0.8);
-            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.8);
-          }
-          if (n > 0.4 && n <= 0.5){
-            // triangle
-            fill(palette[0]);
-            noStroke();
-            triangle(
-              itemSize * 0.9, itemSize * 0.1,
-              itemSize * 0.9, itemSize * 0.9,
-              itemSize * 0.1, itemSize * 0.9
-            );
-          }
-          if (n > 0.5 && n < 0.7){
-            // square
-            fill(palette[2]);
-            noStroke();
-            rect(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.8);
-          }
 
-
-          if (n > 0.1 && n < 0.2){
-            push();
-            // dots
-            translate(itemSize * 0.5, itemSize * 0.5);
-            fill(palette[4]);
-            noStroke();
-            // circle(0, 0, itemSize * 0.5);
-            pop();
-          }
-
-          if (n > 0.1 && n < 0.25){
-            push();
-              // plus
-              stroke(palette[4]);
-              strokeWeight(itemSize * 0.1);
-              line(itemSize * 0.1, itemSize * 0.5, itemSize * 0.9, itemSize * 0.5);
-              line(itemSize * 0.5, itemSize * 0.1, itemSize * 0.5, itemSize * 0.9);
-            pop();
-          }
-
-          /*
-          if (nb > 0.7 && nb < 0.8){
-            stroke(palette[2]);
-            strokeWeight(itemSize * 0.1);
-            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.9, itemSize * 0.9);
-            line(itemSize * 0.1, itemSize * 0.9, itemSize * 0.9, itemSize * 0.1);
-          }
-          */
-          
-      
-        pop();
+        /*
+        if (nb > 0.7 && nb < 0.8){
+          stroke(palette[2]);
+          strokeWeight(itemSize * 0.1);
+          line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.9, itemSize * 0.9);
+          line(itemSize * 0.1, itemSize * 0.9, itemSize * 0.9, itemSize * 0.1);
+        }
+        */
       
         // -- Item end -- 
       pop();
     }
   }
-
-  if (frameCount == 1){
-    sketchExportStart();
-  }
-  sketchExport();
-  if (frameCount == 15 * fps){
-    sketchExportEnd();
-  }
 }  
+
+function drawSquare(n, color, min, max){
+  if (n > min && n < max){
+    push();
+    noStroke();
+    fill(color);
+    translate(itemSize * 0.5, itemSize * 0.5);
+    rectMode(CENTER);
+    rect(0, 0, itemSize * 0.8);
+    pop();
+  }
+}
+
+function drawArrow(n, color, min, max){
+  if (n > min && n <= max){
+    push();
+    stroke(color);
+    strokeWeight(itemSize * 0.1);
+    line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.1);
+    line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.1, itemSize * 0.8);
+    line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.8);
+    pop();
+  }
+}
+
+function drawTriangle(n, color, min, max){
+  if (n > min && n <= max){
+    push();
+    fill(color);
+    noStroke();
+    triangle(
+      itemSize * 0.9, itemSize * 0.1,
+      itemSize * 0.9, itemSize * 0.9,
+      itemSize * 0.1, itemSize * 0.9
+    );
+    pop();
+  }
+}
+
+function drawPlus(n, color, min, max){
+  if (n > min && n < max){
+    push();
+      stroke(palette[4]);
+      strokeWeight(itemSize * 0.1);
+      line(itemSize * 0.1, itemSize * 0.5, itemSize * 0.9, itemSize * 0.5);
+      line(itemSize * 0.5, itemSize * 0.1, itemSize * 0.5, itemSize * 0.9);
+    pop();
+  }
+}
+
+function drawDots(n, color, min, max){
+  if (n > min && n < max){
+    push();
+      translate(itemSize * 0.5, itemSize * 0.5);
+      fill(color);
+      noStroke();
+      circle(0, 0, itemSize * 0.4);
+    pop();
+  }
+}
+
+function drawCircle(n, color, min, max){
+  if (n > min && n < max){
+    push();
+      translate(itemSize * 0.5, itemSize * 0.5);
+      noFill();
+      stroke(color);
+      strokeWeight(itemSize * 0.1);
+      circle(0, 0, itemSize * 0.4);
+    pop();
+  }
+}
+
+function drawRhombus(n, color, min, max){
+  if (n > min && n < max){
+    push();
+      translate(itemSize * 0.5, itemSize * 0.5);
+      rotate(PI * 0.25);
+      fill(color);
+      noStroke();
+      rectMode(CENTER);
+      rect(0, 0, itemSize * 0.4);
+    pop();
+  }
+}
 
 // ** LIL **
 // ---------
@@ -186,7 +230,8 @@ obj.stopExport = function(){
 };
 
 obj.saveImage = function(){
-  saveCanvas("visual", "png");
+  let fileName = getFileName('visual');
+  saveCanvas(fileName, 'png');
 }
 
 function setupLil(){
@@ -224,3 +269,8 @@ function saveToStorage(){
   preset = gui.save();
   localStorage.setItem(storageName, JSON.stringify(preset));
 };
+
+function getFileName(prefix){
+  let now = new Date();
+  return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
+}
