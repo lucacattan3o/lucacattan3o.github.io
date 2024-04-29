@@ -1,6 +1,6 @@
-let fps = 10;
+let fps = 5;
 
-let items = 40;
+let items = 60;
 
 let margin = 0.1;
 let sketchWidth;
@@ -15,6 +15,7 @@ chars = '  ·”#^˜·$%/()';
 
 let capture;
 let backgroundPixels = null;
+let bgLightness = []; 
 
 function setup() {
   createCanvas(1080, 1080);
@@ -45,8 +46,10 @@ function draw() {
   textSize(itemSize * 1.1);
   textAlign(CENTER, CENTER);
 
+  let ci = 0;
   for (let i = 0; i < items; i++) {
     for (let j = 0; j < items; j++) {
+      ci++;
       let x = i * itemSize;
       let y = j * itemSize;
 
@@ -67,10 +70,38 @@ function draw() {
         // fill(b);
         // rect(0, 0, itemSize * 1);
         
-        if (c){
-          fill(255);
-          rect(0, 0, itemSize * 0.8);
+
+        let l = lightness(c);
+        let light = map(l, 0, 100, 0, 1);
+        fill(255);
+
+        if (light > 0.3 && light < 0.5){
+          stroke(255);
+          strokeWeight(itemSize * 0.1);
+          line(0, 0, itemSize, itemSize);
         }
+        if (light > 0.5 && light < 0.6){
+          translate(itemSize * 0.5, itemSize * 0.5);
+          circle(0, 0, itemSize * 0.5);
+        }
+        if (light > 0.6){
+          translate(itemSize * 0.5, itemSize * 0.5);
+          rectMode(CENTER);
+          rect(0, 0, itemSize);
+        }
+
+        // if (bgLightness[ci] !== undefined){
+        //   let l2 = bgLightness[ci];
+        //   let diff = abs(light - l2);
+        //   if (diff > 0.25){
+        // 
+        //   }
+        // } else {
+        //   stroke(255);
+        //   line(0, 0, itemSize, itemSize);
+        // }
+
+        
         // if (index == 7 || index == 8){
         //   noFill();
         // }
@@ -79,6 +110,8 @@ function draw() {
         // }
         // text(chars.charAt(index), 0, 0);
       pop();
+
+      // prevItems.push(c);
     }
   }
 
@@ -94,11 +127,30 @@ function draw() {
 }
 
 function mouseClicked() {
-  setBackground();
+  // invece che storare il colore di ogni pixel
+  // dovrei storare la luminosità dell'item
+  // setBackground();
+  setBgLightness();
 }
 
 function setBackground(){
   backgroundPixels = capture.pixels;
+}
+
+function setBgLightness(){
+  bgLightness = [];
+  for (let i = 0; i < items; i++) {
+    for (let j = 0; j < items; j++) {
+      let c = getVideoColorAtPosition(i, j);
+      let ligth = 0;
+      if (c){
+        let l = lightness(c);
+        ligth = map(l, 0, 100, 0, 1);
+      }
+      bgLightness.push(ligth);
+    }
+  }
+  console.debug(bgLightness);
 }
 
 function getVideoColorAtPosition(i, j){
@@ -119,6 +171,7 @@ function getVideoColorAtPosition(i, j){
   let a = capture.pixels[pIndex + 3];
 
   let c = color(r, g, b, a);
+  return c;
 
   if (backgroundPixels){
     // Rgba color
