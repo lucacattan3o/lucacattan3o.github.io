@@ -1,8 +1,17 @@
 let fps = 60;
 
+// Canvas size
+let sizeW = 16.5 * 2 + 10 * 2 + 1; // cm
+let sizeH = 24;   // cm
+let inch  = 2.54; // cm
+let dpi   = 300;  // px / in
+let w, h;
+
 let obj = {
-  density: 2,
+  density: 4,
 };
+
+let itemSize;
 
 let storageName = 'gui-noise';
 
@@ -18,7 +27,10 @@ let palette = [
 let mPos;
 
 function setup() {
-  createCanvas(1080, 1920);
+  w = floor(sizeW * dpi / inch);
+  h = floor(sizeH * dpi / inch);
+
+  createCanvas(w, h);
   responsiveSketch();
   frameRate(fps);
   let now = new Date();
@@ -28,30 +40,22 @@ function setup() {
   });
   setupLil();
   // palette = shuffle(palette);
+  noLoop();
+
+  // set itemSize based on paper height
+  itemSize = height / (10 * obj.density);
 }
 
 function draw() {
   background(0);
 
-  let itemsX = 9 * obj.density;
-  let itemsY = 16 * obj.density;
-  
-  itemSizeW = width  / itemsX;
-  itemSizeH = height / itemsY;
+  itemsX = height / itemSize;
+  itemsY = (width / itemSize) + 1;
 
-  mPos = responsiveMousePos();
-
-  let offsetX = -mPos.x * 0.001;
-  offsetX = frameCount * 0.005;
-  // offsetX = 0;
-  let offsetY = -mPos.y * 0.001;
-  offsetY = frameCount * 0.005;
-  // offsetY = 0;
-
-  for (i = 0; i < itemsX; i++){
-    for (j = 0; j < itemsY; j++){
-      let x = i * itemSizeW;
-      let y = j * itemSizeH;
+  for (i = 0; i < itemsY; i++){
+    for (j = 0; j < itemsX; j++){
+      let x = i * itemSize;
+      let y = j * itemSize;
       
       push();
         translate(x, y);
@@ -59,55 +63,50 @@ function draw() {
         // -- Item start -- 
         let noiseScale = 0.1;
         // let z = map(getLoopBounce(0.125), -1, 1, 0, 1); 
-        let n = noise(i * noiseScale + offsetX, j * noiseScale + offsetY); 
-        
-        let nb = noise(
-          (i + 100) * noiseScale + offsetX,
-          (j + 100) * noiseScale + offsetY
-        );
+        let n = noise(i * noiseScale, j * noiseScale);
         
         // Construction grid
         push();
           noFill();
           strokeWeight(1);
           stroke(200);
-          // rect(0, 0, itemSizeW, itemSizeH);
+          // rect(0, 0, itemSize, itemSize);
         pop();
         
         push();
           if (n > 0.3 && n <= 0.4){
             // arrow
             stroke(palette[5]);
-            strokeWeight(itemSizeW * 0.1);
-            line(itemSizeW * 0.1, itemSizeH * 0.1, itemSizeW * 0.8, itemSizeH * 0.1);
-            line(itemSizeW * 0.1, itemSizeH * 0.1, itemSizeW * 0.1, itemSizeH * 0.8);
-            line(itemSizeW * 0.1, itemSizeH * 0.1, itemSizeW * 0.8, itemSizeH * 0.8);
+            strokeWeight(itemSize * 0.1);
+            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.1);
+            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.1, itemSize * 0.8);
+            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.8);
           }
           if (n > 0.4 && n <= 0.5){
             // triangle
             fill(palette[0]);
             noStroke();
             triangle(
-              itemSizeW * 0.9, itemSizeH * 0.1,
-              itemSizeW * 0.9, itemSizeH * 0.9,
-              itemSizeW * 0.1, itemSizeH * 0.9
+              itemSize * 0.9, itemSize * 0.1,
+              itemSize * 0.9, itemSize * 0.9,
+              itemSize * 0.1, itemSize * 0.9
             );
           }
           if (n > 0.5 && n < 0.7){
             // square
             fill(palette[2]);
             noStroke();
-            rect(itemSizeW * 0.1, itemSizeH * 0.1, itemSizeW * 0.8, itemSizeH * 0.8);
+            rect(itemSize * 0.1, itemSize * 0.1, itemSize * 0.8, itemSize * 0.8);
           }
 
 
           if (n > 0.1 && n < 0.2){
             push();
             // dots
-            translate(itemSizeW * 0.5, itemSizeH * 0.5);
+            translate(itemSize * 0.5, itemSize * 0.5);
             fill(palette[4]);
             noStroke();
-            // circle(0, 0, itemSizeW * 0.5);
+            // circle(0, 0, itemSize * 0.5);
             pop();
           }
 
@@ -115,18 +114,18 @@ function draw() {
             push();
               // plus
               stroke(palette[4]);
-              strokeWeight(itemSizeW * 0.1);
-              line(itemSizeW * 0.1, itemSizeH * 0.5, itemSizeW * 0.9, itemSizeH * 0.5);
-              line(itemSizeW * 0.5, itemSizeH * 0.1, itemSizeW * 0.5, itemSizeH * 0.9);
+              strokeWeight(itemSize * 0.1);
+              line(itemSize * 0.1, itemSize * 0.5, itemSize * 0.9, itemSize * 0.5);
+              line(itemSize * 0.5, itemSize * 0.1, itemSize * 0.5, itemSize * 0.9);
             pop();
           }
 
           /*
           if (nb > 0.7 && nb < 0.8){
             stroke(palette[2]);
-            strokeWeight(itemSizeW * 0.1);
-            line(itemSizeW * 0.1, itemSizeH * 0.1, itemSizeW * 0.9, itemSizeH * 0.9);
-            line(itemSizeW * 0.1, itemSizeH * 0.9, itemSizeW * 0.9, itemSizeH * 0.1);
+            strokeWeight(itemSize * 0.1);
+            line(itemSize * 0.1, itemSize * 0.1, itemSize * 0.9, itemSize * 0.9);
+            line(itemSize * 0.1, itemSize * 0.9, itemSize * 0.9, itemSize * 0.1);
           }
           */
           
@@ -194,22 +193,22 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'density').min(1).max(5).step(1).name('Density');
+  grid.add(obj, 'density').min(1).max(10).step(1).name('Density');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
   gui.add(obj, 'startOver').name('Play Again');
 
-  let exportBtn = gui.add(obj, 'export').name('Export Video');
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  if (urlParams.get('export') == 'true'){
-    console.debug('test');
-    exportBtn.disable();
-    exportBtn.name('Exporting...');
-
-    gui.add(obj, 'stopExport').name('Stop Export');
-  }
+  //let exportBtn = gui.add(obj, 'export').name('Export Video');
+  //const queryString = window.location.search;
+  //const urlParams = new URLSearchParams(queryString);
+  //if (urlParams.get('export') == 'true'){
+  //  console.debug('test');
+  //  exportBtn.disable();
+  //  exportBtn.name('Exporting...');
+  //
+  //  gui.add(obj, 'stopExport').name('Stop Export');
+  //}
   
   gui.add(obj, 'saveImage').name('Save Image');
 
