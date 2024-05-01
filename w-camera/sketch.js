@@ -119,8 +119,11 @@ function draw() {
         }
         if (value > thHig){
           switch (obj.shape3) {
-            case 'Square':
+            case 'Square': 'Square Full',
               drawSquare(0.8);
+              break;
+            case 'Square Full':
+              drawSquare(1);
               break;
             case 'Circle':
               drawCircle(0.9, true);
@@ -348,7 +351,7 @@ function setupLil(){
   const shapes = gui.addFolder('Shapes');
   shapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
   shapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
-  shapes.add( obj, 'shape3', [ 'Square', 'Circle', 'Lines' ] ).name('Shape 3');
+  shapes.add( obj, 'shape3', [ 'Square', 'Square Full', 'Circle', 'Lines' ] ).name('Shape 3');
   
   const lev = gui.addFolder('Thresholds');
   lev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
