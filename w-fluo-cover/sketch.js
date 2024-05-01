@@ -145,7 +145,7 @@ function drawTriangle(n, color, min, max){
 function drawPlus(n, color, min, max){
   if (n > min && n < max){
     push();
-      stroke(palette[4]);
+      stroke(color);
       strokeWeight(itemSize * 0.1);
       line(itemSize * 0.1, itemSize * 0.5, itemSize * 0.9, itemSize * 0.5);
       line(itemSize * 0.5, itemSize * 0.1, itemSize * 0.5, itemSize * 0.9);

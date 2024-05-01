@@ -6,9 +6,9 @@ let capture;
 let storageName = 'gui-camera';
 
 let obj = {
-  items: 10,
-  thShadows: 0.5,
-  thLights: 0.5,
+  items: 50,
+  thShadows: 0.45,
+  thLights: 0.65,
 };
 
 // let backgroundPixels = null;
@@ -59,21 +59,28 @@ function draw() {
         fill(255);
 
         let thMid = map(obj.thShadows, 0, 1, 0, 1);
+        thMid = obj.thShadows;
         let thHig = map(obj.thLights, 0, 1, thMid, 1);
+        thHig = obj.thLights;
 
-        if (light > 0.3 && light < thMid){
-          stroke(255);
-          strokeWeight(itemSize * 0.1);
-          line(0, 0, itemSize, itemSize);
+        // 0   - 0.3 - black
+        // 0.3 - [0.5] - lines
+        // 0.5 - [0.7] - circle
+        // 0.7 - 1 - white
+
+        if (light > 0.3 && light <= thMid){
+          // drawLine(0.8);
+          // drawArrow(0.8);
+          drawPlus(0.9);
+          // drawX(0.9);
         }
-        if (light > thMid && light < thHig){
-          translate(itemSize * 0.5, itemSize * 0.5);
-          circle(0, 0, itemSize * 0.5);
+        if (light > thMid && light <= thHig){
+          drawTriangle(0.9);
+          // drawCircle(0.5);
         }
         if (light > thHig){
-          translate(itemSize * 0.5, itemSize * 0.5);
-          rectMode(CENTER);
-          rect(0, 0, itemSize);
+          drawSquare(0.8);
+          // drawCircle(0.9);
         }
 
         // if (bgLightness[ci] !== undefined){
@@ -106,6 +113,82 @@ function draw() {
     sketchExportEnd();
   }
 }
+
+// ** DRAWS **
+// -----------
+
+function drawSquare(size){
+  push();
+  noStroke();
+  fill(255);
+  translate(itemSize * 0.5, itemSize * 0.5);
+  rectMode(CENTER);
+  rect(0, 0, itemSize * size);
+  pop();
+}
+
+function drawTriangle(size){
+  let start = 1 - size;
+  push();
+  fill(255);
+  noStroke();
+  triangle(
+    itemSize * size, itemSize * start,
+    itemSize * size, itemSize * size,
+    itemSize * start, itemSize * size
+  );
+  pop();
+}
+
+function drawLine(size){
+  let start = 1 - size;
+  stroke(255);
+  strokeWeight(itemSize * 0.1);
+  line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
+}
+
+function drawArrow(size){
+  let start = 1 - size;
+  push();
+  stroke(255);
+  strokeWeight(itemSize * 0.1);
+  line(itemSize * start, itemSize * start, itemSize * size, itemSize * start);
+  line(itemSize * start, itemSize * start, itemSize * start, itemSize * size);
+  line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
+  pop();
+}
+
+function drawPlus(size){
+  let start = 1 - size;
+  push();
+    stroke(255);
+    strokeWeight(itemSize * start);
+    line(itemSize * start, itemSize * 0.5, itemSize * size, itemSize * 0.5);
+    line(itemSize * 0.5, itemSize * start, itemSize * 0.5, itemSize * size);
+  pop();
+}
+
+function drawX(size){
+  let start = 1 - size;
+  push();
+  stroke(255);
+  strokeWeight(itemSize * 0.1);
+  line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
+  line(itemSize * start, itemSize * size, itemSize * size, itemSize * start);
+  pop();
+}
+
+function drawCircle(size){
+  push();
+  translate(itemSize * 0.5, itemSize * 0.5);
+  noStroke();
+  fill(255);
+  circle(0, 0, itemSize * size);
+  pop();
+}
+
+// ** UTILITY **
+// -------------
 
 function getVideoColorAtPosition(i, j){
   let videoSize = capture.height / obj.items;
@@ -185,11 +268,11 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(5).max(60).step(1).name('Items');
+  grid.add(obj, 'items').min(10).max(100).step(1).name('Items');
 
   const lev = gui.addFolder('Thresholds');
-  lev.add(obj, 'thShadows').min(0).max(1).step(0.1).name('Shadows');
-  lev.add(obj, 'thLights').min(0).max(1).step(0.1).name('Lights');
+  lev.add(obj, 'thShadows').min(0.3).max(1).step(0.05).name('Shadows');
+  lev.add(obj, 'thLights').min(0).max(1).step(0.05).name('Lights');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
