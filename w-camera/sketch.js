@@ -5,13 +5,24 @@ let capture;
 
 let storageName = 'gui-camera';
 
+let palette = ["#8ecae6","#219ebc","#023047","#ffb703","#fb8500"];
+
 let obj = {
   items: 50,
-  thShadows: 0.45,
-  thLights: 0.65,
+  showGrid: false,
+  threshold: 0.5,
+  wide: 0.1,
+  bg: '#000000',
+  color: palette[0],
+  invert: false,
+  shape1: 'Plus',
+  shape2: 'Triangle',
+  shape3: 'Square',
 };
 
-// todo: add color and bg color, invert, shape options
+// todo: shape options
+// todo: clear bg?
+// todo: 
 
 // let backgroundPixels = null;
 // let bgLightness = []; 
@@ -34,7 +45,7 @@ function draw() {
   itemSize = width / obj.items;
   capture.loadPixels();
 
-  background(0);
+  background(obj.bg);
   rectMode(CENTER);
   noStroke();
 
@@ -49,40 +60,75 @@ function draw() {
       
       push();
         translate(x, y);
-        translate(itemSize * 0.5, itemSize * 0.5);
-        
+
         // Grid
-        noFill();
-        stroke(200);
-        // rect(0, 0, itemSize);
+        if (obj.showGrid){
+          push()
+          translate(itemSize * 0.5, itemSize * 0.5);
+          noFill();
+          if (obj.invert){
+            stroke(0);
+          } else {
+            stroke(255);
+          }
+          rect(0, 0, itemSize);
+          pop();
+        }
 
         let l = lightness(c);
         let light = map(l, 0, 100, 0, 1);
-        fill(255);
+        let dark = 1 - light;
 
-        let thMid = map(obj.thShadows, 0, 1, 0, 1);
-        thMid = obj.thShadows;
-        let thHig = map(obj.thLights, 0, 1, thMid, 1);
-        thHig = obj.thLights;
+        let thMid = obj.threshold - (obj.wide / 2);
+        let thHig = obj.threshold + (obj.wide / 2);
 
-        // 0   - 0.3 - black
-        // 0.3 - [0.5] - lines
-        // 0.5 - [0.7] - circle
-        // 0.7 - 1 - white
-
-        if (light > 0.3 && light <= thMid){
-          // drawLine(0.8);
-          drawArrow(0.8);
-          // drawPlus(0.9);
-          // drawX(0.9);
+        let value = light;
+        if (obj.invert){
+          value = dark;
         }
-        if (light > thMid && light <= thHig){
-          // drawTriangle(0.9);
-          drawCircle(0.5);
+
+        if (value > 0.3 && value <= thMid){
+          switch (obj.shape1) {
+            case 'Line':
+              drawLine(0.8);
+              break;
+
+            case 'Plus':
+              drawPlus(0.8);
+              break;
+          }
         }
-        if (light > thHig){
-          drawSquare(0.8);
-          // drawCircle(0.9);
+        if (value > thMid && value <= thHig){
+          switch (obj.shape2) {
+            case 'Triangle':
+              drawTriangle(0.9);
+              break;
+
+            case 'Circle':
+              drawCircle(0.5, false);
+              break;
+            
+            case 'Arrow':
+              drawArrow(0.8);
+              break;
+
+            case 'X':
+              drawX(0.9);
+              break;
+          }
+        }
+        if (value > thHig){
+          switch (obj.shape3) {
+            case 'Square':
+              drawSquare(0.8);
+              break;
+            case 'Circle':
+              drawCircle(0.9, true);
+              break;
+            case 'Lines':
+              drawLines(0.9);
+              break;
+          }
         }
 
         // if (bgLightness[ci] !== undefined){
@@ -122,7 +168,7 @@ function draw() {
 function drawSquare(size){
   push();
   noStroke();
-  fill(255);
+  fill(obj.color);
   translate(itemSize * 0.5, itemSize * 0.5);
   rectMode(CENTER);
   rect(0, 0, itemSize * size);
@@ -132,7 +178,7 @@ function drawSquare(size){
 function drawTriangle(size){
   let start = 1 - size;
   push();
-  fill(255);
+  fill(obj.color);
   noStroke();
   triangle(
     itemSize * size, itemSize * start,
@@ -144,15 +190,16 @@ function drawTriangle(size){
 
 function drawLine(size){
   let start = 1 - size;
-  stroke(255);
+  stroke(obj.color);
   strokeWeight(itemSize * 0.1);
-  line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
+  // line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
+  line(itemSize * start, itemSize * size, itemSize * size, itemSize * start);
 }
 
 function drawArrow(size){
   let start = 1 - size;
   push();
-  stroke(255);
+  stroke(obj.color);
   strokeWeight(itemSize * 0.1);
   line(itemSize * start, itemSize * start, itemSize * size, itemSize * start);
   line(itemSize * start, itemSize * start, itemSize * start, itemSize * size);
@@ -163,8 +210,8 @@ function drawArrow(size){
 function drawPlus(size){
   let start = 1 - size;
   push();
-    stroke(255);
-    strokeWeight(itemSize * start);
+    stroke(obj.color);
+    strokeWeight(itemSize * 0.1);
     line(itemSize * start, itemSize * 0.5, itemSize * size, itemSize * 0.5);
     line(itemSize * 0.5, itemSize * start, itemSize * 0.5, itemSize * size);
   pop();
@@ -173,19 +220,39 @@ function drawPlus(size){
 function drawX(size){
   let start = 1 - size;
   push();
-  stroke(255);
+  stroke(obj.color);
   strokeWeight(itemSize * 0.1);
   line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
   line(itemSize * start, itemSize * size, itemSize * size, itemSize * start);
   pop();
 }
 
-function drawCircle(size){
+function drawCircle(size, f){
   push();
   translate(itemSize * 0.5, itemSize * 0.5);
-  noStroke();
-  fill(255);
+  if (f){
+    noStroke();
+    fill(obj.color);
+  } else {
+    noFill();
+    stroke(obj.color);
+    strokeWeight(itemSize * 0.1);
+  }
   circle(0, 0, itemSize * size);
+  pop();
+}
+
+function drawLines(size){
+  let start = 1 - size;
+  push();
+    noFill();
+    stroke(obj.color);
+    strokeWeight(itemSize * 0.1);
+    translate(0, itemSize * 0.05);
+    for (let i = 0; i < 4; i++) {
+      line(itemSize * start, itemSize * start, itemSize * size, itemSize * start);
+      translate(0, itemSize * size * 0.25);
+    }
   pop();
 }
 
@@ -271,10 +338,21 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'items').min(10).max(100).step(1).name('Items');
+  grid.add(obj, 'showGrid').name('Show Grid');
 
+  const col = gui.addFolder('Colors');
+  col.addColor(obj, 'bg').name('Background');
+  col.addColor(obj, 'color').name('Shader');
+  col.add(obj, 'invert').name('Invert');
+
+  const shapes = gui.addFolder('Shapes');
+  shapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
+  shapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
+  shapes.add( obj, 'shape3', [ 'Square', 'Circle', 'Lines' ] ).name('Shape 3');
+  
   const lev = gui.addFolder('Thresholds');
-  lev.add(obj, 'thShadows').min(0.3).max(1).step(0.05).name('Shadows');
-  lev.add(obj, 'thLights').min(0).max(1).step(0.05).name('Lights');
+  lev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
+  lev.add(obj, 'wide').min(0).max(0.4).step(0.05).name('Range');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
