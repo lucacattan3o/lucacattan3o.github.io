@@ -11,17 +11,14 @@ function setup() {
   createCanvas(1080, 1980);
   responsiveSketch();
   frameRate(fps);
-  let now = new Date();
   sketchExportSetup({
     fps: fps,
-    name: 'video-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes(),
+    name: getFileName('video'),
   });
   setupLil();
 }
 
 function draw() {
-
-
   if (frameCount == 1){
     sketchExportStart();
   }
@@ -71,7 +68,7 @@ obj.stopExport = function(){
 };
 
 obj.saveImage = function(){
-  saveCanvas("visual", "png");
+  saveCanvas(getFileName('visual'), 'png');
 }
 
 function setupLil(){
@@ -83,7 +80,7 @@ function setupLil(){
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
-  gui.add(obj, 'startOver').name('Play Again');
+  gui.add(obj, 'startOver').name('Run Again');
 
   let exportBtn = gui.add(obj, 'export').name('Export Video');
   const queryString = window.location.search;
@@ -110,3 +107,8 @@ function saveToStorage(){
   preset = gui.save();
   localStorage.setItem(storageName, JSON.stringify(preset));
 };
+
+function getFileName(prefix){
+  let now = new Date();
+  return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
+}

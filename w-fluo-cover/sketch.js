@@ -33,7 +33,6 @@ function setup() {
   createCanvas(w, h);
   responsiveSketch();
   frameRate(fps);
-  let now = new Date();
   sketchExportSetup({
     fps: fps,
     name: getFileName('video'),

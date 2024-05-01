@@ -1,12 +1,7 @@
 let fps = 5;
-
 let items = 60;
 
 let itemSize;
-
-let noiseDetail = 0.1;
-let zOffset = 0;
-
 let capture;
 
 // let backgroundPixels = null;
@@ -17,7 +12,8 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
-    fps: fps
+    fps: fps,
+    name: getFileName('video'),
   });
 
   capture = createCapture(VIDEO);
@@ -124,6 +120,11 @@ function colorDistance(first, second) {
   let g = abs(green(first) - green(second));
   let b = abs(blue(first) - blue(second));
   return r + g + b;
+}
+
+function getFileName(prefix){
+  let now = new Date();
+  return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
 }
 
 /*
