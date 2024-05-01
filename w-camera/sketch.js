@@ -11,6 +11,8 @@ let obj = {
   thLights: 0.65,
 };
 
+// todo: add color and bg color, invert, shape options
+
 // let backgroundPixels = null;
 // let bgLightness = []; 
 
@@ -70,13 +72,13 @@ function draw() {
 
         if (light > 0.3 && light <= thMid){
           // drawLine(0.8);
-          // drawArrow(0.8);
-          drawPlus(0.9);
+          drawArrow(0.8);
+          // drawPlus(0.9);
           // drawX(0.9);
         }
         if (light > thMid && light <= thHig){
-          drawTriangle(0.9);
-          // drawCircle(0.5);
+          // drawTriangle(0.9);
+          drawCircle(0.5);
         }
         if (light > thHig){
           drawSquare(0.8);
