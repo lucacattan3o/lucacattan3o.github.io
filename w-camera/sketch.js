@@ -7,6 +7,8 @@ let storageName = 'gui-camera';
 
 let obj = {
   items: 10,
+  thShadows: 0.5,
+  thLights: 0.5,
 };
 
 // let backgroundPixels = null;
@@ -56,16 +58,19 @@ function draw() {
         let light = map(l, 0, 100, 0, 1);
         fill(255);
 
-        if (light > 0.3 && light < 0.5){
+        let thMid = map(obj.thShadows, 0, 1, 0, 1);
+        let thHig = map(obj.thLights, 0, 1, thMid, 1);
+
+        if (light > 0.3 && light < thMid){
           stroke(255);
           strokeWeight(itemSize * 0.1);
           line(0, 0, itemSize, itemSize);
         }
-        if (light > 0.5 && light < 0.6){
+        if (light > thMid && light < thHig){
           translate(itemSize * 0.5, itemSize * 0.5);
           circle(0, 0, itemSize * 0.5);
         }
-        if (light > 0.6){
+        if (light > thHig){
           translate(itemSize * 0.5, itemSize * 0.5);
           rectMode(CENTER);
           rect(0, 0, itemSize);
@@ -181,6 +186,10 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'items').min(5).max(60).step(1).name('Items');
+
+  const lev = gui.addFolder('Thresholds');
+  lev.add(obj, 'thShadows').min(0).max(1).step(0.1).name('Shadows');
+  lev.add(obj, 'thLights').min(0).max(1).step(0.1).name('Lights');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
