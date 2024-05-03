@@ -25,8 +25,8 @@ class Cluster{
           // pointA: { x: -50, y: 0 },
           bodyB: prev.body,
           // pointB: { x: 50, y: 0 },
-          stiffness: 0.01,
-          damping: 0.01
+          stiffness: 0.001,
+          // damping: 0.01
         });
         Composite.add(engine.world, [item.body, prev.body, constraint]);
         this.consts.push(constraint);
