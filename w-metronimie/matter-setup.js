@@ -37,7 +37,7 @@ function matterSetup(){
   addMouseConstraint();
   
   // Gravity
-  engine.world.gravity.y = 0.01;
+  engine.world.gravity.y = 0;
 
   // run the engine
   Runner.run(runner, engine);

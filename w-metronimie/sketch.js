@@ -1,11 +1,15 @@
-let fps = 60;
+let fps = 30;
 
 let obj = {
   items: 1,
 };
 
 let itemSize;
-let items = [];
+let sentence = [
+  'UNO',
+  'SPAZIO',
+  'PER'
+];
 
 let storageName = 'gui-metronimie';
 
@@ -16,21 +20,22 @@ function setup() {
     fps: fps,
     name: getFileName('video'),
   });
-  setupLil();
+  // setupLil();
 
   matterSetup();
-  setUpItems();
+  setUpClusters();
 
   itemSize = width * 0.2;
 }
 
-function setUpItems(){
-  items = [];
-  for (let i = 0; i <= obj.items; i++) {
-    let x = itemSize * i * 1000;
-    let y = 100;
-    let item = new Item(x, y);
-    items.push(item);
+function setUpClusters(){
+  clusters = [];
+  for (let i = 0; i < sentence.length; i++) {
+    let word = sentence[i];
+    let x = 400;
+    let y = 200 * i;
+    let cluster = new Cluster(x, y, word);
+    clusters.push(cluster);
   }
 }
 
@@ -40,7 +45,7 @@ function windowResized() {
 
 function draw() {
   background(0);
-  drawItems();
+  drawClusters();
 
   if (frameCount == 1){
     sketchExportStart();
@@ -51,10 +56,10 @@ function draw() {
   }
 }  
 
-function drawItems(){
-  for (let i = 0; i <= obj.items; i++) {
-    let item = items[i];
-    item.draw();
+function drawClusters(){
+  for (let i = 0; i < clusters.length; i++) {
+    let cluster = clusters[i];
+    cluster.draw();
   }
 }
 
