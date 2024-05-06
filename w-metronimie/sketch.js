@@ -1,7 +1,7 @@
 let fps = 30;
 
 let obj = {
-  items: 1,
+  showDebug: true,
 };
 
 let itemSize;
@@ -20,20 +20,20 @@ function setup() {
     fps: fps,
     name: getFileName('video'),
   });
-  // setupLil();
+  setupLil();
+
+  itemSize = width * 0.04;
 
   matterSetup();
   setUpClusters();
-
-  itemSize = width * 0.2;
 }
 
 function setUpClusters(){
   clusters = [];
   for (let i = 0; i < sentence.length; i++) {
     let word = sentence[i];
-    let x = 400;
-    let y = 150 * i + 200;
+    let x = itemSize * 3;
+    let y = (itemSize * 1.7 * i) + itemSize * 3;
     let cluster = new Cluster(x, y, word);
     clusters.push(cluster);
   }
@@ -109,23 +109,22 @@ obj.saveImage = function(){
 function setupLil(){
   gui = new GUI();
 
-  const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(1).max(20).step(1).name('Items');
+  const debug = gui.addFolder('Debug');
+  debug.add(obj, 'showDebug').name('Show Debug');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
   gui.add(obj, 'startOver').name('Run Again');
 
-  let exportBtn = gui.add(obj, 'export').name('Export Video');
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  if (urlParams.get('export') == 'true'){
-    console.debug('test');
-    exportBtn.disable();
-    exportBtn.name('Exporting...');
-
-    gui.add(obj, 'stopExport').name('Stop Export');
-  }
+  // let exportBtn = gui.add(obj, 'export').name('Export Video');
+  // const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // if (urlParams.get('export') == 'true'){
+  //   console.debug('test');
+  //   exportBtn.disable();
+  //   exportBtn.name('Exporting...');
+  //   gui.add(obj, 'stopExport').name('Stop Export');
+  // }
   
   gui.add(obj, 'saveImage').name('Save Image');
 

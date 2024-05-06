@@ -5,8 +5,8 @@ class Item{
     
     // let sColors = shuffle(colors);
     this.color = 255;
-    this.width = 100;
-    this.height = 120;
+    this.width = itemSize;
+    this.height = itemSize * 1.4;
 
     let options = {
       // restitution: 0.01,
@@ -21,9 +21,9 @@ class Item{
     this.pos.x = (this.body.bounds.min.x + this.body.bounds.max.x) / 2;
     this.pos.y = (this.body.bounds.min.y + this.body.bounds.max.y) / 2;
 
-    this.drawVertex();
-
-    // console.debug(this.body);
+    if (obj.showDebug){
+      this.drawVertex();
+    }
 
     push();
       stroke('red');
@@ -40,7 +40,7 @@ class Item{
       translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
       textAlign(CENTER, CENTER);
-      textSize(this.width * 1.5);
+      textSize(this.width * 1.8);
       text(this.letter, 0, this.height * 0.05);
     pop();
   }

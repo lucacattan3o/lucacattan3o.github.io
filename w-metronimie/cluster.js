@@ -5,7 +5,7 @@ class Cluster{
     this.y = y;
     this.items = [];
 
-    this.kerning = 110;
+    this.kerning = itemSize * 1.1;
 
     this.consts = [];
 
@@ -37,7 +37,9 @@ class Cluster{
   }
 
   draw(){
-    this.drawConstraint();
+    if (obj.showDebug){
+      this.drawConstraint();
+    }
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i];
       item.draw();
