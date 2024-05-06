@@ -57,7 +57,7 @@ function windowResized() {
 }
 
 function draw() {
-  background(0);
+  background(palette[2]);
   drawClusters();
 
   if (frameCount == 1){

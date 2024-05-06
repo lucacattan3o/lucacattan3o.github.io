@@ -24,13 +24,36 @@ class Item{
     Composite.add(engine.world, this.body);    
   }
 
+  isMouseOver(){
+    if (Matter.Vertices.contains(this.body.vertices, {x: mouseX, y: mouseY}) ){
+      return true;
+    }
+    return false;
+  }
+
   draw(){
 
     this.pos.x = (this.body.bounds.min.x + this.body.bounds.max.x) / 2;
     this.pos.y = (this.body.bounds.min.y + this.body.bounds.max.y) / 2;
 
     if (obj.showDebug){
+      push();
+      stroke(10, 60);
+      noFill();
       this.drawVertex();
+      pop();
+    }
+
+    if (this.isMouseOver()){
+      push();
+      noStroke();
+      // stroke(this.bg);
+      // strokeWeight(itemSize * 0.1);
+      // strokeJoin(ROUND);
+      noStroke();
+      fill(0);
+      this.drawVertex();
+      pop();
     }
 
     push();
@@ -48,7 +71,7 @@ class Item{
       noStroke();
       translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
-      textFont(font, itemSize * 1.5);  
+      textFont(font, itemSize * 1.7);  
       textAlign(CENTER, CENTER);
       translate(0, -itemSize * 0.05);
       text(this.letter, 0, 0);
@@ -56,14 +79,6 @@ class Item{
   }
 
   drawVertex(){
-    stroke(150);
-    noFill();
-    // noStroke();
-    // stroke(this.bg);
-    // strokeWeight(itemSize * 0.1);
-    // strokeJoin(ROUND);
-    // noStroke();
-    // fill(this.bg);
     let vertices = this.body.vertices;
     beginShape();
     for (let index = 0; index < vertices.length; index++) {
