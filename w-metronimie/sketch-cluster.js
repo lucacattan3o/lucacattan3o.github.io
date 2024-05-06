@@ -5,6 +5,8 @@ class Cluster{
     this.y = y;
     this.items = [];
 
+    this.bg = random(palette);
+
     this.kerning = 0;
     this.kerningOffset = itemSize * 0.05;
 
@@ -31,21 +33,21 @@ class Cluster{
       }
 
       lx = lx + this.kerning + this.kerningOffset;
-      let item = new Item(this.x + lx, this.y, letter);
+      let item = new Item(this.x + lx, this.y, letter, this.bg);
       this.items.push(item);
 
       if (i !== 0){
         let prev = this.items[i - 1];
         var constraint = Constraint.create({
           length: this.kerning + this.kerningOffset,
-          bodyA: item.body,
+          bodyA: prev.body,
           // pointA: { x: -50, y: 0 },
-          bodyB: prev.body,
+          bodyB: item.body,
           // pointB: { x: 50, y: 0 },
           stiffness: 0.001,
-          // damping: 0.01
+          // damping: 2
         });
-        Composite.add(engine.world, [item.body, prev.body, constraint]);
+        Composite.add(engine.world, [prev.body, item.body, constraint]);
         this.consts.push(constraint);
       }
     };

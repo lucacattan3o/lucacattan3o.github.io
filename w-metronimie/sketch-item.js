@@ -1,5 +1,5 @@
 class Item{
-  constructor(x, y, letter){
+  constructor(x, y, letter, bg){
     this.pos = createVector(x, y);
     this.letter = letter;
     
@@ -7,6 +7,8 @@ class Item{
     this.color = 255;
     this.width = itemSize;
     this.height = itemSize * 1.25;
+
+    this.bg = bg;
 
     this.letterData = null;
     if (lettersData[this.letter]!== undefined){
@@ -16,7 +18,7 @@ class Item{
 
     let options = {
       // restitution: 0.01,
-      frictionStatic: 5,
+      frictionStatic: 100,
     }
     this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.width, this.height, options);
     Composite.add(engine.world, this.body);    
@@ -43,9 +45,10 @@ class Item{
 
     push();
       fill(this.color);
+      noStroke();
       translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
-      textFont(font, itemSize * 1.75);  
+      textFont(font, itemSize * 1.5);  
       textAlign(CENTER, CENTER);
       translate(0, -itemSize * 0.05);
       text(this.letter, 0, 0);
@@ -55,6 +58,12 @@ class Item{
   drawVertex(){
     stroke(150);
     noFill();
+    // noStroke();
+    // stroke(this.bg);
+    // strokeWeight(itemSize * 0.1);
+    // strokeJoin(ROUND);
+    // noStroke();
+    // fill(this.bg);
     let vertices = this.body.vertices;
     beginShape();
     for (let index = 0; index < vertices.length; index++) {

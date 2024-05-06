@@ -9,6 +9,16 @@ let font;
 
 let storageName = 'gui-metronimie';
 
+let palette = [
+  // '#ffffff',
+  '#495ED6',
+  '#35ACC7',
+  '#FC4C57',
+  '#FFC130',
+  '#F43B6E',
+  // '#070709',
+];
+
 function preload() {
   font = loadFont('./fonts/Epilogue-Black.ttf');
 }
