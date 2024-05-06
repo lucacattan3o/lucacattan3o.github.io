@@ -5,15 +5,33 @@ class Cluster{
     this.y = y;
     this.items = [];
 
-    this.kerning = itemSize * 1.1;
+    this.kerning = itemSize * 1.2;
 
     this.consts = [];
 
+    let lx = 0;
+    let ly = 0;
     for (let i = 0; i < this.string.length; i++) {
       let letter = this.string[i];
-      let x = this.kerning * i + this.x;
-      let y = this.y;
-      let item = new Item(x, y, letter);
+
+      // Calcolo il kerning tra una lettera e la successiva
+      // in base alla loro dimensione
+      this.kerning = 0;
+      if (i !== 0){
+        let prev = this.string[i - 1];
+        let prevWidth = 1;
+        if (lettersData[prev] !== undefined){
+          prevWidth = lettersData[prev].width;
+        }
+        let currWidth = 1;
+        if (lettersData[letter] !== undefined){
+          currWidth = lettersData[letter].width;
+        }
+        this.kerning = (itemSize * prevWidth / 2) + (itemSize * currWidth / 2);
+      }
+
+      lx = lx + this.kerning;
+      let item = new Item(this.x + lx, this.y, letter);
       this.items.push(item);
     };
 
@@ -30,8 +48,8 @@ class Cluster{
           stiffness: 0.001,
           // damping: 0.01
         });
-        Composite.add(engine.world, [item.body, prev.body, constraint]);
-        this.consts.push(constraint);
+        // Composite.add(engine.world, [item.body, prev.body, constraint]);
+        // this.consts.push(constraint);
       }
     });
   }

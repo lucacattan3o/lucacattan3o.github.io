@@ -6,7 +6,13 @@ class Item{
     // let sColors = shuffle(colors);
     this.color = 255;
     this.width = itemSize;
-    this.height = itemSize * 1.4;
+    this.height = itemSize * 1.25;
+
+    this.letterData = null;
+    if (lettersData[this.letter]!== undefined){
+      this.letterData = lettersData[this.letter];
+      this.width = this.width * this.letterData.width;
+    }
 
     let options = {
       // restitution: 0.01,
@@ -39,9 +45,10 @@ class Item{
       fill(this.color);
       translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
+      textFont(font, itemSize * 1.5);  
       textAlign(CENTER, CENTER);
-      textSize(this.width * 1.8);
-      text(this.letter, 0, this.height * 0.05);
+      translate(0, -itemSize * 0.05);
+      text(this.letter, 0, 0);
     pop();
   }
 

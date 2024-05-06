@@ -5,6 +5,8 @@ let obj = {
 };
 
 let itemSize;
+let font;
+
 let sentence = [
   'UNO',
   'SPAZIO',
@@ -12,6 +14,10 @@ let sentence = [
 ];
 
 let storageName = 'gui-metronimie';
+
+function preload() {
+  font = loadFont('./fonts/Epilogue-Black.ttf');
+}
 
 function setup() {
   myCanvas = createCanvas (windowWidth, windowHeight);
