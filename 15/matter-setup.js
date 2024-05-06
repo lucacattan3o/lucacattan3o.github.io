@@ -26,7 +26,7 @@ function matterSetup(){
   boxes = [];
 
   // Add wrapper
-  let border = 50;
+  let border = 100;
   let bottom = Bodies.rectangle(width / 2, height + border * 0.5, width, border, {isStatic: true});
   Composite.add(engine.world, bottom);
   let top = Bodies.rectangle(width / 2, 0 - border * 0.5, width, border, {isStatic: true});

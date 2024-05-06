@@ -5,11 +5,13 @@ class Cluster{
     this.y = y;
     this.items = [];
 
+    this.kerning = 110;
+
     this.consts = [];
 
     for (let i = 0; i < this.string.length; i++) {
       let letter = this.string[i];
-      let x = 110 * i + this.x;
+      let x = this.kerning * i + this.x;
       let y = this.y;
       let item = new Item(x, y, letter);
       this.items.push(item);
@@ -20,7 +22,7 @@ class Cluster{
         let prev = this.items[i - 1];
 
         var constraint = Constraint.create({
-          length: 120,
+          length: this.kerning,
           bodyA: item.body,
           // pointA: { x: -50, y: 0 },
           bodyB: prev.body,
@@ -35,17 +37,25 @@ class Cluster{
   }
 
   draw(){
-    for (let i = 0; i < this.consts.length; i++) {
-      let cons = this.consts[i];
-      push();
-      stroke('red');
-      strokeWeight(3);
-      line(cons.bodyA.position.x, cons.bodyA.position.y, cons.bodyB.position.x, cons.bodyB.position.y );
-      pop();
-    }
+    this.drawConstraint();
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i];
       item.draw();
+    }
+  }
+
+  drawConstraint(){
+    for (let i = 0; i < this.consts.length; i++) {
+      let cons = this.consts[i];
+      push();
+      stroke(50);
+      strokeWeight(3);
+      const aX = (cons.bodyA.bounds.min.x + cons.bodyA.bounds.max.x) / 2;
+      const aY = (cons.bodyA.bounds.min.y + cons.bodyA.bounds.max.y) / 2;
+      const bX = (cons.bodyB.bounds.min.x + cons.bodyB.bounds.max.x) / 2;
+      const bY = (cons.bodyB.bounds.min.y + cons.bodyB.bounds.max.y) / 2;
+      line(aX, aY, bX, bY);
+      pop();
     }
   }
 

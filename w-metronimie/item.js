@@ -9,21 +9,35 @@ class Item{
     this.height = 120;
 
     let options = {
-      friction: 0.5,
-      restitution: 0.1,
+      // restitution: 0.01,
+      frictionStatic: 20,
     }
     this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.width, this.height, options);
-  
-    // mBody.setVelocity(this.body, {x: random(-1, 1), y: random(-1, 1)});
     Composite.add(engine.world, this.body);    
   }
 
   draw(){
+
+    this.pos.x = (this.body.bounds.min.x + this.body.bounds.max.x) / 2;
+    this.pos.y = (this.body.bounds.min.y + this.body.bounds.max.y) / 2;
+
     this.drawVertex();
+
+    // console.debug(this.body);
+
+    push();
+      stroke('red');
+      strokeWeight(4);
+      const centerX = (this.body.bounds.min.x + this.body.bounds.max.x) / 2;
+      const centerY = (this.body.bounds.min.y + this.body.bounds.max.y) / 2;
+      // circle(centerX, centerY, 10);
+      // point(this.body.bounds.min.x, this.body.bounds.min.y);
+      // point(this.body.bounds.max.x, this.body.bounds.max.y);
+    pop();
 
     push();
       fill(this.color);
-      translate(this.body.position.x, this.body.position.y)
+      translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
       textAlign(CENTER, CENTER);
       textSize(this.width * 1.5);

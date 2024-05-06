@@ -33,7 +33,7 @@ function setUpClusters(){
   for (let i = 0; i < sentence.length; i++) {
     let word = sentence[i];
     let x = 400;
-    let y = 300 * i;
+    let y = 150 * i + 200;
     let cluster = new Cluster(x, y, word);
     clusters.push(cluster);
   }
