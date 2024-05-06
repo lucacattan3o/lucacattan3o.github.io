@@ -5,12 +5,12 @@ class Cluster{
     this.y = y;
     this.items = [];
 
-    this.kerning = itemSize * 1.2;
+    this.kerning = 0;
+    this.kerningOffset = itemSize * 0.05;
 
     this.consts = [];
 
     let lx = 0;
-    let ly = 0;
     for (let i = 0; i < this.string.length; i++) {
       let letter = this.string[i];
 
@@ -30,17 +30,14 @@ class Cluster{
         this.kerning = (itemSize * prevWidth / 2) + (itemSize * currWidth / 2);
       }
 
-      lx = lx + this.kerning;
+      lx = lx + this.kerning + this.kerningOffset;
       let item = new Item(this.x + lx, this.y, letter);
       this.items.push(item);
-    };
 
-    this.items.forEach((item, i) => {
       if (i !== 0){
         let prev = this.items[i - 1];
-
         var constraint = Constraint.create({
-          length: this.kerning,
+          length: this.kerning + this.kerningOffset,
           bodyA: item.body,
           // pointA: { x: -50, y: 0 },
           bodyB: prev.body,
@@ -48,10 +45,10 @@ class Cluster{
           stiffness: 0.001,
           // damping: 0.01
         });
-        // Composite.add(engine.world, [item.body, prev.body, constraint]);
-        // this.consts.push(constraint);
+        Composite.add(engine.world, [item.body, prev.body, constraint]);
+        this.consts.push(constraint);
       }
-    });
+    };
   }
 
   draw(){

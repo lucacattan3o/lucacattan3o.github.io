@@ -16,7 +16,7 @@ class Item{
 
     let options = {
       // restitution: 0.01,
-      frictionStatic: 20,
+      frictionStatic: 5,
     }
     this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.width, this.height, options);
     Composite.add(engine.world, this.body);    
@@ -45,7 +45,7 @@ class Item{
       fill(this.color);
       translate(this.pos.x, this.pos.y)
       rotate(this.body.angle);
-      textFont(font, itemSize * 1.5);  
+      textFont(font, itemSize * 1.75);  
       textAlign(CENTER, CENTER);
       translate(0, -itemSize * 0.05);
       text(this.letter, 0, 0);

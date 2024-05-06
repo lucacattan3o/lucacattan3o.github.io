@@ -7,12 +7,6 @@ let obj = {
 let itemSize;
 let font;
 
-let sentence = [
-  'UNO',
-  'SPAZIO',
-  'PER'
-];
-
 let storageName = 'gui-metronimie';
 
 function preload() {
@@ -28,7 +22,7 @@ function setup() {
   });
   setupLil();
 
-  itemSize = width * 0.04;
+  itemSize = width * 0.03;
 
   matterSetup();
   setUpClusters();
@@ -36,13 +30,16 @@ function setup() {
 
 function setUpClusters(){
   clusters = [];
-  for (let i = 0; i < sentence.length; i++) {
-    let word = sentence[i];
-    let x = itemSize * 3;
-    let y = (itemSize * 1.7 * i) + itemSize * 3;
-    let cluster = new Cluster(x, y, word);
-    clusters.push(cluster);
-  }
+  push();
+    for (let i = 0; i < sentence.length; i++) {
+      let item = sentence[i];
+      let word = item.word;
+      let x = width * 0.5 + itemSize * item.x;
+      let y = height * 0.5 + itemSize * 1.6 * item.y;
+      let cluster = new Cluster(x, y, word);
+      clusters.push(cluster);
+    }
+  pop();
 }
 
 function windowResized() {
@@ -63,10 +60,12 @@ function draw() {
 }  
 
 function drawClusters(){
+  push();
   for (let i = 0; i < clusters.length; i++) {
     let cluster = clusters[i];
     cluster.draw();
   }
+  pop();
 }
 
 // ** LIL **
