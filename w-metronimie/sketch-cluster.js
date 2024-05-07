@@ -16,6 +16,7 @@ class Cluster{
       }
       return Bodies.rectangle(
         x, y, itemSize * currWidth, itemSize * 1.5, 
+        { label: letter }
         // { collisionFilter: { group: group } }
       );
     });

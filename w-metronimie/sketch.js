@@ -3,10 +3,12 @@ let fps = 30;
 let obj = {
   showDebug: true,
   showImage: false,
+  addRandomForces: false,
 };
 
 let itemSize;
 let font, img;
+let sec;
 
 let storageName = 'gui-metronimie';
 
@@ -63,6 +65,8 @@ function draw() {
   // bg.setAlpha(50);
   background(bg);
 
+  sec = frameCount / fps;
+
   if (obj.showImage){
     push();
       translate(width * 0.5, height * 0.5);
@@ -72,6 +76,15 @@ function draw() {
   }
 
   drawClusters();
+
+  if (obj.addRandomForces){
+    if (sec % 2 == 0){
+      let rCluster = random(clusters);
+      let bodies = rCluster.rope.bodies;
+      let letter = random(bodies);
+      mBody.applyForce( letter, {x: letter.position.x, y: letter.position.y}, {x: random(-4, 4), y: random(-4, 4)});
+    }
+  }
 
   if (frameCount == 1){
     sketchExportStart();
@@ -139,7 +152,8 @@ function setupLil(){
 
   const debug = gui.addFolder('Debug');
   debug.add(obj, 'showDebug').name('Show Debug');
-  debug.add(obj, 'showImage').name('Show Reference');
+  // debug.add(obj, 'showImage').name('Show Reference');
+  debug.add(obj, 'addRandomForces').name('Add Random Forces');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
