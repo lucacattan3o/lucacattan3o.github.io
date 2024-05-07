@@ -1,32 +1,39 @@
 let sentence = [
   {
     word: 'UNO',
-    x: -6,
+    x: -6.6,
     y: -2,
+    edits: [
+      {
+        delta: 2, // O
+        width: 0.9,
+        offsetX: -0.1,
+      }
+    ],
   },
   {
     word: 'SPAZIO',
-    x: -2,
+    x: -2.6,
     y: -2,
   },
   {
     word: 'PER',
-    x: 4.5,
+    x: 3.7,
     y: -2,
   },
   {
     word: 'PROMUOVERE',
-    x: -9.7,
+    x: -10,
     y: -1,
   },
   {
     word: 'LA',
-    x: 2.2,
+    x: 1.9,
     y: -1,
   },
   {
     word: 'POESIA',
-    x: 5,
+    x: 4.3,
     y: -1,
   },
   {
@@ -36,32 +43,32 @@ let sentence = [
   },
   {
     word: 'IN',
-    x: 3.8, 
+    x: 3, 
     y: 0,
   },
   {
     word: 'TUTTE',
-    x: 5.9, 
+    x: 5.0, 
     y: 0,
   },
   {
     word: 'LE',
-    x: -5, 
+    x: -5.95, 
     y: 1,
   },
   {
     word: 'SUE',
-    x: -2.5, 
+    x: -3.8, 
     y: 1,
   },
   {
     word: 'FORME',
-    x: 1, 
+    x: -0.3, 
     y: 1,
   },
   {
     word: '.',
-    x: 7.2, 
+    x: 5.6, 
     y: 1,
   },
 ];

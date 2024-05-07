@@ -5,7 +5,7 @@ let obj = {
 };
 
 let itemSize;
-let font;
+let font, img;
 
 let storageName = 'gui-metronimie';
 
@@ -21,6 +21,7 @@ let palette = [
 
 function preload() {
   font = loadFont('./fonts/Epilogue-Black.ttf');
+  img = loadImage('./imgs/reference.jpeg');
 }
 
 function setup() {
@@ -45,7 +46,7 @@ function setUpClusters(){
       let item = sentence[i];
       let word = item.word;
       let x = width * 0.5 + itemSize * item.x;
-      let y = height * 0.5 + itemSize * 1.6 * item.y;
+      let y = height * 0.5 + itemSize * 1.65 * item.y;
       let cluster = new Cluster(x, y, word);
       clusters.push(cluster);
     }
@@ -60,6 +61,13 @@ function draw() {
   let bg = color(palette[2]);
   // bg.setAlpha(50);
   background(bg);
+
+  push();
+    translate(width * 0.5, height * 0.5);
+    scale(1.5);
+    image(img, -img.width * 0.5, -img.height * 0.5);
+  pop();
+
   drawClusters();
 
   if (frameCount == 1){
