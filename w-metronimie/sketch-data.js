@@ -61,7 +61,7 @@ let sentence = [
   },
   {
     word: '.',
-    x: 6.7, 
+    x: 7.2, 
     y: 1,
   },
 ];
@@ -73,17 +73,32 @@ let lettersData = {
   'E': {
     width : 0.9,
   },
+  'F': {
+    width : 0.9,
+  },
   'I': {
     width : 0.45,
   },
-  'O': {
-    width : 1.2,
+  'L': {
+    width : 0.85,
   },
   'M': {
     width : 1.5,
   },
   'N': {
-    width : 1.1,
+    width : 1.15,
+  },
+  'O': {
+    width : 1.2,
+  },
+  'S': {
+    width : 1.05,
+  },
+  'U': {
+    width : 1.05,
+  },
+  'V': {
+    width : 0.9,
   },
   'Z': {
     width : 0.95,

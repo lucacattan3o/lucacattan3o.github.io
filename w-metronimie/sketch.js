@@ -32,7 +32,7 @@ function setup() {
   });
   setupLil();
 
-  itemSize = width * 0.03;
+  itemSize = width * 0.04;
 
   matterSetup();
   setUpClusters();

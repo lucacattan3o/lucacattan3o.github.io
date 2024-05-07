@@ -13,6 +13,8 @@ class Cluster{
     this.consts = [];
 
     this.gap = 5;
+    this.letterSize = 1.8;
+    this.letterSizeDebug = 1.6;
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -86,7 +88,9 @@ class Cluster{
       push();
         noFill();
         stroke(0);
-        this.drawVertex(body.vertices);
+        if (obj.showDebug){
+          this.drawVertex(body.vertices);
+        }
       pop();
 
       let letter = this.string[i];
@@ -98,7 +102,10 @@ class Cluster{
         noStroke();
         translate(posX, posY)
         rotate(body.angle);
-        textFont(font, itemSize * 1.5);  
+        textFont(font, itemSize * this.letterSize);  
+        if (obj.showDebug){
+          textFont(font, itemSize * this.letterSizeDebug);  
+        }
         textAlign(CENTER, CENTER);
         translate(0, -itemSize * 0.05);
         text(letter, 0, 0);
