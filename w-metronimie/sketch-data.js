@@ -16,7 +16,7 @@ let sentence = [
   },
   {
     word: 'PROMUOVERE',
-    x: -9,
+    x: -9.7,
     y: -1,
   },
   {
