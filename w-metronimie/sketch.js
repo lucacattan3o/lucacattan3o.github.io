@@ -2,6 +2,7 @@ let fps = 30;
 
 let obj = {
   showDebug: true,
+  showImage: false,
 };
 
 let itemSize;
@@ -62,11 +63,13 @@ function draw() {
   // bg.setAlpha(50);
   background(bg);
 
-  push();
-    translate(width * 0.5, height * 0.5);
-    scale(1.5);
-    image(img, -img.width * 0.5, -img.height * 0.5);
-  pop();
+  if (obj.showImage){
+    push();
+      translate(width * 0.5, height * 0.5);
+      scale(1.5);
+      image(img, -img.width * 0.5, -img.height * 0.5);
+    pop();
+  }
 
   drawClusters();
 
@@ -136,6 +139,7 @@ function setupLil(){
 
   const debug = gui.addFolder('Debug');
   debug.add(obj, 'showDebug').name('Show Debug');
+  debug.add(obj, 'showImage').name('Show Reference');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');

@@ -4,8 +4,8 @@ class Cluster{
     this.x = x;
     this.y = y;
     this.bg = random(palette);
-    this.gap = 5;
-    this.letterSize = 1.8;
+    this.gap = itemSize * 0.0652;
+    this.letterSize = 1.7;
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -45,8 +45,11 @@ class Cluster{
 
       // Draw letter
       push();
-        fill(100, 100);
-        // noStroke();
+        if (obj.showImage){
+          fill(100, 100);
+        } else {
+          fill(255);
+        }
         translate(posX, posY)
         rotate(body.angle);
         textFont(font, itemSize * this.letterSize);

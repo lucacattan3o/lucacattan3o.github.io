@@ -3,17 +3,17 @@ let sentence = [
     word: 'UNO',
     x: -6.6,
     y: -2,
-    edits: [
-      {
-        delta: 2, // O
-        width: 0.9,
-        offsetX: -0.1,
-      }
-    ],
+    // edits: [
+    //   {
+    //     delta: 2, // O
+    //     width: 0.9,
+    //     offsetX: -0.1,
+    //   }
+    // ],
   },
   {
     word: 'SPAZIO',
-    x: -2.6,
+    x: -2.5,
     y: -2,
   },
   {
@@ -48,7 +48,7 @@ let sentence = [
   },
   {
     word: 'TUTTE',
-    x: 5.0, 
+    x: 5.1, 
     y: 0,
   },
   {
@@ -58,7 +58,7 @@ let sentence = [
   },
   {
     word: 'SUE',
-    x: -3.8, 
+    x: -3.7, 
     y: 1,
   },
   {
@@ -75,22 +75,22 @@ let sentence = [
 
 let lettersData = {
   'A': {
-    width : 1.15,
+    width : 1,
   },
   'E': {
     width : 0.9,
   },
   'F': {
-    width : 0.9,
+    width : 0.8,
   },
   'I': {
-    width : 0.45,
+    width : 0.4,
   },
   'L': {
     width : 0.85,
   },
   'M': {
-    width : 1.5,
+    width : 1.6,
   },
   'N': {
     width : 1.15,
@@ -98,11 +98,17 @@ let lettersData = {
   'O': {
     width : 1.2,
   },
+  'R': {
+    width : 0.95,
+  },
   'S': {
-    width : 1.05,
+    width : 0.9,
+  },
+  'T': {
+    width : 0.9,
   },
   'U': {
-    width : 1.05,
+    width : 1.1,
   },
   'V': {
     width : 0.9,
