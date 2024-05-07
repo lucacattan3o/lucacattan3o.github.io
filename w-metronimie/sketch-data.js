@@ -31,7 +31,7 @@ let sentence = [
   },
   {
     word: 'PERFORMATIVA',
-    x: -9, 
+    x: -10, 
     y: 0,
   },
   {

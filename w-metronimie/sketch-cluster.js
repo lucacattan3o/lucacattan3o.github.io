@@ -12,6 +12,30 @@ class Cluster{
 
     this.consts = [];
 
+    this.gap = 5;
+
+    // var group = mBody.nextGroup(true);
+    this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
+
+        let letter = string[delta];
+        let currWidth = 1;
+        if (lettersData[letter] !== undefined){
+          currWidth = lettersData[letter].width;
+        }
+        return Bodies.rectangle(
+          x, y, itemSize * currWidth, itemSize * 1.5, 
+          // { collisionFilter: { group: group } }
+        );
+    });
+    Composites.chain(this.rope, 0.5, 0, -0.5, 0, {
+      stiffness: 0.8, // morbidezza della giunzione
+      length: this.gap, // distanza tra una lettera e l'altra
+      // render: { type: 'line' } 
+    });
+
+    Composite.add(engine.world, this.rope);  
+
+    /*
     let lx = 0;
     for (let i = 0; i < this.string.length; i++) {
       let letter = this.string[i];
@@ -51,16 +75,57 @@ class Cluster{
         this.consts.push(constraint);
       }
     };
+    */
   }
 
   draw(){
-    if (obj.showDebug){
-      this.drawConstraint();
+    let bodies = this.rope.bodies;
+    for (let i = 0; i < bodies.length; i++) {
+      let body = bodies[i];
+
+      push();
+        noFill();
+        stroke(0);
+        this.drawVertex(body.vertices);
+      pop();
+
+      let letter = this.string[i];
+      let posX = (body.bounds.min.x + body.bounds.max.x) / 2;
+      let posY = (body.bounds.min.y + body.bounds.max.y) / 2;
+
+      push();
+        fill(255);
+        noStroke();
+        translate(posX, posY)
+        rotate(body.angle);
+        textFont(font, itemSize * 1.5);  
+        textAlign(CENTER, CENTER);
+        translate(0, -itemSize * 0.05);
+        text(letter, 0, 0);
+      pop();
+
     }
-    for (let i = 0; i < this.items.length; i++) {
-      let item = this.items[i];
-      item.draw();
+
+    // if (obj.showDebug){
+    //   this.drawConstraint();
+    // }
+    // for (let i = 0; i < this.items.length; i++) {
+    //   let item = this.items[i];
+    //   item.draw();
+    // }
+  }
+
+  drawVertex(vertices){
+    beginShape();
+    for (let index = 0; index < vertices.length; index++) {
+      let x = vertices[index].x;
+      let y = vertices[index].y;
+      vertex(x, y);
     }
+    let x = vertices[0].x;
+    let y = vertices[0].y;
+    vertex(x, y);
+    endShape();
   }
 
   drawConstraint(){

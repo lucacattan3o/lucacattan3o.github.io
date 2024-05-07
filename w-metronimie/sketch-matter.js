@@ -4,6 +4,7 @@ let Runner = Matter.Runner;
 let Bodies = Matter.Bodies;
 let mBody = Matter.Body;
 let Composite = Matter.Composite;
+let Composites = Matter.Composites;
 let Common = Matter.Common;
 let Mouse = Matter.Mouse;
 let MouseConstraint = Matter.MouseConstraint;

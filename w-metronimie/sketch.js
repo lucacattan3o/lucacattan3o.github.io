@@ -57,7 +57,9 @@ function windowResized() {
 }
 
 function draw() {
-  background(palette[2]);
+  let bg = color(palette[2]);
+  // bg.setAlpha(50);
+  background(bg);
   drawClusters();
 
   if (frameCount == 1){
