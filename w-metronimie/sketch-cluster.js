@@ -5,7 +5,14 @@ class Cluster{
     this.y = y;
     this.bg = random(palette);
     this.gap = itemSize * 0.0652;
+    this.force = itemSize * 0.002;
+    console.debug(this.force);
     this.letterSize = 1.7;
+
+    this.scaled = false;
+    this.scale = 1;
+    this.overScale = 2;
+    this.debounce = true;
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -32,6 +39,41 @@ class Cluster{
     for (let i = 0; i < bodies.length; i++) {
       let body = bodies[i];
 
+      let over = this.isMouseOver(body.vertices);
+
+      if (over){
+        cursor('grab');
+      } else {
+        cursor('pointer');
+      }
+
+      if (over && !this.scaled && this.debounce){
+        this.scaled = true;
+        this.scale = this.overScale;
+        this.debounce = false;
+        
+        let ry = 1;
+        if (random() > 0.5){
+          ry = -1;
+        }
+        mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry});
+        setTimeout(() => {
+          this.debounce = true;
+        }, 1000);
+      }
+
+      if (this.scaled){
+        this.scale = this.scale - 0.01;
+        if (this.scale <= 1) {
+          this.scale = 1;
+          this.scaled = false;
+        }
+        for (let c = 0; c < this.rope.constraints.length; c++) {
+          let con = this.rope.constraints[c];
+          con.length = this.gap * this.scale;
+        }
+      }
+
       push();
         noFill();
         stroke(0);
@@ -51,6 +93,11 @@ class Cluster{
         } else {
           fill(255);
         }
+
+        if (this.scaled){
+          fill(palette[0]);
+        }
+
         translate(posX, posY)
         rotate(body.angle);
         textFont(font, itemSize * this.letterSize);
@@ -74,19 +121,10 @@ class Cluster{
     endShape();
   }
 
-  drawConstraint(){
-    for (let i = 0; i < this.consts.length; i++) {
-      let cons = this.consts[i];
-      push();
-      stroke(50);
-      strokeWeight(3);
-      const aX = (cons.bodyA.bounds.min.x + cons.bodyA.bounds.max.x) / 2;
-      const aY = (cons.bodyA.bounds.min.y + cons.bodyA.bounds.max.y) / 2;
-      const bX = (cons.bodyB.bounds.min.x + cons.bodyB.bounds.max.x) / 2;
-      const bY = (cons.bodyB.bounds.min.y + cons.bodyB.bounds.max.y) / 2;
-      line(aX, aY, bX, bY);
-      pop();
+  isMouseOver(vertices){
+    if (Matter.Vertices.contains(vertices, {x: mouseX, y: mouseY}) ){
+      return true;
     }
+    return false;
   }
-
 }
