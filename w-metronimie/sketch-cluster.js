@@ -5,13 +5,14 @@ class Cluster{
     this.y = y;
     this.bg = random(palette);
     this.gap = itemSize * 0.0652;
-    this.force = itemSize * 0.001;
+    this.force = itemSize * 0.001 * (1 / this.string.length);
     this.letterSize = 1.7;
 
     this.scaled = false;
     this.scale = 1;
-    this.overScale = 2;
+    this.overScale = 4;
     this.debounce = true;
+    this.otherFont = random(fonts);
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -55,15 +56,13 @@ class Cluster{
 
   draw(){
     let bodies = this.rope.bodies;
+    let overWord = false;
     for (let i = 0; i < bodies.length; i++) {
       let body = bodies[i];
 
       let over = this.isMouseOver(body.vertices);
-
       if (over){
-        cursor('grab');
-      } else {
-        cursor('pointer');
+        overWord = true;
       }
 
       if (over && !this.scaled && this.debounce){
@@ -102,17 +101,22 @@ class Cluster{
           fill(255);
         }
 
+        textFont(mainFont, itemSize * this.letterSize);
         if (this.scaled){
-          fill(palette[0]);
+          textFont(this.otherFont, itemSize * this.letterSize);
         }
 
         translate(posX, posY)
         rotate(body.angle);
-        textFont(font, itemSize * this.letterSize);
+        
         textAlign(CENTER, CENTER);
         translate(0, -itemSize * 0.05);
         text(letter, 0, 0);
       pop();
+    }
+
+    if (overWord){
+      cursor('grab');
     }
   }
 

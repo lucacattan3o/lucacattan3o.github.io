@@ -7,11 +7,18 @@ let obj = {
 };
 
 let itemSize;
-let font, img;
+let mainFont, img;
+let fonts = [];
 let sec;
 let clusters;
 
 let storageName = 'gui-metronimie';
+
+let fontsName = [
+  'Epilogue-Black.ttf',
+  'Epilogue-Light.ttf',
+  'Epilogue-ThinItalic.ttf',
+];
 
 let palette = [
   // '#ffffff',
@@ -24,8 +31,21 @@ let palette = [
 ];
 
 function preload() {
-  font = loadFont('./fonts/Epilogue-Black.ttf');
-  img = loadImage('./imgs/reference.jpeg');
+  fontsName.forEach((name, i) => {
+    console.debug(name);
+    loadFont('./fonts/' + name, (font) => {
+      if (i == 0){
+        mainFont = font;
+      } else {
+        fonts.push(font);
+      }
+    });
+  });
+  
+
+  // font = loadFont('./fonts/Epilogue-Black.ttf');
+  // font2 = loadFont('./fonts/Epilogue-ThinItalic.ttf');
+  // img = loadImage('./imgs/reference.jpeg');
 }
 
 function setup() {
@@ -95,6 +115,7 @@ function draw() {
 }  
 
 function drawClusters(){
+  cursor('pointer');
   push();
   for (let i = 0; i < clusters.length; i++) {
     let cluster = clusters[i];
