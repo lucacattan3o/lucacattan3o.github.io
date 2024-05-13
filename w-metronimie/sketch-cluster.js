@@ -5,7 +5,7 @@ class Cluster{
     this.y = y;
     this.bg = random(palette);
     this.gap = itemSize * 0.0652;
-    this.force = itemSize * 0.001 * (1 / this.string.length);
+    this.force = map(string.length, 1, 12, itemSize * 0.0005, itemSize * 0.001);
     this.letterSize = 1.7;
 
     this.scaled = false;
@@ -44,12 +44,19 @@ class Cluster{
     if (random() > 0.5){
       ry = -1;
     }
-
     if (!body){
       body = random(this.rope.bodies);
     }
 
-    mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry});
+    let brake = 1;
+    // if (this.string.length == 2){
+    //   brake = 0.5;
+    // }
+    if (this.string.length == 1){
+      brake = 0.1;
+    }
+
+    mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry * brake});
     let to = setTimeout(() => {
       this.debounce = true;
       clearTimeout(to);

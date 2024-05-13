@@ -17,7 +17,7 @@ let storageName = 'gui-metronimie';
 
 let fontsName = [
   'Epilogue-Black.ttf',
-  'Epilogue-Light.ttf',
+  'Epilogue-Medium.ttf',
   'Epilogue-ThinItalic.ttf',
 ];
 
@@ -26,7 +26,6 @@ let palette = [
   '#FC4C57', // red
   '#F43B6E', // pink
   '#35ACC7', // blue,
-  '#070709', // black
 ];
 
 let p1 = 0;
