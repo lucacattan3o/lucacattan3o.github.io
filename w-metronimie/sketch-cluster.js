@@ -5,8 +5,7 @@ class Cluster{
     this.y = y;
     this.bg = random(palette);
     this.gap = itemSize * 0.0652;
-    this.force = itemSize * 0.002;
-    console.debug(this.force);
+    this.force = itemSize * 0.001;
     this.letterSize = 1.7;
 
     this.scaled = false;
@@ -34,6 +33,26 @@ class Cluster{
     Composite.add(engine.world, this.rope);  
   }
 
+  setScaled(body = false){
+    this.scaled = true;
+    this.scale = this.overScale;
+    this.debounce = false;
+    
+    let ry = 1;
+    if (random() > 0.5){
+      ry = -1;
+    }
+
+    if (!body){
+      body = random(this.rope.bodies);
+    }
+
+    mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry});
+    setTimeout(() => {
+      this.debounce = true;
+    }, 1000);
+  }
+
   draw(){
     let bodies = this.rope.bodies;
     for (let i = 0; i < bodies.length; i++) {
@@ -48,18 +67,7 @@ class Cluster{
       }
 
       if (over && !this.scaled && this.debounce){
-        this.scaled = true;
-        this.scale = this.overScale;
-        this.debounce = false;
-        
-        let ry = 1;
-        if (random() > 0.5){
-          ry = -1;
-        }
-        mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry});
-        setTimeout(() => {
-          this.debounce = true;
-        }, 1000);
+        this.setScaled(body);
       }
 
       if (this.scaled){

@@ -1,7 +1,7 @@
 let fps = 30;
 
 let obj = {
-  showDebug: true,
+  showDebug: false,
   showImage: false,
   addRandomForces: false,
 };
@@ -9,6 +9,7 @@ let obj = {
 let itemSize;
 let font, img;
 let sec;
+let clusters;
 
 let storageName = 'gui-metronimie';
 
@@ -79,10 +80,8 @@ function draw() {
 
   if (obj.addRandomForces){
     if (sec % 2 == 0){
-      let rCluster = random(clusters);
-      let bodies = rCluster.rope.bodies;
-      let letter = random(bodies);
-      mBody.applyForce( letter, {x: letter.position.x, y: letter.position.y}, {x: random(-4, 4), y: random(-4, 4)});
+      let cluster = random(clusters);
+      cluster.setScaled();
     }
   }
 
