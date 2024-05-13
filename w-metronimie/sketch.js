@@ -3,7 +3,7 @@ let fps = 30;
 let obj = {
   showDebug: false,
   showImage: false,
-  addRandomForces: false,
+  addRandomForces: true,
 };
 
 let itemSize;
@@ -11,6 +11,7 @@ let mainFont, img;
 let fonts = [];
 let sec;
 let clusters;
+let userInt = false;
 
 let storageName = 'gui-metronimie';
 
@@ -21,18 +22,18 @@ let fontsName = [
 ];
 
 let palette = [
-  // '#ffffff',
-  '#495ED6',
-  '#35ACC7',
-  '#FC4C57',
-  '#FFC130',
-  '#F43B6E',
-  // '#070709',
+  '#FFC130', // yellow
+  '#FC4C57', // red
+  '#F43B6E', // pink
+  '#35ACC7', // blue,
+  '#070709', // black
 ];
+
+let p1 = 0;
+let p2 = 1;
 
 function preload() {
   fontsName.forEach((name, i) => {
-    console.debug(name);
     loadFont('./fonts/' + name, (font) => {
       if (i == 0){
         mainFont = font;
@@ -41,11 +42,6 @@ function preload() {
       }
     });
   });
-  
-
-  // font = loadFont('./fonts/Epilogue-Black.ttf');
-  // font2 = loadFont('./fonts/Epilogue-ThinItalic.ttf');
-  // img = loadImage('./imgs/reference.jpeg');
 }
 
 function setup() {
@@ -82,8 +78,21 @@ function windowResized() {
 }
 
 function draw() {
-  let bg = color(palette[2]);
-  // bg.setAlpha(50);
+  // todo: maybe better with CSS
+  let ci = getLoop(0.25);
+  if (ci == 0){
+    p1++;
+    p2++;
+    if (p1 >= palette.length){
+      p1 = 0;
+    }
+    if (p2 >= palette.length){
+      p2 = 0;
+    }
+  }
+  let c1 = color(palette[p1]);
+  let c2 = color(palette[p2]);
+  let bg = lerpColor(c1, c2, ci);
   background(bg);
 
   sec = frameCount / fps;
@@ -98,7 +107,7 @@ function draw() {
 
   drawClusters();
 
-  if (obj.addRandomForces){
+  if (obj.addRandomForces && !userInt){
     if (sec % 2 == 0){
       let cluster = random(clusters);
       cluster.setScaled();
@@ -122,6 +131,16 @@ function drawClusters(){
     cluster.draw();
   }
   pop();
+}
+
+function userInteracted(){
+  if (!userInt){
+    userInt = true;
+    let to = setTimeout(() => {
+      userInt = false;
+      clearInterval(to);
+    }, 4000);
+  }
 }
 
 // ** LIL **

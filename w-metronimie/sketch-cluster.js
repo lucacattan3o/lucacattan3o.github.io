@@ -38,6 +38,7 @@ class Cluster{
     this.scaled = true;
     this.scale = this.overScale;
     this.debounce = false;
+    userInteracted();
     
     let ry = 1;
     if (random() > 0.5){
@@ -49,8 +50,9 @@ class Cluster{
     }
 
     mBody.applyForce( body, {x: 0, y: 0}, {x: 0, y: this.force * ry});
-    setTimeout(() => {
+    let to = setTimeout(() => {
       this.debounce = true;
+      clearTimeout(to);
     }, 1000);
   }
 
