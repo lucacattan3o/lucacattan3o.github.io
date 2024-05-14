@@ -14,6 +14,10 @@ class Cluster{
     this.debounce = true;
     this.otherFont = random(fonts);
     this.negative = negative;
+    // this.negative = false;
+
+    this.mainColor = color(255);
+    // this.mainColor = color(250, 0, 0, 80);
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -100,7 +104,7 @@ class Cluster{
       font = this.otherFont;
     }
 
-    let letterColor = 255;
+    let letterColor = this.mainColor;
     if (this.negative){
       letterColor = bg;
     }
@@ -110,8 +114,8 @@ class Cluster{
       for (let i = 0; i < bodies.length; i++) {  
         let body = bodies[i];
         push();
-          fill(255);
-          stroke(255);
+          fill(this.mainColor);
+          stroke(this.mainColor);
           strokeWeight(itemSize * 0.2);
           strokeJoin(ROUND);
           this.drawVertex(body.vertices);

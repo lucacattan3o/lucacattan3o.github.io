@@ -11,7 +11,14 @@ let mainFont, img;
 let fonts = [];
 let sec;
 let clusters;
+
 let userInt = false;
+
+// Sizing
+let percHeight = 0.85;
+let landSizeItem = 0.035;
+let portSizeItem = 0.064;
+let landscape = true;
 
 let storageName = 'gui-metronimie';
 
@@ -33,6 +40,7 @@ let p2 = 2;
 let bg;
 
 function preload() {
+  img = loadImage('./imgs/reference-mobile.jpeg');
   fontsName.forEach((name, i) => {
     loadFont('./fonts/' + name, (font) => {
       if (i == 0){
@@ -44,22 +52,28 @@ function preload() {
   });
 }
 
-function setup() {
-  myCanvas = createCanvas (windowWidth, windowHeight);
+function setup() {  
   frameRate(fps);
-  sketchExportSetup({
-    fps: fps,
-    name: getFileName('video'),
-  });
-  setupLil();
+  mainSetup();
+}
 
-  itemSize = width * 0.04;
-
+function mainSetup(){
+  myCanvas = createCanvas (windowWidth, windowHeight * percHeight);
+  itemSize = width * landSizeItem;
+  if (width < height){
+    landscape = false;
+    itemSize = width * portSizeItem;
+  }
   matterSetup();
   setUpClusters();
 }
 
 function setUpClusters(){
+  let sentence = sentenceLand;
+  if (!landscape){
+    sentence = sentencePort;
+  }
+
   clusters = [];
   push();
     for (let i = 0; i < sentence.length; i++) {
@@ -75,11 +89,10 @@ function setUpClusters(){
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  mainSetup();
 }
 
 function draw() {
-  // todo: maybe better with CSS
   let ci = getLoop(0.25);
   if (ci == 0){
     p1++;
@@ -100,8 +113,7 @@ function draw() {
 
   if (obj.showImage){
     push();
-      translate(width * 0.5, height * 0.5);
-      scale(1.5);
+      translate(width * 0.5, height * 0.725);
       image(img, -img.width * 0.5, -img.height * 0.5);
     pop();
   }
@@ -118,14 +130,6 @@ function draw() {
       let cluster = random(avaibles);
       cluster.setInteracted();
     }
-  }
-
-  if (frameCount == 1){
-    sketchExportStart();
-  }
-  sketchExport();
-  if (frameCount == 16 * fps){
-    sketchExportEnd();
   }
 }  
 
@@ -194,10 +198,11 @@ obj.saveImage = function(){
 
 function setupLil(){
   gui = new GUI();
+  gui.close();
 
   const debug = gui.addFolder('Debug');
   debug.add(obj, 'showDebug').name('Show Debug');
-  // debug.add(obj, 'showImage').name('Show Reference');
+  debug.add(obj, 'showImage').name('Show Reference');
   debug.add(obj, 'addRandomForces').name('Add Random Forces');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');

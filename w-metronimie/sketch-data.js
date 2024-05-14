@@ -1,4 +1,4 @@
-let sentence = [
+let sentenceLand = [
   {
     word: 'UNO',
     x: -6.6,
@@ -75,6 +75,87 @@ let sentence = [
     word: '.',
     x: 5.6, 
     y: 1,
+    negative: false,
+  },
+];
+
+let sentencePort = [
+  {
+    word: 'UNO',
+    x: -6.6,
+    y: -3,
+    negative: false,
+  },
+  {
+    word: 'SPAZIO',
+    x: -2.5,
+    y: -3,
+    negative: true,
+  },
+  {
+    word: 'PER',
+    x: 3.7,
+    y: -3,
+    negative: false,
+  },
+  {
+    word: 'PROMUOVERE',
+    x: -5.65,
+    y: -2,
+    negative: false,
+  },
+  {
+    word: 'LA',
+    x: -4.15,
+    y: -1,
+    negative: false,
+  },
+  {
+    word: 'POESIA',
+    x: -1.65,
+    y: -1,
+    negative: true,
+  },
+  {
+    word: 'PERFORMATIVA',
+    x: -6.15, 
+    y: 0,
+    negative: true,
+  },
+  {
+    word: 'IN',
+    x: -6.4, 
+    y: 1,
+    negative: false,
+  },
+  {
+    word: 'TUTTE',
+    x: -4.3, 
+    y: 1,
+    negative: false,
+  },
+  {
+    word: 'LE',
+    x: 1.1, 
+    y: 1,
+    negative: false,
+  },
+  {
+    word: 'SUE',
+    x: 3.45, 
+    y: 1,
+    negative: false,
+  },
+  {
+    word: 'FORME',
+    x: -3.1, 
+    y: 2,
+    negative: true,
+  },
+  {
+    word: '.',
+    x: 2.7, 
+    y: 2,
     negative: false,
   },
 ];
