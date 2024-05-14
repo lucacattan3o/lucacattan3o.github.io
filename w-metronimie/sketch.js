@@ -28,8 +28,8 @@ let palette = [
   '#35ACC7', // blue,
 ];
 
-let p1 = 0;
-let p2 = 1;
+let p1 = 1;
+let p2 = 2;
 let bg;
 
 function preload() {
@@ -65,9 +65,10 @@ function setUpClusters(){
     for (let i = 0; i < sentence.length; i++) {
       let item = sentence[i];
       let word = item.word;
+      let negative = item.negative;
       let x = width * 0.5 + itemSize * item.x;
       let y = height * 0.5 + itemSize * 1.65 * item.y;
-      let cluster = new Cluster(x, y, word);
+      let cluster = new Cluster(x, y, word, negative);
       clusters.push(cluster);
     }
   pop();
@@ -107,10 +108,15 @@ function draw() {
 
   drawClusters();
 
+  // Se l'utente non ha interagito
   if (obj.addRandomForces && !userInt){
+    // Ogni 2 secondi altero una parola
     if (sec % 2 == 0){
-      let cluster = random(clusters);
-      cluster.setScaled();
+      let avaibles = clusters.filter((cluster) => {
+        return !cluster.interacted && cluster.debounce;
+      });
+      let cluster = random(avaibles);
+      cluster.setInteracted();
     }
   }
 

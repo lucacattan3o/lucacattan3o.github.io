@@ -3,73 +3,79 @@ let sentence = [
     word: 'UNO',
     x: -6.6,
     y: -2,
-    // edits: [
-    //   {
-    //     delta: 2, // O
-    //     width: 0.9,
-    //     offsetX: -0.1,
-    //   }
-    // ],
+    negative: false,
   },
   {
     word: 'SPAZIO',
     x: -2.5,
     y: -2,
+    negative: true,
   },
   {
     word: 'PER',
     x: 3.7,
     y: -2,
+    negative: false,
   },
   {
     word: 'PROMUOVERE',
     x: -10,
     y: -1,
+    negative: false,
   },
   {
     word: 'LA',
     x: 1.9,
     y: -1,
+    negative: false,
   },
   {
     word: 'POESIA',
     x: 4.3,
     y: -1,
+    negative: true,
   },
   {
     word: 'PERFORMATIVA',
     x: -10, 
     y: 0,
+    negative: true,
   },
   {
     word: 'IN',
     x: 3, 
     y: 0,
+    negative: false,
   },
   {
     word: 'TUTTE',
     x: 5.1, 
     y: 0,
+    negative: false,
   },
   {
     word: 'LE',
     x: -5.95, 
     y: 1,
+    negative: false,
   },
   {
     word: 'SUE',
     x: -3.7, 
     y: 1,
+    negative: false,
   },
   {
     word: 'FORME',
     x: -0.3, 
     y: 1,
+    negative: true,
   },
   {
     word: '.',
     x: 5.6, 
     y: 1,
+    negative: false,
   },
 ];
 
