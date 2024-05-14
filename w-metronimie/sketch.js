@@ -30,6 +30,7 @@ let palette = [
 
 let p1 = 0;
 let p2 = 1;
+let bg;
 
 function preload() {
   fontsName.forEach((name, i) => {
@@ -91,7 +92,7 @@ function draw() {
   }
   let c1 = color(palette[p1]);
   let c2 = color(palette[p2]);
-  let bg = lerpColor(c1, c2, ci);
+  bg = lerpColor(c1, c2, ci);
   background(bg);
 
   sec = frameCount / fps;

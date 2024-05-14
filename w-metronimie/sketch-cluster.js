@@ -13,6 +13,7 @@ class Cluster{
     this.overScale = 4;
     this.debounce = true;
     this.otherFont = random(fonts);
+    this.negative = random() > 0.5;
 
     // var group = mBody.nextGroup(true);
     this.rope = Composites.stack(this.x, this.y, this.string.length, 1, this.gap, this.gap, function(x, y, delta) {
@@ -104,8 +105,15 @@ class Cluster{
 
       // Draw letter
       push();
-        if (obj.showImage){
-          fill(100, 100);
+        
+        if (this.negative){
+          push();
+            fill(255);
+            stroke(255);
+            strokeWeight(itemSize * 0.1);
+            this.drawVertex(body.vertices);
+          pop();
+          fill(bg);
         } else {
           fill(255);
         }
@@ -114,10 +122,9 @@ class Cluster{
         if (this.scaled){
           textFont(this.otherFont, itemSize * this.letterSize);
         }
-
-        translate(posX, posY)
-        rotate(body.angle);
         
+        translate(posX, posY);
+        rotate(body.angle);
         textAlign(CENTER, CENTER);
         translate(0, -itemSize * 0.05);
         text(letter, 0, 0);
