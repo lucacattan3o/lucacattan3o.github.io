@@ -189,7 +189,7 @@ function sketchExportEnd(){
  * Use this function inside draw() to start your recording at a specific frame
  * Example
  * if (frameCount == 1){
- *   sketchExportStart();
+ *   sketchRecordStart();
  * }
  */
 function sketchRecordStart(){
