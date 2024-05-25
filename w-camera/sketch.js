@@ -1,4 +1,4 @@
-let fps = 5;
+let fps = 10;
 
 let itemSize;
 let capture;
@@ -22,7 +22,8 @@ let obj = {
 
 // todo: shape options
 // todo: clear bg?
-// todo: 
+// todo: rec tot seconds and play
+// todo: different colors?
 
 // let backgroundPixels = null;
 // let bgLightness = []; 
@@ -49,14 +50,35 @@ function draw() {
   rectMode(CENTER);
   noStroke();
 
-  let ci = 0;
+  let gridVals = [];
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
-      ci++;
+      let c = getVideoColorAtPosition(i, j);
+      let l = lightness(c);
+      let light = map(l, 0, 100, 0, 1);
+      let dark = 1 - light;
+
+      let val = light;
+      if (obj.invert){
+        val = dark;
+      }
+      gridVals.push(val);
+    }
+  }
+
+  gridVals = sketchRecordData('vals', gridVals);
+
+  let gI = 0;
+  for (let i = 0; i < obj.items; i++) {
+    for (let j = 0; j < obj.items; j++) {
+      let val = gridVals[gI];
+      gI++;
+
       let x = i * itemSize;
       let y = j * itemSize;
 
-      let c = getVideoColorAtPosition(i, j);
+      let thMid = obj.threshold - (obj.wide / 2);
+      let thHig = obj.threshold + (obj.wide / 2);
       
       push();
         translate(x, y);
@@ -75,19 +97,7 @@ function draw() {
           pop();
         }
 
-        let l = lightness(c);
-        let light = map(l, 0, 100, 0, 1);
-        let dark = 1 - light;
-
-        let thMid = obj.threshold - (obj.wide / 2);
-        let thHig = obj.threshold + (obj.wide / 2);
-
-        let value = light;
-        if (obj.invert){
-          value = dark;
-        }
-
-        if (value > 0.3 && value <= thMid){
+        if (val > 0.3 && val <= thMid){
           switch (obj.shape1) {
             case 'Line':
               drawLine(0.8);
@@ -98,7 +108,7 @@ function draw() {
               break;
           }
         }
-        if (value > thMid && value <= thHig){
+        if (val > thMid && val <= thHig){
           switch (obj.shape2) {
             case 'Triangle':
               drawTriangle(0.9);
@@ -117,7 +127,7 @@ function draw() {
               break;
           }
         }
-        if (value > thHig){
+        if (val > thHig){
           switch (obj.shape3) {
             case 'Square': 'Square Full',
               drawSquare(0.8);
@@ -157,10 +167,12 @@ function draw() {
   }
 
   if (frameCount == 1){
+    sketchRecordStart();
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 8 * fps){
+  if (frameCount == 4 * fps){
+    sketchRecordStop();
     sketchExportEnd();
   }
 }
