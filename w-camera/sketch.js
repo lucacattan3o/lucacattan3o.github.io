@@ -93,7 +93,7 @@ function draw() {
   if (frameCount == (4 * fps) + skipFrames){
     if (sExport.record){
       sketchRecordStop();
-      sketchExportEnd();
+      
       // go to playback
       let url = window.location.href.split('?')[0];
       url += '?play=vals';
@@ -102,6 +102,10 @@ function draw() {
     if (sExport.playback){
       // restart playback
       frameCount = skipFrames;
+    }
+    if (sExport.export){
+      sketchExportEnd();
+      userEndExporting();
     }
   }
 }

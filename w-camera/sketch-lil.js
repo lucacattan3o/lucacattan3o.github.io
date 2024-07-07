@@ -3,6 +3,8 @@
 
 let GUI = lil.GUI;
 let gui;
+let guiGrid, guiCol, guiShapes, guiLev, guiPreset, guiRecording, guiExport, guiBg, guiCo;
+let exportBtn;
 
 obj.savePreset = function() {
   saveToStorage();
@@ -12,24 +14,8 @@ obj.loadPreset = function() {
   gui.load(preset);
 };
 
-obj.export = function() {
-  saveToStorage();
-  let url = window.location.href;    
-  if (url.indexOf('?') > -1){
-    url += '&export=true';
-  } else {
-    url += '?export=true';
-  }
-  window.location.href = url;
-};
-
 obj.clearStorage = function() {
   localStorage.removeItem(storageName);
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.startOver = function(){
-  saveToStorage();
   window.location = window.location.href.split("?")[0];
 };
 
@@ -54,61 +40,113 @@ obj.stopDeleteRec = function(){
   window.location.href = url;
 }
 
+obj.export = function() {
+  saveToStorage();
+  let url = window.location.href.split('?')[0];   
+  url += '?play=vals&export=true';
+  window.location.href = url;
+};
+
 function setupLil(){
   gui = new GUI();
 
-  const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(10).max(100).step(1).name('Items');
-  grid.add(obj, 'showGrid').name('Show Grid');
+  guiGrid = gui.addFolder('Grid');
+  guiGrid.add(obj, 'items').min(10).max(70).step(1).name('Items');
+  guiGrid.add(obj, 'showGrid').name('Show Grid');
 
-  const col = gui.addFolder('Colors');
-  col.addColor(obj, 'bg').name('Background');
-  col.addColor(obj, 'color').name('Shader');
-  col.add(obj, 'invert').name('Invert');
+  guiCol = gui.addFolder('Colors');
+  guiBg = guiCol.addColor(obj, 'bg').name('Background');
+  guiCo = guiCol.addColor(obj, 'color').name('Shader');
+  guiCol.add(obj, 'invert').name('Invert');
 
-  const shapes = gui.addFolder('Shapes');
-  shapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
-  shapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
-  shapes.add( obj, 'shape3', [ 'Square', 'Square Full', 'Circle', 'Lines' ] ).name('Shape 3');
+  guiShapes = gui.addFolder('Shapes');
+  guiShapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
+  guiShapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
+  guiShapes.add( obj, 'shape3', [ 'Square', 'Square Full', 'Circle', 'Lines' ] ).name('Shape 3');
   
-  const lev = gui.addFolder('Thresholds');
-  lev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
-  lev.add(obj, 'wide').min(0).max(0.4).step(0.05).name('Range');
+  guiLev = gui.addFolder('Thresholds');
+  guiLev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
+  guiLev.add(obj, 'wide').min(0).max(0.4).step(0.05).name('Range');
 
-  const preset = gui.addFolder('Preset');
-  preset.add(obj, 'savePreset' ).name('Save Preset');
-  preset.add(obj, 'clearStorage').name('Clear');
-  preset.add(obj, 'startOver').name('Run Again');
+  guiPreset = gui.addFolder('Preset');
+  guiPreset.add(obj, 'savePreset' ).name('Save Preset');
+  guiPreset.add(obj, 'clearStorage').name('Clear');
 
-  const recording = gui.addFolder('Recording');
-  if (!sExport.record && !sExport.playback){
-    recording.add(obj, 'startRecording' ).name('Start recording');
+  guiRecording = gui.addFolder('Recording');
+  if (!sExport.playback){
+    let guiStartRec = guiRecording.add(obj, 'startRecording' ).name('Start recording frames');
+    if (sExport.record){
+      guiStartRec.name('Recording ...').disable();
+    }
   } else {
-    recording.add(obj, 'stopDeleteRec' ).name('Stop loop and Delete recording');
+    guiRecording.add(obj, 'stopDeleteRec' ).name('Delete recorded frames');
   }
 
-  let exportBtn = gui.add(obj, 'export').name('Export Video');
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  if (urlParams.get('export') == 'true'){
-    console.debug('test');
-    exportBtn.disable();
-    exportBtn.name('Exporting...');
-
-    gui.add(obj, 'stopExport').name('Stop Export');
+  guiExport = gui.addFolder('Export');
+  if (sExport.playback || sExport.export){
+    exportBtn = guiExport.add(obj, 'export').name('Export video');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if (sExport.export){
+      exportBtn.disable();
+      exportBtn.name('Exporting...');
+      guiExport.add(obj, 'stopExport').name('Stop export');
+    }
   }
-  
-  gui.add(obj, 'saveImage').name('Save Image');
+  guiExport.add(obj, 'saveImage').name('Save image');
 
-  // gui.onChange( event => {});
-  
   let saved = localStorage.getItem(storageName);
   if (saved){
     gui.load(JSON.parse(saved));
   };
+
+  gui.onChange( event => {
+    if (event.property == 'invert'){
+      let tmp = obj.bg;
+      guiBg.setValue(obj.color);
+      guiCo.setValue(tmp);
+    }
+  });
+
+  if (sExport.record || sExport.export){
+    disableDuringRecordAndExport();
+  }
+
+  if (sExport.playback){
+    disableDuringPlayback();
+  }
 };
 
 function saveToStorage(){
   preset = gui.save();
   localStorage.setItem(storageName, JSON.stringify(preset));
 };
+
+function disableDuringPlayback(){
+  disableChildren(guiGrid);
+}
+
+function disableDuringRecordAndExport(){
+  disableChildren(guiGrid);
+  disableChildren(guiCol);
+  disableChildren(guiShapes);
+  disableChildren(guiLev);
+  disableChildren(guiPreset);
+}
+
+function disableChildren(guiFolder){
+  let items = guiFolder.children;
+  for (let i = 0; i < items.length; i++) {
+    const element = items[i];
+    element.disable();
+  }
+}
+
+function userEndExporting(){
+  guiGrid.hide();
+  guiCol.hide();
+  guiShapes.hide();
+  guiLev.hide();
+  guiPreset.hide();
+  guiExport.hide();
+}
