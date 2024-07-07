@@ -20,10 +20,19 @@ let obj = {
   shape3: 'Square',
 };
 
-// todo: shape options
-// todo: clear bg?
+let skipFrames = 5;
+
 // todo: rec tot seconds and play
+// - start recording
+// - play in loop
+// -- disable grid options
+// -- stop and delete
+// -- can export video
 // todo: different colors?
+// todo: when invert?
+// todo: shape options <--> predefined combinations
+// todo: clear bg?
+
 
 // let backgroundPixels = null;
 // let bgLightness = []; 
@@ -68,6 +77,39 @@ function draw() {
 
   gridVals = sketchRecordData('vals', gridVals);
 
+  if (sExport.record || sExport.playback){
+    if (frameCount >= skipFrames){
+      drawShader(gridVals);
+    }
+  } else {
+    drawShader(gridVals);
+  }
+
+  if (frameCount == skipFrames){
+    sketchRecordStart();
+    sketchExportStart();
+  }
+  sketchExport();
+  if (frameCount == (4 * fps) + skipFrames){
+    if (sExport.record){
+      sketchRecordStop();
+      sketchExportEnd();
+      // go to playback
+      let url = window.location.href.split('?')[0];
+      url += '?play=vals';
+      window.location.href = url;
+    }
+    if (sExport.playback){
+      // restart playback
+      frameCount = skipFrames;
+    }
+  }
+}
+
+// ** DRAWS **
+// -----------
+
+function drawShader(gridVals){
   let gI = 0;
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
@@ -165,21 +207,7 @@ function draw() {
       pop();
     }
   }
-
-  if (frameCount == 1){
-    sketchRecordStart();
-    sketchExportStart();
-  }
-  sketchExport();
-  if (frameCount == 4 * fps){
-    sketchRecordStop();
-    sketchExportEnd();
-    noLoop();
-  }
 }
-
-// ** DRAWS **
-// -----------
 
 function drawSquare(size){
   push();
@@ -305,120 +333,6 @@ function getFileName(prefix){
   let now = new Date();
   return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
 }
-
-// ** LIL **
-// ---------
-
-let GUI = lil.GUI;
-let gui;
-
-obj.savePreset = function() {
-  saveToStorage();
-};
-
-obj.loadPreset = function() {
-  gui.load(preset);
-};
-
-obj.export = function() {
-  saveToStorage();
-  let url = window.location.href;    
-  if (url.indexOf('?') > -1){
-    url += '&export=true';
-  } else {
-    url += '?export=true';
-  }
-  window.location.href = url;
-};
-
-obj.clearStorage = function() {
-  localStorage.removeItem(storageName);
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.startOver = function(){
-  saveToStorage();
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.stopExport = function(){
-  sketchExportEnd();
-};
-
-obj.saveImage = function(){
-  saveCanvas(getFileName('visual'), 'png');
-}
-
-function setupLil(){
-  gui = new GUI();
-
-  const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(10).max(100).step(1).name('Items');
-  grid.add(obj, 'showGrid').name('Show Grid');
-
-  const col = gui.addFolder('Colors');
-  col.addColor(obj, 'bg').name('Background');
-  col.addColor(obj, 'color').name('Shader');
-  col.add(obj, 'invert').name('Invert');
-
-  const shapes = gui.addFolder('Shapes');
-  shapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
-  shapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
-  shapes.add( obj, 'shape3', [ 'Square', 'Square Full', 'Circle', 'Lines' ] ).name('Shape 3');
-  
-  const lev = gui.addFolder('Thresholds');
-  lev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
-  lev.add(obj, 'wide').min(0).max(0.4).step(0.05).name('Range');
-
-  gui.add(obj, 'savePreset' ).name('Save Preset');
-  gui.add(obj, 'clearStorage').name('Clear');
-  gui.add(obj, 'startOver').name('Run Again');
-
-  let exportBtn = gui.add(obj, 'export').name('Export Video');
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  if (urlParams.get('export') == 'true'){
-    console.debug('test');
-    exportBtn.disable();
-    exportBtn.name('Exporting...');
-
-    gui.add(obj, 'stopExport').name('Stop Export');
-  }
-  
-  gui.add(obj, 'saveImage').name('Save Image');
-
-  // gui.onChange( event => {});
-  
-  let saved = localStorage.getItem(storageName);
-  if (saved){
-    gui.load(JSON.parse(saved));
-  };
-};
-
-function saveToStorage(){
-  preset = gui.save();
-  localStorage.setItem(storageName, JSON.stringify(preset));
-};
-
-
-/*
-if (backgroundPixels){
-  // Rgba color
-  let r = backgroundPixels[pIndex + 0];
-  let g = backgroundPixels[pIndex + 1];
-  let b = backgroundPixels[pIndex + 2];
-  let a = backgroundPixels[pIndex + 3];  
-
-  let back = color(r, g, b, a);
-
-  let d = colorDistance(c, back);
-  if (d > 100){
-    return c;
-  }
-}
-return null;
-*/
-
 
 /*
 function mouseClicked() {

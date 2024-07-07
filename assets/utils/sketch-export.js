@@ -209,7 +209,7 @@ function sketchRecordStart(){
 function sketchRecordStop(){
   if (!sExport.export && sExport.record){
     console.debug('SketchExport: recording stopped');
-    noLoop();
+    // noLoop();
     // Save all data in the storage
     if (sExport.storage){
       localStorage.setItem('sketchRecordStorage', JSON.stringify(sExport.storage));
