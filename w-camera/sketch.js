@@ -22,19 +22,8 @@ let obj = {
 
 let skipFrames = 5;
 
-// todo: rec tot seconds and play
-// - start recording
-// - play in loop
-// -- disable grid options
-// -- stop and delete
-// -- can export video
 // todo: different colors?
-// todo: when invert?
 // todo: shape options <--> predefined combinations
-// todo: clear bg?
-
-
-// let backgroundPixels = null;
 // let bgLightness = []; 
 
 function setup() {
@@ -65,13 +54,7 @@ function draw() {
       let c = getVideoColorAtPosition(i, j);
       let l = lightness(c);
       let light = map(l, 0, 100, 0, 1);
-      let dark = 1 - light;
-
-      let val = light;
-      if (obj.invert){
-        val = dark;
-      }
-      gridVals.push(val);
+      gridVals.push(light);
     }
   }
 
@@ -118,6 +101,10 @@ function drawShader(gridVals){
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
       let val = gridVals[gI];
+      if (obj.invert){
+        val = 1 - val;
+      }
+
       gI++;
 
       let x = i * itemSize;

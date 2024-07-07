@@ -51,7 +51,7 @@ function setupLil(){
   gui = new GUI();
 
   guiGrid = gui.addFolder('Grid');
-  guiGrid.add(obj, 'items').min(10).max(70).step(1).name('Items');
+  guiGrid.add(obj, 'items').min(8).max(64).step(1).name('Items');
   guiGrid.add(obj, 'showGrid').name('Show Grid');
 
   guiCol = gui.addFolder('Colors');
