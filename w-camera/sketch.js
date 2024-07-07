@@ -174,6 +174,7 @@ function draw() {
   if (frameCount == 4 * fps){
     sketchRecordStop();
     sketchExportEnd();
+    noLoop();
   }
 }
 
