@@ -16,8 +16,14 @@ let obj = {
   color: palette[0],
   invert: false,
   shape1: 'Plus',
+  shape1CustomColor: false,
+  shape1Color: palette[1],
   shape2: 'Triangle',
+  shape2CustomColor: false,
+  shape2Color: palette[2],
   shape3: 'Square',
+  shape3CustomColor: false,
+  shape3Color: palette[3],
 };
 
 let skipFrames = 5;
@@ -97,6 +103,9 @@ function draw() {
 // -----------
 
 function drawShader(gridVals){
+
+  let col = obj.color;
+
   let gI = 0;
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
@@ -131,89 +140,82 @@ function drawShader(gridVals){
         }
 
         if (val > 0.3 && val <= thMid){
+          col = obj.color;
+          if (obj.shape1CustomColor){
+            col = obj.shape1Color;
+          }
           switch (obj.shape1) {
             case 'Line':
-              drawLine(0.8);
+              drawLine(col, 0.8);
               break;
 
             case 'Plus':
-              drawPlus(0.8);
+              drawPlus(col, 0.8);
               break;
           }
         }
         if (val > thMid && val <= thHig){
+          col = obj.color;
+          if (obj.shape2CustomColor){
+            col = obj.shape2Color;
+          }
           switch (obj.shape2) {
             case 'Triangle':
-              drawTriangle(0.9);
+              drawTriangle(col, 0.9);
               break;
 
             case 'Circle':
-              drawCircle(0.5, false);
+              drawCircle(col, 0.5, false);
               break;
             
             case 'Arrow':
-              drawArrow(0.8);
+              drawArrow(col, 0.8);
               break;
 
             case 'X':
-              drawX(0.9);
+              drawX(col, 0.9);
               break;
           }
         }
         if (val > thHig){
+          col = obj.color;
+          if (obj.shape3CustomColor){
+            col = obj.shape3Color;
+          }
           switch (obj.shape3) {
-            case 'Square': 'Square Full',
-              drawSquare(0.8);
+            case 'Square':
+              drawSquare(col, 0.8);
               break;
             case 'Square Full':
-              drawSquare(1);
+              drawSquare(col, 1);
               break;
             case 'Circle':
-              drawCircle(0.9, true);
+              drawCircle(col, 0.9, true);
               break;
             case 'Lines':
-              drawLines(0.9);
+              drawLines(col, 0.9);
               break;
           }
         }
-
-        // if (bgLightness[ci] !== undefined){
-        //   let l2 = bgLightness[ci];
-        //   let diff = abs(light - l2);
-        //   if (diff > 0.25){
-        // 
-        //   }
-        // } else {
-        //   stroke(255);
-        //   line(0, 0, itemSize, itemSize);
-        // }
-
-        // if (index == 7 || index == 8){
-        //   noFill();
-        // }
-        // if (index == 12){
-        //   fill(0, 255, 0);
-        // }
-        // text(chars.charAt(index), 0, 0);
       pop();
     }
   }
 }
 
-function drawSquare(size){
+function drawSquare(col, size){
   push();
   noStroke();
-  fill(obj.color);
+  fill(col);
   translate(itemSize * 0.5, itemSize * 0.5);
   rectMode(CENTER);
   rect(0, 0, itemSize * size);
   pop();
 }
 
-function drawTriangle(size){
+function drawTriangle(col, size){
   let start = 1 - size;
   push();
-  fill(obj.color);
+  fill(col);
   noStroke();
   triangle(
     itemSize * size, itemSize * start,
@@ -223,18 +225,18 @@ function drawTriangle(size){
   pop();
 }
 
-function drawLine(size){
+function drawLine(col, size){
   let start = 1 - size;
-  stroke(obj.color);
+  stroke(col);
   strokeWeight(itemSize * 0.1);
   // line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
   line(itemSize * start, itemSize * size, itemSize * size, itemSize * start);
 }
 
-function drawArrow(size){
+function drawArrow(col, size){
   let start = 1 - size;
   push();
-  stroke(obj.color);
+  stroke(col);
   strokeWeight(itemSize * 0.1);
   line(itemSize * start, itemSize * start, itemSize * size, itemSize * start);
   line(itemSize * start, itemSize * start, itemSize * start, itemSize * size);
@@ -242,46 +244,46 @@ function drawArrow(size){
   pop();
 }
 
-function drawPlus(size){
+function drawPlus(col, size){
   let start = 1 - size;
   push();
-    stroke(obj.color);
+    stroke(col);
     strokeWeight(itemSize * 0.1);
     line(itemSize * start, itemSize * 0.5, itemSize * size, itemSize * 0.5);
     line(itemSize * 0.5, itemSize * start, itemSize * 0.5, itemSize * size);
   pop();
 }
 
-function drawX(size){
+function drawX(col, size){
   let start = 1 - size;
   push();
-  stroke(obj.color);
+  stroke(col);
   strokeWeight(itemSize * 0.1);
   line(itemSize * start, itemSize * start, itemSize * size, itemSize * size);
   line(itemSize * start, itemSize * size, itemSize * size, itemSize * start);
   pop();
 }
 
-function drawCircle(size, f){
+function drawCircle(col, size, f){
   push();
   translate(itemSize * 0.5, itemSize * 0.5);
   if (f){
     noStroke();
-    fill(obj.color);
+    fill(col);
   } else {
     noFill();
-    stroke(obj.color);
+    stroke(col);
     strokeWeight(itemSize * 0.1);
   }
   circle(0, 0, itemSize * size);
   pop();
 }
 
-function drawLines(size){
+function drawLines(col, size){
   let start = 1 - size;
   push();
     noFill();
-    stroke(obj.color);
+    stroke(col);
     strokeWeight(itemSize * 0.1);
     translate(0, itemSize * 0.05);
     for (let i = 0; i < 4; i++) {

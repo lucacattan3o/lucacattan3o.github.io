@@ -3,7 +3,7 @@
 
 let GUI = lil.GUI;
 let gui;
-let guiGrid, guiCol, guiShapes, guiLev, guiPreset, guiRecording, guiExport, guiBg, guiCo;
+let guiGrid, guiCol, guiShapes, guiLev, guiPreset, guiRecording, guiExport, guiBg, guiCo, gsc1, gsc2, gsc3;
 let exportBtn;
 
 obj.savePreset = function() {
@@ -61,8 +61,16 @@ function setupLil(){
 
   guiShapes = gui.addFolder('Shapes');
   guiShapes.add( obj, 'shape1', [ 'Plus', 'Line'] ).name('Shape 1');
+  guiShapes.add( obj, 'shape1CustomColor').name('Custom Color 1');
+  gsc1 = guiShapes.addColor( obj, 'shape1Color').name('Color 1').hide();
+  
   guiShapes.add( obj, 'shape2', [ 'Triangle', 'Circle', 'Arrow', 'X' ] ).name('Shape 2');
+  guiShapes.add( obj, 'shape2CustomColor').name('Custom Color 2');
+  gsc2 = guiShapes.addColor( obj, 'shape2Color').name('Color 2').hide();
+  
   guiShapes.add( obj, 'shape3', [ 'Square', 'Square Full', 'Circle', 'Lines' ] ).name('Shape 3');
+  guiShapes.add( obj, 'shape3CustomColor').name('Custom Color 3');
+  gsc3 = guiShapes.addColor( obj, 'shape3Color').name('Color 3').hide();
   
   guiLev = gui.addFolder('Thresholds');
   guiLev.add(obj, 'threshold').min(0).max(1).step(0.05).name('Threshold');
@@ -105,6 +113,15 @@ function setupLil(){
       let tmp = obj.bg;
       guiBg.setValue(obj.color);
       guiCo.setValue(tmp);
+    }
+    if (event.property == 'shape1CustomColor'){
+      gsc1.show(event.value);
+    }
+    if (event.property == 'shape2CustomColor'){
+      gsc2.show(event.value);
+    }
+    if (event.property == 'shape3CustomColor'){
+      gsc3.show(event.value);
     }
   });
 
