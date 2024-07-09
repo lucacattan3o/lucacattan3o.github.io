@@ -5,7 +5,13 @@ let capture;
 
 let storageName = 'gui-camera';
 
-let palette = ["#8ecae6","#219ebc","#023047","#ffb703","#fb8500"];
+let palette = [
+  "#8ecae6",
+  "#219ebc",
+  "#023047",
+  "#ffb703",
+  "#fb8500"
+];
 
 let obj = {
   items: 50,
@@ -17,19 +23,16 @@ let obj = {
   invert: false,
   shape1: 'Plus',
   shape1CustomColor: false,
-  shape1Color: palette[1],
+  shape1Color: palette[3],
   shape2: 'Triangle',
   shape2CustomColor: false,
-  shape2Color: palette[2],
+  shape2Color: palette[1],
   shape3: 'Square',
   shape3CustomColor: false,
-  shape3Color: palette[3],
+  shape3Color: palette[2],
 };
 
 let skipFrames = 5;
-
-// todo: different colors?
-// todo: shape options <--> predefined combinations
 // let bgLightness = []; 
 
 function setup() {
@@ -88,13 +91,16 @@ function draw() {
       url += '?play=vals';
       window.location.href = url;
     }
-    if (sExport.playback){
-      // restart playback
-      frameCount = skipFrames;
-    }
+    
     if (sExport.export){
       sketchExportEnd();
       userEndExporting();
+    }
+  }
+  if (frameCount + skipFrames == (4 * fps)){
+    if (sExport.playback){
+      // restart playback
+      frameCount = skipFrames;
     }
   }
 }
