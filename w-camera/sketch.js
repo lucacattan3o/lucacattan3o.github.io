@@ -30,10 +30,7 @@ let obj = {
   shape3: 'Square',
   shape3CustomColor: false,
   shape3Color: palette[2],
-};
-
-let skipFrames = 5;
-// let bgLightness = []; 
+}; 
 
 function setup() {
   createCanvas(1080, 1080);
@@ -57,33 +54,37 @@ function draw() {
   rectMode(CENTER);
   noStroke();
 
-  let gridVals = [];
-  for (let i = 0; i < obj.items; i++) {
-    for (let j = 0; j < obj.items; j++) {
-      let c = getVideoColorAtPosition(i, j);
-      let l = lightness(c);
-      let light = map(l, 0, 100, 0, 1);
-      gridVals.push(light);
-    }
-  }
-
-  gridVals = sketchRecordData('vals', gridVals);
-
-  if (sExport.record || sExport.playback){
-    if (frameCount >= skipFrames){
-      drawShader(gridVals);
-    }
-  } else {
-    drawShader(gridVals);
-  }
-
-  if (frameCount == skipFrames){
-    sketchRecordStart();
+  // Init export
+  if (frameCount == 1){
     sketchExportStart();
   }
+
+  let gridVals = [];
+  if (sExport.export || sExport.playback){
+
+  } else {
+    for (let i = 0; i < obj.items; i++) {
+      for (let j = 0; j < obj.items; j++) {
+        let c = getVideoColorAtPosition(i, j);
+        let l = lightness(c);
+        let light = map(l, 0, 100, 0, 1);
+        gridVals.push(light);
+      }
+    }
+  }
+  
+  // Recording reading data
+  gridVals = sketchRecordData('vals', gridVals);
+
+  // Draw shader
+  drawShader(gridVals);
+
+  // Export
   sketchExport();
-  if (frameCount == (4 * fps) + skipFrames){
-    if (sExport.record){
+
+  // Stop
+  if (sExport.record){
+    if (frameCount == (4 * fps) + sExport.frameCountDelay){
       sketchRecordStop();
       
       // go to playback
@@ -91,16 +92,13 @@ function draw() {
       url += '?play=vals';
       window.location.href = url;
     }
+  }
     
-    if (sExport.export){
+  if (sExport.export || sExport.playback){
+    if (frameCount == (4 * fps)){
       sketchExportEnd();
       userEndExporting();
-    }
-  }
-  if (frameCount + skipFrames == (4 * fps)){
-    if (sExport.playback){
-      // restart playback
-      frameCount = skipFrames;
+      frameCount = 1;
     }
   }
 }

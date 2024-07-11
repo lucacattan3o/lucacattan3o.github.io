@@ -29,9 +29,8 @@ obj.saveImage = function(){
 
 obj.startRecording = function(){
   saveToStorage();
-  let url = window.location.href.split('?')[0];
-  url += '?record=vals';
-  window.location.href = url;
+  sketchRecordStart();
+  sketchRecordVar('vals');
 }
 
 obj.stopDeleteRec = function(){
