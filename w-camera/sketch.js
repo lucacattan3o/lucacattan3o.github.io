@@ -1,4 +1,5 @@
 let fps = 10;
+let duration = 6;
 
 let itemSize;
 let capture;
@@ -42,13 +43,20 @@ function setup() {
   });
   setupLil();
 
-  capture = createCapture(VIDEO);
-  capture.hide();
+  if (sExport.playback || sExport.export){
+  } else {
+    capture = createCapture(VIDEO);
+    capture.hide();
+  }
 }
 
 function draw() {
   itemSize = width / obj.items;
-  capture.loadPixels();
+
+  if (sExport.playback || sExport.export){
+  } else {
+    capture.loadPixels();
+  }
 
   background(obj.bg);
   rectMode(CENTER);
@@ -84,7 +92,7 @@ function draw() {
 
   // Stop
   if (sExport.record){
-    if (frameCount == (4 * fps) + sExport.frameCountDelay){
+    if (frameCount == (duration * fps) + sExport.frameCountDelay){
       sketchRecordStop();
       
       // go to playback
@@ -95,10 +103,12 @@ function draw() {
   }
     
   if (sExport.export || sExport.playback){
-    if (frameCount == (4 * fps)){
-      sketchExportEnd();
-      userEndExporting();
+    if (frameCount == (duration * fps)){
       frameCount = 1;
+      if (sExport.export){
+        sketchExportEnd();
+        userEndExporting();
+      }
     }
   }
 }

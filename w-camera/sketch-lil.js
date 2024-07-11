@@ -3,7 +3,7 @@
 
 let GUI = lil.GUI;
 let gui;
-let guiGrid, guiCol, guiShapes, guiLev, guiPreset, guiRecording, guiExport, guiBg, guiCo, gsc1, gsc2, gsc3;
+let guiGrid, guiItems, guiCol, guiShapes, guiLev, guiPreset, guiRecording, guiStartRec, guiExport, guiBg, guiCo, gsc1, gsc2, gsc3;
 let exportBtn;
 
 obj.savePreset = function() {
@@ -31,6 +31,7 @@ obj.startRecording = function(){
   saveToStorage();
   sketchRecordStart();
   sketchRecordVar('vals');
+  guiStartRec.name('Recording ...').disable();
 }
 
 obj.stopDeleteRec = function(){
@@ -50,7 +51,7 @@ function setupLil(){
   gui = new GUI();
 
   guiGrid = gui.addFolder('Grid');
-  guiGrid.add(obj, 'items').min(8).max(64).step(1).name('Items');
+  guiItems = guiGrid.add(obj, 'items').min(8).max(64).step(1).name('Items');
   guiGrid.add(obj, 'showGrid').name('Show Grid');
 
   guiCol = gui.addFolder('Colors');
@@ -81,10 +82,7 @@ function setupLil(){
 
   guiRecording = gui.addFolder('Recording');
   if (!sExport.playback){
-    let guiStartRec = guiRecording.add(obj, 'startRecording' ).name('Start recording frames');
-    if (sExport.record){
-      guiStartRec.name('Recording ...').disable();
-    }
+    guiStartRec = guiRecording.add(obj, 'startRecording' ).name('Start recording frames');
   } else {
     guiRecording.add(obj, 'stopDeleteRec' ).name('Delete recorded frames');
   }
@@ -139,7 +137,7 @@ function saveToStorage(){
 };
 
 function disableDuringPlayback(){
-  disableChildren(guiGrid);
+  guiItems.disable();
 }
 
 function disableDuringRecordAndExport(){
