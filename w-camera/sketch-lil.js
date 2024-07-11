@@ -103,6 +103,16 @@ function setupLil(){
   let saved = localStorage.getItem(storageName);
   if (saved){
     gui.load(JSON.parse(saved));
+
+    if (obj.shape1CustomColor){
+      gsc1.show();
+    }
+    if (obj.shape2CustomColor){
+      gsc2.show();
+    }
+    if (obj.shape3CustomColor){
+      gsc3.show();
+    }
   };
 
   gui.onChange( event => {
