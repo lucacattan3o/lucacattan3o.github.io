@@ -91,15 +91,10 @@ function sketchExportReadParams(){
 
   let record = urlParams.get('record');
   if (record){
+    sketchRecordStart();
     let names = record.split(',');
     names.forEach(name => {
-      sExport.vars[name] = {};
-      sExport.vars[name].record = true;
-      sExport.storage[name] = [];
-      console.debug('SketchExport: recording ' + name);
-      // While recording, we can't export
-      sExport.export = false;
-      sExport.record = true;
+      sketchRecordVar(name);
     });
   }
 
@@ -193,7 +188,9 @@ function sketchExportEnd(){
  * }
  */
 function sketchRecordStart(){
-  if (!sExport.export && sExport.record){
+  if (!sExport.export){
+    sExport.record = true;
+    sExport.export = false;
     sExport.frameCountDelay = frameCount;
     console.debug('SketchExport: recording started');
   } 
@@ -218,6 +215,13 @@ function sketchRecordStop(){
   }
 }
 
+function sketchRecordVar(name){
+  sExport.vars[name] = {};
+  sExport.vars[name].record = true;
+  sExport.storage[name] = [];
+  console.debug('SketchExport: recording ' + name);
+}
+
 /**
  * Record and get the variable value over time
  * @param {string} name - machine name to be used in the url; see sketchExportReadParams() 
@@ -235,6 +239,9 @@ function sketchRecordData(name, data){
  * @param {mixed} data - value to be stored
  */
 function sketchRecordDataStore(name, data){
+  if (!sExport.record){
+    return;
+  }
   if (sExport.vars[name] !== undefined && !sExport.vars[name].record){
     return; 
   }
@@ -251,8 +258,8 @@ function sketchRecordDataStore(name, data){
  */
 function sketchRecordDataGet(name, data){
   if (sExport.playback && sExport.vars[name] !== undefined){
-    if (sExport.storage[name][frameCount] !== undefined){
-      return sExport.storage[name][frameCount];
+    if (sExport.storage[name][frameCount - 1] !== undefined){
+      return sExport.storage[name][frameCount - 1];
     } else {
       sExport.playbackEnded = true;
     }
