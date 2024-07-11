@@ -7,11 +7,10 @@ let capture;
 let storageName = 'gui-camera';
 
 let palette = [
-  "#8ecae6",
-  "#219ebc",
-  "#023047",
-  "#ffb703",
-  "#fb8500"
+  "#05d5ff",
+  "#5d05ff",
+  "#0558ff",
+  "#ffd500",
 ];
 
 let obj = {
