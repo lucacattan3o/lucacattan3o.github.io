@@ -46,26 +46,24 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'density').min(1).max(10).step(1).name('Density');
+  grid.add(obj, 'items').min(500).max(5000).step(1).name('Items');
+
+  const guiVib = gui.addFolder('Vibration');
+  guiVib.add(obj, 'freqM').min(0).max(100).step(1).name('M Frequency');
+  guiVib.add(obj, 'freqN').min(0).max(100).step(1).name('N Frequency');
+  guiVib.add(obj, 'vibration').min(0).max(10).step(0.05).name('Vibration');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
   gui.add(obj, 'startOver').name('Play Again');
-
-  //let exportBtn = gui.add(obj, 'export').name('Export Video');
-  //const queryString = window.location.search;
-  //const urlParams = new URLSearchParams(queryString);
-  //if (urlParams.get('export') == 'true'){
-  //  console.debug('test');
-  //  exportBtn.disable();
-  //  exportBtn.name('Exporting...');
-  //
-  //  gui.add(obj, 'stopExport').name('Stop Export');
-  //}
   
   gui.add(obj, 'saveImage').name('Save Image');
 
-  // gui.onChange( event => {});
+  gui.onChange( event => {
+    if (event.property == 'items'){
+      setupItems();
+    }
+  });
   
   let saved = localStorage.getItem(storageName);
   if (saved){
