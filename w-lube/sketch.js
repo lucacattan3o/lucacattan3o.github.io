@@ -9,14 +9,14 @@ let w, h;
 let itemSizeMin;
 
 let obj = {
-  itemsX: 10,
+  itemsX: 20,
   itemsY: 20,
   showGrid: false,
   itemSize: 0.5,
-  strokeSize: 0.5,
+  strokeSize: 0.4,
   bg: '#000000',
   line: '#ffffff',
-  randomSize: false,
+  randomSize: true,
 };
 
 let itemSizeW, itemSizeH;
