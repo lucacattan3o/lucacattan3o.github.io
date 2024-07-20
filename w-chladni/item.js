@@ -35,6 +35,10 @@ class Item{
   draw(){
     push();
       translate(this.realPos.x, this.realPos.y);
+      // let noiseScale = 0.001;
+      // let n = noise(this.realPos.x * noiseScale, this.realPos.y * noiseScale, frameCount * 0.05);
+      // colorMode(HSB, 100, 100, 100);
+      // fill(n * 100, 100, 100);
       fill(255);
       noStroke();
       circle(0, 0, itemSize * obj.itemSize);
