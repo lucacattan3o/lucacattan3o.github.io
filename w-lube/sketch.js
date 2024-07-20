@@ -11,7 +11,7 @@ let itemSizeMin;
 let obj = {
   itemsX: 10,
   itemsY: 20,
-  itemSize: 0.9,
+  itemSize: 0.5,
 };
 
 let itemSizeW, itemSizeH;
@@ -19,16 +19,23 @@ let items = [];
 
 let storageName = 'gui-lube';
 
-let palette = [
-  "#ffbe0b",
-  "#fb5607",
-  "#ff006e",
-  "#8338ec",
-  "#3a86ff",
-  '#ffffff'
+let paletteA = [
+  "#c85bba",
+  "#edb964",
+  "#d4d86a",
+  "#25b148",
+  "#dc7d67",
 ];
 
-let mPos;
+let paletteB = [
+  "#8e55af",
+  "#d3d243",
+  "#1292ac",
+  "#49a941",
+  "#e7af67",
+  "#d75a99",
+  "#ada0a4"
+];
 
 function setup() {
   w = floor(sizeW * dpi / inch);
@@ -51,13 +58,14 @@ function setupItems(){
   itemSizeH = height / obj.itemsY;
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
 
+  let index = 0;
   for (i = 0; i < obj.itemsX; i++){
     for (j = 0; j < obj.itemsY; j++){
       let x = i * itemSizeW;
       let y = j * itemSizeH;
-      
-      let item = new Item(x, y);
+      let item = new Item(x, y, index);
       items.push(item);
+      index++;
     }
   }
 }
