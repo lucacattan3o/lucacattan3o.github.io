@@ -1,7 +1,8 @@
 # Chladni Pattern
 
-- [ ] Animation
+- [x] Interactions
+- [ ] Music feedback
 - [ ] Try 3D
-- [ ] Add hands interactions
+- [ ] Hands interactions
 
 `#creativecoding #processing #p5js #generative`

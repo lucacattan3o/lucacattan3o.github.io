@@ -3,7 +3,7 @@ let w = 1080;
 let h = 1080;
 
 let obj = {
-  items: 10000,
+  items: 15000,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
@@ -15,7 +15,7 @@ let obj = {
 
 let itemSize;
 let items = [];
-let minWalk = 0.0001;
+let minWalk = 0.00005;
 
 let storageName = 'gui-chladni';
 
@@ -53,7 +53,18 @@ function setupItems(){
 }
 
 function draw() {
-  background(30, 100);
+  background(30, 10);
+
+  // let bounce = (getLoopBounceLinear(0.25 * 0.25 * 0.25) + 1) * 0.5;
+  // obj.freqM = (map(bounce, 0, 1, 1, 10, true));
+  let mPos = responsiveMousePos();
+  let m = map(mPos.x, 0, w, 1, 10, true);
+  let n = map(mPos.y, 0, h, 1, 10, true);
+  guiM.setValue(floor(m));
+  guiN.setValue(floor(n));
+  // obj.freqM = m;
+  // obj.freqN = n;
+  // console.debug(obj.freqM);
 
   items.forEach(item => {
     item.update();

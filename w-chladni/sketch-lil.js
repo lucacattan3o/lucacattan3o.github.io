@@ -2,7 +2,7 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui;
+let gui, guiM, guiN;
 
 obj.savePreset = function() {
   saveToStorage();
@@ -49,8 +49,8 @@ function setupLil(){
   grid.add(obj, 'items').min(500).max(20000).step(1).name('Items');
 
   const guiVib = gui.addFolder('Vibration');
-  guiVib.add(obj, 'freqM').min(1).max(20).step(1).name('M Frequency');
-  guiVib.add(obj, 'freqN').min(1).max(20).step(1).name('N Frequency');
+  guiM = guiVib.add(obj, 'freqM').min(1).max(20).step(1).name('M Frequency').disable();
+  guiN = guiVib.add(obj, 'freqN').min(1).max(20).step(1).name('N Frequency').disable();
   guiVib.add(obj, 'vibration').min(0.01).max(0.1).step(0.01).name('Vibration');
 
   const guiItem = gui.addFolder('Particle');
