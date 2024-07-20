@@ -49,6 +49,9 @@ function setupLil(){
   grid.add(obj, 'itemsX').min(1).max(50).step(1).name('Items X');
   grid.add(obj, 'itemsY').min(1).max(50).step(1).name('Items Y');
 
+  const guiItem = gui.addFolder('Item');
+  guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Size');
+
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
   gui.add(obj, 'startOver').name('Play Again');

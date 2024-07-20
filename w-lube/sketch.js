@@ -11,6 +11,7 @@ let itemSizeMin;
 let obj = {
   itemsX: 10,
   itemsY: 20,
+  itemSize: 0.9,
 };
 
 let itemSizeW, itemSizeH;
@@ -69,7 +70,8 @@ function draw() {
 
         push();
           translate(itemSizeW * 0.5, itemSizeH * 0.5);
-          circle(0, 0, itemSizeMin);
+          noStroke();
+          circle(0, 0, itemSizeMin * obj.itemSize);
         pop();
 
       pop();
