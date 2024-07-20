@@ -7,7 +7,7 @@ let obj = {
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
-  itemSize: 0.3,
+  itemSize: 0.2,
 };
 
 // Reference
