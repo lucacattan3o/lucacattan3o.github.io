@@ -1,8 +1,8 @@
 class Item{
   constructor(x, y, index){
     this.pos = createVector(x, y);
-    this.colorA = random(paletteA);
-    this.colorB = random(paletteB);
+    this.colorA = floor(random(0, paletteA.length));
+    this.colorB = floor(random(0, paletteB.length));
     this.index = index;
     this.size = itemSizeMin;
     if (obj.randomSize){
@@ -29,10 +29,12 @@ class Item{
       push();
         translate(itemSizeW * 0.5, itemSizeH * 0.5);
         noStroke();
-        fill(this.colorA);
+        let pa = 'colA' + this.colorA;
+        fill(obj[pa]);
         circle(0, 0, this.size * obj.itemSize);
 
-        stroke(this.colorB);
+        let pb = 'colB' + this.colorB;
+        stroke(obj[pb]);
         strokeWeight(this.size * 0.2 * obj.strokeSize);
         circle(0, 0, this.size * obj.itemSize);
       pop();

@@ -54,6 +54,20 @@ function setupLil(){
   guiCol.addColor(obj, 'bg').name('Background');
   guiCol.addColor(obj, 'line').name('Lines');
 
+  const guiPalA = gui.addFolder('Palette A');
+  for (let a = 0; a < paletteA.length; a++) {
+    let prop = 'colA' + a;
+    obj[prop] = paletteA[a];
+    guiPalA.addColor(obj, prop).name('Palette A ' + a);
+  }
+
+  const guiPalB = gui.addFolder('Palette B');
+  for (let b = 0; b < paletteB.length; b++) {
+    let prop = 'colB' + b;
+    obj[prop] = paletteB[b];
+    guiPalB.addColor(obj, prop).name('Palette B ' + b);
+  }
+
   const guiItem = gui.addFolder('Item');
   guiItem.add(obj, 'randomSize').name('Random Size');
   guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Size');
