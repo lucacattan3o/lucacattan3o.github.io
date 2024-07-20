@@ -15,6 +15,7 @@ let obj = {
 };
 
 let itemSizeW, itemSizeH;
+let items = [];
 
 let storageName = 'gui-lube';
 
@@ -41,15 +42,13 @@ function setup() {
     name: getFileName('video'),
   });
   setupLil();
+  setupItems();
 }
 
-function draw() {
-  background(0);
-
-  // set itemSize based on paper height
+function setupItems(){
+  items = [];
   itemSizeW = width / obj.itemsX;
   itemSizeH = height / obj.itemsY;
-
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
 
   for (i = 0; i < obj.itemsX; i++){
@@ -57,25 +56,16 @@ function draw() {
       let x = i * itemSizeW;
       let y = j * itemSizeH;
       
-      push();
-        translate(x, y);
-
-        // Construction grid
-        push();
-          noFill();
-          strokeWeight(2);
-          stroke(200);
-          rect(0, 0, itemSizeW, itemSizeH);
-        pop();
-
-        push();
-          translate(itemSizeW * 0.5, itemSizeH * 0.5);
-          noStroke();
-          circle(0, 0, itemSizeMin * obj.itemSize);
-        pop();
-
-      pop();
+      let item = new Item(x, y);
+      items.push(item);
     }
+  }
+}
+
+function draw() {
+  background(0);
+  for (let i = 0; i < items.length; i++) {
+    items[i].draw();
   }
 }  
 

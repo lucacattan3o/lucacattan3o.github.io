@@ -69,7 +69,14 @@ function setupLil(){
   
   gui.add(obj, 'saveImage').name('Save Image');
 
-  // gui.onChange( event => {});
+  gui.onChange( event => {
+    switch (event.property) {
+      case 'itemsX':
+      case 'itemsY':
+        setupItems();   
+        break;
+    }
+  });
   
   let saved = localStorage.getItem(storageName);
   if (saved){
