@@ -1,9 +1,13 @@
 class Item{
   constructor(x, y, index){
     this.pos = createVector(x, y);
-    this.colorA = 255;
-    this.colorB = '#000000';
+    this.colorA = random(paletteA);
+    this.colorB = random(paletteB);
     this.index = index;
+    this.size = itemSizeMin;
+    if (obj.randomSize){
+      this.size = itemSizeMin * random(0.5, 1.5);
+    }
   }
 
   setColor(i){
@@ -26,10 +30,11 @@ class Item{
         translate(itemSizeW * 0.5, itemSizeH * 0.5);
         noStroke();
         fill(this.colorA);
-        circle(0, 0, itemSizeMin * obj.itemSize);
+        circle(0, 0, this.size * obj.itemSize);
+
         stroke(this.colorB);
-        strokeWeight(itemSizeMin * 0.2 * obj.strokeSize);
-        circle(0, 0, itemSizeMin * obj.itemSize);
+        strokeWeight(this.size * 0.2 * obj.strokeSize);
+        circle(0, 0, this.size * obj.itemSize);
       pop();
     pop();
   }

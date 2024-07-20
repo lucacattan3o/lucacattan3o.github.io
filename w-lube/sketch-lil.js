@@ -55,6 +55,7 @@ function setupLil(){
   guiCol.addColor(obj, 'line').name('Lines');
 
   const guiItem = gui.addFolder('Item');
+  guiItem.add(obj, 'randomSize').name('Random Size');
   guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Size');
   guiItem.add(obj, 'strokeSize').min(0).max(1).step(0.1).name('Stroke');
 
@@ -77,6 +78,7 @@ function setupLil(){
 
   gui.onChange( event => {
     switch (event.property) {
+      case 'randomSize':
       case 'itemsX':
       case 'itemsY':
         setupItems();   

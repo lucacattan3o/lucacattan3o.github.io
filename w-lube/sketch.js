@@ -16,6 +16,7 @@ let obj = {
   strokeSize: 0.5,
   bg: '#000000',
   line: '#ffffff',
+  randomSize: false,
 };
 
 let itemSizeW, itemSizeH;
@@ -72,7 +73,7 @@ function setupItems(){
       index++;
     }
   }
-  setColors();
+  // setColors();
 }
 
 function setColors(){
