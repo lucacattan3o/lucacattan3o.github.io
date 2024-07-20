@@ -1,4 +1,4 @@
-let fps = 60;
+let fps = 30;
 
 // Canvas size
 let sizeW = 16.5; // cm
@@ -6,12 +6,14 @@ let sizeH = 24;   // cm
 let inch  = 2.54; // cm
 let dpi   = 300;  // px / in
 let w, h;
+let itemSizeMin;
 
 let obj = {
-  density: 4,
+  itemsX: 10,
+  itemsY: 20,
 };
 
-let itemSize;
+let itemSizeW, itemSizeH;
 
 let storageName = 'gui-lube';
 
@@ -38,22 +40,21 @@ function setup() {
     name: getFileName('video'),
   });
   setupLil();
-  // palette = shuffle(palette);
 }
 
 function draw() {
   background(0);
 
   // set itemSize based on paper height
-  itemSize = height / (10 * obj.density);
+  itemSizeW = width / obj.itemsX;
+  itemSizeH = height / obj.itemsY;
 
-  itemsX = height / itemSize;
-  itemsY = (width / itemSize) + 1;
+  itemSizeMin = Math.min(itemSizeW, itemSizeH);
 
-  for (i = 0; i < itemsY; i++){
-    for (j = 0; j < itemsX; j++){
-      let x = i * itemSize;
-      let y = j * itemSize;
+  for (i = 0; i < obj.itemsX; i++){
+    for (j = 0; j < obj.itemsY; j++){
+      let x = i * itemSizeW;
+      let y = j * itemSizeH;
       
       push();
         translate(x, y);
@@ -63,12 +64,12 @@ function draw() {
           noFill();
           strokeWeight(2);
           stroke(200);
-          rect(0, 0, itemSize, itemSize);
+          rect(0, 0, itemSizeW, itemSizeH);
         pop();
 
         push();
-          translate(itemSize * 0.5, itemSize * 0.5);
-          circle(0, 0, itemSize);
+          translate(itemSizeW * 0.5, itemSizeH * 0.5);
+          circle(0, 0, itemSizeMin);
         pop();
 
       pop();
@@ -76,87 +77,3 @@ function draw() {
   }
 }  
 
-// ** LIL **
-// ---------
-
-let GUI = lil.GUI;
-let gui;
-
-obj.savePreset = function() {
-  saveToStorage();
-};
-
-obj.loadPreset = function() {
-  gui.load(preset);
-};
-
-obj.export = function() {
-  saveToStorage();
-  let url = window.location.href;    
-  if (url.indexOf('?') > -1){
-    url += '&export=true';
-  } else {
-    url += '?export=true';
-  }
-  window.location.href = url;
-};
-
-obj.clearStorage = function() {
-  localStorage.removeItem(storageName);
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.startOver = function(){
-  saveToStorage();
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.stopExport = function(){
-  sketchExportEnd();
-};
-
-obj.saveImage = function(){
-  let fileName = getFileName('visual');
-  saveCanvas(fileName, 'png');
-}
-
-function setupLil(){
-  gui = new GUI();
-
-  const grid = gui.addFolder('Grid');
-  grid.add(obj, 'density').min(1).max(10).step(1).name('Density');
-
-  gui.add(obj, 'savePreset' ).name('Save Preset');
-  gui.add(obj, 'clearStorage').name('Clear Preset');
-  gui.add(obj, 'startOver').name('Play Again');
-
-  //let exportBtn = gui.add(obj, 'export').name('Export Video');
-  //const queryString = window.location.search;
-  //const urlParams = new URLSearchParams(queryString);
-  //if (urlParams.get('export') == 'true'){
-  //  console.debug('test');
-  //  exportBtn.disable();
-  //  exportBtn.name('Exporting...');
-  //
-  //  gui.add(obj, 'stopExport').name('Stop Export');
-  //}
-  
-  gui.add(obj, 'saveImage').name('Save Image');
-
-  // gui.onChange( event => {});
-  
-  let saved = localStorage.getItem(storageName);
-  if (saved){
-    gui.load(JSON.parse(saved));
-  };
-};
-
-function saveToStorage(){
-  preset = gui.save();
-  localStorage.setItem(storageName, JSON.stringify(preset));
-};
-
-function getFileName(prefix){
-  let now = new Date();
-  return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
-}
