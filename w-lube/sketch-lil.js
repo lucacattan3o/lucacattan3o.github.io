@@ -48,9 +48,15 @@ function setupLil(){
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'itemsX').min(1).max(50).step(1).name('Items X');
   grid.add(obj, 'itemsY').min(1).max(50).step(1).name('Items Y');
+  grid.add(obj, 'showGrid').name('Display Grid');
+
+  const guiCol = gui.addFolder('Colors');
+  guiCol.addColor(obj, 'bg').name('Background');
+  guiCol.addColor(obj, 'line').name('Lines');
 
   const guiItem = gui.addFolder('Item');
   guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Size');
+  guiItem.add(obj, 'strokeSize').min(0).max(1).step(0.1).name('Stroke');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');

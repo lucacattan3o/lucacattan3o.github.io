@@ -11,7 +11,11 @@ let itemSizeMin;
 let obj = {
   itemsX: 10,
   itemsY: 20,
+  showGrid: false,
   itemSize: 0.5,
+  strokeSize: 0.5,
+  bg: '#000000',
+  line: '#ffffff',
 };
 
 let itemSizeW, itemSizeH;
@@ -68,10 +72,30 @@ function setupItems(){
       index++;
     }
   }
+  setColors();
+}
+
+function setColors(){
+  console.debug('setColors');
+  console.debug('Tot: ' + items.length);
+  // shallow copy
+  let itemsCopy = JSON.parse(JSON.stringify(items));
+  // numero di elementi di un solo colore
+  let colTot = floor(items.length / paletteA.length);
+  for (let c = 0; c < paletteA.length; c++) {
+    for (let i = 0; i < colTot; i++) {
+      let ii = floor(random(0, itemsCopy.length));
+      // get index to color the real item
+      let item = itemsCopy[ii];
+      let index = item.index;
+      items[index].setColor(c);
+      itemsCopy.splice(ii, 1);
+    }
+  }
 }
 
 function draw() {
-  background(0);
+  background(obj.bg);
   for (let i = 0; i < items.length; i++) {
     items[i].draw();
   }
