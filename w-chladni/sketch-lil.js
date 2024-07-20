@@ -46,12 +46,15 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(500).max(5000).step(1).name('Items');
+  grid.add(obj, 'items').min(500).max(20000).step(1).name('Items');
 
   const guiVib = gui.addFolder('Vibration');
-  guiVib.add(obj, 'freqM').min(0).max(10).step(1).name('M Frequency');
-  guiVib.add(obj, 'freqN').min(0).max(10).step(1).name('N Frequency');
+  guiVib.add(obj, 'freqM').min(1).max(20).step(1).name('M Frequency');
+  guiVib.add(obj, 'freqN').min(1).max(20).step(1).name('N Frequency');
   guiVib.add(obj, 'vibration').min(0.01).max(0.1).step(0.01).name('Vibration');
+
+  const guiItem = gui.addFolder('Particle');
+  guiItem.add(obj, 'itemSize').min(0.1).max(1).step(0.1).name('Size');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
@@ -61,6 +64,9 @@ function setupLil(){
 
   gui.onChange( event => {
     if (event.property == 'items'){
+      setupItems();
+    }
+    if (event.property == 'vibration'){
       setupItems();
     }
   });

@@ -1,12 +1,13 @@
-let fps = 30;
+let fps = 10;
 let w = 1080;
 let h = 1080;
 
 let obj = {
   items: 10000,
-  freqM: 7,
-  freqN: 2,
-  vibration: 0.02
+  freqM: 4,
+  freqN: 5,
+  vibration: 0.06,
+  itemSize: 0.3,
 };
 
 // Reference
@@ -14,7 +15,7 @@ let obj = {
 
 let itemSize;
 let items = [];
-let minWalk = 0.002;
+let minWalk = 0.0001;
 
 let storageName = 'gui-chladni';
 
@@ -40,20 +41,19 @@ function setup() {
   setupLil();
   setupItems();
 
-  itemSize = w * 0.002;
+  itemSize = w * 0.01;
 }
 
 function setupItems(){
   items = [];
   for (let i = 0; i < obj.items; i++) {
-    let pos = createVector(random(0, w), random(0, h));
-    let item = new Item(pos);
+    let item = new Item();
     items.push(item);
   }
 }
 
 function draw() {
-  background(0, 80);
+  background(30, 100);
 
   items.forEach(item => {
     item.update();
