@@ -8,6 +8,7 @@ let obj = {
   freqN: 5,
   vibration: 0.06,
   itemSize: 0.2,
+  playSynth: false,
 };
 
 // Reference
@@ -16,6 +17,7 @@ let obj = {
 let itemSize;
 let items = [];
 let minWalk = 0.00005;
+let oscM, oscN;
 
 let storageName = 'gui-chladni';
 
@@ -42,6 +44,11 @@ function setup() {
   setupItems();
 
   itemSize = w * 0.01;
+
+  oscM = new p5.Oscillator('sine'); // set frequency and type
+  oscN = new p5.Oscillator('sine'); // set frequency and type
+  oscM.amp(0.5);
+  oscN.amp(0.5);
 }
 
 function setupItems(){
@@ -55,16 +62,18 @@ function setupItems(){
 function draw() {
   background(30, 10);
 
-  // let bounce = (getLoopBounceLinear(0.25 * 0.25 * 0.25) + 1) * 0.5;
-  // obj.freqM = (map(bounce, 0, 1, 1, 10, true));
+  // mouse interaction
   let mPos = responsiveMousePos();
-  let m = map(mPos.x, 0, w, 1, 10, true);
-  let n = map(mPos.y, 0, h, 1, 10, true);
-  guiM.setValue(floor(m));
-  guiN.setValue(floor(n));
-  // obj.freqM = m;
-  // obj.freqN = n;
-  // console.debug(obj.freqM);
+  let m = floor(map(mPos.x, 0, w, 1, 10, true));
+  let n = floor(map(mPos.y, 0, h, 1, 10, true));
+  guiM.setValue(m);
+  guiN.setValue(n);
+
+  // oscillator frequencies
+  let fM = map(m, 1, 10, 40, 440);
+  let fN = map(n, 1, 10, 40, 440);
+  oscM.freq(fM);
+  oscN.freq(fN);
 
   items.forEach(item => {
     item.update();

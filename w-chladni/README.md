@@ -1,7 +1,7 @@
 # Chladni Pattern
 
 - [x] Interactions
-- [ ] Music feedback
+- [x] Music feedback
 - [ ] Try 3D
 - [ ] Hands interactions
 
