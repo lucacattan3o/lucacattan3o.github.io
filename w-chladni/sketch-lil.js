@@ -63,7 +63,7 @@ function setupLil(){
   gui.add(obj, 'clearStorage').name('Clear Preset');
   gui.add(obj, 'startOver').name('Play Again');
   
-  gui.add(obj, 'saveImage').name('Save Image');
+  gui.add(obj, 'saveImage').name('Save Image (s)');
 
   gui.onChange( event => {
     switch (event.property) {
@@ -98,4 +98,17 @@ function saveToStorage(){
 function getFileName(prefix){
   let now = new Date();
   return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
+}
+
+function keyPressed(){
+  switch (key) {
+    case 's':
+      let fileName = getFileName('visual');
+      console.debug(fileName);
+      saveCanvas(fileName, 'png');
+      break;
+  
+    default:
+      break;
+  }
 }
