@@ -1,8 +1,9 @@
 class Item{
   constructor(){
-    this.pos = createVector(random(0, 1), random(0, 1));
+    this.pos = createVector(random(0, 1), random(0, 1), 0);
     this.stochasticAmplitude = 0;
     this.realPos = createVector(0, 0);
+    this.maxHeight = 200;
     this.calculateRealPositions();
   }
 
@@ -11,15 +12,6 @@ class Item{
     let force2 = (sin(PI * obj.freqN * this.pos.x) * sin(PI * obj.freqM * this.pos.y));
     let force = force1 + force2;
     this.stochasticAmplitude = obj.vibration * abs(force);
-
-    // keep moving
-    if (this.stochasticAmplitude <= minWalk){
-      this.stochasticAmplitude = minWalk;
-    }
-
-    // perform one random walk
-    this.pos.x += random(-this.stochasticAmplitude, this.stochasticAmplitude);
-    this.pos.y += random(-this.stochasticAmplitude, this.stochasticAmplitude);
     this.calculateRealPositions();
   }
 
@@ -28,20 +20,29 @@ class Item{
     if (this.pos.x >= 1) this.pos.x = random(0.5, 0.8);
     if (this.pos.y <= 0) this.pos.y = random(0.2, 0.5);
     if (this.pos.y >= 1) this.pos.y = random(0.5, 0.8);
-    this.realPos.x = this.pos.x * w;
-    this.realPos.y = this.pos.y * w;
+    this.realPos.x = this.pos.x * w - w/2;
+    this.realPos.y = this.pos.y * w - h/2;
+    this.realPos.z = map(this.stochasticAmplitude, 0, 0.1, 50, this.maxHeight, true);
   }
 
   draw(){
     push();
-      translate(this.realPos.x, this.realPos.y);
+      translate(this.realPos.x, this.realPos.y, this.z);
       // let noiseScale = 0.001;
       // let n = noise(this.realPos.x * noiseScale, this.realPos.y * noiseScale, frameCount * 0.05);
       // colorMode(HSB, 100, 100, 100);
       // fill(n * 100, 100, 100);
+      fill(255);
       noStroke();
-      ambientMaterial(255);
-      circle(itemSize * obj.itemSize, 10, 10);
+      // sphere(itemSize * obj.itemSize, 10);
+    pop();
+    push();
+      let c = map(this.realPos.z, 40, this.maxHeight, 0, 255);
+      ambientMaterial(color(c));
+      noStroke();
+      translate(this.realPos.x, this.realPos.y, 0);
+      rotateX(PI * 0.5);
+      cylinder(itemSize * obj.itemSize, this.realPos.z, 10);
     pop();
   }
 }
