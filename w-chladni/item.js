@@ -24,10 +24,10 @@ class Item{
   }
 
   calculateRealPositions(){
-    if (this.pos.x <= 0) this.pos.x = 0;
-    if (this.pos.x >= 1) this.pos.x = 1;
-    if (this.pos.y <= 0) this.pos.y = 0;
-    if (this.pos.y >= 1) this.pos.y = 1;
+    if (this.pos.x <= 0) this.pos.x = random(0.2, 0.5);
+    if (this.pos.x >= 1) this.pos.x = random(0.5, 0.8);
+    if (this.pos.y <= 0) this.pos.y = random(0.2, 0.5);
+    if (this.pos.y >= 1) this.pos.y = random(0.5, 0.8);
     this.realPos.x = this.pos.x * w;
     this.realPos.y = this.pos.y * w;
   }
