@@ -1,6 +1,6 @@
 class Item{
-  constructor(){
-    this.pos = createVector(random(0, 1), random(0, 1), 0);
+  constructor(x, y){
+    this.pos = createVector(x, y);
     this.stochasticAmplitude = 0;
     this.realPos = createVector(0, 0);
     this.maxHeight = 200;
@@ -16,10 +16,10 @@ class Item{
   }
 
   calculateRealPositions(){
-    if (this.pos.x <= 0) this.pos.x = random(0.2, 0.5);
-    if (this.pos.x >= 1) this.pos.x = random(0.5, 0.8);
-    if (this.pos.y <= 0) this.pos.y = random(0.2, 0.5);
-    if (this.pos.y >= 1) this.pos.y = random(0.5, 0.8);
+    // if (this.pos.x <= 0) this.pos.x = random(0.2, 0.5);
+    // if (this.pos.x >= 1) this.pos.x = random(0.5, 0.8);
+    // if (this.pos.y <= 0) this.pos.y = random(0.2, 0.5);
+    // if (this.pos.y >= 1) this.pos.y = random(0.5, 0.8);
     this.realPos.x = this.pos.x * w - w/2;
     this.realPos.y = this.pos.y * w - h/2;
     this.realPos.z = map(this.stochasticAmplitude, 0, 0.1, 50, this.maxHeight, true);
@@ -42,7 +42,11 @@ class Item{
       noStroke();
       translate(this.realPos.x, this.realPos.y, 0);
       rotateX(PI * 0.5);
-      cylinder(itemSize * obj.itemSize, this.realPos.z, 10);
+      cylinder(
+        itemSize * obj.itemSize,
+        this.realPos.z * obj.itemHeight,
+        10
+      );
     pop();
   }
 }

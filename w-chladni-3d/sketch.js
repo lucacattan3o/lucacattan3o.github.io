@@ -3,12 +3,12 @@ let w = 1080;
 let h = 1080;
 
 let obj = {
-  items: 5000,
+  items: 60,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
-  itemSize: 0.2,
-  itemHeight: 0.5,
+  itemSize: 1,
+  itemHeight: 2,
   playSynth: false,
 };
 
@@ -63,9 +63,14 @@ function setup() {
 
 function setupItems(){
   items = [];
+  let space = 1 / obj.items;
   for (let i = 0; i < obj.items; i++) {
-    let item = new Item();
-    items.push(item);
+    for (let j = 0; j < obj.items; j++) {
+      let x = i * space;
+      let y = j * space;
+      let item = new Item(x, y);
+      items.push(item);
+    }
   }
 }
 
@@ -78,11 +83,11 @@ function draw() {
   directionalLight(color(255), 0, 1, -0.5);
 
   // mouse interaction
-  // let mPos = responsiveMousePos();
-  // let m = floor(map(mPos.x, 0, w, 1, 10, true));
-  // let n = floor(map(mPos.y, 0, h, 1, 10, true));
-  // guiM.setValue(m);
-  // guiN.setValue(n);
+  let mPos = responsiveMousePos();
+  let m = floor(map(mPos.x, 0, w, 1, 10, true));
+  let n = floor(map(mPos.y, 0, h, 1, 10, true));
+  guiM.setValue(m);
+  guiN.setValue(n);
 
   // oscillator frequencies
   let fM = map(obj.freqM, 1, 10, 40, 440);

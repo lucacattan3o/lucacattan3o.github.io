@@ -40,8 +40,8 @@ class Item{
       // colorMode(HSB, 100, 100, 100);
       // fill(n * 100, 100, 100);
       noStroke();
-      ambientMaterial(255);
-      circle(itemSize * obj.itemSize, 10, 10);
+      fill(255);
+      circle(0, 0, itemSize * obj.itemSize);
     pop();
   }
 }
