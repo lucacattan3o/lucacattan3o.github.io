@@ -9,9 +9,10 @@ let w, h;
 let itemSizeMin;
 
 let obj = {
-  itemsX: 20,
-  itemsY: 20,
+  itemsX: 10,
+  itemsY: 21,
   showGrid: false,
+  useRandom: false,
   itemSize: 0.5,
   strokeSize: 0.4,
   bg: '#000000',
@@ -26,9 +27,9 @@ let storageName = 'gui-lube';
 
 let paletteA = [
   "#c85bba",
+  "#25b148",
   "#edb964",
   "#d4d86a",
-  "#25b148",
   "#dc7d67",
 ];
 
@@ -63,17 +64,19 @@ function setupItems(){
   itemSizeH = height / obj.itemsY;
   itemSizeMin = Math.min(itemSizeW, itemSizeH);
 
-  let index = 0;
-  for (i = 0; i < obj.itemsX; i++){
-    for (j = 0; j < obj.itemsY; j++){
+  index = 0;
+  for (j = 0; j < obj.itemsY; j++){
+    for (i = 0; i < obj.itemsX; i++){
       let x = i * itemSizeW;
       let y = j * itemSizeH;
-      let item = new Item(x, y, index);
+      let item = new Item(x, y, i, j, index);
       items.push(item);
       index++;
     }
   }
-  // setColors();
+  if (obj.useRandom){
+    setColors();
+  }
 }
 
 function setColors(){
@@ -83,6 +86,7 @@ function setColors(){
   let itemsCopy = JSON.parse(JSON.stringify(items));
   // numero di elementi di un solo colore
   let colTot = floor(items.length / paletteA.length);
+  console.debug(colTot);
   for (let c = 0; c < paletteA.length; c++) {
     for (let i = 0; i < colTot; i++) {
       let ii = floor(random(0, itemsCopy.length));
@@ -90,6 +94,7 @@ function setColors(){
       let item = itemsCopy[ii];
       let index = item.index;
       items[index].setColor(c);
+      console.debug(index + ' ' + c);
       itemsCopy.splice(ii, 1);
     }
   }

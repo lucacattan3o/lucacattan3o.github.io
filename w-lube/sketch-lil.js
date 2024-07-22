@@ -49,6 +49,7 @@ function setupLil(){
   grid.add(obj, 'itemsX').min(1).max(50).step(1).name('Items X');
   grid.add(obj, 'itemsY').min(1).max(50).step(1).name('Items Y');
   grid.add(obj, 'showGrid').name('Display Grid');
+  grid.add(obj, 'useRandom').name('Random Disposition');
 
   const guiCol = gui.addFolder('Colors');
   guiCol.addColor(obj, 'bg').name('Background');
@@ -92,6 +93,7 @@ function setupLil(){
 
   gui.onChange( event => {
     switch (event.property) {
+      case 'useRandom':
       case 'randomSize':
       case 'itemsX':
       case 'itemsY':

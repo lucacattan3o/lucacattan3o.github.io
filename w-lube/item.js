@@ -1,8 +1,12 @@
 class Item{
-  constructor(x, y, index){
+  constructor(x, y, i, j, index){
     this.pos = createVector(x, y);
-    this.colorA = floor(random(0, paletteA.length));
-    this.colorB = floor(random(0, paletteB.length));
+    this.colorA = i % paletteA.length; // 5
+    this.colorB = j % paletteB.length; // 7
+    if (obj.useRandom){
+      this.colorA = floor(random(0, paletteA.length));
+      this.colorB = floor(random(0, paletteB.length));
+    }
     this.index = index;
     this.size = itemSizeMin;
     if (obj.randomSize){
@@ -11,7 +15,7 @@ class Item{
   }
 
   setColor(i){
-    this.colorA = paletteA[i];
+    this.colorA = i;
   }
 
   draw(){
