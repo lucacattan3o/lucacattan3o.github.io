@@ -52,12 +52,14 @@ function setupLil(){
   grid.add(obj, 'useRandom').name('Random Disposition');
 
   const guiPalA = gui.addFolder('Palette A');
-  guiPalA.add(obj, 'palAitems').min(2).max(32).step(1).name('Items');
+  guiPalA.add(obj, 'palAitems').min(2).max(32).step(1).name('Hue Subdivisions');
+  guiPalA.add(obj, 'palAhueOffset').min(0).max(360).step(1).name('Hue offset');
   guiPalA.add(obj, 'palAsat').min(0).max(100).step(1).name('Saturation');
   guiPalA.add(obj, 'palAbri').min(0).max(100).step(1).name('Brightness');
 
   const guiPalB = gui.addFolder('Palette B');
-  guiPalB.add(obj, 'palBitems').min(2).max(32).step(1).name('Items');
+  guiPalB.add(obj, 'palBitems').min(2).max(32).step(1).name('Hue Subdivisions');
+  guiPalB.add(obj, 'palBhueOffset').min(0).max(360).step(1).name('Hue offset');
   guiPalB.add(obj, 'palBsat').min(0).max(100).step(1).name('Saturation');
   guiPalB.add(obj, 'palBbri').min(0).max(100).step(1).name('Brightness');
 
@@ -98,13 +100,18 @@ function setupLil(){
         break;
 
       case 'palAitems':
+      case 'palAhueOffset':
       case 'palAsat':
       case 'palAbri':
       case 'palBitems':
+      case 'palBhueOffset':
       case 'palBsat':
       case 'palBbri':
         setupColors();
-        if (event.property == 'palAitems' || event.property == 'palBitems'){
+        if (
+          event.property == 'palAitems' || 
+          event.property == 'palBitems'
+        ){
           if (obj.useRandom){
             setColors(); 
           } else {

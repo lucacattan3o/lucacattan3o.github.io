@@ -13,10 +13,12 @@ let obj = {
   itemsY: 16,
   // Palette A
   palAitems: 16,
+  palAhueOffset: 0,
   palAsat: 80,
   palAbri: 100,
   // Palette B
   palBitems: 16,
+  palBhueOffset: 0,
   palBsat: 70,
   palBbri: 40,
   // Grid
@@ -82,14 +84,16 @@ function setupColors(){
   paletteA = [];
   let sliceA = 360 / obj.palAitems;
   for (let i = 0; i < obj.palAitems; i++) {
-    let c = color(sliceA * i, obj.palAsat, obj.palAbri);
+    let hue = (sliceA * i + obj.palAhueOffset) % 360;
+    let c = color(hue, obj.palAsat, obj.palAbri);
     paletteA.push(c);
   }
 
   paletteB = [];
   let sliceB = 360 / obj.palBitems;
   for (let i = 0; i < obj.palBitems; i++) {
-    let c = color(sliceB * i, obj.palBsat, obj.palBbri);
+    let hue = (sliceB * i + obj.palBhueOffset) % 360;
+    let c = color(hue, obj.palBsat, obj.palBbri);
     paletteB.push(c);
   }
 }
