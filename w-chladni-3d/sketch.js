@@ -3,7 +3,7 @@ let w = 1080;
 let h = 1080;
 
 let obj = {
-  items: 60,
+  items: 80,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
@@ -50,8 +50,8 @@ function setup() {
   // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
   cam.setPosition(
     w * 0,
-    w * 0.9,
-    w * 0.6 // near / far
+    w * 1,
+    w * 1.2 // near / far
   );
   cam.lookAt(0, 0, 0);
 

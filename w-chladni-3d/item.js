@@ -45,7 +45,7 @@ class Item{
       cylinder(
         itemSize * obj.itemSize,
         this.realPos.z * obj.itemHeight,
-        10
+        20
       );
     pop();
   }
