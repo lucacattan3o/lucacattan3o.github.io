@@ -51,23 +51,19 @@ function setupLil(){
   grid.add(obj, 'showGrid').name('Display Grid');
   grid.add(obj, 'useRandom').name('Random Disposition');
 
-  const guiCol = gui.addFolder('Colors');
-  guiCol.addColor(obj, 'bg').name('Background');
-  guiCol.addColor(obj, 'line').name('Lines');
-
   const guiPalA = gui.addFolder('Palette A');
-  for (let a = 0; a < paletteA.length; a++) {
-    let prop = 'colA' + a;
-    obj[prop] = paletteA[a];
-    guiPalA.addColor(obj, prop).name('Palette A ' + a);
-  }
+  guiPalA.add(obj, 'palAitems').min(2).max(32).step(1).name('Items');
+  guiPalA.add(obj, 'palAsat').min(0).max(100).step(1).name('Saturation');
+  guiPalA.add(obj, 'palAbri').min(0).max(100).step(1).name('Brightness');
 
   const guiPalB = gui.addFolder('Palette B');
-  for (let b = 0; b < paletteB.length; b++) {
-    let prop = 'colB' + b;
-    obj[prop] = paletteB[b];
-    guiPalB.addColor(obj, prop).name('Palette B ' + b);
-  }
+  guiPalB.add(obj, 'palBitems').min(2).max(32).step(1).name('Items');
+  guiPalB.add(obj, 'palBsat').min(0).max(100).step(1).name('Saturation');
+  guiPalB.add(obj, 'palBbri').min(0).max(100).step(1).name('Brightness');
+
+  const guiCol = gui.addFolder('Colors');
+  guiCol.addColor(obj, 'bg').name('Background');
+  guiCol.addColor(obj, 'line').name('Grid Lines');
 
   const guiItem = gui.addFolder('Item');
   guiItem.add(obj, 'randomSize').name('Random Size');
@@ -98,6 +94,22 @@ function setupLil(){
       case 'itemsX':
       case 'itemsY':
         setupItems();   
+        break;
+
+      case 'palAitems':
+      case 'palAsat':
+      case 'palAbri':
+      case 'palBitems':
+      case 'palBsat':
+      case 'palBbri':
+        setupColors();
+        if (event.property == 'palAitems' || event.property == 'palBitems'){
+          if (obj.useRandom){
+            setColors(); 
+          } else {
+            setupItems();
+          }
+        }
         break;
     }
   });

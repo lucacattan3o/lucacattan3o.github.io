@@ -11,13 +11,21 @@ let itemSizeMin;
 let obj = {
   itemsX: 10,
   itemsY: 21,
+  // Color managment
+  palAitems: 16,
+  palAsat: 80,
+  palAbri: 100,
+  palBitems: 5,
+  palBsat: 50,
+  palBbri: 50,
+  // Grid
   showGrid: false,
   useRandom: false,
-  itemSize: 0.5,
-  strokeSize: 0.4,
+  itemSize: 0.7,
+  strokeSize: 0.5,
   bg: '#000000',
   line: '#ffffff',
-  randomSize: true,
+  randomSize: false,
 };
 
 let itemSizeW, itemSizeH;
@@ -25,23 +33,8 @@ let items = [];
 
 let storageName = 'gui-lube';
 
-let paletteA = [
-  "#c85bba",
-  "#25b148",
-  "#edb964",
-  "#d4d86a",
-  "#dc7d67",
-];
-
-let paletteB = [
-  "#8e55af",
-  "#d3d243",
-  "#1292ac",
-  "#49a941",
-  "#e7af67",
-  "#d75a99",
-  "#ada0a4"
-];
+let paletteA = [];
+let paletteB = [];
 
 function setup() {
   w = floor(sizeW * dpi / inch);
@@ -54,7 +47,10 @@ function setup() {
     fps: fps,
     name: getFileName('video'),
   });
+  colorMode(HSB, 360, 100, 100);
+
   setupLil();
+  setupColors();
   setupItems();
 }
 
@@ -79,6 +75,23 @@ function setupItems(){
   }
 }
 
+function setupColors(){
+  console.debug('setupColors');
+  paletteA = [];
+  let sliceA = 360 / obj.palAitems;
+  for (let i = 0; i < obj.palAitems; i++) {
+    let c = color(sliceA * i, obj.palAsat, obj.palAbri);
+    paletteA.push(c);
+  }
+
+  paletteB = [];
+  let sliceB = 360 / obj.palBitems;
+  for (let i = 0; i < obj.palBitems; i++) {
+    let c = color(sliceB * i, obj.palBsat, obj.palBbri);
+    paletteB.push(c);
+  }
+}
+
 function setColors(){
   console.debug('-- setColors -- ');
   console.debug('Tot: ' + items.length);
@@ -88,16 +101,19 @@ function setColors(){
   let colTot = floor(items.length / paletteA.length);
   let out = items.length % colTot;
   if (out){
-    console.debug('Resto: ' + out + '(colore random)');
+    console.debug('Resto: ' + out + '(colori random)');
   }
   for (let c = 0; c < paletteA.length; c++) {
-    console.debug('Colore ' + c + ': ' + colTot);
     for (let i = 0; i < colTot; i++) {
       let ii = floor(random(0, itemsCopy.length));
       // get index to color the real item
       let item = itemsCopy[ii];
       let index = item.index;
-      items[index].setColor(c);
+      items[index].setColorA(c);
+
+      // il colore secondario è sempre preso in sequenze
+      let bi = i % paletteB.length;
+      items[index].setColorB(bi);
       
       itemsCopy.splice(ii, 1);
     }

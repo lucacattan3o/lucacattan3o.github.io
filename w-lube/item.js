@@ -3,10 +3,13 @@ class Item{
     this.pos = createVector(x, y);
     this.colorA = i % paletteA.length; // 5
     this.colorB = j % paletteB.length; // 7
+
+    // this is just a fallback
     if (obj.useRandom){
       this.colorA = floor(random(0, paletteA.length));
       this.colorB = floor(random(0, paletteB.length));
     }
+
     this.index = index;
     this.size = itemSizeMin;
     if (obj.randomSize){
@@ -14,8 +17,11 @@ class Item{
     }
   }
 
-  setColor(i){
+  setColorA(i){
     this.colorA = i;
+  }
+  setColorB(i){
+    this.colorB = i;
   }
 
   draw(){
@@ -33,12 +39,16 @@ class Item{
       push();
         translate(itemSizeW * 0.5, itemSizeH * 0.5);
         noStroke();
-        let pa = 'colA' + this.colorA;
-        fill(obj[pa]);
+        if (paletteA[this.colorA] !== undefined){
+          let a = paletteA[this.colorA];
+          fill(a);
+        }
         circle(0, 0, this.size * obj.itemSize);
 
-        let pb = 'colB' + this.colorB;
-        stroke(obj[pb]);
+        if (paletteB[this.colorB] !== undefined){
+          let b = paletteB[this.colorB];
+          stroke(b);
+        }
         strokeWeight(this.size * 0.2 * obj.strokeSize);
         circle(0, 0, this.size * obj.itemSize);
       pop();
