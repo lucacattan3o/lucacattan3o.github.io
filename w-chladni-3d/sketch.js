@@ -85,8 +85,8 @@ function draw() {
 
   // mouse interaction
   let mPos = responsiveMousePos();
-  let m = floor(map(mPos.x, 0, w, 1, 10, true));
-  let n = floor(map(mPos.y, 0, h, 1, 10, true));
+  let m = map(mPos.x, 0, w, 0.01, 10, true);
+  let n = map(mPos.y, 0, h, 0.01, 10, true);
   guiM.setValue(m);
   guiN.setValue(n);
 
