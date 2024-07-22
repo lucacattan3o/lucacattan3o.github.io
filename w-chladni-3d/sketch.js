@@ -55,8 +55,9 @@ function setup() {
   );
   cam.lookAt(0, 0, 0);
 
-  oscM = new p5.Oscillator('sine'); // set frequency and type
-  oscN = new p5.Oscillator('sine'); // set frequency and type
+  // Oscillator
+  oscM = new p5.Oscillator('sine');
+  oscN = new p5.Oscillator('sine');
   oscM.amp(0.5);
   oscN.amp(0.5);
 }
