@@ -80,21 +80,25 @@ function setupItems(){
 }
 
 function setColors(){
-  console.debug('setColors');
+  console.debug('-- setColors -- ');
   console.debug('Tot: ' + items.length);
   // shallow copy
   let itemsCopy = JSON.parse(JSON.stringify(items));
   // numero di elementi di un solo colore
   let colTot = floor(items.length / paletteA.length);
-  console.debug(colTot);
+  let out = items.length % colTot;
+  if (out){
+    console.debug('Resto: ' + out + '(colore random)');
+  }
   for (let c = 0; c < paletteA.length; c++) {
+    console.debug('Colore ' + c + ': ' + colTot);
     for (let i = 0; i < colTot; i++) {
       let ii = floor(random(0, itemsCopy.length));
       // get index to color the real item
       let item = itemsCopy[ii];
       let index = item.index;
       items[index].setColor(c);
-      console.debug(index + ' ' + c);
+      
       itemsCopy.splice(ii, 1);
     }
   }
