@@ -37,20 +37,31 @@ class Item{
       }
 
       push();
-        translate(itemSizeW * 0.5, itemSizeH * 0.5);
         noStroke();
+        translate(itemSizeW * 0.5, itemSizeH * 0.5);
+        rectMode(CENTER);
+
+        if (paletteB[this.colorB] !== undefined){
+          let b = paletteB[this.colorB];
+          fill(b);
+          rect(0, 0, itemSizeW * obj.bgSize, itemSizeH * obj.bgSize);
+        }
+
+        
         if (paletteA[this.colorA] !== undefined){
           let a = paletteA[this.colorA];
           fill(a);
+          circle(0, 0, this.size * obj.itemSize);
         }
-        circle(0, 0, this.size * obj.itemSize);
 
+        /*
         if (paletteB[this.colorB] !== undefined){
           let b = paletteB[this.colorB];
           stroke(b);
         }
         strokeWeight(this.size * 0.2 * obj.strokeSize);
         circle(0, 0, this.size * obj.itemSize);
+        */
       pop();
     pop();
   }

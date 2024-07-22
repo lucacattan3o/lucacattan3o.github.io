@@ -67,8 +67,9 @@ function setupLil(){
 
   const guiItem = gui.addFolder('Item');
   guiItem.add(obj, 'randomSize').name('Random Size');
-  guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Size');
-  guiItem.add(obj, 'strokeSize').min(0).max(1).step(0.1).name('Stroke');
+  guiItem.add(obj, 'itemSize').min(0).max(2).step(0.1).name('Dot Size');
+  guiItem.add(obj, 'bgSize').min(0).max(2).step(0.1).name('Bg Size');
+  // guiItem.add(obj, 'strokeSize').min(0).max(1).step(0.1).name('Stroke');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');

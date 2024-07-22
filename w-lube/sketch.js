@@ -9,19 +9,21 @@ let w, h;
 let itemSizeMin;
 
 let obj = {
-  itemsX: 10,
-  itemsY: 21,
-  // Color managment
+  itemsX: 16,
+  itemsY: 16,
+  // Palette A
   palAitems: 16,
   palAsat: 80,
   palAbri: 100,
-  palBitems: 5,
-  palBsat: 50,
-  palBbri: 50,
+  // Palette B
+  palBitems: 16,
+  palBsat: 70,
+  palBbri: 40,
   // Grid
   showGrid: false,
   useRandom: false,
-  itemSize: 0.7,
+  itemSize: 0.5,
+  bgSize: 0.8,
   strokeSize: 0.5,
   bg: '#000000',
   line: '#ffffff',
