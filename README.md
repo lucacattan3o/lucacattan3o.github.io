@@ -15,9 +15,10 @@ Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucaca
 
 ## Some ideas for the future
 
-- [ ] Random walker animated
+- [x] Random walker animated
 - [ ] Spirograph (3d?)
 - [ ] Falling sand (3d?)
+- [ ] Parallax with accelerometer
 - [ ] Satisfying tetris
 - [ ] Camera interactions + matter.js dispersion
 - [ ] Hands interactions + sound + font
