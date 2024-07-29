@@ -10,6 +10,8 @@ let obj = {
 
 let colWidth;
 let cols = [];
+let circleSize = 0.2;
+let firstShift = 0;
 
 let storageName = 'gui-stereo';
 
@@ -74,6 +76,7 @@ function draw() {
     stroke(0);
     strokeWeight(3);
     noFill();
-    circle(0, 0, w * 0.25);
+    circle(0, 0, w * circleSize);
   pop();
+  noLoop();
 }
