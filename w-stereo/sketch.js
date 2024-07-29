@@ -1,4 +1,4 @@
-let fps = 1;
+let fps = 10;
 let w = 1080 * 3;
 let h = 1080;
 
@@ -68,4 +68,12 @@ function draw() {
   cols.forEach(column => {
     column.draw();
   });
+
+  push();
+    translate(w * 0.5, h * 0.5);  
+    stroke(0);
+    strokeWeight(3);
+    noFill();
+    circle(0, 0, w * 0.25);
+  pop();
 }
