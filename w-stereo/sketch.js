@@ -4,6 +4,8 @@ let h = 1080;
 
 let obj = {
   cols: 10,
+  xItems: 15,
+  yItems: 50,
 };
 
 let colWidth;
@@ -12,12 +14,11 @@ let cols = [];
 let storageName = 'gui-stereo';
 
 let palette = [
-  "#ffbe0b",
-  "#fb5607",
-  "#ff006e",
-  "#8338ec",
-  "#3a86ff",
-  '#ffffff'
+  "#264653",
+  "#2a9d8f",
+  "#e9c46a",
+  "#f4a261",
+  "#e76f51"
 ];
 
 function setup() {

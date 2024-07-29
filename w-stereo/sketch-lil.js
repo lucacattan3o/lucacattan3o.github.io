@@ -47,7 +47,8 @@ function setupLil(){
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'cols').min(2).max(20).step(1).name('Columns');
-
+  grid.add(obj, 'xItems').min(2).max(100).step(1).name('X');
+  grid.add(obj, 'yItems').min(2).max(100).step(1).name('Y');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
@@ -58,6 +59,8 @@ function setupLil(){
   gui.onChange( event => {
     switch (event.property) {
       case 'cols':
+      case 'xItems':
+      case 'yItems':
         setupCols();
         break;
     }
