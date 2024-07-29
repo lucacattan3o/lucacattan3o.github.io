@@ -1,28 +1,9 @@
 class Column{
-  constructor(c){
+  constructor(c, items){
     this.y = 0;
     this.c = c;
     this.x = c * colWidth;
-    this.itemSizeW = colWidth / obj.xItems;
-    this.itemSizeH = h / obj.yItems;
-    this.items = [];
-    this.buildNoise();
-  }
-
-  buildNoise(){
-    for (let i = 0; i < obj.xItems; i++) {
-      for (let j = 0; j < obj.yItems; j++) {
-        let x = this.itemSizeW * i;
-        let y = this.itemSizeH * j;
-        let n = noise(x, y);
-        let c = floor(n * palette.length + 0.5);
-        this.items.push({
-          x: x,
-          y: y,
-          c: palette[c],
-        });
-      }
-    }
+    this.items = items;
   }
 
   draw(){
@@ -41,8 +22,9 @@ class Column{
         push();
         translate(item.x, item.y);
         fill(item.c);
-        noStroke();
-        rect(0, 0, this.itemSizeW, this.itemSizeH);
+        strokeWeight(2);
+        stroke(item.c);
+        rect(0, 0, itemSizeW, itemSizeH);
         pop();
       });
 
