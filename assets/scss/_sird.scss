@@ -1,0 +1,20 @@
+.stereogram-output{
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 400px;
+  padding: $size-unit;
+  border: 1px dashed #fff;
+
+  img{
+    width: 100%;
+    height: auto;
+    display: none;
+  }
+
+  &.ready{
+    img{
+      display: block;
+    }
+  }
+}

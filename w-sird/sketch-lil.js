@@ -42,6 +42,17 @@ obj.saveImage = function(){
   saveCanvas(fileName, 'png');
 }
 
+obj.createSird = function(){
+  let canvas = document.getElementById('defaultCanvas0');
+  Stereogram.render({
+    el: 'stereogram',
+    width: 1920,
+    height: 1080,
+    colors: ["000814","001d3d","003566","ffc300","ffd60a"],
+    depthMapper: new Stereogram.CanvasDepthMapper(canvas)
+  });
+}
+
 function setupLil(){
   gui = new GUI();
 
@@ -65,6 +76,7 @@ function setupLil(){
   gui.add(obj, 'startOver').name('Play Again');
   
   gui.add(obj, 'saveImage').name('Save Image (s)');
+  gui.add(obj, 'createSird').name('Create SIRD');
 
   gui.onChange( event => {
     switch (event.property) {

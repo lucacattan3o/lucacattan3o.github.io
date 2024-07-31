@@ -33,7 +33,7 @@ let palette = [
 let mPos;
 
 function setup() {
-  createCanvas(w, h, WEBGL);
+  createCanvas(w, h);
   responsiveSketch();
   frameRate(fps);
   sketchExportSetup({
@@ -46,14 +46,14 @@ function setup() {
   itemSize = w * 0.01;
 
   // Camera
-  let cam = createCamera();
-  cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
-  cam.setPosition(
-    w * 0,
-    w * 0,
-    w * 2 // near / far
-  );
-  cam.lookAt(0, 0, 0);
+  // let cam = createCamera();
+  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
+  // cam.setPosition(
+  //   w * 0,
+  //   w * 0,
+  //   w * 2 // near / far
+  // );
+  // cam.lookAt(0, 0, 0);
 
   // Oscillator
   oscM = new p5.Oscillator('sine');
@@ -80,8 +80,8 @@ function draw() {
 
   // orbitControl();
 
-  ambientLight(255);
-  directionalLight(color(255), 0, 1, -0.5);
+  // ambientLight(255);
+  // directionalLight(color(255), 0, 1, -0.5);
 
   // mouse interaction
   let mPos = responsiveMousePos();

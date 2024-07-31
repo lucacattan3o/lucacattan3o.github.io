@@ -38,15 +38,15 @@ class Item{
     pop();
     push();
       let c = map(this.realPos.z, 40, this.maxHeight, 0, 255);
-      ambientMaterial(color(c));
+      // ambientMaterial(color(c));
       noStroke();
       translate(this.realPos.x, this.realPos.y, 0);
-      rotateX(PI * 0.5);
-      cylinder(
-        itemSize * obj.itemSize,
-        this.realPos.z * obj.itemHeight,
-        20
-      );
+      // rotateX(PI * 0.5);
+      // cylinder(
+      //   itemSize * obj.itemSize,
+      //   this.realPos.z * obj.itemHeight,
+      //   20
+      // );
     pop();
   }
 }
