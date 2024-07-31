@@ -5,7 +5,9 @@
   width: 400px;
   padding: $size-unit;
   border: 1px dashed #fff;
+  z-index: 1000;
 
+  /*
   padding: 0;
   position: absolute;
   top: 0;
@@ -13,6 +15,8 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
+  border: none;
+  */
 
   img{
     width: 100%;

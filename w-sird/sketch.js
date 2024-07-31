@@ -84,8 +84,8 @@ function draw() {
     });
   pop();
 
-  let sec = frameCount / fps;
-  if (sec % 1 == 0){
-    obj.createSird();
-  }
+  // let sec = frameCount / fps;
+  // if (sec % 3 == 0){
+  //   obj.createSird();
+  // }
 }
