@@ -3,6 +3,7 @@
 - [x] Interactions
 - [x] Music feedback
 - [x] Try 3D
+- [x] Top view
 - [ ] Sird integration
 - [ ] Hands interactions
 

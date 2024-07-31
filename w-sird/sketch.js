@@ -47,11 +47,11 @@ function setup() {
 
   // Camera
   let cam = createCamera();
-  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
+  cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
   cam.setPosition(
     w * 0,
-    w * 1,
-    w * 1.2 // near / far
+    w * 0,
+    w * 2 // near / far
   );
   cam.lookAt(0, 0, 0);
 
@@ -78,7 +78,7 @@ function setupItems(){
 function draw() {
   background(0);
 
-  orbitControl();
+  // orbitControl();
 
   ambientLight(255);
   directionalLight(color(255), 0, 1, -0.5);
@@ -96,7 +96,7 @@ function draw() {
   oscM.freq(fM);
   oscN.freq(fN);
 
-  rotateZ(frameCount * 0.01);
+  // rotateZ(frameCount * 0.01);
 
   items.forEach(item => {
     item.update();
