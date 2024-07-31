@@ -36,14 +36,8 @@ function setup() {
   createCanvas(w, h);
   responsiveSketch();
   frameRate(fps);
-  sketchExportSetup({
-    fps: fps,
-    name: getFileName('video'),
-  });
   setupLil();
   setupItems();
-
-  itemSize = w * 0.01;
 
   // Oscillator
   oscM = new p5.Oscillator('sine');
@@ -55,6 +49,7 @@ function setup() {
 function setupItems(){
   items = [];
   let space = 1 / obj.items;
+  itemSize = 1080 / obj.items;
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
       let x = i * space;
@@ -81,10 +76,11 @@ function draw() {
   oscM.freq(fM);
   oscN.freq(fN);
 
-  // rotateZ(frameCount * 0.01);
-
-  items.forEach(item => {
-    item.update();
-    item.draw();
-  });
+  push();
+    translate((width - 1080) * 0.5, 0);
+    items.forEach(item => {
+      item.update();
+      item.draw();
+    });
+  pop();
 }

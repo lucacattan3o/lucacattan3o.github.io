@@ -60,7 +60,7 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'items').min(50).max(100).step(1).name('Items');
+  grid.add(obj, 'items').min(50).max(300).step(1).name('Items');
 
   const guiVib = gui.addFolder('Vibration');
   guiM = guiVib.add(obj, 'freqM').min(1).max(20).step(1).name('M Frequency').disable();

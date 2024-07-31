@@ -16,9 +16,9 @@ class Item{
   }
 
   calculateRealPositions(){
-    this.realPos.x = this.pos.x * w;
-    this.realPos.y = this.pos.y * w;
-    this.depth = map(this.stochasticAmplitude, 0, 0.1, 0, 1);
+    this.realPos.x = this.pos.x * 1080;
+    this.realPos.y = this.pos.y * 1080;
+    this.depth = map(this.stochasticAmplitude, 0, 0.1, 0, 0.8, true);
   }
 
   draw(){
@@ -27,21 +27,18 @@ class Item{
       stroke(255);
       strokeWeight(2);
       noFill();
-      rect(0, 0, itemSize);
+      // rect(0, 0, itemSize);
     pop();
     push();
       let c = color(this.depth * 255);
-      c.setAlpha(90);
+      // c.setAlpha(90);
       fill(c);
       noStroke();
       translate(this.realPos.x, this.realPos.y);
-      // circle(0, 0, itemSize * obj.itemSize * 2);
-      // rotateX(PI * 0.5);
-      // cylinder(
-      //   itemSize * obj.itemSize,
-      //   this.realPos.z * obj.itemHeight,
-      //   20
-      // );
+      translate(itemSize * 0.5, itemSize * 0.5);
+      rectMode(CENTER);
+      rect(0, 0, itemSize * obj.itemSize);
+      // circle(0, 0, itemSize * obj.itemSize);
     pop();
   }
 }
