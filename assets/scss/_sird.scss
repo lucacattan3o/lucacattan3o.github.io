@@ -10,10 +10,8 @@
     width: 100%;
     height: auto;
     display: none;
-  }
 
-  &.ready{
-    img{
+    &.ready{
       display: block;
     }
   }

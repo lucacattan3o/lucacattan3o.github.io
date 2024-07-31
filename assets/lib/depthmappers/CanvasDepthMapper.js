@@ -9,11 +9,7 @@ Stereogram.CanvasDepthMapper = Stereogram.DepthMapper.extend({
     this.inverted = opts.inverted !== false;
   },
 
-  make: function () {
-    let ctx = this.canvas.getContext("2d");
-    // let pixel = ctx.get();
-    console.debug(ctx);
-    
+  make: function () {    
     var x, y, offset,
         canvas = this.canvas,
         context = canvas.getContext("2d"),

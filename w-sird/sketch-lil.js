@@ -43,12 +43,15 @@ obj.saveImage = function(){
 }
 
 obj.createSird = function(){
+
   let canvas = document.getElementById('defaultCanvas0');
+  let img = document.getElementById('stereogram');
+  img.classList.add('ready');
   Stereogram.render({
     el: 'stereogram',
     width: 1920,
     height: 1080,
-    colors: ["000814","001d3d","003566","ffc300","ffd60a"],
+    colors: ['000', 'fff'],
     depthMapper: new Stereogram.CanvasDepthMapper(canvas)
   });
 }
@@ -66,7 +69,7 @@ function setupLil(){
 
   const guiItem = gui.addFolder('Particle');
   guiItem.add(obj, 'itemSize').min(0.1).max(2).step(0.1).name('Size');
-  guiItem.add(obj, 'itemHeight').min(0.1).max(5).step(0.1).name('Height');
+  // guiItem.add(obj, 'itemHeight').min(0.1).max(5).step(0.1).name('Height');
 
   const guiAudio = gui.addFolder('Audio');
   guiAudio.add(obj, 'playSynth').name('Play Synth');
@@ -76,7 +79,7 @@ function setupLil(){
   gui.add(obj, 'startOver').name('Play Again');
   
   gui.add(obj, 'saveImage').name('Save Image (s)');
-  gui.add(obj, 'createSird').name('Create SIRD');
+  gui.add(obj, 'createSird').name('Generate SIRD (g)');
 
   gui.onChange( event => {
     switch (event.property) {
@@ -118,6 +121,10 @@ function keyPressed(){
     case 's':
       let fileName = getFileName('visual');
       saveCanvas(fileName, 'png');
+      break;
+    
+    case 'g':
+      obj.createSird();
       break;
   
     default:

@@ -1,5 +1,5 @@
 let fps = 30;
-let w = 1080;
+let w = 1920;
 let h = 1080;
 
 let obj = {
@@ -45,16 +45,6 @@ function setup() {
 
   itemSize = w * 0.01;
 
-  // Camera
-  // let cam = createCamera();
-  // cam.ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
-  // cam.setPosition(
-  //   w * 0,
-  //   w * 0,
-  //   w * 2 // near / far
-  // );
-  // cam.lookAt(0, 0, 0);
-
   // Oscillator
   oscM = new p5.Oscillator('sine');
   oscN = new p5.Oscillator('sine');
@@ -77,11 +67,6 @@ function setupItems(){
 
 function draw() {
   background(0);
-
-  // orbitControl();
-
-  // ambientLight(255);
-  // directionalLight(color(255), 0, 1, -0.5);
 
   // mouse interaction
   let mPos = responsiveMousePos();
