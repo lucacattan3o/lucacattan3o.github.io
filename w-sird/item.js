@@ -18,7 +18,7 @@ class Item{
   calculateRealPositions(){
     this.realPos.x = this.pos.x * 1080;
     this.realPos.y = this.pos.y * 1080;
-    this.depth = map(this.stochasticAmplitude, 0, 0.1, 0, 0.8, true);
+    this.depth = map(this.stochasticAmplitude, 0, 0.1, 0, 1, true);
   }
 
   draw(){
