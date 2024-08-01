@@ -49,7 +49,8 @@ function setup() {
 function setupItems(){
   items = [];
   let space = 1 / obj.items;
-  itemSize = 1080 / obj.items;
+  // itemSize = 1080 / obj.items;
+  itemSize = w / obj.items;
   for (let i = 0; i < obj.items; i++) {
     for (let j = 0; j < obj.items; j++) {
       let x = i * space;
@@ -77,7 +78,7 @@ function draw() {
   oscN.freq(fN);
 
   push();
-    translate((width - 1080) * 0.5, 0);
+    // translate((width - 1080) * 0.5, 0);
     items.forEach(item => {
       item.update();
       item.draw();

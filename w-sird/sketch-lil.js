@@ -51,7 +51,7 @@ obj.createSird = function(){
     el: 'stereogram',
     width: 1920,
     height: 1080,
-    colors: ['000', 'fff'],
+    colors: ['000', palette[4], 'fff'],
     depthMapper: new Stereogram.CanvasDepthMapper(canvas)
   });
 }

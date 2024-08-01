@@ -4,7 +4,9 @@
 - [x] Music feedback
 - [x] Try 3D
 - [x] Top view
-- [ ] Sird integration
+- [x] Sird integration
+- [x] Noise test
+- [ ] Paint test?
 - [ ] Hands interactions
 
 `#creativecoding #p5js #generative`
