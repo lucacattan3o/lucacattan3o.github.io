@@ -21,7 +21,8 @@
         colors: [
           [255, 255, 255, 255],
           [0, 0, 0, 255]
-        ]
+        ],
+        patternBuilder: null,
       };
 
       for (var property in defaultOptions) {
@@ -60,7 +61,8 @@
         width: width,
         height: height,
         depthMap: depthMap,
-        colors: opts.colors
+        colors: opts.colors,
+        patternBuilder: opts.patternBuilder,
       });
 
       switch (element.tagName) {
@@ -159,12 +161,15 @@
         for (x = (width - 1); x >= 0; x--) {
           pixelOffset = (y * width * 4) + (x * 4);
           if (same[x] === x) {
-            // set random color
-            // rgba = opts.colors[Math.floor(Math.random() * numColors)];
-
-            // noise test
-            let n = noise(x * 0.1, y * 0.1);
-            rgba = [n * 255, n * 255, n * 255, 255];
+            
+            // luca's mod
+            if (opts.patternBuilder){
+              // use pattern builder
+              rgba = opts.patternBuilder(x, y);
+            } else {
+              // set random color
+              rgba = opts.colors[Math.floor(Math.random() * numColors)];
+            }
 
             for (i = 0; i < 4; i++) {
               pixels[pixelOffset + i] = rgba[i];

@@ -52,7 +52,13 @@ obj.createSird = function(){
     width: 1920,
     height: 1080,
     colors: ['000', palette[4], 'fff'],
-    depthMapper: new Stereogram.CanvasDepthMapper(canvas)
+    depthMapper: new Stereogram.CanvasDepthMapper(canvas),
+    patternBuilder: (x, y) => {
+      let density = 0.5;
+      let n = noise(x * density, y * density);
+      let rgba = [255 * n, 255 * n, 255 * n, 255];
+      return rgba;
+    },
   });
 }
 

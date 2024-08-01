@@ -32,7 +32,7 @@ class Item{
       // rect(0, 0, itemSize);
     pop();
     push();
-      let c = color(255 * (1 - this.depth));
+      let c = color(255 * this.depth);
       c.setAlpha(200);
       fill(c);
       noStroke();
@@ -42,10 +42,10 @@ class Item{
 
       
       // rect(0, 0, itemSize * obj.itemSize);
-      rect(0, 0, itemSize * obj.itemSize * 1.5);
+      // rect(0, 0, itemSize * obj.itemSize * 1.5);
       c.setAlpha(255);
       fill(c);
-      rect(0, 0, itemSize * obj.itemSize);
+      circle(0, 0, itemSize * obj.itemSize * 1.5);
     pop();
   }
 }
