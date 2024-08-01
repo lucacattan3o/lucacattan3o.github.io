@@ -22,12 +22,16 @@ let oscM, oscN;
 let storageName = 'gui-chladni-3D';
 
 let palette = [
-  "#ffbe0b",
-  "#fb5607",
-  "#ff006e",
-  "#8338ec",
-  "#3a86ff",
-  '#ffffff'
+  "#03071e",
+  "#370617",
+  "#6a040f",
+  "#9d0208",
+  "#d00000",
+  "#dc2f02",
+  "#e85d04",
+  "#f48c06",
+  "#faa307",
+  "#ffba08"
 ];
 
 let mPos;

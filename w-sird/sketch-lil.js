@@ -54,9 +54,37 @@ obj.createSird = function(){
     colors: ['000', palette[4], 'fff'],
     depthMapper: new Stereogram.CanvasDepthMapper(canvas),
     patternBuilder: (x, y) => {
-      let density = 0.5;
+      let density = 0.5 * 0.5;
       let n = noise(x * density, y * density);
-      let rgba = [255 * n, 255 * n, 255 * n, 255];
+      // let ci = floor(n * palette.length);
+      // let c = color(palette[ci]);
+
+      // HSB noise
+      let hue = (n * 200) + 160;
+      push();
+        colorMode(HSB, 360, 100, 100);
+        let c = color(hue, 100, 100);
+      pop();
+
+      /*
+      let size = 20;
+      let cx = x % size;
+      let cy = y % size;
+      if (cx >= (size * 0.5)){
+        if (cy >= (size * 0.5)){
+          c = color(palette[0]);
+        } else {
+          c = color(palette[3]);
+        }
+      } else {
+        if (cy >= (size * 0.5)){
+          c = color(palette[3]);
+        } else {
+          c = color(palette[0]);
+        }
+      }*/
+
+      let rgba = c.levels;
       return rgba;
     },
   });

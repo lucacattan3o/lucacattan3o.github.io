@@ -6,6 +6,7 @@
 - [x] Top view
 - [x] Sird integration
 - [x] Noise test
+- [x] Pattern Options
 - [ ] Paint test?
 - [ ] Hands interactions
 

@@ -45,7 +45,7 @@ class Item{
       // rect(0, 0, itemSize * obj.itemSize * 1.5);
       c.setAlpha(255);
       fill(c);
-      circle(0, 0, itemSize * obj.itemSize * 1.5);
+      rect(0, 0, itemSize * obj.itemSize * 1.5);
     pop();
   }
 }
