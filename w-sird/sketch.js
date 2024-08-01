@@ -1,4 +1,4 @@
-let fps = 30;
+let fps = 60;
 let w = 1920;
 let h = 1080;
 
@@ -10,6 +10,9 @@ let obj = {
   itemSize: 1,
   itemHeight: 2,
   playSynth: false,
+
+  brushSize: 1,
+  brushOpacity: 0.3,
 };
 
 // Reference
@@ -41,7 +44,10 @@ function setup() {
   responsiveSketch();
   frameRate(fps);
   setupLil();
-  setupItems();
+  
+  background(0);
+  rectMode(CENTER);
+  // setupItems();
 
   // Oscillator
   oscM = new p5.Oscillator('sine');
@@ -66,10 +72,36 @@ function setupItems(){
 }
 
 function draw() {
-  background(0);
+  
 
   // mouse interaction
   let mPos = responsiveMousePos();
+
+  if (mouseIsPressed){
+    let size = 200;
+    translate(mPos.x, mPos.y);
+    fillGradient('radial', {
+      from : [0, 0, 0], // x, y, radius
+      to : [0, 0, size * obj.brushSize * 0.5], // x, y, radius
+      steps : [
+        color(255, 100 * obj.brushOpacity),
+        color(255, 0)
+      ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
+    });
+    noStroke();
+    circle(0, 0, size * obj.brushSize);
+  }
+  
+
+  // let sec = frameCount / fps;
+  // if (sec % 3 == 0){
+  //   obj.createSird();
+  // }
+
+  // drawChladni();
+}
+
+function drawChladni(){
   let m = map(mPos.x, 0, w, 0.1, 10, true);
   let n = map(mPos.y, 0, h, 0.1, 10, true);
   guiM.setValue(m);
@@ -88,9 +120,4 @@ function draw() {
       item.draw();
     });
   pop();
-
-  // let sec = frameCount / fps;
-  // if (sec % 3 == 0){
-  //   obj.createSird();
-  // }
 }

@@ -7,7 +7,7 @@
 - [x] Sird integration
 - [x] Noise test
 - [x] Pattern Options
-- [ ] Paint test?
+- [x] Paint test
 - [ ] Hands interactions
 
 `#creativecoding #p5js #generative`
