@@ -42,6 +42,9 @@ function setup() {
   });
   setupLil();
 
+  let name = getFileName('video');
+  console.debug(name);
+
   if (sExport.playback || sExport.export){
   } else {
     capture = createCapture(VIDEO);
@@ -337,7 +340,13 @@ function colorDistance(first, second) {
 
 function getFileName(prefix){
   let now = new Date();
-  return prefix + '-' + now.getMonth() + '-' + now.getDay() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const hs = String(now.getHours()).padStart(2, '0');
+  const mins = String(now.getMinutes()).padStart(2, '0');
+  const secs = String(now.getSeconds()).padStart(2, '0');
+  return stringaData = `${prefix}-${year}-${month}-${day}-${hs}-${mins}-${secs}`;
 }
 
 /*
