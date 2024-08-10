@@ -8,6 +8,14 @@
 - [x] Noise test
 - [x] Pattern Options
 - [x] Paint test
-- [ ] Hands interactions
+- [ ] Options
+  - [ ] Sird options
+  - [ ] Invert
+  - [ ] Open in a new window
+- [ ] Noise types and parameters
+- [ ] 3D Map
+  - [ ] Better coloring, dark first (how many levels?)
+  - [ ] Blur filter
+  - [ ] Hands interactions
 
 `#creativecoding #p5js #generative`
