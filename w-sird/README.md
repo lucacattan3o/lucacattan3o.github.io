@@ -8,6 +8,7 @@
 - [x] Noise test
 - [x] Pattern Options
 - [x] Paint test
+  - [x] Fix mouse is pressed
 - [x] Canvas / Stereogram Size
 - [x] Options
   - [x] Invert

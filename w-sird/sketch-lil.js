@@ -87,9 +87,9 @@ obj.createSird = function(){
 
   Stereogram.render({
     el: 'stereogram',
-    width: floor(obj.canvasW * obj.canvasMulty),
-    height: floor(obj.canvasH * obj.canvasMulty),
-    colors: ['000', palette[4], 'fff'],
+    width: w,
+    height: h,
+    colors: ['000', palette[1], 'fff'],
     depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
       inverted: obj.stereoInvert,
     }),
@@ -107,7 +107,7 @@ function setupLil(){
   const gCanvas = gui.addFolder('Canvas');
   gCanvas.add(obj, 'canvasW').min(1080).max(1920).step(20).name('Width');
   gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
-  gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.01).name('Multiply');
+  gCanvas.add(obj, 'canvasMulty').min(0.25).max(4).step(0.01).name('Multiply');
 
   const gPaint = gui.addFolder('Paint');
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
@@ -118,6 +118,7 @@ function setupLil(){
   gStereo.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
   gStereo.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
   gStereo.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
+  gStereo.add(obj, 'createSird').name('Generate SIRD (g)');
 
   // const grid = gui.addFolder('Grid');
   // grid.add(obj, 'items').min(50).max(300).step(1).name('Items');
@@ -133,14 +134,18 @@ function setupLil(){
   // const guiAudio = gui.addFolder('Audio');
   // guiAudio.add(obj, 'playSynth').name('Play Synth');
 
-  gui.add(obj, 'savePreset' ).name('Save Preset');
-  gui.add(obj, 'clearStorage').name('Clear Preset');
-  gui.add(obj, 'startOver').name('Play Again');
-  
-  gui.add(obj, 'saveImage').name('Save Image (s)');
-  gui.add(obj, 'createSird').name('Generate SIRD (g)');
+  const gPreset = gui.addFolder('Preset');
+  gPreset.add(obj, 'savePreset' ).name('Save Preset');
+  gPreset.add(obj, 'clearStorage').name('Clear Preset');
+  // gui.add(obj, 'startOver').name('Play Again');
+  // gui.add(obj, 'saveImage').name('Save Image (s)');
+
+
 
   gui.onChange( event => {
+    // fix for painting
+    mouseIsPressed = false;
+
     switch (event.property) {
       case 'items':
       case 'vibration':
@@ -168,9 +173,9 @@ function setupLil(){
         break;
 
       case 'stereoInvert':
-      // case 'stereoEyeSep':
-      // case 'stereoDpi':
-      // case 'stereoMu':
+        // case 'stereoEyeSep':
+        // case 'stereoDpi':
+        // case 'stereoMu':
         obj.createSird();
         break;  
     };
