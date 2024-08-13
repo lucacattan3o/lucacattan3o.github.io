@@ -16,6 +16,7 @@ let obj = {
   itemHeight: 2,
   playSynth: false,
   // paint
+  brushOn: true,
   brushSize: 1,
   brushOpacity: 0.3,
   // stereogram
@@ -72,6 +73,10 @@ function setupCanvas(){
   let img = document.getElementById('stereogram');
   img.width = w;
   img.height = h;
+  img.addEventListener('click', (e) => {
+    console.debug(e);
+    mouseIsPressed = false;
+  });
 }
 
 function setupItems(){
@@ -94,21 +99,19 @@ function draw() {
   // mouse interaction
   let mPos = responsiveMousePos();
 
-  if (mouseIsPressed){
-    if (mPos.x > 0 && mPos.x < w){
-      let bSize = 200;
-      translate(mPos.x, mPos.y);
-      fillGradient('radial', {
-        from : [0, 0, 0], // x, y, radius
-        to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
-        steps : [
-          color(255, 100 * obj.brushOpacity),
-          color(255, 0)
-        ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
-      });
-      noStroke();
-      circle(0, 0, bSize * obj.brushSize);
-    }
+  if (mouseIsPressed && obj.brushOn){
+    let bSize = 200;
+    translate(mPos.x, mPos.y);
+    fillGradient('radial', {
+      from : [0, 0, 0], // x, y, radius
+      to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
+      steps : [
+        color(255, 255 * obj.brushOpacity),
+        color(255, 0)
+      ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
+    });
+    noStroke();
+    circle(0, 0, bSize * obj.brushSize);
   }
   
 

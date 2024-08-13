@@ -2,7 +2,7 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN;
+let gui, guiM, guiN, guiBrushOn;
 
 obj.savePreset = function() {
   saveToStorage();
@@ -46,6 +46,8 @@ obj.createSird = function(){
   let canvas = document.getElementById('defaultCanvas0');
   let img = document.getElementById('stereogram');
   img.classList.add('ready');
+
+  guiBrushOn.setValue(false);
 
   let patternBuilder = (x, y) => {
     let density = 0.5 * 0.5;
@@ -110,6 +112,7 @@ function setupLil(){
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(4).step(0.01).name('Multiply');
 
   const gPaint = gui.addFolder('Paint');
+  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush');
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
 
@@ -176,7 +179,7 @@ function setupLil(){
         // case 'stereoEyeSep':
         // case 'stereoDpi':
         // case 'stereoMu':
-        obj.createSird();
+        // obj.createSird();
         break;  
     };
   });
