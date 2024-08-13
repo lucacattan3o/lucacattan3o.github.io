@@ -8,11 +8,10 @@
 - [x] Noise test
 - [x] Pattern Options
 - [x] Paint test
-- [ ] Canvas / Stereogram Size
-- [ ] Options
+- [x] Canvas / Stereogram Size
+- [x] Options
   - [x] Invert
   - [x] Stereogram options
-  - [ ] Output size
   - [ ] Sird on top with controls
 - [ ] Noise types and parameters
   - [ ] Colors

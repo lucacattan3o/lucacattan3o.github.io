@@ -117,6 +117,8 @@ function responsiveCanvas(){
     rSketch.scaleFactor = minScaleFactor;
   }
 
+  console.debug(rSketch.scaleFactor);
+
   let w = width * rSketch.scaleFactor;
   let h = height * rSketch.scaleFactor;
 

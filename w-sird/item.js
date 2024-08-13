@@ -17,9 +17,9 @@ class Item{
 
   calculateRealPositions(){
     // this.realPos.x = this.pos.x * 1080;
-    this.realPos.x = this.pos.x * w;
+    this.realPos.x = this.pos.x * obj.canvasW * obj.canvasMulty;
     // this.realPos.y = this.pos.y * 1080;
-    this.realPos.y = this.pos.y * w;
+    this.realPos.y = this.pos.y * obj.canvasH * obj.canvasMulty;
     this.depth = map(this.stochasticAmplitude, 0, 0.1, 0, 1, true);
   }
 

@@ -1,8 +1,12 @@
 let fps = 60;
-let w = 1920;
-let h = 1080;
+// let w = 1920;
+// let h = 1080;
 
 let obj = {
+  // canvas
+  canvasW: 1920,
+  canvasH: 1080,
+  canvasMulty: 1,
   // chladni
   items: 80,
   freqM: 4,
@@ -24,6 +28,7 @@ let obj = {
 let itemSize;
 let items = [];
 let oscM, oscN;
+let w, h;
 
 let storageName = 'gui-sird';
 
@@ -43,9 +48,7 @@ let palette = [
 let mPos;
 
 function setup() {
-  createCanvas(w, h);
-  responsiveSketch();
-  frameRate(fps);
+  setupCanvas();
   setupLil();
   
   background(0);
@@ -57,6 +60,18 @@ function setup() {
   oscN = new p5.Oscillator('sine');
   oscM.amp(0.5);
   oscN.amp(0.5);
+}
+
+function setupCanvas(){
+  w = floor(obj.canvasW * obj.canvasMulty);
+  h = floor(obj.canvasH * obj.canvasMulty);
+  createCanvas(w, h);
+  responsiveSketch();
+  frameRate(fps);
+
+  let img = document.getElementById('stereogram');
+  img.width = w;
+  img.height = h;
 }
 
 function setupItems(){

@@ -87,8 +87,8 @@ obj.createSird = function(){
 
   Stereogram.render({
     el: 'stereogram',
-    width: 1920,
-    height: 1080,
+    width: floor(obj.canvasW * obj.canvasMulty),
+    height: floor(obj.canvasH * obj.canvasMulty),
     colors: ['000', palette[4], 'fff'],
     depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
       inverted: obj.stereoInvert,
@@ -104,6 +104,11 @@ obj.createSird = function(){
 function setupLil(){
   gui = new GUI();
 
+  const gCanvas = gui.addFolder('Canvas');
+  gCanvas.add(obj, 'canvasW').min(1080).max(1920).step(20).name('Width');
+  gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
+  gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.01).name('Multiply');
+
   const gPaint = gui.addFolder('Paint');
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
@@ -112,7 +117,7 @@ function setupLil(){
   gStereo.add(obj, 'stereoInvert').name('Invert Depth');
   gStereo.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
   gStereo.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
-  gStereo.add(obj, 'stereoMu').min(2).max(8).step(0.5).name('Depth of field');
+  gStereo.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
 
   // const grid = gui.addFolder('Grid');
   // grid.add(obj, 'items').min(50).max(300).step(1).name('Items');
@@ -156,10 +161,16 @@ function setupLil(){
 
   gui.onFinishChange(event => {
     switch (event.property) {
+      case 'canvasW':
+      case 'canvasH':
+      case 'canvasMulty':
+        setupCanvas();
+        break;
+
       case 'stereoInvert':
-      case 'stereoEyeSep':
-      case 'stereoDpi':
-      case 'stereoMu':
+      // case 'stereoEyeSep':
+      // case 'stereoDpi':
+      // case 'stereoMu':
         obj.createSird();
         break;  
     };
