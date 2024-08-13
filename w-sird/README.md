@@ -13,6 +13,7 @@
   - [ ] Invert
   - [ ] Open in a new window
 - [ ] Noise types and parameters
+ - [ ] Colors
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter

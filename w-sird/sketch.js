@@ -78,18 +78,18 @@ function draw() {
   let mPos = responsiveMousePos();
 
   if (mouseIsPressed){
-    let size = 200;
+    let bSize = 200;
     translate(mPos.x, mPos.y);
     fillGradient('radial', {
       from : [0, 0, 0], // x, y, radius
-      to : [0, 0, size * obj.brushSize * 0.5], // x, y, radius
+      to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
       steps : [
         color(255, 100 * obj.brushOpacity),
         color(255, 0)
       ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
     });
     noStroke();
-    circle(0, 0, size * obj.brushSize);
+    circle(0, 0, bSize * obj.brushSize);
   }
   
 
