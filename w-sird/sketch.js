@@ -3,6 +3,7 @@ let w = 1920;
 let h = 1080;
 
 let obj = {
+  // chladni
   items: 80,
   freqM: 4,
   freqN: 5,
@@ -10,19 +11,18 @@ let obj = {
   itemSize: 1,
   itemHeight: 2,
   playSynth: false,
-
+  // paint
   brushSize: 1,
   brushOpacity: 0.3,
+  // stereogram
+  stereoInvert: false,
 };
-
-// Reference
-// https://github.com/addiebarron/chladni/blob/master/chladni.js
 
 let itemSize;
 let items = [];
 let oscM, oscN;
 
-let storageName = 'gui-chladni-3D';
+let storageName = 'gui-sird';
 
 let palette = [
   "#03071e",

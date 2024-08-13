@@ -8,12 +8,14 @@
 - [x] Noise test
 - [x] Pattern Options
 - [x] Paint test
+- [ ] Canvas Size
 - [ ] Options
-  - [ ] Sird options
-  - [ ] Invert
-  - [ ] Open in a new window
+  - [x] Invert
+  - [ ] Stereogram options
+  - [ ] Output size
+  - [ ] Sird on top with controls
 - [ ] Noise types and parameters
- - [ ] Colors
+  - [ ] Colors
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter

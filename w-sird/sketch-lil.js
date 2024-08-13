@@ -52,7 +52,9 @@ obj.createSird = function(){
     width: 1920,
     height: 1080,
     colors: ['000', palette[4], 'fff'],
-    depthMapper: new Stereogram.CanvasDepthMapper(canvas),
+    depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
+      inverted: obj.stereoInvert,
+    }),
     patternBuilder: (x, y) => {
       let density = 0.5 * 0.5;
       let n = noise(x * density, y * density);
@@ -98,6 +100,9 @@ function setupLil(){
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
 
+  const gStereo = gui.addFolder('Stereogram');
+  gStereo.add(obj, 'stereoInvert').name('Invert Depth');
+
   // const grid = gui.addFolder('Grid');
   // grid.add(obj, 'items').min(50).max(300).step(1).name('Items');
 
@@ -124,6 +129,10 @@ function setupLil(){
       case 'items':
       case 'vibration':
         setupItems();
+        break;
+
+      case 'stereoInvert':
+        obj.createSird();
         break;
     
       case 'playSynth':
