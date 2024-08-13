@@ -84,14 +84,23 @@ obj.createSird = function(){
     let rgba = c.levels;
     return rgba;
   };
-
   patternBuilder = null;
+
+  let stereoColors = [
+    obj.color0,
+    obj.color1,
+    obj.color2,
+    obj.color3,
+    obj.color4,
+  ];
+  stereoColors = stereoColors.slice(0, obj.nColors);
+  
 
   Stereogram.render({
     el: 'stereogram',
     width: w,
     height: h,
-    colors: ['000', palette[1], 'fff'],
+    colors: stereoColors,
     depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
       inverted: obj.stereoInvert,
     }),
@@ -117,11 +126,23 @@ function setupLil(){
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
 
   const gStereo = gui.addFolder('Stereogram');
-  gStereo.add(obj, 'stereoInvert').name('Invert Depth');
-  gStereo.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
-  gStereo.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
-  gStereo.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
-  gStereo.add(obj, 'createSird').name('Generate SIRD (g)');
+  gStereo.addColor(obj, 'color0').name('Color 1');
+  gStereo.addColor(obj, 'color1').name('Color 2');
+  gStereo.addColor(obj, 'color2').name('Color 3');
+  gStereo.addColor(obj, 'color3').name('Color 4');
+  gStereo.addColor(obj, 'color4').name('Color 5');
+  gStereo.add(obj, 'nColors').min(2).max(5).step(1).name('Number Of Colors');
+  
+  const gAdv = gStereo.addFolder('Advanced').close();
+  gAdv.add(obj, 'stereoInvert').name('Invert Depth');
+  gAdv.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
+  gAdv.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
+  gAdv.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
+  
+  
+
+  gStereo.add(obj, 'createSird').name('Generate Stereogram (g)');
+
 
   // const grid = gui.addFolder('Grid');
   // grid.add(obj, 'items').min(50).max(300).step(1).name('Items');

@@ -11,11 +11,10 @@
   - [x] Fix mouse is pressed
 - [x] Canvas / Stereogram Size
 - [x] Options
+  - [x] Colors
   - [x] Invert
   - [x] Stereogram options
-  - [ ] Sird on top with controls
 - [ ] Noise types and parameters
-  - [ ] Colors
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter

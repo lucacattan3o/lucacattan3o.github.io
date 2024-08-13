@@ -24,7 +24,15 @@ let obj = {
   stereoEyeSep: 6.35,  // eye separation in cm
   stereoDpi:    72,    // dpi
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
+  color0: '#5900b3',
+  color1: '#ffffff',
+  color2: '#000000',
+  color3: '#3a86ff',
+  color4: '#ffbe0b',
+  nColors: 3,
 };
+
+["ffbe0b","fb5607","ff006e","8338ec","3a86ff"]
 
 let itemSize;
 let items = [];
@@ -32,19 +40,6 @@ let oscM, oscN;
 let w, h;
 
 let storageName = 'gui-sird';
-
-let palette = [
-  "#03071e",
-  "#370617",
-  "#6a040f",
-  "#9d0208",
-  "#d00000",
-  "#dc2f02",
-  "#e85d04",
-  "#f48c06",
-  "#faa307",
-  "#ffba08"
-];
 
 let mPos;
 
