@@ -22,7 +22,11 @@
           [255, 255, 255, 255],
           [0, 0, 0, 255]
         ],
+        // custom options
         patternBuilder: null,
+        eyeSep: 6.35,
+        dpi: 72,
+        mu: 3,
       };
 
       for (var property in defaultOptions) {
@@ -63,6 +67,9 @@
         depthMap: depthMap,
         colors: opts.colors,
         patternBuilder: opts.patternBuilder,
+        eyeSep: opts.eyeSep,
+        dpi: opts.dpi,
+        mu: opts.mu,
       });
 
       switch (element.tagName) {
@@ -107,9 +114,11 @@
           depthMap = opts.depthMap,
           numColors = opts.colors.length,
           same, // points to a pixel to the right
-          dpi = 72, // assuming output of 72 dots per inch
-          eyeSep = Math.round(2.5 * dpi), // eye separation assumed to be 2.5 inches
-          mu = (1 / 2), // depth of field (fraction of viewing distance) (1 / 3 default)
+          // dpi = opts.dpi, // assuming output of 72 dots per inch
+          // eye separation assumed to be 6.35 cm / 2.54 = 2.5 inch (original default value)
+          eyeSep = Math.round(opts.eyeSep / 2.54 * opts.dpi), 
+          // depth of field (fraction of viewing distance) (1 / 3 default)
+          mu = (1 / opts.mu), 
           pixels = new Uint8ClampedArray(width * height * 4);
 
       // for each row

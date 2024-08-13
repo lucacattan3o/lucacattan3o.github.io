@@ -43,10 +43,48 @@ obj.saveImage = function(){
 }
 
 obj.createSird = function(){
-
   let canvas = document.getElementById('defaultCanvas0');
   let img = document.getElementById('stereogram');
   img.classList.add('ready');
+
+  let patternBuilder = (x, y) => {
+    let density = 0.5 * 0.5;
+    let n = noise(x * density, y * density);
+    // let ci = floor(n * palette.length);
+    // let c = color(palette[ci]);
+
+    // HSB noise
+    let hue = (n * 200) + 160;
+    push();
+      colorMode(HSB, 360, 100, 100);
+      let c = color(hue, 100, 100);
+    pop();
+
+    // checked box
+    /*
+    let size = 20;
+    let cx = x % size;
+    let cy = y % size;
+    if (cx >= (size * 0.5)){
+      if (cy >= (size * 0.5)){
+        c = color(palette[0]);
+      } else {
+        c = color(palette[3]);
+      }
+    } else {
+      if (cy >= (size * 0.5)){
+        c = color(palette[3]);
+      } else {
+        c = color(palette[0]);
+      }
+    }*/
+
+    let rgba = c.levels;
+    return rgba;
+  };
+
+  patternBuilder = null;
+
   Stereogram.render({
     el: 'stereogram',
     width: 1920,
@@ -55,41 +93,11 @@ obj.createSird = function(){
     depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
       inverted: obj.stereoInvert,
     }),
-    patternBuilder: (x, y) => {
-      let density = 0.5 * 0.5;
-      let n = noise(x * density, y * density);
-      // let ci = floor(n * palette.length);
-      // let c = color(palette[ci]);
-
-      // HSB noise
-      let hue = (n * 200) + 160;
-      push();
-        colorMode(HSB, 360, 100, 100);
-        let c = color(hue, 100, 100);
-      pop();
-
-      // checked box
-      /*
-      let size = 20;
-      let cx = x % size;
-      let cy = y % size;
-      if (cx >= (size * 0.5)){
-        if (cy >= (size * 0.5)){
-          c = color(palette[0]);
-        } else {
-          c = color(palette[3]);
-        }
-      } else {
-        if (cy >= (size * 0.5)){
-          c = color(palette[3]);
-        } else {
-          c = color(palette[0]);
-        }
-      }*/
-
-      let rgba = c.levels;
-      return rgba;
-    },
+    patternBuilder: patternBuilder,
+    // custom options
+    eyeSep: obj.stereoEyeSep,
+    dpi:    obj.stereoDpi,
+    mu:     obj.stereoMu,
   });
 }
 
@@ -102,6 +110,9 @@ function setupLil(){
 
   const gStereo = gui.addFolder('Stereogram');
   gStereo.add(obj, 'stereoInvert').name('Invert Depth');
+  gStereo.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
+  gStereo.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
+  gStereo.add(obj, 'stereoMu').min(2).max(8).step(0.5).name('Depth of field');
 
   // const grid = gui.addFolder('Grid');
   // grid.add(obj, 'items').min(50).max(300).step(1).name('Items');
@@ -130,10 +141,6 @@ function setupLil(){
       case 'vibration':
         setupItems();
         break;
-
-      case 'stereoInvert':
-        obj.createSird();
-        break;
     
       case 'playSynth':
         if (event.value){
@@ -145,6 +152,17 @@ function setupLil(){
         }
         break;
     }
+  });
+
+  gui.onFinishChange(event => {
+    switch (event.property) {
+      case 'stereoInvert':
+      case 'stereoEyeSep':
+      case 'stereoDpi':
+      case 'stereoMu':
+        obj.createSird();
+        break;  
+    };
   });
   
   let saved = localStorage.getItem(storageName);

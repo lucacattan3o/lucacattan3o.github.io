@@ -16,6 +16,9 @@ let obj = {
   brushOpacity: 0.3,
   // stereogram
   stereoInvert: false,
+  stereoEyeSep: 6.35,  // eye separation in cm
+  stereoDpi:    72,    // dpi
+  stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
 };
 
 let itemSize;
