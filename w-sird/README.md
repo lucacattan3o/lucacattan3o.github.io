@@ -15,7 +15,9 @@
   - [x] Invert
   - [x] Stereogram options
 - [x] Colors refactory
-- [ ] Noise types and parameters
+- [x] Noise types and parameters
+  - [x] Noise + scale
+  - [ ] Custom Noise Library
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter

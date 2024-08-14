@@ -2,7 +2,7 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN, guiBrushOn;
+let gui, guiM, guiN, guiBrushOn, guiPatScale;
 let guiCols = [];
 let storageName = 'gui-sird';
 
@@ -29,49 +29,10 @@ let obj = {
   stereoDpi:    72,    // dpi
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
+  // pattern
+  patType: 'SIRD',
+  patScale: 0.5,
 };
-
-obj.savePreset = function() {
-  saveToStorage();
-};
-
-obj.loadPreset = function() {
-  gui.load(preset);
-};
-
-obj.export = function() {
-  saveToStorage();
-  let url = window.location.href;    
-  if (url.indexOf('?') > -1){
-    url += '&export=true';
-  } else {
-    url += '?export=true';
-  }
-  window.location.href = url;
-};
-
-obj.clearStorage = function() {
-  localStorage.removeItem(storageName);
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.startOver = function(){
-  saveToStorage();
-  window.location = window.location.href.split("?")[0];
-};
-
-obj.stopExport = function(){
-  sketchExportEnd();
-};
-
-obj.saveImage = function(){
-  let fileName = getFileName('visual');
-  saveCanvas(fileName, 'png');
-}
-
-obj.createSird = function(){
-  createSird();
-}
 
 function setupLil(){
   setupColors();
@@ -95,7 +56,9 @@ function setupLil(){
     let gc = gStereo.addColor(obj, p).name('Color ' + (index + 1));
     guiCols.push(gc);
   });
-  updateGuiColors(obj.nColors);
+  updateStereoColors(obj.nColors);
+  gStereo.add( obj, 'patType', ['SIRD', 'Perlin Noise']).name('Noise Type');
+  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale').hide();
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
@@ -147,8 +110,19 @@ function setupLil(){
 
       case 'nColors':
         let max = event.value;
-        updateGuiColors(max);
+        updateStereoColors(max);
         break;
+
+      case 'patType':
+        switch (event.value) {
+          case 'SIRD':
+            guiPatScale.hide();
+            break;
+          default:
+            guiPatScale.show();
+            break;
+        }  
+      break;
     }
   });
 
@@ -182,14 +156,58 @@ function setupColors(){
   });
 }
 
-function updateGuiColors(max){
+function updateStereoColors(max){
+  stereoColors = [];
   guiCols.forEach((gc, index) => {
     if (index >= max){
       gc.hide();
     } else {
       gc.show();
+      stereoColors.push(gc.getValue());
     }
   });
+}
+
+obj.savePreset = function() {
+  saveToStorage();
+};
+
+obj.loadPreset = function() {
+  gui.load(preset);
+};
+
+obj.export = function() {
+  saveToStorage();
+  let url = window.location.href;    
+  if (url.indexOf('?') > -1){
+    url += '&export=true';
+  } else {
+    url += '?export=true';
+  }
+  window.location.href = url;
+};
+
+obj.clearStorage = function() {
+  localStorage.removeItem(storageName);
+  window.location = window.location.href.split("?")[0];
+};
+
+obj.startOver = function(){
+  saveToStorage();
+  window.location = window.location.href.split("?")[0];
+};
+
+obj.stopExport = function(){
+  sketchExportEnd();
+};
+
+obj.saveImage = function(){
+  let fileName = getFileName('visual');
+  saveCanvas(fileName, 'png');
+}
+
+obj.createSird = function(){
+  createSird();
 }
 
 function saveToStorage(){
