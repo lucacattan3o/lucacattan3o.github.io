@@ -14,6 +14,7 @@
   - [x] Colors
   - [x] Invert
   - [x] Stereogram options
+- [x] Colors refactory
 - [ ] Noise types and parameters
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)

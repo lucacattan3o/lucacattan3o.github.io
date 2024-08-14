@@ -1,38 +1,12 @@
 let fps = 60;
-// let w = 1920;
-// let h = 1080;
 
-let obj = {
-  // canvas
-  canvasW: 1920,
-  canvasH: 1080,
-  canvasMulty: 1,
-  // chladni
-  items: 80,
-  freqM: 4,
-  freqN: 5,
-  vibration: 0.06,
-  itemSize: 1,
-  itemHeight: 2,
-  playSynth: false,
-  // paint
-  brushOn: true,
-  brushSize: 1,
-  brushOpacity: 0.3,
-  // stereogram
-  stereoInvert: false,
-  stereoEyeSep: 6.35,  // eye separation in cm
-  stereoDpi:    72,    // dpi
-  stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
-  color0: '#5900b3',
-  color1: '#ffffff',
-  color2: '#000000',
-  color3: '#3a86ff',
-  color4: '#ffbe0b',
-  nColors: 3,
-};
-
-["ffbe0b","fb5607","ff006e","8338ec","3a86ff"]
+let palette = [
+  "5900b3",
+  "ffffff",
+  "000000",
+  "3a86ff",
+  "ffbe0b"
+];
 
 let itemSize;
 let items = [];
