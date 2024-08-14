@@ -10,12 +10,10 @@ let palette = [
 
 let itemSize;
 let items = [];
-let oscM, oscN;
 let w, h;
 
-let storageName = 'gui-sird';
-
 let mPos;
+// let oscM, oscN;
 
 function setup() {
   setupCanvas();
@@ -26,10 +24,10 @@ function setup() {
   // setupItems();
 
   // Oscillator
-  oscM = new p5.Oscillator('sine');
-  oscN = new p5.Oscillator('sine');
-  oscM.amp(0.5);
-  oscN.amp(0.5);
+  // oscM = new p5.Oscillator('sine');
+  // oscN = new p5.Oscillator('sine');
+  // oscM.amp(0.5);
+  // oscN.amp(0.5);
 }
 
 function setupCanvas(){
@@ -111,4 +109,73 @@ function drawChladni(){
       item.draw();
     });
   pop();
+}
+
+function createSird(){
+  let canvas = document.getElementById('defaultCanvas0');
+  let output = document.getElementById('stereogram-output');
+  output.classList.add('ready');
+
+  guiBrushOn.setValue(false);
+
+  let patternBuilder = (x, y) => {
+    let density = 0.5 * 0.5;
+    let n = noise(x * density, y * density);
+    // let ci = floor(n * palette.length);
+    // let c = color(palette[ci]);
+
+    // HSB noise
+    let hue = (n * 200) + 160;
+    push();
+      colorMode(HSB, 360, 100, 100);
+      let c = color(hue, 100, 100);
+    pop();
+
+    // checked box
+    /*
+    let size = 20;
+    let cx = x % size;
+    let cy = y % size;
+    if (cx >= (size * 0.5)){
+      if (cy >= (size * 0.5)){
+        c = color(palette[0]);
+      } else {
+        c = color(palette[3]);
+      }
+    } else {
+      if (cy >= (size * 0.5)){
+        c = color(palette[3]);
+      } else {
+        c = color(palette[0]);
+      }
+    }*/
+
+    let rgba = c.levels;
+    return rgba;
+  };
+  patternBuilder = null;
+
+  let stereoColors = [
+    obj.color0,
+    obj.color1,
+    obj.color2,
+    obj.color3,
+    obj.color4,
+  ];
+  stereoColors = stereoColors.slice(0, obj.nColors);
+
+  Stereogram.render({
+    el: 'stereogram',
+    width: w,
+    height: h,
+    colors: stereoColors,
+    depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
+      inverted: obj.stereoInvert,
+    }),
+    patternBuilder: patternBuilder,
+    // custom options
+    eyeSep: obj.stereoEyeSep,
+    dpi:    obj.stereoDpi,
+    mu:     obj.stereoMu,
+  });
 }

@@ -4,8 +4,9 @@
   left: 10px;
   width: 400px;
   padding: $size-unit * 0.25;
-  border: 1px dashed #fff;
+  border: 1px dashed #999;
   z-index: 1000;
+  display: none;
 
   /*
   padding: 0;
@@ -21,16 +22,15 @@
   img{
     width: 100%;
     height: auto;
-    display: none;
+  }
 
-    &.ready{
-      display: block;
-    }
+  &.ready{
+    display: block;
   }
 }
 
 .body--stereogram{
   canvas{
-    border: 2px dashed #999;
+    border: 1px dashed #999;
   }
 }
