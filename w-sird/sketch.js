@@ -130,6 +130,7 @@ function createSird(){
       break;
 
     case 'Perlin Noise':
+      noiseSeed(random(0, 100));
       patternBuilder = patternBuilderPerlinNoise;
       break;
   
@@ -159,8 +160,10 @@ function createSird(){
 function patternBuilderPerlinNoise(x, y){
   let density = 0.5 * 0.5 * obj.patScale;
   let n = noise(x * density, y * density);
-  let ci = floor(map(n, 0, 1, 0, stereoColors.length));
-  let c = color(stereoColors[ci]);
+  // noise to color index
+  // let ci = floor(map(n, 0, 1, 0, stereoColors.length));
+  // let c = color(stereoColors[ci]);
+  let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;
   return rgba;
 }
@@ -184,4 +187,22 @@ function patternBuilderBoxes(x, y){
   }
   let rgba = c.levels;
   return rgba;
+}
+
+function getLerpColorByNoiseValue(n){
+  let cSlice = 1 / stereoColors.length;
+  let step = floor(n / cSlice);
+  if (step > stereoColors.length){
+    step = 0;
+  }
+  let c1 = step;
+  let c2 = step + 1;
+  if (c2 >= stereoColors.length){
+    c2 = 0;
+  }
+  let col1 = color(stereoColors[c1]);
+  let col2 = color(stereoColors[c2]);
+  let l = map(n % cSlice, 0, cSlice, 0, 1);
+  let c = lerpColor(col1, col2, l);
+  return c;
 }

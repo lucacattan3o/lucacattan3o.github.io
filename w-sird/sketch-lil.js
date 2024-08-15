@@ -30,7 +30,7 @@ let obj = {
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
   // pattern
-  patType: 'SIRD',
+  patType: 'Perlin Noise',
   patScale: 0.5,
 };
 
@@ -58,7 +58,8 @@ function setupLil(){
   });
   updateStereoColors(obj.nColors);
   gStereo.add( obj, 'patType', ['SIRD', 'Perlin Noise']).name('Noise Type');
-  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale').hide();
+  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale');
+  // guiPatScale.hide();
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');

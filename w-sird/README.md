@@ -17,6 +17,7 @@
 - [x] Colors refactory
 - [x] Noise types and parameters
   - [x] Noise + scale
+  - [x] Lerp Color
   - [ ] Custom Noise Library
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
