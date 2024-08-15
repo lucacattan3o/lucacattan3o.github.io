@@ -124,6 +124,7 @@ function createSird(){
   let eyeSep = Math.round(obj.stereoEyeSep / 2.54 * obj.stereoDpi);
   patColWidth = (eyeSep / 2) - 1;
   console.debug('Pattern Col Width: ' + patColWidth);
+  // todo: different if inverted
 
   // pattern builder choice
   let patternBuilder = null;
@@ -180,8 +181,8 @@ function patternBuilderCheckWidth(x, y){
   // partono da 0 e arrivano a patColWidth (89)
   let px = width - 1 - x;
   let mx = map(px, 0, patColWidth, 0, 1);
-  let scale = 0.5;
-  if (mx % scale >= 0.25){
+  let scale = 0.5 * 0.5;
+  if (mx % scale >= scale * 0.5){
     col = stereoColors[0];
   } else {
     col = stereoColors[1];
