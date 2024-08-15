@@ -30,7 +30,7 @@ let obj = {
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
   // pattern
-  patType: 'Perlin Noise Sinusoidal',
+  patType: 'Worley Noise',
   patScale: 0.5,
 };
 
@@ -60,7 +60,8 @@ function setupLil(){
   gStereo.add( obj, 'patType', [
     'SIRD',
     'Perlin Noise',
-    'Perlin Noise Sinusoidal'
+    'Perlin Noise Sinusoidal',
+    'Worley Noise',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale');
   // guiPatScale.hide();

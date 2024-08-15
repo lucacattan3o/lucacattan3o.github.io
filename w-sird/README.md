@@ -20,6 +20,8 @@
   - [x] Lerp Color
   - [x] Noise Sinusoidal
   - [ ] Add X/Y Parameters
+- [x] Calculate col width
+- [ ] Refactory with Bundler
   - [ ] Custom Noise Library
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
