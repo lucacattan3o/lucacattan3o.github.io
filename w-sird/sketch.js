@@ -42,10 +42,6 @@ function setupCanvas(){
   let img = document.getElementById('stereogram');
   img.width = w;
   img.height = h;
-  img.addEventListener('click', (e) => {
-    console.debug(e);
-    mouseIsPressed = false;
-  });
 }
 
 function setupItems(){
@@ -133,6 +129,11 @@ function createSird(){
       noiseSeed(random(0, 100));
       patternBuilder = patternBuilderPerlinNoise;
       break;
+    
+    case 'Perlin Noise Sinusoidal':
+      noiseSeed(random(0, 100));
+      patternBuilder = patternBuilderPerlinNoiseSinusoidal;
+      break;
   
     default:
       break;
@@ -159,10 +160,19 @@ function createSird(){
 
 function patternBuilderPerlinNoise(x, y){
   let density = 0.5 * 0.5 * obj.patScale;
-  let n = noise(x * density, y * density);
-  // noise to color index
-  // let ci = floor(map(n, 0, 1, 0, stereoColors.length));
-  // let c = color(stereoColors[ci]);
+  let nx = x * density;
+  let ny = y * density;
+  let n = noise(nx, ny);
+  let c = getLerpColorByNoiseValue(n);
+  let rgba = c.levels;
+  return rgba;
+}
+
+function patternBuilderPerlinNoiseSinusoidal(x, y){
+  let density = 0.5 * 0.5 * 0.5 * obj.patScale;
+  let nx = cos(x * density) * 50;
+  let ny = sin(y * density);
+  let n = noise(nx, ny);
   let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;
   return rgba;

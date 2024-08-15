@@ -18,6 +18,8 @@
 - [x] Noise types and parameters
   - [x] Noise + scale
   - [x] Lerp Color
+  - [x] Noise Sinusoidal
+  - [ ] Add X/Y Parameters
   - [ ] Custom Noise Library
 - [ ] 3D Map
   - [ ] Better coloring, dark first (how many levels?)
