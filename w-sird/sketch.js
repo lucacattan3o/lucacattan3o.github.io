@@ -233,8 +233,13 @@ function patternBuilderCheckWidth(x, y){
 }
 
 function patternBuilderPerlinNoise(x, y){
+  let px = width - 1 - x;
+  // seamless
+  if (px > patColWidth * 0.5){
+    px = patColWidth - px;
+  }
   let density = 0.5 * 0.5 * obj.patScale;
-  let nx = x * density;
+  let nx = px * density;
   let ny = y * density;
   let n = noise(nx, ny);
   let c = getLerpColorByNoiseValue(n);
@@ -314,7 +319,8 @@ function patternBuilderWorleyNoise(x, y){
       minDist = d;
     }
   }
-  let n = map(minDist, 0, patColWidth, 0, 1, true);
+  let nScale = map(obj.patScale, 0.1, 1, 1, 4);
+  let n = map(minDist, 0, sizeY * nScale, 0, 1, true);
   if (n >= 1){
     n = 0.9999;
   }

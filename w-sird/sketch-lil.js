@@ -29,6 +29,7 @@ let obj = {
   stereoDpi:    72,    // dpi
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
+  invertColors: false,
   // pattern
   patType: 'Worley Noise',
   patScale: 0.5,
@@ -50,6 +51,7 @@ function setupLil(){
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
 
   const gStereo = gui.addFolder('Stereogram');
+  gStereo.add(obj, 'invertColors').name('Invert Colors');
   gStereo.add(obj, 'nColors').min(2).max(5).step(1).name('Number Of Colors');
   palette.forEach((col, index) => {
     let p = 'color' + index;
@@ -115,6 +117,10 @@ function setupLil(){
         }
         break;
 
+      case 'invertColors':
+        updateStereoColors(obj.nColors);
+        break;
+
       case 'nColors':
         let max = event.value;
         updateStereoColors(max);
@@ -173,6 +179,9 @@ function updateStereoColors(max){
       stereoColors.push(gc.getValue());
     }
   });
+  if (obj.invertColors){
+    stereoColors.reverse();
+  }
 }
 
 obj.savePreset = function() {

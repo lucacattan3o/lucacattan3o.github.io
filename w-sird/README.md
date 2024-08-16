@@ -14,6 +14,7 @@
   - [x] Colors
   - [x] Invert
   - [x] Stereogram options
+  - [x] Invert colors
 - [x] Colors refactory
 - [x] Noise types and parameters
   - [x] Noise + scale
