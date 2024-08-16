@@ -176,6 +176,21 @@ function createSird(){
 let tmpX = null;
 
 function patternBuilderCheckWidth(x, y){
+  if (y == 0){
+    if (x == width - 1){
+      console.debug('--------------');
+      console.debug('Start at: ' + x);
+    }
+    tmpX = x;
+  }
+  if (y == 1){
+    if (x == width - 1){
+      console.debug('End at: ' + tmpX);
+      console.debug('--------------');
+      let diff = width - 1 - tmpX;
+      console.debug('Col Width: ' + diff);
+    }
+  }
   // x parte da destra (99 fino a 0)
   // calcolo dei valori di x più semplici
   // partono da 0 e arrivano a patColWidth (89)
@@ -187,7 +202,6 @@ function patternBuilderCheckWidth(x, y){
   } else {
     col = stereoColors[1];
   }
-
   let c = color(col);
   let rgba = c.levels;
   return rgba;
