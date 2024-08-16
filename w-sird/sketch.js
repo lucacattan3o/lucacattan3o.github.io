@@ -255,12 +255,18 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
 
 function patternBuilderWorleyNoisePre(){
   worleyPoints = [];
-  let tot = 80;
-  let itemH = w / tot;
+  let tot = 50;
   for (let i = 0; i < tot; i++) {
-    let y = itemH * i + itemH * 0.5;
-    let point = createVector(random(0, patColWidth), random(0, h));
+    let y = random(0, h);
+    let point = createVector(0, y);
     worleyPoints.push(point);
+    let pointb = createVector(patColWidth, y);
+    worleyPoints.push(pointb);
+    let pointc = createVector(
+      patColWidth * 0.5 + patColWidth * random(-0.25, 0.25),
+      y + (patColWidth * random(-0.25, 0.25)),
+    );
+    worleyPoints.push(pointc);
   }
 }
 
@@ -268,12 +274,14 @@ function patternBuilderWorleyNoise(x, y){
   let px = width - 1 - x;
   let minDist = w;
   // trovo il punto più vicino
-  worleyPoints.forEach((point) => {
+  // todo: better performance
+  for (let i = 0; i < worleyPoints.length; i++) {
+    const point = worleyPoints[i];
     let d = dist(px, y, point.x, point.y);
     if (d < minDist){
       minDist = d;
     }
-  });
+  }
   let n = map(minDist, 0, patColWidth, 0, 1, true);
   if (n >= 1){
     n = 0.9999;
