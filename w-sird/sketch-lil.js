@@ -20,7 +20,7 @@ let obj = {
   itemHeight: 2,
   playSynth: false,
   // paint
-  brushOn: true,
+  brushOn: false,
   brushSize: 1,
   brushOpacity: 0.3,
   // stereogram
@@ -30,7 +30,7 @@ let obj = {
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
   // pattern
-  patType: 'Worley Noise',
+  patType: 'Check Width',
   patScale: 0.5,
 };
 
@@ -62,6 +62,7 @@ function setupLil(){
     'Perlin Noise',
     'Perlin Noise Sinusoidal',
     'Worley Noise',
+    'Check Width',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale');
   // guiPatScale.hide();

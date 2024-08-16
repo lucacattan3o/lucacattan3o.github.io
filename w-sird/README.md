@@ -21,7 +21,7 @@
   - [x] Noise Sinusoidal
   - [ ] Add X/Y Parameters
 - [x] Calculate col width
-  - [ ] Different if inverted
+  - [x] Different if inverted
 - [ ] Refactory with Bundler
   - [ ] Custom Noise Library
 - [ ] 3D Map

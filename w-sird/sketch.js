@@ -122,9 +122,27 @@ function createSird(){
 
   // calcolo la larghezza della colonna del pattern
   let eyeSep = Math.round(obj.stereoEyeSep / 2.54 * obj.stereoDpi);
-  patColWidth = (eyeSep / 2) - 1;
-  console.debug('Pattern Col Width: ' + patColWidth);
-  // todo: different if inverted
+  patColWidth = Math.round(eyeSep / 2);
+  if (obj.patType == 'Check Width') {
+    console.debug('--------------');
+    console.debug('EyeSep: ' + eyeSep);
+  }
+  // se il pattern è invertito, la mappa di profondità è tutta bianca
+  // z quindi di base è a 1
+  // posso ricavare di quanto sono state rimpicciolite le colonne
+  if (obj.stereoInvert){
+    let z = 1;
+    let mu = (1 / obj.stereoMu);
+    let sep = Math.round((1 - (mu * z)) * eyeSep / (2 - (mu * z)));
+    let dif = Math.round(sep / 2);
+    if (obj.patType == 'Check Width') {
+      console.debug('Dif: ' + Math.round(sep / 2));
+    }
+    patColWidth = patColWidth - dif;
+  }
+  if (obj.patType == 'Check Width') {
+    console.debug('Calculated: ' + patColWidth);
+  }
 
   // pattern builder choice
   let patternBuilder = null;
@@ -145,23 +163,31 @@ function createSird(){
     
     case 'Worley Noise':
       // create some random points in the space
-      patternBuilder = patternBuilderCheckWidth;
       // check the closer point
       // set the color based on distance
+      // patternBuilder = patternBuilderCheckWidth;
+      break;
+
+    case 'Check Width':
+      patternBuilder = patternBuilderCheckWidth;
       break;
   
     default:
       break;
   }
 
+  let depthMapper = new Stereogram.CanvasDepthMapper(canvas, {
+    inverted: obj.stereoInvert,
+  });
+
+  // console.debug(depthMapper);
+
   Stereogram.render({
     el: 'stereogram',
-    width: w,
+    width:  w,
     height: h,
     colors: stereoColors,
-    depthMapper: new Stereogram.CanvasDepthMapper(canvas, {
-      inverted: obj.stereoInvert,
-    }),
+    depthMapper: depthMapper,
     patternBuilder: patternBuilder,
     // custom options
     eyeSep: obj.stereoEyeSep,
@@ -178,7 +204,6 @@ let tmpX = null;
 function patternBuilderCheckWidth(x, y){
   if (y == 0){
     if (x == width - 1){
-      console.debug('--------------');
       console.debug('Start at: ' + x);
     }
     tmpX = x;
@@ -186,9 +211,9 @@ function patternBuilderCheckWidth(x, y){
   if (y == 1){
     if (x == width - 1){
       console.debug('End at: ' + tmpX);
-      console.debug('--------------');
       let diff = width - 1 - tmpX;
-      console.debug('Col Width: ' + diff);
+      console.debug('Diff: ' + diff);
+      console.debug('Scarto: ' + (patColWidth - diff));
     }
   }
   // x parte da destra (99 fino a 0)
@@ -196,7 +221,7 @@ function patternBuilderCheckWidth(x, y){
   // partono da 0 e arrivano a patColWidth (89)
   let px = width - 1 - x;
   let mx = map(px, 0, patColWidth, 0, 1);
-  let scale = 0.5 * 0.5;
+  let scale = 0.5 * obj.patScale;
   if (mx % scale >= scale * 0.5){
     col = stereoColors[0];
   } else {
