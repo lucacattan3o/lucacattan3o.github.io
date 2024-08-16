@@ -30,7 +30,7 @@ let obj = {
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 3,
   // pattern
-  patType: 'Check Width',
+  patType: 'Worley Noise',
   patScale: 0.5,
 };
 

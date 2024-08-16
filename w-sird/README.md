@@ -20,6 +20,9 @@
   - [x] Lerp Color
   - [x] Noise Sinusoidal
   - [ ] Add X/Y Parameters
+- [x] Worley Noise
+  - [ ] Made symmetrical?
+  - [ ] Add parameters
 - [x] Calculate col width
   - [x] Different if inverted
 - [ ] Refactory with Bundler

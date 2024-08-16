@@ -110,6 +110,7 @@ function drawChladni(){
 }
 
 let patColWidth = null;
+let worleyPoints = null;
 
 function createSird(){
   let canvas = document.getElementById('defaultCanvas0');
@@ -165,7 +166,8 @@ function createSird(){
       // create some random points in the space
       // check the closer point
       // set the color based on distance
-      // patternBuilder = patternBuilderCheckWidth;
+      patternBuilderWorleyNoisePre();
+      patternBuilder = patternBuilderWorleyNoise;
       break;
 
     case 'Check Width':
@@ -200,7 +202,6 @@ function createSird(){
 // ----------------------
 
 let tmpX = null;
-
 function patternBuilderCheckWidth(x, y){
   if (y == 0){
     if (x == width - 1){
@@ -252,6 +253,36 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
   return rgba;
 }
 
+function patternBuilderWorleyNoisePre(){
+  worleyPoints = [];
+  let tot = 80;
+  let itemH = w / tot;
+  for (let i = 0; i < tot; i++) {
+    let y = itemH * i + itemH * 0.5;
+    let point = createVector(random(0, patColWidth), random(0, h));
+    worleyPoints.push(point);
+  }
+}
+
+function patternBuilderWorleyNoise(x, y){
+  let px = width - 1 - x;
+  let minDist = w;
+  // trovo il punto più vicino
+  worleyPoints.forEach((point) => {
+    let d = dist(px, y, point.x, point.y);
+    if (d < minDist){
+      minDist = d;
+    }
+  });
+  let n = map(minDist, 0, patColWidth, 0, 1, true);
+  if (n >= 1){
+    n = 0.9999;
+  }
+  let c = getLerpColorByNoiseValue(n);
+  let rgba = c.levels;
+  return rgba;
+}
+
 function patternBuilderBoxes(x, y){
   let size = 10;
   let cx = x % size;
@@ -272,6 +303,9 @@ function patternBuilderBoxes(x, y){
   let rgba = c.levels;
   return rgba;
 }
+
+// ** UTILITIES **
+// ---------------
 
 function getLerpColorByNoiseValue(n){
   let cSlice = 1 / stereoColors.length;
