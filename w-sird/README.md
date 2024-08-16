@@ -21,7 +21,7 @@
   - [x] Noise Sinusoidal
   - [ ] Add X/Y Parameters
 - [x] Worley Noise
-  - [ ] Made symmetrical?
+  - [x] Made seamless
   - [ ] Add parameters
 - [x] Calculate col width
   - [x] Different if inverted

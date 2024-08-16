@@ -110,7 +110,6 @@ function drawChladni(){
 }
 
 let patColWidth = null;
-let worleyPoints = null;
 
 function createSird(){
   let canvas = document.getElementById('defaultCanvas0');
@@ -253,19 +252,35 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
   return rgba;
 }
 
+let worleyPoints = null;
+let worleyPointsTot = 30;
+
 function patternBuilderWorleyNoisePre(){
   worleyPoints = [];
-  let tot = 50;
+  let tot = floor(worleyPointsTot * obj.patScale);
+  let unitY = h / tot;
+  let unitX = patColWidth;
   for (let i = 0; i < tot; i++) {
-    let y = random(0, h);
-    let point = createVector(0, y);
+    let y = unitY * i;
+    // 2 symmetric points 
+    let xOffset = unitX * random(-0.5, 0.5);
+    let yOffset = unitY * random(-0.25, 0.25);
+    let point = {
+      x: xOffset,
+      y: y + yOffset
+    };
     worleyPoints.push(point);
-    let pointb = createVector(patColWidth, y);
+    let pointb = {
+      x: unitX + xOffset,
+      y: y + yOffset
+    }
     worleyPoints.push(pointb);
-    let pointc = createVector(
-      patColWidth * 0.5 + patColWidth * random(-0.25, 0.25),
-      y + (patColWidth * random(-0.25, 0.25)),
-    );
+    // middle one
+    let yOffsetC = unitY * random(-0.125, 0.125);
+    let pointc = {
+      x: unitX * 0.5,
+      y: y + unitY * 0.5 + yOffsetC,
+    };
     worleyPoints.push(pointc);
   }
 }
@@ -274,8 +289,25 @@ function patternBuilderWorleyNoise(x, y){
   let px = width - 1 - x;
   let minDist = w;
   // trovo il punto più vicino
-  // todo: better performance
-  for (let i = 0; i < worleyPoints.length; i++) {
+  // ottimizzo l'algoritmo facendo il check solo
+  // con i punti che presumo sia i più vicini
+  let totPoints = worleyPoints.length;
+  let deltaPoints = floor(totPoints / 5);
+  if (deltaPoints < 5){
+    deltaPoints = 5;
+  }
+  let sizeY = h / totPoints;
+  let step = floor(y / sizeY);
+  let stepStart = step - deltaPoints;
+  if (stepStart < 0){
+    stepStart = 0;
+  }
+  let stepEnd = step + deltaPoints;
+  if (stepEnd > totPoints){
+    stepEnd = totPoints;
+  }
+  for (let i = stepStart; i < stepEnd; i++) {
+  // for (let i = 0; i < worleyPoints.length; i++) {
     const point = worleyPoints[i];
     let d = dist(px, y, point.x, point.y);
     if (d < minDist){
