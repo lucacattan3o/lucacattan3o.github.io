@@ -20,12 +20,12 @@
   - [x] Noise + scale
   - [x] Lerp Color
   - [x] Noise Sinusoidal
+    - [ ] Add X/Y Parameters
   - [x] Vertical Lines
     - [ ] Weird problem with multiple colors
-  - [ ] Add X/Y Parameters
 - [x] Worley Noise
   - [x] Made seamless
-  - [ ] Add parameters
+  - [ ] Better colors?
 - [x] Calculate col width
   - [x] Different if inverted
 - [ ] Refactory with Bundler

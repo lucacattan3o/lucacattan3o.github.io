@@ -31,7 +31,7 @@ let obj = {
   nColors: 3,
   invertColors: false,
   // pattern
-  patType: 'Vertical Lines',
+  patType: 'Perlin Noise Sinusoidal',
   patScale: 0.5,
 };
 

@@ -267,9 +267,15 @@ function patternBuilderPerlinNoise(x, y){
 }
 
 function patternBuilderPerlinNoiseSinusoidal(x, y){
+  let px = width - 1 - x;
+  // seamless
+  if (px > patColWidth * 0.5){
+    px = patColWidth - px;
+  }
   let density = 0.5 * 0.5 * 0.5 * obj.patScale;
-  let nx = cos(x * density) * 50;
-  let ny = sin(y * density);
+  let nx = cos(px * density) * 2;
+  // or sin?
+  let ny = y * obj.patScale * 0.5;
   let n = noise(nx, ny);
   let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;
