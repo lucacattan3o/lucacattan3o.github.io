@@ -20,6 +20,8 @@
   - [x] Noise + scale
   - [x] Lerp Color
   - [x] Noise Sinusoidal
+  - [x] Vertical Lines
+    - [ ] Weird problem with multiple colors
   - [ ] Add X/Y Parameters
 - [x] Worley Noise
   - [x] Made seamless

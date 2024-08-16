@@ -169,6 +169,10 @@ function createSird(){
       patternBuilder = patternBuilderWorleyNoise;
       break;
 
+    case 'Vertical Lines':
+      patternBuilder = patternBuilderVerticalLines;
+      break;
+
     case 'Check Width':
       patternBuilder = patternBuilderCheckWidth;
       break;
@@ -199,6 +203,21 @@ function createSird(){
 
 // ** PATTERN BUILDERS **
 // ----------------------
+
+function patternBuilderVerticalLines(x, y){
+  let px = width - 1 - x;
+  let mx = map(px, 0, patColWidth, 0, 1);
+  let scale = 0.5 * obj.patScale;
+  if (mx % scale >= scale * 0.5){
+    col = stereoColors[0];
+  } else {
+    col = stereoColors[1];
+  }
+  let c = color(col);
+  // let c = getColorByNoiseValue(mx);
+  let rgba = c.levels;
+  return rgba;
+}
 
 let tmpX = null;
 function patternBuilderCheckWidth(x, y){
@@ -369,4 +388,12 @@ function getLerpColorByNoiseValue(n){
   let l = map(n % cSlice, 0, cSlice, 0, 1);
   let c = lerpColor(col1, col2, l);
   return c;
+}
+
+function getColorByNoiseValue(n){
+  let ci = floor(map(n, 0, 1, 0, stereoColors.length, true));
+  if (ci > stereoColors.length){
+    ci = stereoColors.length;
+  }
+  return color(stereoColors[ci]);
 }

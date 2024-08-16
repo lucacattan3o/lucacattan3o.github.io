@@ -31,7 +31,7 @@ let obj = {
   nColors: 3,
   invertColors: false,
   // pattern
-  patType: 'Worley Noise',
+  patType: 'Vertical Lines',
   patScale: 0.5,
 };
 
@@ -64,7 +64,8 @@ function setupLil(){
     'Perlin Noise',
     'Perlin Noise Sinusoidal',
     'Worley Noise',
-    'Check Width',
+    'Vertical Lines',
+    // 'Check Width',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale');
   // guiPatScale.hide();
