@@ -182,14 +182,59 @@ function setupColors(){
 
 function updateStereoColors(max){
   stereoColors = [];
-  guiCols.forEach((gc, index) => {
-    if (index >= max){
-      gc.hide();
-    } else {
-      gc.show();
-      stereoColors.push(gc.getValue());
-    }
-  });
+  switch (max) {
+    case 2:
+      guiCols[0].show();
+      stereoColors.push(guiCols[0].getValue());
+      guiCols[1].hide();
+      guiCols[2].hide();
+      guiCols[3].hide();
+      guiCols[4].show();
+      stereoColors.push(guiCols[4].getValue());
+      break;
+    case 3:
+      guiCols[0].show();
+      stereoColors.push(guiCols[0].getValue());
+      guiCols[1].hide();
+      guiCols[2].show();
+      stereoColors.push(guiCols[2].getValue());
+      guiCols[3].hide();
+      guiCols[4].show();
+      stereoColors.push(guiCols[4].getValue());
+      break;
+    case 4:
+      guiCols[0].show();
+      stereoColors.push(guiCols[0].getValue());
+      guiCols[1].show();
+      stereoColors.push(guiCols[1].getValue());
+      guiCols[2].show();
+      stereoColors.push(guiCols[2].getValue());
+      guiCols[3].hide();
+      guiCols[4].show();
+      stereoColors.push(guiCols[4].getValue());
+      break;
+  
+    case 5:
+      guiCols[0].show();
+      stereoColors.push(guiCols[0].getValue());
+      guiCols[1].show();
+      stereoColors.push(guiCols[1].getValue());
+      guiCols[2].show();
+      stereoColors.push(guiCols[2].getValue());
+      guiCols[3].show();
+      stereoColors.push(guiCols[3].getValue());
+      guiCols[4].show();
+      stereoColors.push(guiCols[4].getValue());
+      break;
+  }
+  //guiCols.forEach((gc, index) => {
+  //  if (index >= max){
+  //    gc.hide();
+  //  } else {
+  //    gc.show();
+  //    stereoColors.push(gc.getValue());
+  //  }
+  //});
   if (obj.invertColors){
     stereoColors.reverse();
   }

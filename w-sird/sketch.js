@@ -1,11 +1,11 @@
 let fps = 60;
 
 let palette = [
-  "5900b3",
   "ffffff",
-  "000000",
+  "ffbe0b",
   "3a86ff",
-  "ffbe0b"
+  "5900b3",
+  "000000",
 ];
 
 let stereoColors = null;
@@ -276,7 +276,6 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
   }
   let density = 0.5 * 0.5 * 0.5 * obj.patScale;
   let nx = cos(px * density) * 2;
-  // or sin?
   let ny = y * density;
   let n = noise(nx, ny);
   let c = getLerpColorByNoiseValue(n);
