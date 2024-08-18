@@ -338,19 +338,15 @@ function patternBuilderWorleyNoise(x, y){
   if (stepEnd > totPoints){
     stepEnd = totPoints;
   }
-  for (let i = stepStart; i < stepEnd; i++) {
   // for (let i = 0; i < worleyPoints.length; i++) {
+  for (let i = stepStart; i < stepEnd; i++) {
     const point = worleyPoints[i];
     let d = dist(px, y, point.x, point.y);
     if (d < minDist){
       minDist = d;
     }
   }
-  let nScale = map(obj.patScale, 0.1, 1, 1, 4);
-  let n = map(minDist, 0, sizeY * nScale, 0, 1, true);
-  if (n >= 1){
-    n = 0.9999;
-  }
+  let n = map(minDist, 0, patColWidth * (obj.patGradScale * 4), 0, 1, true);
   let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;
   return rgba;
@@ -384,12 +380,12 @@ function getLerpColorByNoiseValue(n){
   let cSlice = 1 / stereoColors.length;
   let step = floor(n / cSlice);
   if (step >= (stereoColors.length - 1)){
-    step = 0;
+    step = stereoColors.length - 1;
   }
   let c1 = step;
   let c2 = step + 1;
   if (c2 >= (stereoColors.length - 1)){
-    c2 = 0;
+    c2 = stereoColors.length - 1;
   }
   let col1 = color(stereoColors[c1]);
   let col2 = color(stereoColors[c2]);

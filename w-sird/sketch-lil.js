@@ -2,7 +2,7 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN, guiBrushOn, guiPatScale;
+let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale;
 let guiCols = [];
 let storageName = 'gui-sird';
 
@@ -31,8 +31,9 @@ let obj = {
   nColors: 5,
   invertColors: false,
   // pattern
-  patType: 'Vertical Lines',
+  patType: 'Worley Noise',
   patScale: 0.5,
+  patGradScale: 0.5,
 };
 
 function setupLil(){
@@ -67,8 +68,9 @@ function setupLil(){
     'Vertical Lines',
     // 'Check Width',
   ]).name('Noise Type');
-  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.1).name('Noise Scale');
+  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.05).name('Noise Scale');
   // guiPatScale.hide();
+  guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.05).name('Gradient Scale');
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
@@ -129,11 +131,17 @@ function setupLil(){
 
       case 'patType':
         switch (event.value) {
+          case 'Worley Noise':
+            guiPatGradScale.show();  
+            guiPatScale.show();
+            break;
           case 'SIRD':
             guiPatScale.hide();
+            guiPatGradScale.hide();
             break;
           default:
             guiPatScale.show();
+            guiPatGradScale.hide();  
             break;
         }  
       break;

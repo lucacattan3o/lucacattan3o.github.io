@@ -25,7 +25,6 @@
     - [x] Weird problem with multiple colors
 - [x] Worley Noise
   - [x] Made seamless
-  - [ ] Better colors?
 - [x] Calculate col width
   - [x] Different if inverted
 - [ ] Refactory with Bundler
