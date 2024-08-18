@@ -34,6 +34,7 @@
 - [ ] Depth Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter
+- [ ] Image upload?
 - [ ] Hands interactions
 
 ## Nice to have
