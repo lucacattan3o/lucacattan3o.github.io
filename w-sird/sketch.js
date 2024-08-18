@@ -277,7 +277,7 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
   let density = 0.5 * 0.5 * 0.5 * obj.patScale;
   let nx = cos(px * density) * 2;
   // or sin?
-  let ny = y * obj.patScale * 0.5;
+  let ny = y * density;
   let n = noise(nx, ny);
   let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;

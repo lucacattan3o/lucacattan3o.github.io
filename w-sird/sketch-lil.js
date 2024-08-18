@@ -31,7 +31,7 @@ let obj = {
   nColors: 5,
   invertColors: false,
   // pattern
-  patType: 'Worley Noise',
+  patType: 'SIRD',
   patScale: 0.5,
   patGradScale: 0.5,
 };
@@ -68,9 +68,10 @@ function setupLil(){
     'Vertical Lines',
     // 'Check Width',
   ]).name('Noise Type');
-  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.05).name('Noise Scale');
-  // guiPatScale.hide();
-  guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.05).name('Gradient Scale');
+  guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.01).name('Noise Scale');
+  guiPatScale.hide();
+  guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.01).name('Gradient Scale');
+  guiPatGradScale.hide();
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
@@ -130,18 +131,19 @@ function setupLil(){
         break;
 
       case 'patType':
+
+        if (event.value == 'Worley Noise'){
+          guiPatGradScale.show();
+        } else {
+          guiPatGradScale.hide();
+        }
+
         switch (event.value) {
-          case 'Worley Noise':
-            guiPatGradScale.show();  
-            guiPatScale.show();
-            break;
           case 'SIRD':
             guiPatScale.hide();
-            guiPatGradScale.hide();
             break;
           default:
             guiPatScale.show();
-            guiPatGradScale.hide();  
             break;
         }  
       break;
