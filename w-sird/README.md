@@ -22,7 +22,7 @@
   - [x] Noise Sinusoidal
     - [ ] Add X/Y Parameters
   - [x] Vertical Lines
-    - [ ] Weird problem with multiple colors
+    - [x] Weird problem with multiple colors
 - [x] Worley Noise
   - [x] Made seamless
   - [ ] Better colors?

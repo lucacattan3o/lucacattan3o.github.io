@@ -170,6 +170,7 @@ function createSird(){
       break;
 
     case 'Vertical Lines':
+      patternBuilderVerticalLinesPre();
       patternBuilder = patternBuilderVerticalLines;
       break;
 
@@ -204,17 +205,18 @@ function createSird(){
 // ** PATTERN BUILDERS **
 // ----------------------
 
+function patternBuilderVerticalLinesPre(){
+  // console.debug(stereoColors);
+}
+
 function patternBuilderVerticalLines(x, y){
   let px = width - 1 - x;
+  // col width 0-1
   let mx = map(px, 0, patColWidth, 0, 1);
-  let scale = 0.5 * obj.patScale;
-  if (mx % scale >= scale * 0.5){
-    col = stereoColors[0];
-  } else {
-    col = stereoColors[1];
-  }
-  let c = color(col);
-  // let c = getColorByNoiseValue(mx);
+  // scale the pattern
+  let scale = map(obj.patScale, 0.1, 1, 4, 1);
+  let smx = (mx * scale) % 1;
+  let c = getColorByNoiseValue(smx);
   let rgba = c.levels;
   return rgba;
 }
@@ -381,12 +383,12 @@ function patternBuilderBoxes(x, y){
 function getLerpColorByNoiseValue(n){
   let cSlice = 1 / stereoColors.length;
   let step = floor(n / cSlice);
-  if (step > stereoColors.length){
+  if (step >= (stereoColors.length - 1)){
     step = 0;
   }
   let c1 = step;
   let c2 = step + 1;
-  if (c2 >= stereoColors.length){
+  if (c2 >= (stereoColors.length - 1)){
     c2 = 0;
   }
   let col1 = color(stereoColors[c1]);
@@ -398,8 +400,13 @@ function getLerpColorByNoiseValue(n){
 
 function getColorByNoiseValue(n){
   let ci = floor(map(n, 0, 1, 0, stereoColors.length, true));
-  if (ci > stereoColors.length){
-    ci = stereoColors.length;
+  if (ci < 0){
+    ci = 0;
   }
-  return color(stereoColors[ci]);
+  if (ci > (stereoColors.length - 1)){
+    ci = stereoColors.length - 1;
+  }
+  let col = stereoColors[ci];
+  let c = color(col);
+  return c;
 }
