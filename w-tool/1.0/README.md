@@ -1,5 +1,7 @@
 # SIRD Tool
 
+## Version 1.0
+
 - [x] Interactions
 - [x] Music feedback
 - [x] Try 3D
@@ -26,11 +28,15 @@
   - [x] Made seamless
 - [x] Calculate col width
   - [x] Different if inverted
-- [ ] Refactory with Bundler
-  - [ ] Custom Noise Library
-- [ ] 3D Map
+
+## Version 1.1
+
+- [ ] Depth Map
   - [ ] Better coloring, dark first (how many levels?)
   - [ ] Blur filter
-  - [ ] Hands interactions
+- [ ] Hands interactions
 
-`#creativecoding #p5js #generative`
+## Nice to have
+
+- [ ] Refactory with Bundler
+- [ ] Custom Noise Library
