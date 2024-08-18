@@ -71,7 +71,7 @@ function draw() {
       from : [0, 0, 0], // x, y, radius
       to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
       steps : [
-        color(255, 255 * obj.brushOpacity),
+        color(255, 50 * obj.brushOpacity),
         color(255, 0)
       ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
     });
@@ -284,7 +284,7 @@ function patternBuilderPerlinNoiseSinusoidal(x, y){
 }
 
 let worleyPoints = null;
-let worleyPointsTot = 30;
+let worleyPointsTot = 40;
 
 function patternBuilderWorleyNoisePre(){
   worleyPoints = [];
@@ -345,7 +345,7 @@ function patternBuilderWorleyNoise(x, y){
       minDist = d;
     }
   }
-  let n = map(minDist, 0, patColWidth * (obj.patGradScale * 4), 0, 1, true);
+  let n = map(minDist, 0, patColWidth * obj.patGradScale * 5, 0, 1, true);
   let c = getLerpColorByNoiseValue(n);
   let rgba = c.levels;
   return rgba;

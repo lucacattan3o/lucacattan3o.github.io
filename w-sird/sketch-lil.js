@@ -44,12 +44,13 @@ function setupLil(){
   const gCanvas = gui.addFolder('Canvas');
   gCanvas.add(obj, 'canvasW').min(1080).max(1920).step(20).name('Width');
   gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
-  gCanvas.add(obj, 'canvasMulty').min(0.25).max(4).step(0.01).name('Multiply');
+  gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
   const gPaint = gui.addFolder('Paint');
   guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush');
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
+  guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
 
   const gStereo = gui.addFolder('Stereogram');
   gStereo.add(obj, 'invertColors').name('Invert Colors');
@@ -280,6 +281,10 @@ obj.saveImage = function(){
 
 obj.createSird = function(){
   createSird();
+}
+
+obj.paintClear = function(){
+  background(0);
 }
 
 function saveToStorage(){
