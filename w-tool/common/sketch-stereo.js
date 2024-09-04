@@ -12,7 +12,7 @@ function createSird(){
 
   // calcolo la larghezza della colonna del pattern
   let eyeSep = Math.round(obj.stereoEyeSep / 2.54 * obj.stereoDpi);
-  patColWidth = Math.round(eyeSep / 2);
+  patColWidth = Math.round(eyeSep / 2) + 1;
   if (obj.patType == 'Check Width') {
     console.debug('--------------');
     console.debug('EyeSep: ' + eyeSep);
@@ -274,7 +274,8 @@ function getLerpColorByNoiseValue(n){
   let c1 = step;
   let c2 = step + 1;
   if (c2 >= (stereoColors.length - 1)){
-    c2 = stereoColors.length - 1;
+    // c2 = stereoColors.length - 1;
+    c2 = 0;
   }
   let col1 = color(stereoColors[c1]);
   let col2 = color(stereoColors[c2]);

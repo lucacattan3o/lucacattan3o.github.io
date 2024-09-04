@@ -31,7 +31,7 @@ let obj = {
   nColors: 5,
   invertColors: false,
   // pattern
-  patType: 'SIRD',
+  patType: 'Worley Noise',
   patScale: 0.5,
   patGradScale: 0.5,
 };
