@@ -4,7 +4,7 @@
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale;
 let guiCols = [];
-let storageName = 'gui-sird';
+let storageName = 'gui-stereo-1.0';
 
 let obj = {
   // canvas
@@ -31,7 +31,7 @@ let obj = {
   nColors: 5,
   invertColors: false,
   // pattern
-  patType: 'Worley Noise',
+  patType: 'SIRD',
   patScale: 0.5,
   patGradScale: 0.5,
 };
@@ -228,14 +228,6 @@ function updateStereoColors(max){
       stereoColors.push(guiCols[4].getValue());
       break;
   }
-  //guiCols.forEach((gc, index) => {
-  //  if (index >= max){
-  //    gc.hide();
-  //  } else {
-  //    gc.show();
-  //    stereoColors.push(gc.getValue());
-  //  }
-  //});
   if (obj.invertColors){
     stereoColors.reverse();
   }

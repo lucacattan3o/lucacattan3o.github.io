@@ -266,31 +266,33 @@ function patternBuilderBoxes(x, y){
 // ---------------
 
 function getLerpColorByNoiseValue(n){
-  let cSlice = 1 / stereoColors.length;
+  let nColors = stereoColors.length - 1;
+  let cSlice = 1 / nColors;
   let step = floor(n / cSlice);
-  if (step >= (stereoColors.length - 1)){
-    step = stereoColors.length - 1;
+  if (step >= nColors){
+    step = nColors;
   }
   let c1 = step;
   let c2 = step + 1;
-  if (c2 >= (stereoColors.length - 1)){
-    // c2 = stereoColors.length - 1;
-    c2 = 0;
+  if (c2 >= nColors){
+    c2 = nColors;
   }
   let col1 = color(stereoColors[c1]);
   let col2 = color(stereoColors[c2]);
-  let l = map(n % cSlice, 0, cSlice, 0, 1);
+  let l = map(n % cSlice, 0, cSlice, 0, 1, true);
   let c = lerpColor(col1, col2, l);
   return c;
 }
 
 function getColorByNoiseValue(n){
+  let nColors = stereoColors.length - 1;
+  // qui è giusto il map con stereoColore.length per far uscire l'ultimo colore
   let ci = floor(map(n, 0, 1, 0, stereoColors.length, true));
   if (ci < 0){
     ci = 0;
   }
-  if (ci > (stereoColors.length - 1)){
-    ci = stereoColors.length - 1;
+  if (ci >= nColors){
+    ci = nColors;
   }
   let col = stereoColors[ci];
   let c = color(col);

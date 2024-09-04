@@ -4,7 +4,7 @@
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY;
 let guiCols = [];
-let storageName = 'gui-sird';
+let storageName = 'gui-stereo-1.1';
 
 let obj = {
   // canvas
@@ -240,14 +240,6 @@ function updateStereoColors(max){
       stereoColors.push(guiCols[4].getValue());
       break;
   }
-  //guiCols.forEach((gc, index) => {
-  //  if (index >= max){
-  //    gc.hide();
-  //  } else {
-  //    gc.show();
-  //    stereoColors.push(gc.getValue());
-  //  }
-  //});
   if (obj.invertColors){
     stereoColors.reverse();
   }
