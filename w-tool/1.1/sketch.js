@@ -1,4 +1,4 @@
-let fps = 60;
+let fps = 10;
 
 let palette = [
   "ffffff",
@@ -15,6 +15,7 @@ let items = [];
 let w, h;
 
 let mPos;
+let dmImage = null;
 // let oscM, oscN;
 
 function setup() {
@@ -60,32 +61,13 @@ function setupItems(){
 }
 
 function draw() {
-
-  // mouse interaction
-  let mPos = responsiveMousePos();
-
-  if (mouseIsPressed && obj.brushOn){
-    let bSize = 200;
-    translate(mPos.x, mPos.y);
-    fillGradient('radial', {
-      from : [0, 0, 0], // x, y, radius
-      to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
-      steps : [
-        color(255, 50 * obj.brushOpacity),
-        color(255, 0)
-      ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
-    });
-    noStroke();
-    circle(0, 0, bSize * obj.brushSize);
+  background(0);
+  if (dmImage){
+    translate(w * 0.5, h * 0.5);
+    translate(w * obj.dmX, h * obj.dmY);
+    scale(obj.dmScale);
+    image(dmImage, -dmImage.width * 0.5, -dmImage.height * 0.5);
   }
-  
-
-  // let sec = frameCount / fps;
-  // if (sec % 3 == 0){
-  //   obj.createSird();
-  // }
-
-  // drawChladni();
 }
 
 function drawChladni(){
@@ -214,7 +196,7 @@ function patternBuilderVerticalLines(x, y){
   // col width 0-1
   let mx = map(px, 0, patColWidth, 0, 1);
   // scale the pattern
-  let scale = map(obj.patScale, 0.1, 1, 4, 1);
+  let scale = map(obj.patScale, 0.1, 1, 8, 1);
   let smx = (mx * scale) % 1;
   let c = getColorByNoiseValue(smx);
   let rgba = c.levels;

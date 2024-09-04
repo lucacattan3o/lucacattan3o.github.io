@@ -2,7 +2,7 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale;
+let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY;
 let guiCols = [];
 let storageName = 'gui-sird';
 
@@ -19,6 +19,10 @@ let obj = {
   itemSize: 1,
   itemHeight: 2,
   playSynth: false,
+  // image
+  dmScale: 1,
+  dmX: 0,
+  dmY: 0, 
   // paint
   brushOn: false,
   brushSize: 1,
@@ -51,6 +55,14 @@ function setupLil(){
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
   gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
   guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
+  gPaint.hide();
+
+  const gDepthMap = gui.addFolder('Depth Map');
+  // Aggiunta del pulsante per caricare un'immagine
+  gDepthMap.add(obj, 'dmUpload').name('Upload Image');
+  gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
+  gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
+  gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
   const gStereo = gui.addFolder('Stereogram');
   gStereo.add(obj, 'invertColors').name('Invert Colors');
@@ -277,6 +289,24 @@ obj.stopExport = function(){
 obj.saveImage = function(){
   let fileName = getFileName('visual');
   saveCanvas(fileName, 'png');
+}
+
+obj.dmUpload = function(){
+  let fileInput = createFileInput(handleFile);
+  fileInput.elt.accept = 'image/*';
+  fileInput.position(0, 0);
+  fileInput.style('visibility', 'hidden');
+  fileInput.elt.click();
+}
+
+// Funzione callback per gestire il caricamento del file
+function handleFile(file) {
+  if (file.type === 'image') {
+    dmImage = loadImage(file.data);
+    gDmScale.show();
+    gDmX.show();
+    gDmY.show();
+  }
 }
 
 obj.createSird = function(){
