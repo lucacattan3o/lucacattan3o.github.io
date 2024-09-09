@@ -77,8 +77,18 @@ function draw() {
     }
   }
 
-  if (mouseIsPressed && obj.brushOn){
-    let bSize = 200;
+  if (mouseIsPressed && keyIsPressed && keyCode == 32){
+    let bSize = 100;
+    let fillSize = bSize * obj.brushSize;
+    let strokeSize = 1;
+    // console.debug('Original: ' + fillSize);
+    // da 0 alla dimensione del brush
+    let hard = (1 - obj.brushHard) * fillSize;
+    // console.debug('Hard: ' + hard);
+    // riduco la dimensione del fill
+    fillSize = fillSize - hard;
+    // console.debug('Size: ' + fillSize);
+    
     push();
     translate(mPos.x, mPos.y);
     let rgb = [
@@ -87,16 +97,25 @@ function draw() {
       obj.brushColor[2] * 255
     ];
     fill(rgb);
-    // fillGradient('radial', {
-    //   from : [0, 0, 0], // x, y, radius
-    //   to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
-    //   steps : [
-    //     color(255, 50 * obj.brushOpacity),
-    //     color(255, 0)
-    //   ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
-    // });
     noStroke();
-    circle(0, 0, bSize * obj.brushSize);
+    circle(0, 0, fillSize);
+    
+    if (hard){
+      for (i = 0; i < hard; i++){
+        let sSize = fillSize + (i * strokeSize);
+        let alpha = map(i, 0, hard, 255, 0, true);
+        let rgba = [
+          obj.brushColor[0] * 255,
+          obj.brushColor[1] * 255,
+          obj.brushColor[2] * 255,
+          alpha,
+        ];
+        strokeWeight(strokeSize);
+        stroke(rgba);
+        noFill();
+        circle(0, 0, sSize);
+      }
+    }
     pop();
   }
 }

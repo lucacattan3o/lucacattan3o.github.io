@@ -26,14 +26,14 @@ let obj = {
   // paint
   brushOn: false,
   brushSize: 1,
-  brushOpacity: 0.3,
+  brushHard: 0.8,
   brushColor: [1, 1, 1],
   // stereogram
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
   stereoDpi:    72,    // dpi
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
-  nColors: 5,
+  nColors: 2,
   invertColors: false,
   // pattern
   patType: 'SIRD',
@@ -59,11 +59,11 @@ function setupLil(){
   gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
   // Paint Tool
-  const gPaint = gui.addFolder('Paint');
-  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush');
+  const gPaint = gui.addFolder('Paint (spacebar + mouse)');
+  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush').hide();
   gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
-  gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
-  guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color');
+  gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
+  guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color (BW)');
   guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
 
   // Stereogram

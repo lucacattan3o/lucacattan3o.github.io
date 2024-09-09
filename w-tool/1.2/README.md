@@ -5,5 +5,5 @@
 - [x] Paint tool (on top of image)
   - [x] Background managament
   - [x] BW colors
-  - [ ] Brush tool
-- [ ] Word noise
+  - [x] Brush tool
+  - [x] Fix click on gui-lil
