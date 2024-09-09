@@ -2,9 +2,9 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY;
+let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor;
 let guiCols = [];
-let storageName = 'gui-stereo-1.1';
+let storageName = 'gui-stereo-1.2';
 
 let obj = {
   // canvas
@@ -27,6 +27,7 @@ let obj = {
   brushOn: false,
   brushSize: 1,
   brushOpacity: 0.3,
+  brushColor: [1, 1, 1],
   // stereogram
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
@@ -50,20 +51,22 @@ function setupLil(){
   gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
-  const gPaint = gui.addFolder('Paint');
-  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush');
-  gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
-  gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
-  guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
-  gPaint.hide();
-
+  // Depth Map | Image Upload
   const gDepthMap = gui.addFolder('Depth Map');
-  // Aggiunta del pulsante per caricare un'immagine
   gDepthMap.add(obj, 'dmUpload').name('Upload Image');
   gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
   gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
   gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
+  // Paint Tool
+  const gPaint = gui.addFolder('Paint');
+  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush');
+  gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
+  gPaint.add(obj, 'brushOpacity').min(0.1).max(1).step(0.1).name('Opacity');
+  guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color');
+  guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
+
+  // Stereogram
   const gStereo = gui.addFolder('Stereogram');
   gStereo.add(obj, 'invertColors').name('Invert Colors');
   gStereo.add(obj, 'nColors').min(2).max(5).step(1).name('Number Of Colors');
@@ -144,7 +147,6 @@ function setupLil(){
         break;
 
       case 'patType':
-
         if (event.value == 'Worley Noise'){
           guiPatGradScale.show();
         } else {
@@ -160,6 +162,12 @@ function setupLil(){
             break;
         }  
       break;
+
+      case 'dmScale':
+      case 'dmX':
+      case 'dmY':
+        redrawImage = true;
+        break;
     }
   });
 
@@ -170,13 +178,17 @@ function setupLil(){
       case 'canvasMulty':
         setupCanvas();
         break;
-
-      case 'stereoInvert':
-        // case 'stereoEyeSep':
-        // case 'stereoDpi':
-        // case 'stereoMu':
-        // obj.createSird();
-        break;  
+      case 'brushColor':
+        let rgb = [
+          event.value[0] * 255,
+          event.value[1] * 255,
+          event.value[2] * 255,
+        ];
+        let c = color(rgb);
+        let l = lightness(c);
+        let n = map(l, 0, 100, 0, 1, true);
+        guiBrushColor.setValue([n, n, n]);
+        break;
     };
   });
   
@@ -298,6 +310,7 @@ function handleFile(file) {
     gDmScale.show();
     gDmX.show();
     gDmY.show();
+    redrawImage = true;
   }
 }
 

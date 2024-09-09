@@ -1,14 +1,9 @@
 # Autostereogram Tool
 
-## Version 1.1
-
-- [x] Image upload
-  - [x] Position
-  - [x] Size
-
 ## Version 1.2
 
+- [x] Paint tool (on top of image)
+  - [x] Background managament
+  - [x] BW colors
+  - [ ] Brush tool
 - [ ] Word noise
-- [ ] Fix Worley Noise
-- [ ] Chladni pattern integration
-- [ ] Add more variability

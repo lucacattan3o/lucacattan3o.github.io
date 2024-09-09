@@ -1,4 +1,4 @@
-let fps = 10;
+let fps = 60;
 
 let palette = [
   "ffffff",
@@ -16,6 +16,7 @@ let w, h;
 
 let mPos;
 let dmImage = null;
+let redrawImage = false;
 // let oscM, oscN;
 
 function setup() {
@@ -61,12 +62,42 @@ function setupItems(){
 }
 
 function draw() {
-  background(0);
+  let mPos = responsiveMousePos();
+  
   if (dmImage){
-    translate(w * 0.5, h * 0.5);
-    translate(w * obj.dmX, h * obj.dmY);
-    scale(obj.dmScale);
-    image(dmImage, -dmImage.width * 0.5, -dmImage.height * 0.5);
+    if (redrawImage){
+      background(0);
+      push();
+      translate(w * 0.5, h * 0.5);
+      translate(w * obj.dmX, h * obj.dmY);
+      scale(obj.dmScale);
+      image(dmImage, -dmImage.width * 0.5, -dmImage.height * 0.5);
+      pop();
+      redrawImage = false;
+    }
+  }
+
+  if (mouseIsPressed && obj.brushOn){
+    let bSize = 200;
+    push();
+    translate(mPos.x, mPos.y);
+    let rgb = [
+      obj.brushColor[0] * 255,
+      obj.brushColor[1] * 255,
+      obj.brushColor[2] * 255
+    ];
+    fill(rgb);
+    // fillGradient('radial', {
+    //   from : [0, 0, 0], // x, y, radius
+    //   to : [0, 0, bSize * obj.brushSize * 0.5], // x, y, radius
+    //   steps : [
+    //     color(255, 50 * obj.brushOpacity),
+    //     color(255, 0)
+    //   ] // Array of p5.color objects or arrays containing [p5.color Object, Color Stop (0 to 1)]
+    // });
+    noStroke();
+    circle(0, 0, bSize * obj.brushSize);
+    pop();
   }
 }
 

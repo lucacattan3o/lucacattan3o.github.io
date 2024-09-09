@@ -1,9 +1,7 @@
 # Autostereogram Tool
 
-## Version 1.2
+## Version 1.1
 
-- [ ] Paint tool (on top of image)
-  - [ ] Background managament
-  - [ ] BW colors
-  - [ ] Brush tool
-- [ ] Word noise
+- [x] Image upload
+  - [x] Position
+  - [x] Size
