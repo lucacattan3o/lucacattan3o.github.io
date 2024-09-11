@@ -36,6 +36,7 @@ function createSird(){
 
   // pattern builder choice
   let patternBuilder = null;
+  
   switch (obj.patType) {
     case 'SIRD':
       // silence ;)
@@ -213,6 +214,7 @@ function patternBuilderWorleyNoisePre(){
 
 function patternBuilderWorleyNoise(x, y){
   let px = width - 1 - x;
+  px = px % patColWidth;
   let minDist = w;
   // trovo il punto più vicino
   // ottimizzo l'algoritmo facendo il check solo
@@ -268,7 +270,7 @@ function patternBuilderLettersPre(){
     let lineHeight = (height / 30 * obj.patScale);
     pgLetter.textFont(font, lineHeight * 2);
     let nRows = height / lineHeight;
-    for (i = 0; i < (nRows - 1); i++ ){
+    for (i = 0; i < nRows; i++ ){
       let w = i % words.length;
       pgLetter.push();
         pgLetter.translate(0, lineHeight * i);
@@ -277,25 +279,28 @@ function patternBuilderLettersPre(){
         pgLetter.noStroke();
         let line = '';
         for (j = 0; j < 20; j++){
-          line += words[w + j];
+          let b = (w + j) % words.length;
+          line += words[b];
         }
         pgLetter.text(line, 0, 0);
       pgLetter.pop();
     }
     // image(pgLetter, 0, 0);
+    // pgLetter.scale(1, -1);
     pgLetter.loadPixels();
-
     // let c = pgLetter.get(7, 30);
-    // c = color(c);
-    // console.debug(c.levels);
   pop();
 }
 
 function patternBuilderLetters(x, y){
   let px = width - 1 - x;
-  let c = pgLetter.get(px, y);
-  c = color(c);
-  let rgba = c.levels;
+  px = px % pgLetter.width;
+  px = pgLetter.width - px - 1;
+  // py = py % pgLetter.height;
+  let rgba = pgLetter.get(px, y);
+  if (rgba[3] !== 255){
+    rgba = [0, 255, 255, 255];
+  }
   return rgba;
 }
 

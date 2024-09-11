@@ -2,9 +2,9 @@
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor;
+let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor, guiPatWords;
 let guiCols = [];
-let storageName = 'gui-stereo-1.2';
+let storageName = 'gui-stereo-1.3';
 
 let obj = {
   // canvas
@@ -36,7 +36,7 @@ let obj = {
   nColors: 2,
   invertColors: false,
   // pattern
-  patType: 'Letter Noise',
+  patType: 'SIRD',
   patScale: 0.5,
   patGradScale: 0.5,
   // words
@@ -88,10 +88,10 @@ function setupLil(){
     // 'Check Width',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.01).name('Noise Scale');
-  // guiPatScale.hide();
+  guiPatScale.hide();
   guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.01).name('Gradient Scale');
   guiPatGradScale.hide();
-  gStereo.add(obj, 'patWords').name('Words');
+  guiPatWords = gStereo.add(obj, 'patWords').name('Words').hide();
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
@@ -155,6 +155,12 @@ function setupLil(){
           guiPatGradScale.show();
         } else {
           guiPatGradScale.hide();
+        }
+
+        if (event.value == 'Letter Noise'){
+          guiPatWords.show();
+        } else {
+          guiPatWords.hide();
         }
 
         switch (event.value) {
