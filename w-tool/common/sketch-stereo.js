@@ -246,6 +246,8 @@ function patternBuilderWorleyNoise(x, y){
   return rgba;
 }
 
+let pgLetter = null;
+
 function patternBuilderLettersPre(){
   push();
     stroke(255);
@@ -258,32 +260,41 @@ function patternBuilderLettersPre(){
     push();
       translate(patColWidth * 0.5, height * 0.5);
       fill(stereoColors[0]);
-      rect(0, 0, patColWidth, height);
+      // rect(0, 0, patColWidth, height);
     pop();
 
+    pgLetter = createGraphics(patColWidth, height);
+    pgLetter.background(stereoColors[0]);
     let lineHeight = (height / 30 * obj.patScale);
-    textFont(font, lineHeight * 2);
+    pgLetter.textFont(font, lineHeight * 2);
     let nRows = height / lineHeight;
     for (i = 0; i < (nRows - 1); i++ ){
       let w = i % words.length;
-      push();
-        translate(0, lineHeight * i);
-        translate(0, lineHeight * 1);
-        fill(stereoColors[1]);
-        noStroke();
+      pgLetter.push();
+        pgLetter.translate(0, lineHeight * i);
+        pgLetter.translate(0, lineHeight * 1);
+        pgLetter.fill(stereoColors[1]);
+        pgLetter.noStroke();
         let line = '';
         for (j = 0; j < 20; j++){
           line += words[w + j];
         }
-        text(line, 0, 0);
-      pop();
+        pgLetter.text(line, 0, 0);
+      pgLetter.pop();
     }
+    // image(pgLetter, 0, 0);
+    pgLetter.loadPixels();
 
+    // let c = pgLetter.get(7, 30);
+    // c = color(c);
+    // console.debug(c.levels);
   pop();
 }
 
-function patternBuilderLetters(){
-  let c = color(100);
+function patternBuilderLetters(x, y){
+  let px = width - 1 - x;
+  let c = pgLetter.get(px, y);
+  c = color(c);
   let rgba = c.levels;
   return rgba;
 }
