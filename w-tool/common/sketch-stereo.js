@@ -252,8 +252,7 @@ function patternBuilderLettersPre(){
     noFill();
     translate(width * 0.5, 0);
 
-    let paragraph = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum. Aenean molestie malesuada bibendum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus elit felis, dapibus ut magna in, euismod tincidunt massa. Fusce vulputate semper mauris sed maximus. Maecenas ut metus sed neque lobortis efficitur quis in eros. Suspendisse potenti. Aenean semper, diam sit amet hendrerit cursus, metus purus bibendum nibh, eget fringilla justo orci nec diam. Sed id arcu egestas, congue arcu vitae, vestibulum erat. In purus risus, cursus sit amet elementum sit amet, consequat in dolor. Vivamus facilisis, enim ac commodo ornare, tortor enim congue velit, molestie finibus velit felis ut mi.';
-    let words = paragraph.split(' ');
+    let words = obj.patWords.split(' ');
 
     // grid
     push();

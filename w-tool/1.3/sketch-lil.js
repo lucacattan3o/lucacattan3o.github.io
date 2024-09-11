@@ -39,6 +39,8 @@ let obj = {
   patType: 'Letter Noise',
   patScale: 0.5,
   patGradScale: 0.5,
+  // words
+  patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
 };
 
 function setupLil(){
@@ -89,6 +91,7 @@ function setupLil(){
   // guiPatScale.hide();
   guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.01).name('Gradient Scale');
   guiPatGradScale.hide();
+  gStereo.add(obj, 'patWords').name('Words');
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
