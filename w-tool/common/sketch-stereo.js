@@ -64,6 +64,11 @@ function createSird(){
       patternBuilder = patternBuilderVerticalLines;
       break;
 
+    case 'Letter Noise':
+      patternBuilderLettersPre();
+      patternBuilder = patternBuilderLetters;
+      break;
+
     case 'Check Width':
       patternBuilder = patternBuilderCheckWidth;
       break;
@@ -237,6 +242,49 @@ function patternBuilderWorleyNoise(x, y){
   }
   let n = map(minDist, 0, patColWidth * obj.patGradScale * 5, 0, 1, true);
   let c = getLerpColorByNoiseValue(n);
+  let rgba = c.levels;
+  return rgba;
+}
+
+function patternBuilderLettersPre(){
+  push();
+    stroke(255);
+    noFill();
+    translate(width * 0.5, 0);
+
+    let paragraph = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum. Aenean molestie malesuada bibendum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus elit felis, dapibus ut magna in, euismod tincidunt massa. Fusce vulputate semper mauris sed maximus. Maecenas ut metus sed neque lobortis efficitur quis in eros. Suspendisse potenti. Aenean semper, diam sit amet hendrerit cursus, metus purus bibendum nibh, eget fringilla justo orci nec diam. Sed id arcu egestas, congue arcu vitae, vestibulum erat. In purus risus, cursus sit amet elementum sit amet, consequat in dolor. Vivamus facilisis, enim ac commodo ornare, tortor enim congue velit, molestie finibus velit felis ut mi.';
+    let words = paragraph.split(' ');
+
+    // grid
+    push();
+      translate(patColWidth * 0.5, height * 0.5);
+      fill(stereoColors[0]);
+      rect(0, 0, patColWidth, height);
+    pop();
+
+    let lineHeight = (height / 30 * obj.patScale);
+    textFont(font, lineHeight * 2);
+    let nRows = height / lineHeight;
+    for (i = 0; i < (nRows - 1); i++ ){
+      let w = i % words.length;
+      push();
+        translate(0, lineHeight * i);
+        translate(0, lineHeight * 1);
+        fill(stereoColors[1]);
+        noStroke();
+        let line = '';
+        for (j = 0; j < 20; j++){
+          line += words[w + j];
+        }
+        text(line, 0, 0);
+      pop();
+    }
+
+  pop();
+}
+
+function patternBuilderLetters(){
+  let c = color(100);
   let rgba = c.levels;
   return rgba;
 }

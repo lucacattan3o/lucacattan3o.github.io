@@ -36,7 +36,7 @@ let obj = {
   nColors: 2,
   invertColors: false,
   // pattern
-  patType: 'SIRD',
+  patType: 'Letter Noise',
   patScale: 0.5,
   patGradScale: 0.5,
 };
@@ -82,10 +82,11 @@ function setupLil(){
     'Perlin Noise Sinusoidal',
     'Worley Noise',
     'Vertical Lines',
+    'Letter Noise'
     // 'Check Width',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.01).name('Noise Scale');
-  guiPatScale.hide();
+  // guiPatScale.hide();
   guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.01).name('Gradient Scale');
   guiPatGradScale.hide();
   

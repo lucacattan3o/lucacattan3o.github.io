@@ -15,9 +15,14 @@ let items = [];
 let w, h;
 
 let mPos;
+let font;
 let dmImage = null;
 let redrawImage = false;
 // let oscM, oscN;
+
+function preload(){
+  font = loadFont('./../common/fonts/KolkerBrush-Regular.ttf');
+}
 
 function setup() {
   setupCanvas();
