@@ -1,6 +1,8 @@
 // webcam variables
 let capture; // our webcam
 let captureEvent; // callback when webcam is ready
+let camReady = false;
+let camSize = 0.2;
 
 // function: launch webcam
 function captureWebcam() {
@@ -21,6 +23,8 @@ function captureWebcam() {
       setCameraDimensions(capture);
       mediaPipe.predictWebcam(capture);
       //mediaPipe.predictWebcam(parentDiv);
+
+      camReady = true;
     }
   );
   capture.elt.setAttribute("playsinline", "");
@@ -44,8 +48,26 @@ function setCameraDimensions(video) {
   }
 }
 
+function camPosition() {
+  let camWidth = capture.scaledWidth * camSize;
+  let camHeight = capture.scaledHeight * camSize;
+  let offset = 5;
+  let cx = offset;
+  let cy = h - camHeight - offset;
+  translate(cx, cy);
+}
 
-// function: center our stuff
-function centerOurStuff() {
-  translate(width / 2 - capture.scaledWidth / 2, height / 2 - capture.scaledHeight / 2); // center the webcam
+function drawCam(){
+  if (!camReady){
+    return;
+  }
+  push();
+  camPosition(); // center the webcam
+  scale(-1, 1); // mirror webcam
+  image(capture, 
+    -capture.scaledWidth * camSize, 0, 
+    capture.scaledWidth * camSize, capture.scaledHeight * camSize
+  ); // draw webcam
+  scale(-1, 1); // unset mirror
+  pop();
 }

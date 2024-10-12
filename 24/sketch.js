@@ -82,7 +82,8 @@ function draw() {
     item.update();
     item.draw();
   });
-  // noLoop();
+  
+  drawCam();
 }
 
 function setBg(){
