@@ -42,8 +42,14 @@ obj.saveImage = function(){
   saveCanvas(fileName, 'png');
 }
 
+obj.fullScreen = function(){
+  let fs = fullscreen();
+  fullscreen(!fs);
+}
+
 function setupLil(){
   gui = new GUI();
+  gui.close();
 
   const grid = gui.addFolder('Grid');
   grid.add(obj, 'items').min(500).max(20000).step(1).name('Items');
@@ -61,6 +67,8 @@ function setupLil(){
 
   const guiAudio = gui.addFolder('Audio');
   guiAudio.add(obj, 'playSynth').name('Play Synth');
+
+  gui.add(obj, 'fullScreen').name('Full Screen');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');

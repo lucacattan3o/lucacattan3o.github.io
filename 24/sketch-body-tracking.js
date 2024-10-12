@@ -22,7 +22,6 @@ function captureWebcam() {
 
       setCameraDimensions(capture);
       mediaPipe.predictWebcam(capture);
-      //mediaPipe.predictWebcam(parentDiv);
 
       camReady = true;
     }
@@ -62,12 +61,70 @@ function drawCam(){
     return;
   }
   push();
-  camPosition(); // center the webcam
-  scale(-1, 1); // mirror webcam
-  image(capture, 
-    -capture.scaledWidth * camSize, 0, 
-    capture.scaledWidth * camSize, capture.scaledHeight * camSize
-  ); // draw webcam
-  scale(-1, 1); // unset mirror
+    camPosition(); // center the webcam
+    scale(-1, 1); // mirror webcam
+
+    image(capture, 
+      -capture.scaledWidth * camSize, 0, 
+      capture.scaledWidth * camSize, capture.scaledHeight * camSize
+    ); // draw webcam
+
+    filter(GRAY);
+    scale(-1, 1); // unset mirror
+  pop();
+}
+
+function drawFeedback(){
+  /* TRACKING */
+  if (mediaPipe.landmarks[0] && mediaPipe.landmarks[1]) { // is at least one hand tracking ready?
+
+    let camW = capture.scaledWidth * camSize;
+    let camH = capture.scaledHeight * camSize;
+
+    let delta = 0;
+
+    // index finger 1
+    let index1X = map(mediaPipe.landmarks[0][delta].x, 1, 0, 0, camW);
+    let index1Y = map(mediaPipe.landmarks[0][delta].y, 0, 1, 0, camH);
+
+    // index finger 2
+    let index2X = map(mediaPipe.landmarks[1][delta].x, 1, 0, 0, camW);
+    let index2Y = map(mediaPipe.landmarks[1][delta].y, 0, 1, 0, camH);
+
+    camA = 1 - mediaPipe.landmarks[0][delta].y;
+    camB = 1 - mediaPipe.landmarks[1][delta].y;
+
+    // center point between index1 and index2
+    let centerX = (index1X + index2X) / 2;
+    let centerY = (index1Y + index2Y) / 2;
+
+    // distance between index1 and index2
+    let distance = dist(index1X, index1Y, index2X, index2Y);
+
+    push();
+    camPosition();
+
+    // draw fingers
+    fill(palette[1]);
+    noStroke();
+    drawPos(index1X, index1Y); // index finger
+    drawPos(index2X, index2Y); // thumb
+
+    // fingers touch
+    if (distance < 100) {
+    }
+
+    pop();
+  }
+}
+
+function drawPos(x, y){
+  push();
+    let lineSize = 10;
+    stroke(255)
+    translate(x, y);
+    translate(0, -20);
+    line(-lineSize, 0, lineSize, 0);
+    line(0, -lineSize, 0, lineSize);
   pop();
 }

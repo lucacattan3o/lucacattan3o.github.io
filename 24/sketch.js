@@ -1,17 +1,20 @@
-let fps = 10;
+let fps = 30;
 let w = window.innerWidth;
 let h = window.innerHeight; 
 let canvas; 
 
 let obj = {
-  items: 10000,
+  items: 5000,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
   itemSize: 0.3,
   playSynth: false,
-  fitScreen: false,
+  fitScreen: true,
 };
+
+let camA = 0.1;
+let camB = 0.1;
 
 // Reference
 // https://github.com/addiebarron/chladni/blob/master/chladni.js
@@ -66,9 +69,11 @@ function draw() {
   background(30, 10);
 
   // mouse interaction
-  let mPos = {x: mouseX, y: mouseY};
-  let m = floor(map(mPos.x, 0, w, 1, 10, true));
-  let n = floor(map(mPos.y, 0, h, 1, 10, true));
+  // let mPos = {x: mouseX, y: mouseY};
+  // let m = floor(map(mPos.x, 0, w, 1, 10, true));
+  // let n = floor(map(mPos.y, 0, h, 1, 10, true));
+  let m = floor(map(camA, 0, 1, 1, 11, true));
+  let n = floor(map(camB, 0, 1, 1, 11, true));
   guiM.setValue(m);
   guiN.setValue(n);
 
@@ -84,6 +89,7 @@ function draw() {
   });
   
   drawCam();
+  drawFeedback();
 }
 
 function setBg(){
