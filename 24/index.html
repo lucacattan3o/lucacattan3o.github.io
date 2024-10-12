@@ -18,7 +18,13 @@
     <script src="./../assets/lib/CCapture.all.min.js"></script>
     <script src="./../assets/utils/sketch-export.js"></script>
     <script src="./../assets/utils/sketch-motion.js"></script>
+    <!-- import mediapipe object and make it available globally -->
+    <script type="module">
+      import { mediaPipe } from "./../assets/lib/mediaPipe.js";
+      window.mediaPipe = mediaPipe;
+    </script>
     <script src="item.js"></script>
+    <script src="sketch-body-tracking.js"></script>
     <script src="sketch.js"></script>
     <script src="sketch-lil.js"></script>   
   </body>

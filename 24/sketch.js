@@ -41,6 +41,7 @@ function setup() {
     fps: fps,
     name: getFileName('video'),
   });
+  captureWebcam();
   setupLil();
   setupItems();
   setBg();
