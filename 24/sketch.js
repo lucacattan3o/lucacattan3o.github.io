@@ -43,6 +43,7 @@ function setup() {
   });
   setupLil();
   setupItems();
+  setBg();
 
   itemSize = w * 0.01;
 
@@ -81,6 +82,10 @@ function draw() {
     item.draw();
   });
   // noLoop();
+}
+
+function setBg(){
+  background(0);
 }
 
 window.onresize = function() {

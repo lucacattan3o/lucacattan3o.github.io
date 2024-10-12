@@ -84,6 +84,10 @@ function setupLil(){
           oscN.stop();
         }
         break;
+
+      case 'fitScreen':
+        setBg();
+        break;
     }
   });
   
