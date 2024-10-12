@@ -10,10 +10,10 @@ canvas {
 }
 
 .footer--sketch{
-  position: absolute;
+  background-color: rgba(#000, 0.5);
+  position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
   padding: 0.25em 0.75em;
   text-align: right;
   font-size: $font-size-xs;
