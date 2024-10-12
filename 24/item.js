@@ -60,7 +60,7 @@ class Item{
       // fill(n * 100, 100, 100);
       noStroke();
       fill(255);
-      circle(0, 0, itemSize * obj.itemSize);
+      circle(0, 0, itemSize * (obj.itemSize * 0.5));
     pop();
   }
 }

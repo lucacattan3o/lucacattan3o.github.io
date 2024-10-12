@@ -4,13 +4,13 @@ let h = window.innerHeight;
 let canvas; 
 
 let obj = {
-  items: 15000,
+  items: 10000,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
-  itemSize: 0.1,
+  itemSize: 0.3,
   playSynth: false,
-  fitScreen: true,
+  fitScreen: false,
 };
 
 // Reference
@@ -45,7 +45,7 @@ function setup() {
   setupItems();
   setBg();
 
-  itemSize = w * 0.01;
+  itemSize = w * 0.005;
 
   oscM = new p5.Oscillator('sine'); // set frequency and type
   oscN = new p5.Oscillator('sine'); // set frequency and type
