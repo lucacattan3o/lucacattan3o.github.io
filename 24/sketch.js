@@ -28,7 +28,7 @@ let scaleLow = [
   'A1', 'B1', 'C#2', 'D2', 'E2', 'F#2', 'G#2', 'A2'
 ];
 let scaleHig = [
-  'A3', 'B3', 'C#5', 'D4', 'E4', 'F#4', 'G#4', 'A4'
+  'A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'
 ];
 let notesFqsLow = [];
 let notesFqsHig = [];
