@@ -22,7 +22,16 @@ let camB = 0.1;
 let itemSize;
 let items = [];
 let minWalk = 0.00005;
-let oscM, oscN;
+let fM, fN, oscM, oscN;
+
+let scaleLow = [
+  'A1', 'B1', 'C#2', 'D2', 'E2', 'F#2', 'G#2', 'A2'
+];
+let scaleHig = [
+  'A3', 'B3', 'C#5', 'D4', 'E4', 'F#4', 'G#4', 'A4'
+];
+let notesFqsLow = [];
+let notesFqsHig = [];
 
 let storageName = 'gui-chladni';
 
@@ -48,6 +57,7 @@ function setup() {
   setupLil();
   setupItems();
   setBg();
+  setNotes();
 
   itemSize = w * 0.005;
 
@@ -65,6 +75,15 @@ function setupItems(){
   }
 }
 
+function setNotes(){
+  for (i = 0; i < scaleLow.length; i++){
+    let l = scaleLow[i];
+    let h = scaleHig[i];
+    notesFqsLow.push(notes[l]);
+    notesFqsHig.push(notes[h]);
+  }
+}
+
 function draw() {
   drawChladni();
   drawCam();
@@ -74,20 +93,17 @@ function draw() {
 function drawChladni(){
   background(30, 10);
 
-  // mouse interaction
-  // let mPos = {x: mouseX, y: mouseY};
-  // let m = floor(map(mPos.x, 0, w, 1, 10, true));
-  // let n = floor(map(mPos.y, 0, h, 1, 10, true));
-  let m = floor(map(camA, 0, 1, 1, 11, true));
-  let n = floor(map(camB, 0, 1, 1, 11, true));
+  // tracking interactions
+  let m = floor(map(camA, 0.2, 0.8, 1, 10, true));
+  let n = floor(map(camB, 0.2, 0.8, 1, 10, true));
   guiM.setValue(m);
   guiN.setValue(n);
 
   // oscillator frequencies
-  let fM = map(m, 1, 10, 40, 440);
-  let fN = map(n, 1, 10, 40, 440);
-  oscM.freq(fM);
-  oscN.freq(fN);
+  fM = floor(map(m, 1, 10, 0, notesFqsLow.length - 1));
+  fN = floor(map(n, 1, 10, 0, notesFqsHig.length - 1));
+  oscM.freq(notesFqsLow[fM]);
+  oscN.freq(notesFqsHig[fN]);
 
   items.forEach(item => {
     item.update();

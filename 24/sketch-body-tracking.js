@@ -101,6 +101,9 @@ function drawFeedback(){
       drawPalm(lm);
     }
 
+    text(scaleLow[fM], 10, camH - 10);
+    text(scaleHig[fN], camW - 30, camH - 10);
+
     pop();
   }
 }
