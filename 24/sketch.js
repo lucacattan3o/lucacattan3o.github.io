@@ -66,6 +66,12 @@ function setupItems(){
 }
 
 function draw() {
+  drawChladni();
+  drawCam();
+  drawFeedback();
+}
+
+function drawChladni(){
   background(30, 10);
 
   // mouse interaction
@@ -87,9 +93,6 @@ function draw() {
     item.update();
     item.draw();
   });
-  
-  drawCam();
-  drawFeedback();
 }
 
 function setBg(){

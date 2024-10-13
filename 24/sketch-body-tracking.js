@@ -1,8 +1,11 @@
 // webcam variables
 let capture; // our webcam
 let captureEvent; // callback when webcam is ready
+
 let camReady = false;
 let camSize = 0.2;
+let camW;
+let camH;
 
 // function: launch webcam
 function captureWebcam() {
@@ -15,7 +18,7 @@ function captureWebcam() {
     },
     function (e) {
       captureEvent = e;
-      console.log(captureEvent.getTracks()[0].getSettings());
+      // console.log(captureEvent.getTracks()[0].getSettings());
       // do things when video ready
       // until then, the video element will have no dimensions, or default 640x480
       capture.srcObject = e;
@@ -45,14 +48,15 @@ function setCameraDimensions(video) {
     video.scaledWidth = width;
     video.scaledHeight = video.scaledWidth / vidAspectRatio;
   }
+
+  camW = capture.scaledWidth * camSize;
+  camH = capture.scaledHeight * camSize;
 }
 
 function camPosition() {
-  let camWidth = capture.scaledWidth * camSize;
-  let camHeight = capture.scaledHeight * camSize;
-  let offset = 5;
+  let offset = 0;
   let cx = offset;
-  let cy = h - camHeight - offset;
+  let cy = h - camH - offset;
   translate(cx, cy);
 }
 
@@ -63,12 +67,7 @@ function drawCam(){
   push();
     camPosition(); // center the webcam
     scale(-1, 1); // mirror webcam
-
-    image(capture, 
-      -capture.scaledWidth * camSize, 0, 
-      capture.scaledWidth * camSize, capture.scaledHeight * camSize
-    ); // draw webcam
-
+    image(capture, -camW, 0, camW, camH); // draw webcam
     filter(GRAY);
     scale(-1, 1); // unset mirror
   pop();
@@ -76,30 +75,14 @@ function drawCam(){
 
 function drawFeedback(){
   /* TRACKING */
-  if (mediaPipe.landmarks[0] && mediaPipe.landmarks[1]) { // is at least one hand tracking ready?
+  // two hands tracking
+  if (mediaPipe.landmarks[0] && mediaPipe.landmarks[1]) {
 
-    let camW = capture.scaledWidth * camSize;
-    let camH = capture.scaledHeight * camSize;
-
-    let delta = 0;
-
-    // index finger 1
-    let index1X = map(mediaPipe.landmarks[0][delta].x, 1, 0, 0, camW);
-    let index1Y = map(mediaPipe.landmarks[0][delta].y, 0, 1, 0, camH);
-
-    // index finger 2
-    let index2X = map(mediaPipe.landmarks[1][delta].x, 1, 0, 0, camW);
-    let index2Y = map(mediaPipe.landmarks[1][delta].y, 0, 1, 0, camH);
-
-    camA = 1 - mediaPipe.landmarks[0][delta].y;
-    camB = 1 - mediaPipe.landmarks[1][delta].y;
-
-    // center point between index1 and index2
-    let centerX = (index1X + index2X) / 2;
-    let centerY = (index1Y + index2Y) / 2;
-
-    // distance between index1 and index2
-    let distance = dist(index1X, index1Y, index2X, index2Y);
+    // Set some parameters
+    let lm0 = mediaPipe.landmarks[0];
+    let lm1 = mediaPipe.landmarks[1];
+    camA = 1 - lm0[5].y;
+    camB = 1 - lm1[5].y;
 
     push();
     camPosition();
@@ -107,23 +90,83 @@ function drawFeedback(){
     // draw fingers
     fill(palette[1]);
     noStroke();
-    drawPos(index1X, index1Y); // index finger
-    drawPos(index2X, index2Y); // thumb
 
-    // fingers touch
-    if (distance < 100) {
+    for (i = 0; i < 2; i++){
+      let lm = mediaPipe.landmarks[i];
+      drawFinger(lm, 2, 4);
+      drawFinger(lm, 5, 8);
+      drawFinger(lm, 9, 12);
+      drawFinger(lm, 13, 16);
+      drawFinger(lm, 17, 20);
+      drawPalm(lm);
     }
 
     pop();
   }
 }
 
-function drawPos(x, y){
+function getTrackPointCamPos(landmarks, delta){
+  let p = landmarks[delta];
+  let x = map(p.x, 1, 0, 0, camW, true);
+  let y = map(p.y, 0, 1, 0, camH, true);
+  return  {
+    x: x,
+    y: y
+  }
+}
+
+function drawPalm(landmarks){
+  let items = [
+    0, 1, 2, 5, 9, 13, 17
+  ];
+  for (let i = 0; i < items.length; i++) {
+    let from = items[i];
+    let to = 0;
+    if (items[i + 1] !== undefined){
+      to = items[i + 1];
+    }
+    pointA = getTrackPointCamPos(landmarks, from);
+    pointB = getTrackPointCamPos(landmarks, to);
+    push();
+      stroke(255);
+      line(pointA.x, pointA.y, pointB.x, pointB.y);
+    pop();
+    push();
+      translate(pointA.x, pointA.y);
+      fill(255);
+      noStroke();
+      circle(0, 0, 5);
+    pop();
+  }
+}
+
+function drawFinger(landmarks, from, to){
+  for (let i = from; i <= to; i++) {
+    let p = getTrackPointCamPos(landmarks, i);
+    let next = null;
+    if (i !== to){
+      next = getTrackPointCamPos(landmarks, i + 1);
+    }
+    if (next){
+      push();
+        stroke(255);
+        line(p.x, p.y, next.x, next.y);
+      pop();
+    }
+    push();
+      translate(p.x, p.y);
+      fill(255);
+      noStroke();
+      circle(0, 0, 5);
+    pop();
+  }
+}
+
+function drawPos(p){
   push();
     let lineSize = 10;
     stroke(255)
-    translate(x, y);
-    translate(0, -20);
+    translate(p.x, p.y);
     line(-lineSize, 0, lineSize, 0);
     line(0, -lineSize, 0, lineSize);
   pop();
