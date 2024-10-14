@@ -58,8 +58,8 @@ function setupLil(){
   guiScreen.add(obj, 'fitScreen').name('Fit Screen');
 
   const guiVib = gui.addFolder('Vibration');
-  guiM = guiVib.add(obj, 'freqM').min(1).max(20).step(1).name('M Frequency').disable();
-  guiN = guiVib.add(obj, 'freqN').min(1).max(20).step(1).name('N Frequency').disable();
+  guiM = guiVib.add(obj, 'freqM').min(1).max(scaleLow.length).step(1).name('M Frequency').disable();
+  guiN = guiVib.add(obj, 'freqN').min(1).max(scaleHig.length).step(1).name('N Frequency').disable();
   guiVib.add(obj, 'vibration').min(0.01).max(0.1).step(0.01).name('Vibration');
 
   const guiItem = gui.addFolder('Particle');
@@ -84,12 +84,14 @@ function setupLil(){
         break;
     
       case 'playSynth':
-        if (event.value){
-          oscM.start();
-          oscN.start();
-        } else {
-          oscM.stop();
-          oscN.stop();
+        if (oscM && oscN){
+          if (event.value){
+            oscM.start();
+            oscN.start();
+          } else {
+            oscM.stop();
+            oscN.stop();
+          }
         }
         break;
 

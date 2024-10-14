@@ -78,9 +78,14 @@ function drawFeedback(){
   // two hands tracking
   if (mediaPipe.landmarks[0] && mediaPipe.landmarks[1]) {
 
-    // Set some parameters
     let lm0 = mediaPipe.landmarks[0];
     let lm1 = mediaPipe.landmarks[1];
+
+    if (lm0[5].x < lm1[5].x){
+      lm0 = mediaPipe.landmarks[1];
+      lm1 = mediaPipe.landmarks[0];
+    }
+
     camA = 1 - lm0[5].y;
     camB = 1 - lm1[5].y;
 
@@ -101,8 +106,8 @@ function drawFeedback(){
       drawPalm(lm);
     }
 
-    text(scaleLow[fM], 10, camH - 10);
-    text(scaleHig[fN], camW - 30, camH - 10);
+    text(scaleLow[fM - 1], 10, camH - 10);
+    text(scaleHig[fN - 1], camW - 30, camH - 10);
 
     pop();
   }

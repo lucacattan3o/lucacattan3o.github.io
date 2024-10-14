@@ -4,7 +4,7 @@ let h = window.innerHeight;
 let canvas; 
 
 let obj = {
-  items: 5000,
+  items: 1000,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
@@ -24,12 +24,11 @@ let items = [];
 let minWalk = 0.00005;
 let fM, fN, oscM, oscN;
 
-let scaleLow = [
-  'A1', 'B1', 'C#2', 'D2', 'E2', 'F#2', 'G#2', 'A2'
-];
-let scaleHig = [
-  'A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'
-];
+let scaleLow = ['A1', 'B1', 'C#2', 'D2', 'E2', 'F#2', 'G#2', 'A2'];
+scaleLow = ['G3', 'A3', 'D2'];
+let scaleHig = ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'];
+
+
 let notesFqsLow = [];
 let notesFqsHig = [];
 
@@ -49,10 +48,10 @@ let mPos;
 function setup() {
   canvas = createCanvas(w, h);
   frameRate(fps);
-  sketchExportSetup({
-    fps: fps,
-    name: getFileName('video'),
-  });
+  // sketchExportSetup({
+  //   fps: fps,
+  //   name: getFileName('video'),
+  // });
   captureWebcam();
   setupLil();
   setupItems();
@@ -78,8 +77,10 @@ function setupItems(){
 function setNotes(){
   for (i = 0; i < scaleLow.length; i++){
     let l = scaleLow[i];
-    let h = scaleHig[i];
     notesFqsLow.push(notes[l]);
+  }
+  for (i = 0; i < scaleHig.length; i++){
+    let h = scaleHig[i];
     notesFqsHig.push(notes[h]);
   }
 }
@@ -94,16 +95,16 @@ function drawChladni(){
   background(30, 10);
 
   // tracking interactions
-  let m = floor(map(camA, 0.2, 0.8, 1, 10, true));
-  let n = floor(map(camB, 0.2, 0.8, 1, 10, true));
-  guiM.setValue(m);
-  guiN.setValue(n);
+  fM = floor(map(camA, 0.2, 0.8, 1, notesFqsLow.length, true));
+  fN = floor(map(camB, 0.2, 0.8, 1, notesFqsHig.length, true));
+  guiM.setValue(fM);
+  guiN.setValue(fN);
 
   // oscillator frequencies
-  fM = floor(map(m, 1, 10, 0, notesFqsLow.length - 1));
-  fN = floor(map(n, 1, 10, 0, notesFqsHig.length - 1));
-  oscM.freq(notesFqsLow[fM]);
-  oscN.freq(notesFqsHig[fN]);
+  // fM = floor(map(m, 1, 10, 0, notesFqsLow.length - 1));
+  // fN = floor(map(n, 1, 10, 0, notesFqsHig.length - 1));
+  oscM.freq(notesFqsLow[fM - 1]);
+  oscN.freq(notesFqsHig[fN - 1]);
 
   items.forEach(item => {
     item.update();
