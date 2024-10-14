@@ -25,8 +25,9 @@ let minWalk = 0.00005;
 let fM, fN, oscM, oscN;
 
 let scaleLow = ['A1', 'B1', 'C#2', 'D2', 'E2', 'F#2', 'G#2', 'A2'];
-scaleLow = ['G3', 'A3', 'D2'];
-let scaleHig = ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'];
+    scaleLow = ['D3', 'G3', 'A3', 'D4'];
+    scaleLow = ['D3', 'E3', 'F#3', 'G3', 'A3', 'B3', 'C#4', 'D4'];
+let scaleHig = ['D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C#5', 'D5'];
 
 
 let notesFqsLow = [];

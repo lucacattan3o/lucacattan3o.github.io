@@ -86,15 +86,19 @@ function drawFeedback(){
       lm1 = mediaPipe.landmarks[0];
     }
 
-    camA = 1 - lm0[5].y;
-    camB = 1 - lm1[5].y;
+    camA = 1 - lm0[2].y;
+    camB = 1 - lm1[2].y;
+
+    // let leftSizeA = getTrackPointCamPos(lm0, 4);
+    // let leftSizeB = getTrackPointCamPos(lm0, 20);
+
+    volA = map(dist(lm0[4].x, lm0[4].y, lm0[20].x, lm0[20].y), 0.1, 0.3, 0, 1, true);
+    oscM.amp(volA);
+    volB = map(dist(lm1[4].x, lm1[4].y, lm1[20].x, lm1[20].y), 0.1, 0.3, 0, 1, true);
+    oscN.amp(volB);
 
     push();
     camPosition();
-
-    // draw fingers
-    fill(palette[1]);
-    noStroke();
 
     for (i = 0; i < 2; i++){
       let lm = mediaPipe.landmarks[i];
@@ -106,6 +110,9 @@ function drawFeedback(){
       drawPalm(lm);
     }
 
+    // draw fingers
+    fill(palette[2]);
+    noStroke();
     text(scaleLow[fM - 1], 10, camH - 10);
     text(scaleHig[fN - 1], camW - 30, camH - 10);
 
