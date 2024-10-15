@@ -92,9 +92,10 @@ function drawFeedback(){
     // let leftSizeA = getTrackPointCamPos(lm0, 4);
     // let leftSizeB = getTrackPointCamPos(lm0, 20);
 
-    volA = map(dist(lm0[4].x, lm0[4].y, lm0[20].x, lm0[20].y), 0.1, 0.3, 0, 1, true);
+    // les frequent
+    volA = map(dist(lm0[4].x, lm0[4].y, lm0[20].x, lm0[20].y), 0.1, 0.3, 0.05, 1, true);
     oscM.amp(volA);
-    volB = map(dist(lm1[4].x, lm1[4].y, lm1[20].x, lm1[20].y), 0.1, 0.3, 0, 1, true);
+    volB = map(dist(lm1[4].x, lm1[4].y, lm1[20].x, lm1[20].y), 0.1, 0.3, 0.05, 1, true);
     oscN.amp(volB);
 
     push();
