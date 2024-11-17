@@ -2,6 +2,12 @@
 let ml5Model, ml5Video;
 let ml5Poses, ml5cCnnections;
 let ml5Hands = [];
+let ml5CamWidth, ml5CamHeight;
+
+function ml5SetCamSizes(w, h){
+  ml5CamWidth = w;
+  ml5CamHeight = h;
+}
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
@@ -12,7 +18,7 @@ function ml5Preload(){
 
 function ml5Capture(){
   ml5Video = createCapture(VIDEO, {flipped: true});
-  ml5Video.size(width, height);
+  ml5Video.size(ml5CamWidth, ml5CamHeight);
   ml5Video.hide();
 
   ml5Model.detectStart(ml5Video, ml5GotPoses);
@@ -27,8 +33,14 @@ function ml5GotPoses(results){
   ml5Poses = results;
 }
 
-function ml5DrawCam(){
-  image(ml5Video, 0, 0, width, height);
+function ml5DrawCam(scale = 0.5){
+  push();
+  image(ml5Video, 0, 0, ml5CamWidth, ml5CamHeight);
+  pop();
+}
+
+function ml5CamMask(){
+  rect(0, 0, ml5CamWidth, ml5CamHeight);
 }
 
 function ml5DrawKeypoints(){
@@ -101,7 +113,7 @@ function mousePressed(){
 class ml5Hand{
   
   pose = null;
-  fRadius = w * 0.1;
+  fRadius = ml5CamWidth * 0.1;
   fingers = [
     'thumb_tip',
     'index_finger_tip',
@@ -116,9 +128,9 @@ class ml5Hand{
   };
 
   radius = 0;
-  maxRadius = w * 0.2;
+  maxRadius = ml5CamWidth * 0.2;
   minRadius = this.maxRadius * 0.3;
-  strokeWeight = w * 0.0025;
+  strokeWeight = ml5CamWidth * 0.0025;
 
   minConfidence = 0.8;
 
@@ -164,8 +176,8 @@ class ml5Hand{
   }
 
   setValues(){
-    this.vals.x = map(this.pos.x, 0, width, 0, 1, true);
-    this.vals.y = map(this.pos.y, 0, height, 0, 1, true);
+    this.vals.x = map(this.pos.x, 0, ml5CamWidth, 0, 1, true);
+    this.vals.y = map(this.pos.y, 0, ml5CamHeight, 0, 1, true);
     this.vals.amp = map(this.radius, this.minRadius, this.maxRadius, 0, 1, true);
   }
 
@@ -270,5 +282,5 @@ class ml5Hand{
         (bx_*bx_ + by_*by_) * (ax_*cy_-cx_*ay_) +
         (cx_*cx_ + cy_*cy_) * (ax_*by_-bx_*ay_)
     ) > 0;
-}
+  }
 }

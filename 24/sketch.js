@@ -4,13 +4,13 @@ let h = window.innerHeight;
 let canvas; 
 
 let obj = {
-  items: 1000,
+  items: 2000,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
-  itemSize: 0.3,
+  itemSize: 0.4,
   playSynth: false,
-  fitScreen: true,
+  fitScreen: false,
 };
 
 let camA = 0.1;
@@ -55,6 +55,7 @@ function setup() {
   //   fps: fps,
   //   name: getFileName('video'),
   // });
+  ml5SetCamSizes(w * 0.25, h * 0.25);
   ml5Capture();
   setupLil();
   setupItems();
@@ -91,13 +92,13 @@ function setNotes(){
 function draw() {
   drawChladni();
   push();
-    translate(20, height - 20);
-    translate(0, -height * 0.3);
-    scale(0.3, 0.3);
+    translate(5, h - 5);
+    translate(0, -h * 0.25);
+    clip(ml5CamMask);
     ml5DrawCam();
     ml5DrawHands();
+    // ml5DrawKeypoints();
   pop();
-  // ml5DrawKeypoints();
 }
 
 function drawChladni(){
