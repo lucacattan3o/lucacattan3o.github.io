@@ -13,8 +13,6 @@ let obj = {
   fitScreen: false,
 };
 
-let camA = 0.1;
-let camB = 0.1;
 
 // Reference
 // https://github.com/addiebarron/chladni/blob/master/chladni.js
@@ -51,10 +49,6 @@ function preload(){
 function setup() {
   canvas = createCanvas(w, h);
   frameRate(fps);
-  // sketchExportSetup({
-  //   fps: fps,
-  //   name: getFileName('video'),
-  // });
   ml5SetCamSizes(w * 0.25, h * 0.25);
   ml5Capture();
   setupLil();
@@ -126,8 +120,6 @@ function drawChladni(){
   guiN.setValue(fN);
 
   // oscillator frequencies
-  // fM = floor(map(m, 1, 10, 0, notesFqsLow.length - 1));
-  // fN = floor(map(n, 1, 10, 0, notesFqsHig.length - 1));
   oscM.freq(notesFqsLow[fM - 1]);
   oscN.freq(notesFqsHig[fN - 1]);
   oscM.amp(lAmp);

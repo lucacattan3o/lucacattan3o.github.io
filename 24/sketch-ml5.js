@@ -17,12 +17,32 @@ function ml5Preload(){
 }
 
 function ml5Capture(){
-  ml5Video = createCapture(VIDEO, {flipped: true});
+  ml5Video = createCapture(VIDEO, {flipped: true}, () => {
+    ml5setCameraDimensions(ml5Video);
+  });
   ml5Video.size(ml5CamWidth, ml5CamHeight);
   ml5Video.hide();
 
   ml5Model.detectStart(ml5Video, ml5GotPoses);
-  // ml5Connections = ml5Model.getSkeleton();
+}
+
+function ml5setCameraDimensions(video) {
+
+  const vidAspectRatio = video.width / video.height; // aspect ratio of the video
+  const canvasAspectRatio = ml5CamWidth / ml5CamHeight; // aspect ratio of the canvas
+
+  if (vidAspectRatio > canvasAspectRatio) {
+    // Image is wider than canvas aspect ratio
+    video.scaledHeight = height;
+    video.scaledWidth = video.scaledHeight * vidAspectRatio;
+  } else {
+    // Image is taller than canvas aspect ratio
+    video.scaledWidth = width;
+    video.scaledHeight = video.scaledWidth / vidAspectRatio;
+  }
+
+  // ml5CamWidth = video.scaledWidth;
+  // ml5CamHeight = video.scaledHeight;
 }
 
 function ml5Stop(){
