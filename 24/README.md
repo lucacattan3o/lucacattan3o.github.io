@@ -1,9 +1,8 @@
 # Chladni Pattern + ml5
 
 - [x] Get values (amp and position)
-- [ ] Fix resize canvas
-- [ ] Center outside the triangle?
-- [ ] Left right?
-
+- [ ] BW camera
+- [ ] Fix overflow
+- [ ] Music scale ui
 
 `#creativecoding #processing #p5js #generative`

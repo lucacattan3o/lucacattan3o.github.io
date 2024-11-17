@@ -71,8 +71,30 @@ function ml5DrawHands(){
   });
 }
 
+function ml5GetHand(handedness){
+  if (!ml5Hands){
+    return;
+  }
+  if (ml5Hands.length == 0){
+    return;
+  }
+
+
+  let hands = ml5Hands.filter((hand) => {
+    if (hand.pose.handedness == handedness && hand.isValidHand()){
+      return true;
+    }
+    return false;
+  });
+
+  if (hands.length > 0){
+    return hands[0];
+  }
+  return null;
+}
+
 function mousePressed(){
-  // console.debug(ml5Poses);
+  console.debug(ml5Poses[0]);
   console.debug(ml5Hands[0].vals);
 }
 
@@ -96,6 +118,9 @@ class ml5Hand{
   radius = 0;
   maxRadius = w * 0.2;
   minRadius = this.maxRadius * 0.3;
+  strokeWeight = w * 0.0025;
+
+  minConfidence = 0.8;
 
   vals = {
     x: 0,
@@ -144,19 +169,34 @@ class ml5Hand{
     this.vals.amp = map(this.radius, this.minRadius, this.maxRadius, 0, 1, true);
   }
 
+  isValidHand(){
+    if (!this.pose){
+      return false;
+    }
+
+    if (this.pose.confidence > this.minConfidence){
+      return true;
+    }
+
+    return false;
+  }
+
   draw(){
     if (!this.pose){
       return;
     }
 
-    push();
-      noFill();
-      stroke(255);
-      this.drawfPoints();
-      this.drawMainCircle();
-      this.drawLines();
-      this.drawData();
-    pop();
+    if (this.isValidHand){
+      push();
+        noFill();
+        stroke(255);
+        strokeWeight(this.strokeWeight);
+        this.drawfPoints();
+        this.drawMainCircle();
+        this.drawLines();
+        this.drawData();
+      pop();
+    }
   }
 
   drawfPoints(){

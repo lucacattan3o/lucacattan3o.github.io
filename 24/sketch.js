@@ -89,9 +89,14 @@ function setNotes(){
 }
 
 function draw() {
-  // drawChladni();
-  ml5DrawCam();
-  ml5DrawHands();
+  drawChladni();
+  push();
+    translate(20, height - 20);
+    translate(0, -height * 0.3);
+    scale(0.3, 0.3);
+    ml5DrawCam();
+    ml5DrawHands();
+  pop();
   // ml5DrawKeypoints();
 }
 
@@ -99,8 +104,23 @@ function drawChladni(){
   background(30, 10);
 
   // tracking interactions
-  fM = floor(map(camA, 0.2, 0.8, 1, notesFqsLow.length, true));
-  fN = floor(map(camB, 0.2, 0.8, 1, notesFqsHig.length, true));
+  let ly = 0;
+  let ry = 0;
+  let lAmp = 0.5;
+  let rAmp = 0.5;
+  let lHand = ml5GetHand('Left');
+  let rHand = ml5GetHand('Right');
+  if (lHand){
+    ly = 1 - lHand.vals.y;
+    lAmp = map(lHand.vals.amp, 0, 1, 0.1, 1, true);
+  }
+  if (rHand){
+    ry = 1 - rHand.vals.y;
+    rAmp = map(rHand.vals.amp, 0, 1, 0.1, 1, true);
+  }
+
+  fM = floor(map(ly, 0.2, 0.8, 1, notesFqsLow.length, true));
+  fN = floor(map(ry, 0.2, 0.8, 1, notesFqsHig.length, true));
   guiM.setValue(fM);
   guiN.setValue(fN);
 
@@ -109,6 +129,8 @@ function drawChladni(){
   // fN = floor(map(n, 1, 10, 0, notesFqsHig.length - 1));
   oscM.freq(notesFqsLow[fM - 1]);
   oscN.freq(notesFqsHig[fN - 1]);
+  oscM.amp(lAmp);
+  oscM.amp(rAmp);
 
   items.forEach(item => {
     item.update();
