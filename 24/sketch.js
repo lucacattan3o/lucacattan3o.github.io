@@ -91,7 +91,8 @@ function setNotes(){
 function draw() {
   // drawChladni();
   ml5DrawCam();
-  ml5DrawKeypoints();
+  // ml5DrawKeypoints();
+  ml5DrawHands();
   // drawFeedback();
 }
 
@@ -124,4 +125,6 @@ window.onresize = function() {
   w = window.innerWidth;
   h = window.innerHeight;  
   resizeCanvas(w, h);
+  ml5Stop();
+  ml5Capture();
 }
