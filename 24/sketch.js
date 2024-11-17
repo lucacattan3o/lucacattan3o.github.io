@@ -44,7 +44,9 @@ let palette = [
   '#ffffff'
 ];
 
-let mPos;
+function preload(){
+  ml5Preload();
+}
 
 function setup() {
   canvas = createCanvas(w, h);
@@ -53,7 +55,7 @@ function setup() {
   //   fps: fps,
   //   name: getFileName('video'),
   // });
-  captureWebcam();
+  ml5Capture();
   setupLil();
   setupItems();
   setBg();
@@ -87,9 +89,10 @@ function setNotes(){
 }
 
 function draw() {
-  drawChladni();
-  drawCam();
-  drawFeedback();
+  // drawChladni();
+  ml5DrawCam();
+  ml5DrawKeypoints();
+  // drawFeedback();
 }
 
 function drawChladni(){
