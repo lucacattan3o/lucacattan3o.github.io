@@ -1,10 +1,9 @@
-# Chladni Pattern
+# Chladni Pattern + ml5
 
-- [x] Interactions
-- [x] Music feedback
-- [ ] Key S to save image
-- [ ] Try 3D
-- [ ] Hands interactions
+- [x] Get values (amp and position)
+- [ ] Fix resize canvas
+- [ ] Center outside the triangle?
+- [ ] Left right?
 
 
 `#creativecoding #processing #p5js #generative`

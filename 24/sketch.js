@@ -91,9 +91,8 @@ function setNotes(){
 function draw() {
   // drawChladni();
   ml5DrawCam();
-  // ml5DrawKeypoints();
   ml5DrawHands();
-  // drawFeedback();
+  // ml5DrawKeypoints();
 }
 
 function drawChladni(){
