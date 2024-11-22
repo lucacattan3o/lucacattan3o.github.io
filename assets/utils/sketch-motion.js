@@ -4,6 +4,30 @@
  * @license MIT
  */
 
+let smFps = 60;
+
+/**
+ * Sets the custom frame rate for your sketch.
+ *
+ * If you've modified the default frame rate (60) in your sketch, 
+ * call this function **inside** the `setup()` function to ensure 
+ * the correct frame rate is applied.
+ * 
+ * @param {Number} fps - The desired frame rate.
+ * 
+ * **Example:**
+ * ```javascript
+ * function setup() {
+ *   createCanvas(400, 400);
+ *   frameRate(30);
+ *   smFrameRate(30);
+ * }
+ * ```
+ */
+function smFrameRate(fps){
+  smFps = fps;
+}
+
 /**
  * Get linear loop (0 to 1)
  * @param {Number} velocity
@@ -48,6 +72,6 @@ function getLoopBounceLinear(vel = 1, delay = 0) {
  */
 function getAnimation(vel = 1, delay = 0) {
   delay = delay % 1;
-  let sec = (frameCount + (delay * fps) / vel) / fps;
+  let sec = (frameCount + (delay * smFps) / vel) / fps;
   return sec * vel;
 }
