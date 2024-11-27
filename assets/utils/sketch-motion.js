@@ -39,17 +39,18 @@ function getLoop(vel = 1, delay = 0) {
 }
 
 /**
- * Get sinusoidal loop (-1 to 1)
+ * Get sinusoidal loop (1 to -1)
  * @param {Number} velocity
  * @param {Number} delay: 0-1
  */
 function getLoopBounce(vel = 1, delay = 0) {
   let anim = getAnimation(vel, delay);
-  return sin(anim * TWO_PI) * -1;
+  return sin(anim * TWO_PI);
 }
 
 /**
  * Get linear loop (-1 to 1)
+ * todo: start from 0?
  * @param {Number} velocity
  * @param {Number} delay: 0-1
  */
@@ -61,7 +62,7 @@ function getLoopBounceLinear(vel = 1, delay = 0) {
   } else {
     t = 2 - anim * 2;
   }
-  t = t * 2 - 1;
+  t = (t * 2) - 1;
   return t * -1;
 }
 
