@@ -73,6 +73,6 @@ function getLoopBounceLinear(vel = 1, delay = 0) {
  */
 function getAnimation(vel = 1, delay = 0) {
   delay = delay % 1;
-  let sec = (frameCount + (delay * smFps) / vel) / fps;
+  let sec = (frameCount + (delay * smFps) / vel) / smFps;
   return sec * vel;
 }
