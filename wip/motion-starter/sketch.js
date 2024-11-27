@@ -1,4 +1,4 @@
-let fps = 30;
+let fps = 60;
 
 let itemSize;
 let sec;
@@ -28,8 +28,7 @@ function draw() {
     let a = getLoop(0.25);
     rotate(TWO_PI * a);
 
-    let b = getLoopBounce(0.25);
-    b = map(b, -1, 1, 0.2, 2);
+    let b = getLoopBounceLinear(0.25);
 
     noFill();
     stroke(255);
