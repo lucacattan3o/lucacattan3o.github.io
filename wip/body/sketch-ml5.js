@@ -13,7 +13,7 @@ function ml5SetCamSizes(w, h){
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
-    // flipped: true,
+    flipped: true,
     maxHands: 3,
   });
 }
@@ -40,8 +40,8 @@ function ml5setCameraDimensions(ml5Video) {
     ml5Video.scaledHeight = ml5Video.scaledWidth / vidAspectRatio;
   }
 
-  // ml5CamWidth = ml5Video.scaledWidth;
-  // ml5CamHeight = ml5Video.scaledHeight;
+  ml5CamWidth = ml5Video.scaledWidth;
+  ml5CamHeight = ml5Video.scaledHeight;
 }
 
 function ml5Stop(){
@@ -55,7 +55,7 @@ function ml5GotPoses(results){
 function ml5TranslateToCenter(){
   let offsetX = (width - ml5Video.width) / 2;
   let offsetY = (height - ml5Video.height) / 2;
-  translate(offsetX, offsetY);
+  // translate(offsetX, offsetY);
 
   vidAspectRatio = ml5Video.width / ml5Video.height; // aspect ratio of the ml5Video
   canvasAspectRatio = width / height; // aspect ratio of the canvas
