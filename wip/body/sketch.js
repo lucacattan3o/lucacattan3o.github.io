@@ -34,7 +34,7 @@ function draw() {
     ml5TranslateToCenter();
     ml5DrawCam();
     ml5DrawKeypoints();
-    // ml5DrawHands();
+    ml5DrawHands();
   pop();
 }
 

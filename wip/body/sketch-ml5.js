@@ -20,7 +20,7 @@ function ml5Preload(){
 
 function ml5Capture(){
   ml5Video = createCapture(VIDEO, {flipped: true}, () => {
-    ml5setCameraDimensions(ml5Video);
+    // ml5setCameraDimensions(ml5Video);
     ml5Video.hide();
     ml5Model.detectStart(ml5Video, ml5GotPoses);
   });
@@ -33,15 +33,15 @@ function ml5setCameraDimensions(ml5Video) {
   if (vidAspectRatio > canvasAspectRatio) {
     // Image is wider than canvas aspect ratio
     ml5Video.scaledHeight = height;
-    ml5Video.scaledWidth = ml5Video.scaledHeight / vidAspectRatio;
+    ml5Video.scaledWidth = ml5Video.scaledHeight * vidAspectRatio;
   } else {
     // Image is taller than canvas aspect ratio
     ml5Video.scaledWidth = width;
     ml5Video.scaledHeight = ml5Video.scaledWidth / vidAspectRatio;
   }
 
-  ml5CamWidth = ml5Video.scaledWidth;
-  ml5CamHeight = ml5Video.scaledHeight;
+  // ml5CamWidth = ml5Video.scaledWidth;
+  // ml5CamHeight = ml5Video.scaledHeight;
 }
 
 function ml5Stop(){
@@ -53,13 +53,20 @@ function ml5GotPoses(results){
 }
 
 function ml5TranslateToCenter(){
-  if (ml5CamWidth > width){
-    let offset = (ml5CamWidth - width) / 2;
-    translate(-offset, 0);
-  } else {
-    let offset = (ml5CamHeight - height) / 2;
-    translate(0, -offset);
-  }
+  let offsetX = (width - ml5Video.width) / 2;
+  let offsetY = (height - ml5Video.height) / 2;
+  translate(offsetX, offsetY);
+
+  vidAspectRatio = ml5Video.width / ml5Video.height; // aspect ratio of the ml5Video
+  canvasAspectRatio = width / height; // aspect ratio of the canvas
+
+  // if (ml5Video.scaledWidth > width){
+  //   let offset = (ml5Video.scaledWidth - width) / 2;
+  //   translate(-offset, 0);
+  // } else {
+  //   let offset = (ml5Video.scaledHeight - height) / 2;
+  //   translate(0, -offset);
+  // }
 }
 
 function ml5DrawCam(){
@@ -81,15 +88,15 @@ function ml5DrawKeypoints(){
   }
 
   push();
-  ml5Poses.forEach(pose => {
-    if (pose.confidence > 0.5){
-      pose.keypoints.forEach(point => {
-        noStroke();
-        fill(palette[2]);
-        circle(point.x, point.y, 10);
-      })
-    }
-  });
+    ml5Poses.forEach(pose => {
+      if (pose.confidence > 0.5){
+        pose.keypoints.forEach(point => {
+          noStroke();
+          fill(palette[2]);
+          circle(point.x, point.y, 10);
+        })
+      }
+    });
   pop();
 }
 
