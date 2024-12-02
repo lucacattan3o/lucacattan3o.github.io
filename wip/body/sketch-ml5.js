@@ -13,17 +13,20 @@ function ml5SetCamSizes(w, h){
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
-    flipped: true,
+    flipped: false,
     maxHands: 3,
   });
 }
 
 function ml5Capture(){
-  ml5Video = createCapture(VIDEO, {flipped: true}, () => {
-    // ml5setCameraDimensions(ml5Video);
-    ml5Video.hide();
-    ml5Model.detectStart(ml5Video, ml5GotPoses);
-  });
+  ml5Video = createCapture(VIDEO, {
+      flipped: true
+    }, () => {
+        // ml5setCameraDimensions(ml5Video);
+        ml5Video.hide();
+        ml5Model.detectStart(ml5Video, ml5GotPoses);
+      }
+  );
 }
 
 function ml5setCameraDimensions(ml5Video) {

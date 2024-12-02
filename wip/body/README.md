@@ -1,6 +1,7 @@
 # Body tracking
 
-- [ ] Fix camera dimension
+- [x] Fix camera dimension
+- [ ] Scale the video so the coordinates are equals
 - [ ] Test on 3D
 - [ ] Tail
 - [ ] Interactions
