@@ -23,7 +23,7 @@ function preload(){
 function setup() {
   createCanvas(w, h);
   frameRate(fps);
-  ml5SetCamSizes(w, h);
+  // ml5SetCamSizes(w , h);
   ml5Capture();
   setupLil();
 }
@@ -31,8 +31,10 @@ function setup() {
 
 function draw() {
   push();
+    ml5TranslateToCenter();
     ml5DrawCam();
-    ml5DrawHands();
+    ml5DrawKeypoints();
+    // ml5DrawHands();
   pop();
 }
 

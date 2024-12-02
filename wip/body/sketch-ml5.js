@@ -3,6 +3,8 @@ let ml5Model, ml5Video;
 let ml5Poses, ml5cCnnections;
 let ml5Hands = [];
 let ml5CamWidth, ml5CamHeight;
+let vidAspectRatio;
+let canvasAspectRatio;
 
 function ml5SetCamSizes(w, h){
   ml5CamWidth = w;
@@ -11,7 +13,7 @@ function ml5SetCamSizes(w, h){
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
-    flipped: true,
+    // flipped: true,
     maxHands: 3,
   });
 }
@@ -19,30 +21,27 @@ function ml5Preload(){
 function ml5Capture(){
   ml5Video = createCapture(VIDEO, {flipped: true}, () => {
     ml5setCameraDimensions(ml5Video);
+    ml5Video.hide();
+    ml5Model.detectStart(ml5Video, ml5GotPoses);
   });
-  ml5Video.size(ml5CamWidth, ml5CamHeight);
-  ml5Video.hide();
-
-  ml5Model.detectStart(ml5Video, ml5GotPoses);
 }
 
-function ml5setCameraDimensions(video) {
-
-  const vidAspectRatio = video.width / video.height; // aspect ratio of the video
-  const canvasAspectRatio = ml5CamWidth / ml5CamHeight; // aspect ratio of the canvas
+function ml5setCameraDimensions(ml5Video) {
+  vidAspectRatio = ml5Video.width / ml5Video.height; // aspect ratio of the ml5Video
+  canvasAspectRatio = width / height; // aspect ratio of the canvas
 
   if (vidAspectRatio > canvasAspectRatio) {
     // Image is wider than canvas aspect ratio
-    video.scaledHeight = height;
-    video.scaledWidth = video.scaledHeight * vidAspectRatio;
+    ml5Video.scaledHeight = height;
+    ml5Video.scaledWidth = ml5Video.scaledHeight / vidAspectRatio;
   } else {
     // Image is taller than canvas aspect ratio
-    video.scaledWidth = width;
-    video.scaledHeight = video.scaledWidth / vidAspectRatio;
+    ml5Video.scaledWidth = width;
+    ml5Video.scaledHeight = ml5Video.scaledWidth / vidAspectRatio;
   }
 
-  // ml5CamWidth = video.scaledWidth;
-  // ml5CamHeight = video.scaledHeight;
+  ml5CamWidth = ml5Video.scaledWidth;
+  ml5CamHeight = ml5Video.scaledHeight;
 }
 
 function ml5Stop(){
@@ -53,10 +52,20 @@ function ml5GotPoses(results){
   ml5Poses = results;
 }
 
-function ml5DrawCam(scale = 0.5){
-  push();
-  image(ml5Video, 0, 0, ml5CamWidth, ml5CamHeight);
-  pop();
+function ml5TranslateToCenter(){
+  if (ml5CamWidth > width){
+    let offset = (ml5CamWidth - width) / 2;
+    translate(-offset, 0);
+  } else {
+    let offset = (ml5CamHeight - height) / 2;
+    translate(0, -offset);
+  }
+}
+
+function ml5DrawCam(){
+  if (ml5Video){
+    image(ml5Video, 0, 0, ml5CamWidth, ml5CamHeight);
+  }
 }
 
 function ml5CamMask(){
@@ -110,7 +119,6 @@ function ml5GetHand(handedness){
   if (ml5Hands.length == 0){
     return;
   }
-
 
   let hands = ml5Hands.filter((hand) => {
     if (hand.pose.handedness == handedness && hand.isValidHand()){
