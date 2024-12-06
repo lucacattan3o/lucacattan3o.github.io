@@ -14,20 +14,18 @@ let canvasAspectRatio;
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
-    flipped: false,
+    flipped: true,
     maxHands: 3,
   });
 }
 
 function ml5Capture(){
-  ml5Video = createCapture(VIDEO, {
-      flipped: true
-    }, () => {
-        ml5setCameraDimensions(ml5Video);
-        ml5Video.hide();
-        ml5Model.detectStart(ml5Video, ml5GotPoses);
-      }
+  ml5Video = createCapture(VIDEO, {flipped: true}, () => {
+      ml5setCameraDimensions(ml5Video);
+    }
   );
+  ml5Video.hide();
+  ml5Model.detectStart(ml5Video, ml5GotPoses);
 }
 
 function ml5setCameraDimensions(ml5Video) {
@@ -132,7 +130,10 @@ function ml5DrawHands(){
     } else {
       ml5Hands[p].update(pose);
     }
-    ml5Hands[p].draw();
+
+    if (obj.showHands){
+      ml5Hands[p].draw();
+    }
   });
 }
 
@@ -158,16 +159,16 @@ function ml5GetHand(handedness){
 }
 
 function mousePressed(){
-  console.debug(ml5Poses[0]);
+  // console.debug(ml5Poses[0]);
   if (ml5Hands){
-    console.debug(ml5Hands[0].vals);
+    // console.debug(ml5Hands[0].vals.angle);
   }
 }
 
 class ml5Hand{
   
   pose = null;
-  fRadius = ml5CamWidth * 0.1;
+  fRadius = ml5CamWidth * 0.05;
   fingers = [
     'thumb_tip',
     'index_finger_tip',
@@ -184,7 +185,7 @@ class ml5Hand{
   radius = 0;
   maxRadius = ml5CamWidth * 0.2;
   minRadius = this.maxRadius * 0.3;
-  strokeWeight = ml5CamWidth * 0.0025;
+  strokeWeight = ml5CamWidth * 0.00125;
 
   minConfidence = 0.8;
 
@@ -192,6 +193,7 @@ class ml5Hand{
     x: 0,
     y: 0,
     amp: 0,
+    angle: 0,
   }
   
   constructor(pose){
@@ -233,6 +235,9 @@ class ml5Hand{
     this.vals.x = map(this.pos.x, 0, ml5CamWidth, 0, 1, true);
     this.vals.y = map(this.pos.y, 0, ml5CamHeight, 0, 1, true);
     this.vals.amp = map(this.radius, this.minRadius, this.maxRadius, 0, 1, true);
+
+    let ps = this.fPoints;
+    this.vals.angle = Math.atan2(ps[1].y - this.pos.y, ps[1].x - this.pos.x) * 180 / Math.PI;
   }
 
   isValidHand(){
@@ -303,12 +308,14 @@ class ml5Hand{
 
   drawData(){
     push();
-      let size = this.fRadius * 0.12;
+      let size = this.fRadius * 0.25;
       let x = this.formatNumber(this.pos.x);
       let y = this.formatNumber(this.pos.y);
       let r = this.formatNumber(this.radius);
+      let a = - this.formatNumber(this.vals.angle);
 
       textSize(size);
+      textFont('Monospace');
       textAlign(LEFT, CENTER);
       noStroke();
       fill(255);
@@ -317,6 +324,7 @@ class ml5Hand{
       text('x: ' + x, size, 0 - size);
       text('y: ' + y, size, 0);
       text('r: ' + r, size, 0 + size);
+      text('a: ' + a, size, 0 + size * 2);
     pop();
   }
 

@@ -49,43 +49,19 @@ obj.fullScreen = function(){
 
 function setupLil(){
   gui = new GUI();
-  // gui.close();
+  gui.close();
 
   const grid = gui.addFolder('Camera');
   grid.add(obj, 'showCam').name('Show camera');
+  grid.add(obj, 'showHands').name('Show hands');
 
   gui.add(obj, 'fullScreen').name('Full Screen');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
-  gui.add(obj, 'startOver').name('Play Again');
+  // gui.add(obj, 'startOver').name('Play Again');
   
-  gui.add(obj, 'saveImage').name('Save Image (s)');
-
-  gui.onChange( event => {
-    switch (event.property) {
-      case 'items':
-      case 'vibration':
-        setupItems();
-        break;
-    
-      case 'playSynth':
-        if (oscM && oscN){
-          if (event.value){
-            oscM.start();
-            oscN.start();
-          } else {
-            oscM.stop();
-            oscN.stop();
-          }
-        }
-        break;
-
-      case 'fitScreen':
-        setBg();
-        break;
-    }
-  });
+  // gui.add(obj, 'saveImage').name('Save Image (s)');
   
   let saved = localStorage.getItem(storageName);
   if (saved){
