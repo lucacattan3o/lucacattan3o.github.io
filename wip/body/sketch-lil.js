@@ -55,7 +55,7 @@ function setupLil(){
   grid.add(obj, 'showCam').name('Show camera');
   grid.add(obj, 'showHands').name('Show hands');
 
-  gui.add(obj, 'fullScreen').name('Full Screen');
+  // gui.add(obj, 'fullScreen').name('Full Screen');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear Preset');
