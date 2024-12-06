@@ -3,13 +3,14 @@ let ml5Model, ml5Video;
 let ml5Poses, ml5cCnnections;
 let ml5Hands = [];
 let ml5CamWidth, ml5CamHeight;
+let ml5CamZoom, ml5CamWider;
 let vidAspectRatio;
 let canvasAspectRatio;
 
-function ml5SetCamSizes(w, h){
-  ml5CamWidth = w;
-  ml5CamHeight = h;
-}
+// function ml5SetCamSizes(w, h){
+//   ml5CamWidth = w;
+//   ml5CamHeight = h;
+// }
 
 function ml5Preload(){
   ml5Model = ml5.handPose({
@@ -22,7 +23,7 @@ function ml5Capture(){
   ml5Video = createCapture(VIDEO, {
       flipped: true
     }, () => {
-        // ml5setCameraDimensions(ml5Video);
+        ml5setCameraDimensions(ml5Video);
         ml5Video.hide();
         ml5Model.detectStart(ml5Video, ml5GotPoses);
       }
@@ -30,25 +31,45 @@ function ml5Capture(){
 }
 
 function ml5setCameraDimensions(ml5Video) {
-  vidAspectRatio = ml5Video.width / ml5Video.height; // aspect ratio of the ml5Video
-  canvasAspectRatio = width / height; // aspect ratio of the canvas
+  console.debug('Original camera dimension');
+  console.debug('Width', ml5Video.width);
+  console.debug('Height', ml5Video.height);
+
+  // aspect ratio of the ml5Video
+  vidAspectRatio = ml5Video.width / ml5Video.height; 
+  // aspect ratio of the canvas
+  canvasAspectRatio = width / height; 
 
   if (vidAspectRatio > canvasAspectRatio) {
     // Image is wider than canvas aspect ratio
-    ml5Video.scaledHeight = height;
-    ml5Video.scaledWidth = ml5Video.scaledHeight * vidAspectRatio;
+    console.debug('Image is wider than canvas aspect ratio');
+    ml5CamHeight = height;
+    ml5CamWidth = ml5CamHeight * vidAspectRatio;
+    ml5CamWider = true;
   } else {
     // Image is taller than canvas aspect ratio
-    ml5Video.scaledWidth = width;
-    ml5Video.scaledHeight = ml5Video.scaledWidth / vidAspectRatio;
+    console.debug('Image is taller than canvas aspect ratio');
+    ml5CamWidth = width;
+    ml5CamHeight = ml5CamWidth / vidAspectRatio;
+    ml5CamWider = false;
   }
 
-  ml5CamWidth = ml5Video.scaledWidth;
-  ml5CamHeight = ml5Video.scaledHeight;
+  // full screen size
+  console.debug('Fullscreen Size');
+  console.debug('Width', ml5CamWidth);
+  console.debug('Height', ml5CamHeight);
+
+  ml5CamZoom = ml5CamWidth / ml5Video.width;
+  console.debug('Zoom', ml5CamZoom);
+
+  // ml5CamWidth = ml5Video.scaledWidth;
+  // ml5CamHeight = ml5Video.scaledHeight;
 }
 
 function ml5Stop(){
-  ml5Model.detectStop();
+  if (ml5Model){
+    ml5Model.detectStop();
+  }
 }
 
 function ml5GotPoses(results){
@@ -56,20 +77,13 @@ function ml5GotPoses(results){
 }
 
 function ml5TranslateToCenter(){
-  let offsetX = (width - ml5Video.width) / 2;
-  let offsetY = (height - ml5Video.height) / 2;
-  // translate(offsetX, offsetY);
-
-  vidAspectRatio = ml5Video.width / ml5Video.height; // aspect ratio of the ml5Video
-  canvasAspectRatio = width / height; // aspect ratio of the canvas
-
-  // if (ml5Video.scaledWidth > width){
-  //   let offset = (ml5Video.scaledWidth - width) / 2;
-  //   translate(-offset, 0);
-  // } else {
-  //   let offset = (ml5Video.scaledHeight - height) / 2;
-  //   translate(0, -offset);
-  // }
+  if (ml5CamWider){
+    let offsetX = (width - ml5CamWidth) / 2;
+    translate(offsetX, 0);
+  } else {
+    let offsetY = (height - ml5CamHeight) / 2;
+    translate(0, offsetY);
+  }
 }
 
 function ml5DrawCam(){
@@ -96,7 +110,7 @@ function ml5DrawKeypoints(){
         pose.keypoints.forEach(point => {
           noStroke();
           fill(palette[2]);
-          circle(point.x, point.y, 10);
+          circle(point.x * ml5CamZoom, point.y * ml5CamZoom, 10);
         })
       }
     });
@@ -145,7 +159,9 @@ function ml5GetHand(handedness){
 
 function mousePressed(){
   console.debug(ml5Poses[0]);
-  console.debug(ml5Hands[0].vals);
+  if (ml5Hands){
+    console.debug(ml5Hands[0].vals);
+  }
 }
 
 class ml5Hand{
@@ -189,8 +205,8 @@ class ml5Hand{
     this.pose = pose;
 
     this.fingers.forEach((name, k) => {
-      this.fPoints[k].x = this.pose[name].x;
-      this.fPoints[k].y = this.pose[name].y;
+      this.fPoints[k].x = this.pose[name].x * ml5CamZoom;
+      this.fPoints[k].y = this.pose[name].y * ml5CamZoom;
     });
 
     this.setCircumcenter();

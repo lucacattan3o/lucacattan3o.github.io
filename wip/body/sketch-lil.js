@@ -51,8 +51,8 @@ function setupLil(){
   gui = new GUI();
   // gui.close();
 
-  const grid = gui.addFolder('Grid');
-  // grid.add(obj, 'items').min(500).max(20000).step(1).name('Items');
+  const grid = gui.addFolder('Camera');
+  grid.add(obj, 'showCam').name('Show camera');
 
   gui.add(obj, 'fullScreen').name('Full Screen');
 

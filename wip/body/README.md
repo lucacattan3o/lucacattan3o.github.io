@@ -1,9 +1,9 @@
 # Body tracking
 
 - [x] Fix camera dimension
-- [ ] Scale the video so the coordinates are equals
-- [ ] Test on 3D
+- [x] Scale the coordinates to match the video
 - [ ] Tail
+- [ ] Test on 3D
 - [ ] Interactions
 
 `#creativecoding #processing #p5js #generative`
