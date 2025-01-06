@@ -77,7 +77,6 @@ function setupLil(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   if (urlParams.get('export') == 'true'){
-    console.debug('test');
     exportBtn.disable();
     exportBtn.name('Exporting...');
 

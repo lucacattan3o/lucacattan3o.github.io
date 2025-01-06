@@ -36,11 +36,16 @@ function draw() {
     item.draw()
   }
   
+  let sec = frameCount / fps;
+  if (sec % 1 == 0){
+    console.debug(sec);
+  }
+
   if (frameCount == 1){
     sketchExportStart();
   }
   sketchExport();
-  if (frameCount == 16 * fps){
+  if (frameCount == 14 * fps){
     sketchExportEnd();
   }
 } 
