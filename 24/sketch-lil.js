@@ -1,12 +1,12 @@
 let obj = {
-  items: 500,
-  itemSize: 10,
-  margin: 0.3,
-  radius: 0.5,
-  noiseScale: 0.5,
-  noiseSeed: 10,
-  color: '#ffffff',
-  bg: '#000000',
+  items: 3400,
+  itemSize: 2,
+  margin: 0.1,
+  radius: 0.8,
+  noiseScale: 0.3,
+  noiseSeed: 582,
+  color: '#0011ff', // #00ff11
+  bg: '#d3c0c0',
 };
 
 let storageName = 'gui-rivers';
@@ -42,7 +42,8 @@ obj.clearStorage = function() {
 };
 
 obj.startOver = function(){
-  setupItems();
+  saveToStorage();
+  window.location = window.location.href.split("?")[0];
 };
 
 obj.stopExport = function(){
@@ -58,7 +59,7 @@ function setupLil(){
 
   const grid = gui.addFolder('Particles');
   grid.add(obj, 'items').min(100).max(4000).step(1).name('Items');
-  grid.add(obj, 'itemSize').min(2).max(10).step(1).name('Item Size');
+  grid.add(obj, 'itemSize').min(1).max(10).step(1).name('Item Size');
 
   grid.add(obj, 'margin').min(0).max(0.4).step(0.1).name('Margin');
   grid.add(obj, 'radius').min(0).max(1).step(0.1).name('Radius');

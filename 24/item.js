@@ -31,7 +31,8 @@ class Item{
       this.life = false;
     }
 
-    this.rs = map(dc, 0, radius, 1, 0);
+    
+    // this.rs = map(dc, 0, radius, 1, 0, true);
     
     // this.limit();
   }
