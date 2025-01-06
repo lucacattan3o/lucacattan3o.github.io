@@ -16,6 +16,7 @@ function setup() {
 }
 
 function setupItems(){
+  noiseSeed(obj.noiseSeed);
   let bg = color(obj.bg);
   background(bg);
   items = [];

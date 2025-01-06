@@ -4,6 +4,7 @@ let obj = {
   margin: 0.3,
   radius: 0.5,
   noiseScale: 0.5,
+  noiseSeed: 10,
   color: '#ffffff',
   bg: '#000000',
 };
@@ -41,7 +42,6 @@ obj.clearStorage = function() {
 };
 
 obj.startOver = function(){
-  noiseSeed(random(1, 1000));
   setupItems();
 };
 
@@ -50,7 +50,7 @@ obj.stopExport = function(){
 };
 
 obj.saveImage = function(){
-  saveCanvas(getFileName('visual'), 'png');
+  saveCanvas(getFileName('visual') + '__' + obj.noiseSeed + '__' + obj.noiseScale, 'png');
 }
 
 function setupLil(){
@@ -64,6 +64,7 @@ function setupLil(){
   grid.add(obj, 'radius').min(0).max(1).step(0.1).name('Radius');
 
   grid.add(obj, 'noiseScale').min(0.1).max(2).step(0.1).name('Noise Scale');
+  grid.add(obj, 'noiseSeed').min(0).max(1000).step(1).name('Noise Seed');
 
   grid.addColor(obj, 'color').name('Color');
   grid.addColor(obj, 'bg').name('Background');
@@ -93,6 +94,7 @@ function setupLil(){
       case 'margin':
       case 'radius':
       case 'noiseScale':
+      case 'noiseSeed':
       case 'color':
       case 'bg':
         setupItems();
