@@ -11,12 +11,15 @@ function setup() {
   });
   setupLil();
   setupItems();
-  background(150);
+  let bg = color(obj.bg);
+  background(bg);
 }
 
 function setupItems(){
+  let bg = color(obj.bg);
+  background(bg);
   items = [];
-  let offset =  height * 0.3;
+  let offset =  height * obj.margin;
   let s = (height - (offset * 2)) / obj.items;
   for (i = 0; i < obj.items; i++){
     let y = i * s + offset;
@@ -39,10 +42,4 @@ function draw() {
   if (frameCount == 16 * fps){
     sketchExportEnd();
   }
-}  
-
-function mousePressed(){
-  background(0);
-  noiseSeed(random(1, 1000));
-  setupItems();
-}
+} 

@@ -1,5 +1,9 @@
 let obj = {
   items: 500,
+  itemSize: 10,
+  margin: 0.3,
+  color: '#ffffff',
+  bg: '#000000',
 };
 
 let storageName = 'gui-rivers';
@@ -35,8 +39,8 @@ obj.clearStorage = function() {
 };
 
 obj.startOver = function(){
-  saveToStorage();
-  window.location = window.location.href.split("?")[0];
+  noiseSeed(random(1, 1000));
+  setupItems();
 };
 
 obj.stopExport = function(){
@@ -51,7 +55,12 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Particles');
-  grid.add(obj, 'items').min(10).max(1000).step(1).name('Items');
+  grid.add(obj, 'items').min(100).max(4000).step(1).name('Items');
+  grid.add(obj, 'itemSize').min(2).max(10).step(1).name('Item Size');
+  grid.add(obj, 'margin').min(0).max(0.4).step(0.1).name('Margin');
+
+  grid.addColor(obj, 'color').name('Color');
+  grid.addColor(obj, 'bg').name('Background');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
@@ -70,7 +79,18 @@ function setupLil(){
   
   gui.add(obj, 'saveImage').name('Save Image');
 
-  // gui.onChange( event => {});
+  gui.onChange( event => {
+    let name = event.property;
+    switch (name) {
+      case 'items':
+      case 'itemSize':
+      case 'margin':
+      case 'color':
+      case 'bg':
+        setupItems();
+        break;
+    }
+  });
   
   let saved = localStorage.getItem(storageName);
   if (saved){

@@ -7,11 +7,15 @@ class Item{
     this.velY = random(-1, 1);
     this.nS = 0.01;
     this.n = 0;
-    this.r = width * 0.01;
-    this.life = width * 0.35;
+    this.rs = 1;
+    this.life = true;
   }
   
   update(){
+    if (!this.life){
+      return;
+    }
+
     let nx = this.x * this.nS;
     let ny = this.y * this.nS;
     this.n = noise(nx, ny);
@@ -20,9 +24,16 @@ class Item{
     
     this.x += this.velX;
     this.y += this.velY;
+
+    let dc = dist(this.x, this.y, width * 0.5, height * 0.5);
+    let radius = width * 0.5 * (1 - obj.margin);
+    if (dc > radius){
+      this.life = false;
+    }
+
+    this.rs = map(dc, 0, radius, 1, 0);
     
     // this.limit();
-    // this.life--;
   }
   
   limit(){
@@ -41,14 +52,17 @@ class Item{
   }
   
   draw(){
-    if (this.life < 0){
+    if (!this.life){
       return;
     }
+
     push();
       noStroke();
     
-      fill(255, 20);
-      let r = this.r * this.n;
+      let c = color(obj.color);
+      c.setAlpha(10);
+      fill(c);
+      let r = obj.itemSize * this.rs;
       circle(this.x, this.y, r);
       circle(width - this.x, this.y, r);
     pop();
