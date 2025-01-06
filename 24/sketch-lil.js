@@ -2,6 +2,8 @@ let obj = {
   items: 500,
   itemSize: 10,
   margin: 0.3,
+  radius: 0.5,
+  noiseScale: 0.5,
   color: '#ffffff',
   bg: '#000000',
 };
@@ -57,7 +59,11 @@ function setupLil(){
   const grid = gui.addFolder('Particles');
   grid.add(obj, 'items').min(100).max(4000).step(1).name('Items');
   grid.add(obj, 'itemSize').min(2).max(10).step(1).name('Item Size');
+
   grid.add(obj, 'margin').min(0).max(0.4).step(0.1).name('Margin');
+  grid.add(obj, 'radius').min(0).max(1).step(0.1).name('Radius');
+
+  grid.add(obj, 'noiseScale').min(0.1).max(2).step(0.1).name('Noise Scale');
 
   grid.addColor(obj, 'color').name('Color');
   grid.addColor(obj, 'bg').name('Background');
@@ -85,6 +91,8 @@ function setupLil(){
       case 'items':
       case 'itemSize':
       case 'margin':
+      case 'radius':
+      case 'noiseScale':
       case 'color':
       case 'bg':
         setupItems();

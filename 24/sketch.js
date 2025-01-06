@@ -31,8 +31,8 @@ function setupItems(){
 function draw() {
   for (i = 0; i < items.length; i++){
     let item = items[i];
-    item.draw()
     item.update();
+    item.draw()
   }
   
   if (frameCount == 1){

@@ -5,7 +5,7 @@ class Item{
     
     this.velX = random(-1, 1);
     this.velY = random(-1, 1);
-    this.nS = 0.01;
+    this.nS = 0.01 * obj.noiseScale;
     this.n = 0;
     this.rs = 1;
     this.life = true;
@@ -20,13 +20,13 @@ class Item{
     let ny = this.y * this.nS;
     this.n = noise(nx, ny);
     this.velX = cos(this.n * TWO_PI);
-    this.velY = sin(this.n * TWO_PI);
+    this.velY = -sin(this.n * TWO_PI);
     
     this.x += this.velX;
     this.y += this.velY;
 
     let dc = dist(this.x, this.y, width * 0.5, height * 0.5);
-    let radius = width * 0.5 * (1 - obj.margin);
+    let radius = width * 0.5 * obj.radius;
     if (dc > radius){
       this.life = false;
     }
