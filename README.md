@@ -2,20 +2,19 @@
 
 Made with curiosity and care by [Luca Cattaneo](https://www.instagram.com/lucacattan3o/)
 
-## Before next WS
-- [x] Sketch Responsive
-  - [x] Store all vars in an object
-  - [x] Add [JSDoc](https://jsdoc.app/)
-- [ ] Sketch record
- - [x] Adapt to p5.js editor (not possible)
- - [x] Refactory
- - [x] Try recording music
- - [ ] Add [JSDoc](https://jsdoc.app/)
-- [ ] Add fullscreen toggle
+## Website todo
+- [ ] metadata and previews
+- [ ] better copies
+- [ ] fix fps
+- [ ] complete sketch 21
 
 ## Some ideas for the future
 
 - [x] Random walker animated
+- [ ] Body tracking and chadnly pattern
+- [ ] Fingers simple notes
+- [ ] Fingers letters
+- [ ] Diagonal shader /\ (images, letters, drawing with hands)
 - [ ] Spirograph (3d?)
 - [ ] Falling sand (3d?)
 - [ ] Parallax with accelerometer
