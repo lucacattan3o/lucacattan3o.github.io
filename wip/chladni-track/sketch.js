@@ -1,10 +1,10 @@
-let fps = 30;
+let fps = 60;
 let w = window.innerWidth;
 let h = window.innerHeight; 
 let canvas; 
 
 let obj = {
-  items: 2000,
+  items: 500,
   freqM: 4,
   freqN: 5,
   vibration: 0.06,
@@ -49,7 +49,6 @@ function preload(){
 function setup() {
   canvas = createCanvas(w, h);
   frameRate(fps);
-  ml5SetCamSizes(w * 0.25, h * 0.25);
   ml5Capture();
   setupLil();
   setupItems();
@@ -88,10 +87,15 @@ function draw() {
   push();
     translate(5, h - 5);
     translate(0, -h * 0.25);
-    clip(ml5CamMask);
+    scale(0.25, 0.25);
+    ml5TranslateToCenter();
     ml5DrawCam();
-    ml5DrawHands();
-    // ml5DrawKeypoints();
+
+    push();
+      clip(ml5CamMask);
+      ml5DrawHands();
+      // ml5DrawKeypoints();
+    pop();
   pop();
 }
 
