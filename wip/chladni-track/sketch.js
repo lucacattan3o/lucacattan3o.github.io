@@ -61,6 +61,8 @@ function setup() {
   oscN = new p5.Oscillator('sine'); // set frequency and type
   oscM.amp(0.5);
   oscN.amp(0.5);
+
+  background(30);
 }
 
 function setupItems(){
@@ -85,11 +87,11 @@ function setNotes(){
 function draw() {
   drawChladni();
   push();
-    translate(5, h - 5);
-    translate(0, -h * 0.25);
+    translate(100, h - 200);
     scale(0.25, 0.25);
     ml5TranslateToCenter();
     ml5DrawCam();
+    // drawMusicUi();
 
     push();
       clip(ml5CamMask);
@@ -137,6 +139,19 @@ function drawChladni(){
 
 function setBg(){
   background(0);
+}
+
+function drawMusicUi(){
+  let size = ml5CamHeight / scaleLow.length;
+  for (let i = 0; i < scaleLow.length; i++) {
+    const note = scaleLow[i];
+    let x = 20;
+    let y = i * size;
+    push();
+    translate(x, y);
+    line(0, 0, 100, 0);
+    pop();
+  }
 }
 
 window.onresize = function() {
