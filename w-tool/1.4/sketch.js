@@ -1,4 +1,4 @@
-let fps = 60;
+let fps = 30;
 
 let palette = [
   "ffffff",

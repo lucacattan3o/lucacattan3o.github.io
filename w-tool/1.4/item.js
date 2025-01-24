@@ -58,17 +58,52 @@ class Item{
       return;
     }
 
+    this.drawSimple();
+    // this.drawGradient();
+    // this.drawSquare();
+  }
+
+  drawSimple(){
     push();
       noStroke();
-    
       let c = color('#ffffff');
       c.setAlpha(5);
       fill(c);
       let r = obj.rivItemSize;
-      // add some noise variation
       r = r * this.nr;
       circle(this.x, this.y, r);
       circle(width - this.x, this.y, r);
+    pop();
+  }
+
+  drawSquare(){
+    push();
+      noStroke();
+      fill(255);
+      let r = obj.rivItemSize;
+      r = r * this.nr;
+      rect(this.x, this.y, r);
+      rect(width - this.x, this.y, r);
+    pop();
+  }
+
+  drawGradient(){
+    push();
+      noFill();
+      let r = obj.rivItemSize;
+      // add some noise variation
+      r = r * this.nr;
+
+      let steps = 2;
+      let step = r / steps;
+      let astep = 255 / steps;
+      for (i = 0; i < steps; i++){
+        let c = color(255 - astep * i);
+        stroke(c);
+        let dr = r - (step * i);
+        circle(this.x, this.y, dr);
+        circle(width - this.x, this.y, dr);
+      }
     pop();
   }
 }
