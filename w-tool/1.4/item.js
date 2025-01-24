@@ -89,21 +89,36 @@ class Item{
 
   drawGradient(){
     push();
-      noFill();
+      noStroke();
       let r = obj.rivItemSize;
       // add some noise variation
       r = r * this.nr;
 
-      let steps = 2;
-      let step = r / steps;
-      let astep = 255 / steps;
-      for (i = 0; i < steps; i++){
-        let c = color(255 - astep * i);
-        stroke(c);
-        let dr = r - (step * i);
-        circle(this.x, this.y, dr);
-        circle(width - this.x, this.y, dr);
-      }
+      let steps = 4;
+      let step = 1 / steps;
+
+      let c = color(255);
+      c.setAlpha(1);
+      stroke(c);
+      strokeWeight(5);
+      noFill();
+
+      circle(this.x, this.y, r * 1);
+      // circle(this.x, this.y, r * 0.75);
+      // circle(this.x, this.y, r * 0.5);
+      circle(this.x, this.y, r * 0.25);
+
+      circle(width - this.x, this.y, r * 1);
+      // circle(width - this.x, this.y, r * 0.75);
+      // circle(width - this.x, this.y, r * 0.5);
+      circle(width - this.x, this.y, r * 0.25);
+      
+      // not working
+      // for (i = 0; i < steps; i++){
+      //   let dr = 1 - (step * i);
+      //   circle(this.x, this.y, r * dr);
+      //   circle(width - this.x, this.y, r * dr);
+      // }
     pop();
   }
 }

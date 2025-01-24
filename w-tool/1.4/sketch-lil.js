@@ -43,7 +43,7 @@ let obj = {
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
   rivItems: 20,
-  rivItemSize: 2,
+  rivItemSize: 50,
   rivMargin: 0.1,
   rivRadius: 0.8,
   rivNoiseScale: 0.3,
@@ -64,7 +64,7 @@ function setupLil(){
   part.add(obj, 'rivItems')
     .min(2).max(200).step(1).name('Items');
   part.add(obj, 'rivItemSize')
-    .min(1).max(100).step(1).name('Item Size');
+    .min(1).max(300).step(1).name('Item Size');
 
   part.add(obj, 'rivMargin')
     .min(0).max(0.4).step(0.1).name('Margin');
