@@ -6,7 +6,7 @@ function createSird(){
   let output = document.getElementById('stereogram-output');
   output.classList.add('ready');
 
-  guiBrushOn.setValue(false);
+  // guiBrushOn.setValue(false);
 
   updateStereoColors(obj.nColors);
 

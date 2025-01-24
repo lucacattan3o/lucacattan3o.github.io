@@ -4,7 +4,7 @@
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor, guiPatWords;
 let guiCols = [];
-let storageName = 'gui-stereo-1.3';
+let storageName = 'gui-stereo-1.4';
 
 let obj = {
   // canvas
@@ -41,6 +41,13 @@ let obj = {
   patGradScale: 0.5,
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
+  // rivers
+  rivItems: 20,
+  rivItemSize: 2,
+  rivMargin: 0.1,
+  rivRadius: 0.8,
+  rivNoiseScale: 0.3,
+  rivNoiseSeed: 582,
 };
 
 function setupLil(){
@@ -53,20 +60,36 @@ function setupLil(){
   gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
+  const part = gui.addFolder('Particles');
+  part.add(obj, 'rivItems')
+    .min(2).max(200).step(1).name('Items');
+  part.add(obj, 'rivItemSize')
+    .min(1).max(100).step(1).name('Item Size');
+
+  part.add(obj, 'rivMargin')
+    .min(0).max(0.4).step(0.1).name('Margin');
+  part.add(obj, 'rivRadius')
+    .min(0).max(1).step(0.1).name('Radius');
+
+  part.add(obj, 'rivNoiseScale')
+    .min(0.1).max(2).step(0.1).name('Noise Scale');
+  part.add(obj, 'rivNoiseSeed')
+    .min(0).max(1000).step(1).name('Noise Seed');
+
   // Depth Map | Image Upload
-  const gDepthMap = gui.addFolder('Depth Map');
-  gDepthMap.add(obj, 'dmUpload').name('Upload Image');
-  gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
-  gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
-  gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
+  // const gDepthMap = gui.addFolder('Depth Map');
+  // gDepthMap.add(obj, 'dmUpload').name('Upload Image');
+  // gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
+  // gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
+  // gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
   // Paint Tool
-  const gPaint = gui.addFolder('Paint (spacebar + mouse)');
-  guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush').hide();
-  gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
-  gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
-  guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color (BW)');
-  guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
+  // const gPaint = gui.addFolder('Paint (spacebar + mouse)');
+  // guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush').hide();
+  // gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
+  // gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
+  // guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color (BW)');
+  // guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
 
   // Stereogram
   const gStereo = gui.addFolder('Stereogram');
@@ -127,8 +150,14 @@ function setupLil(){
     mouseIsPressed = false;
 
     switch (event.property) {
-      case 'items':
-      case 'vibration':
+      case 'rivItems':
+      case 'rivItemSize':
+      case 'rivMargin':
+      case 'rivRadius':
+      case 'rivNoiseScale':
+      case 'rivNoiseSeed':
+      case 'rivColor':
+      case 'rivBg':
         setupItems();
         break;
     

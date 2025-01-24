@@ -11,6 +11,9 @@ let palette = [
 let stereoColors = null;
 let w, h;
 
+let items = [];
+
+let bg = '#000000';
 let mPos;
 let font;
 let dmImage = null;
@@ -23,7 +26,8 @@ function preload(){
 function setup() {
   setupCanvas();
   setupLil();
-  background(0);
+  setupItems();
+  background(bg);
   rectMode(CENTER);
 }
 
@@ -39,10 +43,42 @@ function setupCanvas(){
   img.height = h;
 }
 
+function setupItems(){
+  noiseSeed(obj.rivNoiseSeed);
+  background(bg);
+  items = [];
+  let offset =  height * obj.rivMargin;
+  let s = (height - (offset * 2)) / obj.items;
+  for (i = 0; i < obj.rivItems; i++){
+    let y = i * s + offset;
+    y = random(offset, height - offset);
+    let item = new Item(width * 0.5, y);
+    items.push(item);
+  }
+}
+
 function draw() {
-  
+  drawRivers();
   // drawImage()
   // drawPaint();
+}
+
+function drawRivers() {
+  for (i = 0; i < items.length; i++){
+    let item = items[i];
+    item.update();
+    item.draw()
+  }
+
+  let radius = width * 0.5 * obj.rivRadius;
+  stroke(255);
+  noFill();
+  circle(width * 0.5, height * 0.5, radius * 2);
+  
+  let sec = frameCount / fps;
+  if (sec % 1 == 0){
+    // console.debug(sec);
+  }
 }
 
 function drawImage(){
