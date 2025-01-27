@@ -7,14 +7,16 @@ class Item{
     this.velY = random(-1, 1);
     this.nS = 0.01 * obj.rivNoiseScale;
     this.n = 0;
-    this.nr = 0;
+    this.rs = 1;
+    this.nr = 1;
     this.life = true;
+    this.color = 255;
   }
   
   update(){
-    if (!this.life){
-      return;
-    }
+    // if (!this.life){
+    //   return;
+    // }
 
     let nx = this.x * this.nS;
     let ny = this.y * this.nS;
@@ -28,9 +30,9 @@ class Item{
 
     let dc = dist(this.x, this.y, width * 0.5, height * 0.5);
     let radius = width * 0.5 * obj.rivRadius;
-    if (dc > radius){
-      this.life = false;
-    }
+    // if (dc > radius){
+    //   this.life = false;
+    // }
 
     
     // this.rs = map(dc, 0, radius, 1, 0, true);
@@ -66,11 +68,12 @@ class Item{
   drawSimple(){
     push();
       noStroke();
-      let c = color('#ffffff');
-      c.setAlpha(5);
+      let c = color(this.color);
+      // @todo: test with variant opacity
+      // @todo: test with variant size
+      c.setAlpha(obj.rivItemOpacity);
       fill(c);
       let r = obj.rivItemSize;
-      r = r * this.nr;
       circle(this.x, this.y, r);
       circle(width - this.x, this.y, r);
     pop();

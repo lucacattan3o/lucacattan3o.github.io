@@ -66,14 +66,14 @@ function draw() {
 function drawRivers() {
   for (i = 0; i < items.length; i++){
     let item = items[i];
+    item.draw();
     item.update();
-    item.draw()
   }
 
-  let radius = width * 0.5 * obj.rivRadius;
-  stroke(255);
-  noFill();
-  circle(width * 0.5, height * 0.5, radius * 2);
+  // let radius = width * 0.5 * obj.rivRadius;
+  // stroke(255);
+  // noFill();
+  // circle(width * 0.5, height * 0.5, radius * 2);
   
   let sec = frameCount / fps;
   if (sec % 1 == 0){

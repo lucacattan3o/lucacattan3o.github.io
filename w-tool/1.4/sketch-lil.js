@@ -42,8 +42,9 @@ let obj = {
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
-  rivItems: 20,
-  rivItemSize: 50,
+  rivItems: 3400,
+  rivItemSize: 2,
+  rivItemOpacity: 10,
   rivMargin: 0.1,
   rivRadius: 0.8,
   rivNoiseScale: 0.3,
@@ -62,9 +63,11 @@ function setupLil(){
 
   const part = gui.addFolder('Particles');
   part.add(obj, 'rivItems')
-    .min(2).max(200).step(1).name('Items');
+    .min(500).max(4000).step(1).name('Items');
   part.add(obj, 'rivItemSize')
-    .min(1).max(300).step(1).name('Item Size');
+    .min(1).max(50).step(1).name('Item Size');
+  part.add(obj, 'rivItemOpacity')
+    .min(1).max(255).step(1).name('Item Opacity');
 
   part.add(obj, 'rivMargin')
     .min(0).max(0.4).step(0.1).name('Margin');
@@ -152,6 +155,7 @@ function setupLil(){
     switch (event.property) {
       case 'rivItems':
       case 'rivItemSize':
+      case 'rivItemOpacity':
       case 'rivMargin':
       case 'rivRadius':
       case 'rivNoiseScale':
