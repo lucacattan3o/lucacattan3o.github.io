@@ -20,7 +20,13 @@ let levels = [
     color: 50,
   }, 
   {
-    color: 150,
+    color: 80,
+  },
+  {
+    color: 100,
+  },
+  {
+    color: 180,
   },
   {
     color: 200,
@@ -57,9 +63,12 @@ function setupCanvas(){
 }
 
 function setupLevels(){
-  levels.forEach(level => {
-    let item = new Item(level.color);
+  background(bg);
+  items = [];
+  levels.forEach((level, delta) => {
+    let item = new Item(level.color, delta);
     items.push(item);
+    levels[delta].level = createGraphics(w, h);
   });
 }
 
@@ -71,27 +80,32 @@ function drawRadials(){
   // background(bg);
   levels.forEach((level, delta) => {
     drawRadial(obj.radItems, delta, drawParticle);
+    image(levels[delta].level, 0, 0, w, h);
   });
 }
 
 function drawRadial(fractions, delta, drawFunction){
   let slice = TWO_PI / fractions;
-  push();
-    translate(width * 0.5, height * 0.5);
+
+  let level = levels[delta].level;
+
+  level.push();
+  level.translate(width * 0.5, height * 0.5);
     for (i = 0; i < fractions; i++){
-      push();
-        rotate(slice * i - PI * 0.5);
-        push();
+      level.push();
+        level.rotate(slice * i - PI * 0.5);
+        level.push();
           drawFunction(delta);
-        pop();
-      pop();
+        level.pop();
+      level.pop();
     }
-  pop();
+  level.pop();
 }
 
 function drawParticle(delta){
+  let level = levels[delta].level;
   items[delta].update();
-  items[delta].draw();
+  items[delta].draw(level);
 }
 
 function drawTest(){

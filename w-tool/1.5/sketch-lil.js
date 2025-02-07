@@ -49,8 +49,11 @@ let obj = {
   // rivNoiseScale: 0.3,
   // rivNoiseSeed: 582,
   // radial
-  radItems: 5,
-  radItemSize: 5,
+  radItems: 8,
+  radRadius: 300,
+  radItemSize: 50,
+  radNoiseScale: 0.5,
+  radItemOpacity: 1,
 };
 
 function setupLil(){
@@ -66,8 +69,14 @@ function setupLil(){
   const part = gui.addFolder('Particles');
   part.add(obj, 'radItems')
     .min(2).max(20).step(1).name('Fractions');
+  part.add(obj, 'radRadius')
+    .min(0).max(w).name('Radius');
   part.add(obj, 'radItemSize')
-    .min(1).max(20).step(1).name('Item Size');
+    .min(1).max(100).step(1).name('Item Size');
+  part.add(obj, 'radNoiseScale')
+    .min(0).max(1).name('Noise Scale');
+  part.add(obj, 'radItemOpacity')
+    .min(0).max(1).name('Opacity');
 
   /*
   const part = gui.addFolder('Particles');
@@ -161,15 +170,12 @@ function setupLil(){
     mouseIsPressed = false;
 
     switch (event.property) {
-      case 'rivItems':
-      case 'rivItemSize':
-      case 'rivMargin':
-      case 'rivRadius':
-      case 'rivNoiseScale':
-      case 'rivNoiseSeed':
-      case 'rivColor':
-      case 'rivBg':
-        // setupItems();
+      case 'radItems':
+      case 'radRadius':
+      case 'radItemSize':
+      case 'radNoiseScale':
+      case 'radItemOpacity':
+        setupLevels();
         break;
     
       case 'playSynth':

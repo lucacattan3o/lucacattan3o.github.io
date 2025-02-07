@@ -1,19 +1,51 @@
 class Item{
-  constructor(color){
+  constructor(color, deltaLevel){
     this.x = 0;
-    this.y = random(0, 200);
+    this.y = random(0, obj.radRadius * 0.5);
+
+    this.deltaLevel = deltaLevel;
     
-    this.velX = random(-1, 1);
-    this.velY = random(-1, 1);
+    this.velX = 0.25;
+    this.velY = 0.25;
+
+    this.nS = 0.01 * obj.radNoiseScale;
+    this.nr = 1;
 
     this.life = true;
     this.color = color;
   }
   
   update(){
-    // if (!this.life){
-    //   return;
-    // }
+    if (!this.life){
+      return;
+    }
+
+    let d = dist(0, 0, this.x, this.y);
+    if (d > obj.radRadius){
+      this.life = false;
+    }
+
+    // prendo noise diversi per ogni livello
+    let offset = this.deltaLevel * 1000;
+    //offset = 0;
+    let offsetZ = this.deltaLevel * 0.05;
+    offsetZ = 0;
+
+    // noise per la velocità
+    let n = noise(
+      (this.x + offset) * this.nS, 
+      (this.y + offset) * this.nS,
+      offsetZ
+    )
+
+    // noise per la dimensione
+    let rNoiseScale = 0.01;
+    this.nr = noise(this.x * rNoiseScale, this.y * rNoiseScale, 1000);
+    this.nr = map(this.nr, 0.3, 0.6, 0.2, 1, true);
+
+    this.velX = cos(n * TWO_PI) * 0.1;
+    this.velY = -sin(n * TWO_PI) * 0.1;
+
     this.x += this.velX;
     this.y += this.velY;
   }
@@ -33,25 +65,26 @@ class Item{
     }
   }
   
-  draw(){
+  draw(level){
     if (!this.life){
       return;
     }
 
-    this.drawSimple();
+    this.drawSimple(level);
     // this.drawGradient();
     // this.drawSquare();
   }
 
-  drawSimple(){
+  drawSimple(level){
     push();
       noStroke();
-      let c = color(this.color);
-      // c.setAlpha(obj.rivItemOpacity);
-      fill(c);
-      let r = obj.radItemSize;
-      circle(this.x, this.y, r);
-      circle(-this.x, this.y, r);
+      let c = color(this.color * (1 - this.nr));
+      // c.setAlpha(obj.radItemOpacity * 255);
+      level.fill(c);
+      level.noStroke();
+      let r = obj.radItemSize * this.nr;
+      level.circle(this.x, this.y, r);
+      level.circle(-this.x, this.y, r);
     pop();
   }
 
