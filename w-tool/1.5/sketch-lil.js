@@ -49,12 +49,12 @@ let obj = {
   // rivNoiseScale: 0.3,
   // rivNoiseSeed: 582,
   // radial
-  radDepthLife: false,
-  radItems: 12,
+  radDepthLife: true,
+  radItems: 8,
   radRadius: 450,
-  radItemSize: 140,
-  radItemOpacity: 0.05,
-  radNoiseSeed: 442,
+  radItemSize: 117,
+  radItemOpacity: 1,
+  radNoiseSeed: 214,
   radNoiseScale: 0.5
 };
 
