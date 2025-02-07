@@ -110,6 +110,8 @@ class Item{
       c.setAlpha(255 * obj.radItemOpacity);
       level.fill(c);
       level.noStroke();
+      // level.stroke(c);
+      // level.noFill();
       let r = obj.radItemSize * this.nr;
       level.circle(this.x, this.y, r);
       level.circle(-this.x, this.y, r);

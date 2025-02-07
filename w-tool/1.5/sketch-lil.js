@@ -50,11 +50,11 @@ let obj = {
   // rivNoiseSeed: 582,
   // radial
   radDepthLife: false,
-  radItems: 9,
+  radItems: 12,
   radRadius: 450,
-  radItemSize: 80,
-  radItemOpacity: 0.1,
-  radNoiseSeed: 500,
+  radItemSize: 140,
+  radItemOpacity: 0.05,
+  radNoiseSeed: 442,
   radNoiseScale: 0.5
 };
 
@@ -77,7 +77,7 @@ function setupLil(){
   part.add(obj, 'radItemSize')
     .min(1).max(200).step(1).name('Item Size');
   part.add(obj, 'radItemOpacity')
-    .min(0.05).max(1).name('Item Opacity');
+    .min(0.01).max(1).name('Item Opacity');
   part.add(obj, 'radNoiseSeed')
     .min(1).max(1000).step(1).name('Noise Seed');
   part.add(obj, 'radNoiseScale')
