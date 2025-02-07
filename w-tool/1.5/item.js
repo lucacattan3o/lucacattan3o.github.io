@@ -1,7 +1,9 @@
 class Item{
   constructor(color, deltaLevel){
     this.x = 0;
-    this.y = random(0, obj.radRadius * 0.5);
+
+    let ny = noise(deltaLevel);
+    this.y = ny * obj.radRadius;
 
     this.deltaLevel = deltaLevel;
     
@@ -14,6 +16,8 @@ class Item{
     this.nc = 1;
 
     this.life = true;
+    this.progr = 0;
+    this.tic = 0;
     this.color = color;
   }
   
@@ -22,10 +26,20 @@ class Item{
       return;
     }
 
+    // radius life
     let d = dist(0, 0, this.x, this.y);
     if (d > obj.radRadius){
       this.life = false;
     }
+
+    // depth life
+    this.tic++;
+    let maxLife = 2000;
+    this.progr = map(this.tic, 0, maxLife, 0, 1);
+    if (this.tic > maxLife){
+      this.life = false;
+    }
+    // this.progr = map(d, 0, obj.radRadius, 0, 1);
 
     // prendo noise diversi per ogni livello
     let offset = this.deltaLevel * 1000;
@@ -84,11 +98,11 @@ class Item{
   drawSimple(level){
     push();
       noStroke();
-      let c = color(this.color * this.nc);
+      let c = color(this.color * this.progr);
       // c.setAlpha(obj.radItemOpacity * 255);
       level.fill(c);
       level.noStroke();
-      let r = obj.radItemSize * this.nr;
+      let r = obj.radItemSize;
       level.circle(this.x, this.y, r);
       level.circle(-this.x, this.y, r);
     pop();

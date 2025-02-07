@@ -16,18 +16,18 @@ let mPos;
 let font;
 
 let levels = [
-  {
-    color: 50,
-  },
-  {
-    color: 100,
-  },
-  {
-    color: 180,
-  },
-  {
-    color: 200,
-  },
+  // {
+  //   color: 50,
+  // },
+  // {
+  //   color: 100,
+  // },
+  // {
+  //   color: 180,
+  // },
+  // {
+  //   color: 200,
+  // },
   {
     color: 255,
   }
