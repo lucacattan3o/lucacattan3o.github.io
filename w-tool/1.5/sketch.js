@@ -18,9 +18,6 @@ let font;
 let levels = [
   {
     color: 50,
-  }, 
-  {
-    color: 80,
   },
   {
     color: 100,
@@ -64,6 +61,7 @@ function setupCanvas(){
 
 function setupLevels(){
   background(bg);
+  noiseSeed(obj.radNoiseSeed);
   items = [];
   levels.forEach((level, delta) => {
     let item = new Item(level.color, delta);

@@ -52,8 +52,8 @@ let obj = {
   radItems: 8,
   radRadius: 300,
   radItemSize: 50,
-  radNoiseScale: 0.5,
-  radItemOpacity: 1,
+  radNoiseSeed: 500,
+  radNoiseScale: 0.5
 };
 
 function setupLil(){
@@ -73,10 +73,10 @@ function setupLil(){
     .min(0).max(w).name('Radius');
   part.add(obj, 'radItemSize')
     .min(1).max(100).step(1).name('Item Size');
+  part.add(obj, 'radNoiseSeed')
+    .min(1).max(1000).step(1).name('Noise Seed');
   part.add(obj, 'radNoiseScale')
-    .min(0).max(1).name('Noise Scale');
-  part.add(obj, 'radItemOpacity')
-    .min(0).max(1).name('Opacity');
+    .min(0.1).max(2).name('Noise Scale');
 
   /*
   const part = gui.addFolder('Particles');
@@ -173,8 +173,8 @@ function setupLil(){
       case 'radItems':
       case 'radRadius':
       case 'radItemSize':
+      case 'radNoiseSeed':
       case 'radNoiseScale':
-      case 'radItemOpacity':
         setupLevels();
         break;
     

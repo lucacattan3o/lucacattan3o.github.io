@@ -9,7 +9,9 @@ class Item{
     this.velY = 0.25;
 
     this.nS = 0.01 * obj.radNoiseScale;
+    
     this.nr = 1;
+    this.nc = 1;
 
     this.life = true;
     this.color = color;
@@ -42,6 +44,10 @@ class Item{
     let rNoiseScale = 0.01;
     this.nr = noise(this.x * rNoiseScale, this.y * rNoiseScale, 1000);
     this.nr = map(this.nr, 0.3, 0.6, 0.2, 1, true);
+
+    // noise per il colore
+    // più l'item è piccolo, più è bianco
+    this.nc = 1.4 - this.nr;
 
     this.velX = cos(n * TWO_PI) * 0.1;
     this.velY = -sin(n * TWO_PI) * 0.1;
@@ -78,7 +84,7 @@ class Item{
   drawSimple(level){
     push();
       noStroke();
-      let c = color(this.color * (1 - this.nr));
+      let c = color(this.color * this.nc);
       // c.setAlpha(obj.radItemOpacity * 255);
       level.fill(c);
       level.noStroke();
