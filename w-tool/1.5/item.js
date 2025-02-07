@@ -2,7 +2,7 @@ class Item{
   constructor(color, deltaLevel){
     this.x = 0;
 
-    let ny = noise(deltaLevel);
+    let ny = map(noise(deltaLevel * 0.5), 0.4, 0.6, 0, 1, true);
     this.y = ny * obj.radRadius;
 
     this.deltaLevel = deltaLevel;

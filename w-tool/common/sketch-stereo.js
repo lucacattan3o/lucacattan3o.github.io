@@ -268,7 +268,10 @@ function patternBuilderLettersPre(){
     pgLetter = createGraphics(patColWidth, height);
     pgLetter.background(stereoColors[0]);
     let lineHeight = (height / 30 * obj.patScale);
-    pgLetter.textFont(font, lineHeight * 2);
+    // dimensione del font calligrafico
+    pgLetter.textFont(font, lineHeight * 2); 
+    // dimensione raleway
+    pgLetter.textFont(font, lineHeight * 1.3);
     let nRows = height / lineHeight;
     for (i = 0; i < nRows; i++ ){
       let w = i % words.length;
