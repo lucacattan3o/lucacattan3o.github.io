@@ -16,18 +16,18 @@ let mPos;
 let font;
 
 let levels = [
-  {
-    color: 50,
-  },
-  {
-    color: 100,
-  },
-  {
-    color: 180,
-  },
-  {
-    color: 200,
-  },
+  // {
+  //   color: 50,
+  // },
+  // {
+  //   color: 100,
+  // },
+  // {
+  //   color: 180,
+  // },
+  // {
+  //   color: 200,
+  // },
   {
     color: 255,
   }
@@ -36,7 +36,7 @@ let levels = [
 let items = [];
 
 function preload(){
-  font = loadFont('./../common/fonts/Raleway-Regular.ttf');
+  font = loadFont('./../common/fonts/Raleway-Bold.ttf');
 }
 
 function setup() {
