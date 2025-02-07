@@ -61,10 +61,10 @@ function draw() {
   // drawItems();
   // drawVolume();
   // drawTextVolume();
-  // drawRivers();
+  drawRivers();
   // drawImage()
   // drawPaint();
-  drawRadial();
+  // drawRadial();
 }
 
 function drawRadial(){

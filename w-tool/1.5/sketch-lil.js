@@ -12,22 +12,22 @@ let obj = {
   canvasH: 1080,
   canvasMulty: 1,
   // chladni
-  items: 80,
-  freqM: 4,
-  freqN: 5,
-  vibration: 0.06,
-  itemSize: 1,
-  itemHeight: 2,
-  playSynth: false,
+  // items: 80,
+  // freqM: 4,
+  // freqN: 5,
+  // vibration: 0.06,
+  // itemSize: 1,
+  // itemHeight: 2,
+  // playSynth: false,
   // image
-  dmScale: 1,
-  dmX: 0,
-  dmY: 0, 
+  // dmScale: 1,
+  // dmX: 0,
+  // dmY: 0, 
   // paint
-  brushOn: false,
-  brushSize: 1,
-  brushHard: 0.8,
-  brushColor: [1, 1, 1],
+  // brushOn: false,
+  // brushSize: 1,
+  // brushHard: 0.8,
+  // brushColor: [1, 1, 1],
   // stereogram
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
@@ -42,12 +42,15 @@ let obj = {
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
-  rivItems: 20,
-  rivItemSize: 50,
-  rivMargin: 0.1,
-  rivRadius: 0.8,
-  rivNoiseScale: 0.3,
-  rivNoiseSeed: 582,
+  // rivItems: 20,
+  // rivItemSize: 50,
+  // rivMargin: 0.1,
+  // rivRadius: 0.8,
+  // rivNoiseScale: 0.3,
+  // rivNoiseSeed: 582,
+  // radial
+  radItems: 5,
+  radItemSize: 5,
 };
 
 function setupLil(){
@@ -60,6 +63,13 @@ function setupLil(){
   gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
+  const part = gui.addFolder('Particles');
+  part.add(obj, 'radItems')
+    .min(2).max(20).step(1).name('Fractions');
+  part.add(obj, 'radItemSize')
+    .min(1).max(20).step(1).name('Item Size');
+
+  /*
   const part = gui.addFolder('Particles');
   part.add(obj, 'rivItems')
     .min(2).max(200).step(1).name('Items');
@@ -75,6 +85,7 @@ function setupLil(){
     .min(0.1).max(2).step(0.1).name('Noise Scale');
   part.add(obj, 'rivNoiseSeed')
     .min(0).max(1000).step(1).name('Noise Seed');
+  */
 
   // Depth Map | Image Upload
   // const gDepthMap = gui.addFolder('Depth Map');

@@ -14,10 +14,23 @@ let w, h;
 let bg = '#000000';
 let mPos;
 let font;
-let dmImage = null;
-let redrawImage = false;
 
-let x = 0;
+let levels = [
+  {
+    color: 50,
+  }, 
+  {
+    color: 150,
+  },
+  {
+    color: 200,
+  },
+  {
+    color: 255,
+  }
+];
+
+let items = [];
 
 function preload(){
   font = loadFont('./../common/fonts/KolkerBrush-Regular.ttf');
@@ -26,6 +39,7 @@ function preload(){
 function setup() {
   setupCanvas();
   setupLil();
+  setupLevels();
   background(bg);
   rectMode(CENTER);
 }
@@ -42,110 +56,53 @@ function setupCanvas(){
   img.height = h;
 }
 
-function draw() {
-  drawLevels();
-  // drawImage()
-  // drawPaint();
+function setupLevels(){
+  levels.forEach(level => {
+    let item = new Item(level.color);
+    items.push(item);
+  });
 }
 
-function drawLevels(){
-  let items = 500;
-  let itemSize = height / items;
-  let yScale = 0.003;
-  let xScale = 0.001;
+function draw() {
+  drawRadials();
+}
+
+function drawRadials(){
+  // background(bg);
+  levels.forEach((level, delta) => {
+    drawRadial(obj.radItems, delta, drawParticle);
+  });
+}
+
+function drawRadial(fractions, delta, drawFunction){
+  let slice = TWO_PI / fractions;
   push();
-    noStroke();
-    translate(width * 0.5, 0);
-    for (let i = 0; i < items; i++) {
-      let y = i * itemSize;
+    translate(width * 0.5, height * 0.5);
+    for (i = 0; i < fractions; i++){
       push();
-        translate(0, y);
-        let c = map(noise(x * xScale, y * yScale), 0.3, 0.5, 0, 255);
-        fill(c)
-        circle(x, 0, itemSize * 1.2);
-        let c2 = map(noise(-x * xScale, y * yScale), 0.3, 0.5, 0, 255);
-        fill(c2)
-        circle(-x, 0, itemSize * 1.2);
+        rotate(slice * i - PI * 0.5);
+        push();
+          drawFunction(delta);
+        pop();
       pop();
     }
   pop();
-  x = x + itemSize * 0.2;
 }
 
-function drawRivers() {
-  for (i = 0; i < items.length; i++){
-    let item = items[i];
-    item.update();
-    item.draw()
-  }
+function drawParticle(delta){
+  items[delta].update();
+  items[delta].draw();
+}
 
-  let radius = width * 0.5 * obj.rivRadius;
+function drawTest(){
   stroke(255);
+  line(0, 0, width, 0);
+}
+
+function drawRect(){
   noFill();
-  circle(width * 0.5, height * 0.5, radius * 2);
-  
-  let sec = frameCount / fps;
-  if (sec % 1 == 0){
-    // console.debug(sec);
-  }
+  stroke(255);
+  rect(400, 0, 200, 200);
 }
 
-function drawImage(){
-  if (dmImage){
-    if (redrawImage){
-      background(0);
-      push();
-      translate(w * 0.5, h * 0.5);
-      translate(w * obj.dmX, h * obj.dmY);
-      scale(obj.dmScale);
-      image(dmImage, -dmImage.width * 0.5, -dmImage.height * 0.5);
-      pop();
-      redrawImage = false;
-    }
-  }
-}
 
-function drawPaint(){
-  mPos = responsiveMousePos();
-  if (mouseIsPressed && keyIsPressed && keyCode == 32){
-    let bSize = 100;
-    let fillSize = bSize * obj.brushSize;
-    let strokeSize = 1;
-    // console.debug('Original: ' + fillSize);
-    // da 0 alla dimensione del brush
-    let hard = (1 - obj.brushHard) * fillSize;
-    // console.debug('Hard: ' + hard);
-    // riduco la dimensione del fill
-    fillSize = fillSize - hard;
-    // console.debug('Size: ' + fillSize);
-    
-    push();
-    translate(mPos.x, mPos.y);
-    let rgb = [
-      obj.brushColor[0] * 255,
-      obj.brushColor[1] * 255,
-      obj.brushColor[2] * 255
-    ];
-    fill(rgb);
-    noStroke();
-    circle(0, 0, fillSize);
-    
-    if (hard){
-      for (i = 0; i < hard; i++){
-        let sSize = fillSize + (i * strokeSize);
-        let alpha = map(i, 0, hard, 255, 0, true);
-        let rgba = [
-          obj.brushColor[0] * 255,
-          obj.brushColor[1] * 255,
-          obj.brushColor[2] * 255,
-          alpha,
-        ];
-        strokeWeight(strokeSize);
-        stroke(rgba);
-        noFill();
-        circle(0, 0, sSize);
-      }
-    }
-    pop();
-  }
-}
