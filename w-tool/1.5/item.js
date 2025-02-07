@@ -1,8 +1,10 @@
 class Item{
   constructor(color, deltaLevel){
+    let nx = noise(deltaLevel * 0.5, 100);
+    this.x = nx * obj.radRadius * 0.2;
     this.x = 0;
 
-    let ny = map(noise(deltaLevel * 0.5), 0.4, 0.6, 0, 1, true);
+    let ny = noise(deltaLevel * 0.5);
     this.y = ny * obj.radRadius;
 
     this.deltaLevel = deltaLevel;
@@ -33,11 +35,13 @@ class Item{
     }
 
     // depth life
-    this.tic++;
-    let maxLife = 2000;
-    this.progr = map(this.tic, 0, maxLife, 0, 1);
-    if (this.tic > maxLife){
-      this.life = false;
+    if (obj.radDepthLife){
+      this.tic++;
+      let maxLife = 3000;
+      this.progr = map(this.tic, 0, maxLife, 0, 1);
+      if (this.tic > maxLife){
+        this.life = false;
+      }
     }
     // this.progr = map(d, 0, obj.radRadius, 0, 1);
 
@@ -55,9 +59,9 @@ class Item{
     )
 
     // noise per la dimensione
-    let rNoiseScale = 0.01;
+    let rNoiseScale = 0.005;
     this.nr = noise(this.x * rNoiseScale, this.y * rNoiseScale, 1000);
-    this.nr = map(this.nr, 0.3, 0.6, 0.2, 1, true);
+    // this.nr = map(this.nr, 0.3, 0.6, 0.2, 1, true);
 
     // noise per il colore
     // più l'item è piccolo, più è bianco
@@ -90,16 +94,31 @@ class Item{
       return;
     }
 
-    this.drawSimple(level);
-    // this.drawGradient();
-    // this.drawSquare();
+    // this.drawFlat(level)
+    if (obj.radDepthLife){
+      this.drawGradient(level);
+    } else {
+      this.drawFlat(level);
+    }
+    
+    // this.drawBoxes(level);
   }
 
-  drawSimple(level){
+  drawFlat(level){
     push();
-      noStroke();
+      let c = color(this.color);
+      c.setAlpha(255 * obj.radItemOpacity);
+      level.fill(c);
+      level.noStroke();
+      let r = obj.radItemSize * this.nr;
+      level.circle(this.x, this.y, r);
+      level.circle(-this.x, this.y, r);
+    pop();
+  }
+
+  drawGradient(level){
+    push();
       let c = color(this.color * this.progr);
-      // c.setAlpha(obj.radItemOpacity * 255);
       level.fill(c);
       level.noStroke();
       let r = obj.radItemSize;
@@ -108,39 +127,14 @@ class Item{
     pop();
   }
 
-  drawGradient(){
-    push();
-      noStroke();
-      let r = obj.rivItemSize;
-      // add some noise variation
-      r = r * this.nr;
-
-      let steps = 4;
-      let step = 1 / steps;
-
-      let c = color(255);
-      c.setAlpha(1);
-      stroke(c);
-      strokeWeight(5);
-      noFill();
-
-      circle(this.x, this.y, r * 1);
-      // circle(this.x, this.y, r * 0.75);
-      // circle(this.x, this.y, r * 0.5);
-      circle(this.x, this.y, r * 0.25);
-
-      circle(width - this.x, this.y, r * 1);
-      // circle(width - this.x, this.y, r * 0.75);
-      // circle(width - this.x, this.y, r * 0.5);
-      circle(width - this.x, this.y, r * 0.25);
-      
-      // not working
-      // for (i = 0; i < steps; i++){
-      //   let dr = 1 - (step * i);
-      //   circle(this.x, this.y, r * dr);
-      //   circle(width - this.x, this.y, r * dr);
-      // }
-    pop();
+  drawBoxes(level){
+    let c = color(this.color * this.progr);
+    level.noFill();
+    level.stroke(c);
+    level.strokeWeight(10);
+    let r = obj.radItemSize;
+    level.rect(this.x, this.y, r);
+    // level.circle(-this.x, this.y, r);
   }
 }
 

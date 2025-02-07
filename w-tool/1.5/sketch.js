@@ -16,18 +16,18 @@ let mPos;
 let font;
 
 let levels = [
-  // {
-  //   color: 50,
-  // },
-  // {
-  //   color: 100,
-  // },
-  // {
-  //   color: 180,
-  // },
-  // {
-  //   color: 200,
-  // },
+  {
+    color: 50,
+  },
+  {
+    color: 100,
+  },
+  {
+    color: 180,
+  },
+  {
+    color: 200,
+  },
   {
     color: 255,
   }
@@ -91,7 +91,7 @@ function drawRadial(fractions, delta, drawFunction){
   level.translate(width * 0.5, height * 0.5);
     for (i = 0; i < fractions; i++){
       level.push();
-        level.rotate(slice * i - PI * 0.5);
+        level.rotate(slice * i);
         level.push();
           drawFunction(delta);
         level.pop();

@@ -37,7 +37,7 @@ let obj = {
   invertColors: true,
   // pattern
   patType: 'Letter Noise',
-  patScale: 0.5,
+  patScale: 0.3,
   patGradScale: 0.5,
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
@@ -49,9 +49,11 @@ let obj = {
   // rivNoiseScale: 0.3,
   // rivNoiseSeed: 582,
   // radial
-  radItems: 8,
-  radRadius: 300,
-  radItemSize: 50,
+  radDepthLife: false,
+  radItems: 9,
+  radRadius: 450,
+  radItemSize: 80,
+  radItemOpacity: 0.1,
   radNoiseSeed: 500,
   radNoiseScale: 0.5
 };
@@ -67,16 +69,19 @@ function setupLil(){
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
   const part = gui.addFolder('Particles');
+  part.add(obj, 'radDepthLife').name('Deph Mode');
   part.add(obj, 'radItems')
-    .min(2).max(20).step(1).name('Fractions');
+    .min(3).max(20).step(1).name('Fractions');
   part.add(obj, 'radRadius')
     .min(0).max(w).name('Radius');
   part.add(obj, 'radItemSize')
-    .min(1).max(100).step(1).name('Item Size');
+    .min(1).max(200).step(1).name('Item Size');
+  part.add(obj, 'radItemOpacity')
+    .min(0.05).max(1).name('Item Opacity');
   part.add(obj, 'radNoiseSeed')
     .min(1).max(1000).step(1).name('Noise Seed');
   part.add(obj, 'radNoiseScale')
-    .min(0.1).max(2).name('Noise Scale');
+    .min(0.1).max(1).name('Noise Scale');
 
   /*
   const part = gui.addFolder('Particles');
@@ -133,7 +138,7 @@ function setupLil(){
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.01).name('Noise Scale');
   //guiPatScale.hide();
   guiPatGradScale = gStereo.add(obj, 'patGradScale').min(0.1).max(1).step(0.01).name('Gradient Scale');
-  //guiPatGradScale.hide();
+  guiPatGradScale.hide();
   guiPatWords = gStereo.add(obj, 'patWords').name('Words');
   // guiPatWords.hide();
   
@@ -173,8 +178,10 @@ function setupLil(){
       case 'radItems':
       case 'radRadius':
       case 'radItemSize':
+      case 'radItemOpacity':
       case 'radNoiseSeed':
       case 'radNoiseScale':
+      case 'radDepthLife':
         setupLevels();
         break;
     
