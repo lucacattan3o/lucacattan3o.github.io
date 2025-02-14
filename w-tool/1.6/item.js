@@ -1,22 +1,22 @@
 class Item{
   constructor(color, deltaLevel){
+    this.deltaLevel = deltaLevel;
+    this.color = color;
+
     this.x = random(width * 0.2, width * 0.8);
     this.y = random(height * 0.2, height * 0.8);
 
-    this.deltaLevel = deltaLevel;
     
     this.velX = 50;
     this.velY = 50;
 
-    this.nS = 0.01 * obj.radNoiseScale;
+    this.nS = 0.01 * obj.rivNoiseScale;
     
     this.nr = 1;
     this.nc = 1;
 
     this.life = true;
     this.progr = 0;
-    this.tic = 0;
-    this.color = color;
   }
   
   update(){
@@ -24,24 +24,7 @@ class Item{
       return;
     }
 
-    this.limit();
-
-    // radius life
-    // let d = dist(0, 0, this.x, this.y);
-    // if (d > obj.radRadius){
-    //   this.life = false;
-    // }
-
-    // depth life
-    // if (obj.radDepthLife){
-    //   this.tic++;
-    //   let maxLife = 3000;
-    //   this.progr = map(this.tic, 0, maxLife, 0, 1);
-    //   if (this.tic > maxLife){
-    //     this.life = false;
-    //   }
-    // }
-    // this.progr = map(d, 0, obj.radRadius, 0, 1);
+    // this.limit();
 
     // prendo noise diversi per ogni livello
     let offset = this.deltaLevel * 1000;
@@ -101,12 +84,12 @@ class Item{
     push();
       let level = levels[this.deltaLevel].level;
       let c = color(this.color);
-      c.setAlpha(255 * obj.radItemOpacity);
+      c.setAlpha(255 * obj.rivItemOpacity);
       level.fill(c);
       level.noStroke();
       // level.stroke(c);
       // level.noFill();
-      let r = obj.radItemSize * this.nr;
+      let r = obj.rivItemSize * this.nr;
       level.circle(this.x, this.y, r);
       level.circle(-this.x, this.y, r);
     pop();

@@ -62,10 +62,10 @@ function setupCanvas(){
 
 function setupLevels(){
   background(bg);
-  noiseSeed(obj.radNoiseSeed);
+  noiseSeed(obj.rivNoiseSeed);
   items = [];
   levels.forEach((level, delta) => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < obj.rivItems; i++) {
       let item = new Item(level.color, delta);
       items.push(item);
     }
@@ -75,7 +75,6 @@ function setupLevels(){
 
 function draw() {
   drawRivers();
-  // drawRadials();
 }
 
 function drawRivers(){
@@ -86,49 +85,6 @@ function drawRivers(){
   levels.forEach((level) => {
     image(level.level, 0, 0, w, h);
   });
-}
-
-function drawRadials(){
-  // background(bg);
-  levels.forEach((level, delta) => {
-    drawRadial(obj.radItems, delta, drawParticle);
-    image(levels[delta].level, 0, 0, w, h);
-  });
-}
-
-function drawRadial(fractions, delta, drawFunction){
-  let slice = TWO_PI / fractions;
-
-  let level = levels[delta].level;
-
-  level.push();
-  level.translate(width * 0.5, height * 0.5);
-    for (i = 0; i < fractions; i++){
-      level.push();
-        level.rotate(slice * i);
-        level.push();
-          drawFunction(delta);
-        level.pop();
-      level.pop();
-    }
-  level.pop();
-}
-
-function drawParticle(delta){
-  let level = levels[delta].level;
-  items[delta].update();
-  items[delta].draw(level);
-}
-
-function drawTest(){
-  stroke(255);
-  line(0, 0, width, 0);
-}
-
-function drawRect(){
-  noFill();
-  stroke(255);
-  rect(400, 0, 200, 200);
 }
 
 

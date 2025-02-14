@@ -42,20 +42,11 @@ let obj = {
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
-  // rivItems: 20,
-  // rivItemSize: 50,
-  // rivMargin: 0.1,
-  // rivRadius: 0.8,
-  // rivNoiseScale: 0.3,
-  // rivNoiseSeed: 582,
-  // radial
-  radDepthLife: true,
-  radItems: 8,
-  radRadius: 450,
-  radItemSize: 50,
-  radItemOpacity: 0.01,
-  radNoiseSeed: 214,
-  radNoiseScale: 0.5
+  rivItems: 2,
+  rivItemOpacity: 0.01,
+  rivItemSize: 60,
+  rivNoiseScale: 1.2,
+  rivNoiseSeed: 582,
 };
 
 function setupLil(){
@@ -69,37 +60,16 @@ function setupLil(){
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
   const part = gui.addFolder('Particles');
-  part.add(obj, 'radDepthLife').name('Deph Mode');
-  part.add(obj, 'radItems')
-    .min(3).max(20).step(1).name('Fractions');
-  part.add(obj, 'radRadius')
-    .min(0).max(w).name('Radius');
-  part.add(obj, 'radItemSize')
-    .min(1).max(200).step(1).name('Item Size');
-  part.add(obj, 'radItemOpacity')
-    .min(0.01).max(1).name('Item Opacity');
-  part.add(obj, 'radNoiseSeed')
-    .min(1).max(1000).step(1).name('Noise Seed');
-  part.add(obj, 'radNoiseScale')
-    .min(0.1).max(1).name('Noise Scale');
-
-  /*
-  const part = gui.addFolder('Particles');
   part.add(obj, 'rivItems')
-    .min(2).max(200).step(1).name('Items');
+    .min(2).max(20).step(1).name('Items');
   part.add(obj, 'rivItemSize')
     .min(1).max(300).step(1).name('Item Size');
-
-  part.add(obj, 'rivMargin')
-    .min(0).max(0.4).step(0.1).name('Margin');
-  part.add(obj, 'rivRadius')
-    .min(0).max(1).step(0.1).name('Radius');
-
+  part.add(obj, 'rivItemOpacity')
+    .min(0.01).max(1).name('Item Opacity');
   part.add(obj, 'rivNoiseScale')
     .min(0.1).max(2).step(0.1).name('Noise Scale');
   part.add(obj, 'rivNoiseSeed')
     .min(0).max(1000).step(1).name('Noise Seed');
-  */
 
   // Depth Map | Image Upload
   // const gDepthMap = gui.addFolder('Depth Map');
@@ -175,24 +145,13 @@ function setupLil(){
     mouseIsPressed = false;
 
     switch (event.property) {
-      case 'radItems':
-      case 'radRadius':
-      case 'radItemSize':
-      case 'radItemOpacity':
-      case 'radNoiseSeed':
-      case 'radNoiseScale':
-      case 'radDepthLife':
+      case 'rivItems':
+      case 'rivItemSize':
+      case 'rivItemOpacity':
+      case 'rivNoiseSeed':
+      case 'rivNoiseScale':
+      case 'rivDepthLife':
         setupLevels();
-        break;
-    
-      case 'playSynth':
-        if (event.value){
-          oscM.start();
-          oscN.start();
-        } else {
-          oscM.stop();
-          oscN.stop();
-        }
         break;
 
       case 'invertColors':
