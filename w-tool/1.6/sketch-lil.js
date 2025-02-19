@@ -8,9 +8,9 @@ let storageName = 'gui-stereo-1.4';
 
 let obj = {
   // canvas
-  canvasW: 1920,
-  canvasH: 1080,
-  canvasMulty: 1,
+  canvasW: Math.floor((sizeW * dpi) / inch),
+  canvasH: Math.floor((sizeH * dpi) / inch),
+  canvasMulty: 0.5,
   // chladni
   // items: 80,
   // freqM: 4,
@@ -37,14 +37,14 @@ let obj = {
   invertColors: true,
   // pattern
   patType: 'Letter Noise',
-  patScale: 0.3,
+  patScale: 0.2,
   patGradScale: 0.5,
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
-  rivItems: 2,
+  rivItems: 1,
   rivItemOpacity: 0.01,
-  rivItemSize: 60,
+  rivItemSize: 100,
   rivNoiseScale: 1.2,
   rivNoiseSeed: 582,
 };
@@ -55,13 +55,13 @@ function setupLil(){
   gui = new GUI();
 
   const gCanvas = gui.addFolder('Canvas');
-  gCanvas.add(obj, 'canvasW').min(1080).max(1920).step(20).name('Width');
-  gCanvas.add(obj, 'canvasH').min(1080).max(1920).step(20).name('Height');
+  gCanvas.add(obj, 'canvasW').min(100).max(4133).step(1).name('Width');
+  gCanvas.add(obj, 'canvasH').min(100).max(1771).step(1).name('Height');
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
 
   const part = gui.addFolder('Particles');
   part.add(obj, 'rivItems')
-    .min(2).max(20).step(1).name('Items');
+    .min(1).max(20).step(1).name('Items');
   part.add(obj, 'rivItemSize')
     .min(1).max(300).step(1).name('Item Size');
   part.add(obj, 'rivItemOpacity')

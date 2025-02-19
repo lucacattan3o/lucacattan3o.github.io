@@ -15,6 +15,11 @@ let bg = '#000000';
 let mPos;
 let font;
 
+let sizeW = 35;   // cm
+let sizeH = 15;   // cm
+let inch = 2.54;  // cm
+let dpi = 300;    // px / in
+
 let levels = [
   // {
   //   color: 50,
@@ -36,7 +41,7 @@ let levels = [
 let items = [];
 
 function preload(){
-  font = loadFont('./../common/fonts/Raleway-Bold.ttf');
+  font = loadFont('./../common/fonts/Raleway-Italic.ttf');
 }
 
 function setup() {
@@ -66,7 +71,7 @@ function setupLevels(){
   items = [];
   levels.forEach((level, delta) => {
     for (let i = 0; i < obj.rivItems; i++) {
-      let item = new Item(level.color, delta);
+      let item = new Item(level.color, i, delta);
       items.push(item);
     }
     levels[delta].level = createGraphics(w, h);
