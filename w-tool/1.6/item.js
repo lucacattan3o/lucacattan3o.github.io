@@ -14,11 +14,11 @@ class Item{
       this.leftToRight = false;
     }
 
-    this.y = random(height * 0.2, height * 0.8)
+    this.y = height * 0.2 + (height * 0.8 * (i / obj.rivItems));
     if (this.leftToRight){
-      this.x = random(width * 0.2, width * 0.4);
+      this.x = 0;
     } else {
-      this.x = random(width * 0.6, width * 0.8);
+      this.x = width;
     }
 
     // this.y = height * 0.5;
@@ -30,14 +30,15 @@ class Item{
     this.velX = 0;
     this.velY = 0;
     
-    this.vel = 2;
+    this.vel = 3;
 
     this.noiseScale = 0.01 * obj.rivNoiseScale;
     
     this.nDirection = 0;
     this.nRadius = 0;
 
-    this.grow = 0.01;
+    // this.grow = 0.01;
+    this.grow = 1;
     this.maxGrow = 1;
     this.growSpeed = 0.0005;
 
@@ -63,9 +64,9 @@ class Item{
     this.velY = -sin(this.nDirection * TWO_PI + fixDirection) * this.vel;
 
     // crescita del fiume
-    if (this.grow < this.maxGrow){
-      this.grow += this.growSpeed;
-    }
+    // if (this.grow < this.maxGrow){
+    //   this.grow += this.growSpeed;
+    // }
 
     // noise per la dimensione
     this.nRadius = noise(this.x * this.noiseScale * 0.5, this.y * this.noiseScale * 0.5, 1000);  

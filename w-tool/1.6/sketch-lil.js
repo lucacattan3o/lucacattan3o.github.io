@@ -34,7 +34,7 @@ let obj = {
   stereoDpi:    72,    // dpi
   stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
   nColors: 2,
-  invertColors: true,
+  invertColors: false,
   // pattern
   patType: 'Letter Noise',
   patScale: 0.2,
@@ -42,11 +42,11 @@ let obj = {
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
   // rivers
-  rivItems: 1,
+  rivItems: 3,
   rivItemOpacity: 0.01,
-  rivItemSize: 100,
-  rivNoiseScale: 1.2,
-  rivNoiseSeed: 582,
+  rivItemSize: 20,
+  rivNoiseScale: 0.3,
+  rivNoiseSeed: 250,
 };
 
 function setupLil(){
