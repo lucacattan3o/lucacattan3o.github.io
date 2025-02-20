@@ -14,6 +14,8 @@ let w, h;
 let bg = '#000000';
 let mPos;
 let font;
+let dmImage = null;
+let redrawImage = false;
 
 let sizeW = 35;   // cm
 let sizeH = 15;   // cm
@@ -47,10 +49,18 @@ function preload(){
 function setup() {
   setupCanvas();
   setupLil();
-  setupLevels();
-  console.debug(levels);
   background(bg);
+  setupDepth();
   rectMode(CENTER);
+}
+
+function setupDepth(){
+  background(bg);
+  if (obj.depthMode == 'Rivers'){
+    setupLevels();
+  } else {
+
+  }
 }
 
 function setupCanvas(){
@@ -66,7 +76,6 @@ function setupCanvas(){
 }
 
 function setupLevels(){
-  background(bg);
   noiseSeed(obj.rivNoiseSeed);
   items = [];
   levels.forEach((level, delta) => {
@@ -79,8 +88,28 @@ function setupLevels(){
 }
 
 function draw() {
-  drawRivers();
+  if (obj.depthMode == 'Rivers'){
+    drawRivers();
+  }
+  if (obj.depthMode == 'Image'){
+    drawImage();
+  }
   // drawSample();
+}
+
+function drawImage(){
+  if (dmImage){
+    if (redrawImage){
+      background(0);
+      push();
+      translate(w * 0.5, h * 0.5);
+      translate(w * obj.dmX, h * obj.dmY);
+      scale(obj.dmScale);
+      image(dmImage, -dmImage.width * 0.5, -dmImage.height * 0.5);
+      pop();
+      redrawImage = false;
+    }
+  }
 }
 
 function drawSample(){

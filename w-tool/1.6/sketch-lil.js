@@ -3,6 +3,7 @@
 
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor, guiPatWords;
+let gPart, gDepthMap;
 let guiCols = [];
 let storageName = 'gui-stereo-1.4';
 
@@ -11,18 +12,12 @@ let obj = {
   canvasW: Math.floor((sizeW * dpi) / inch),
   canvasH: Math.floor((sizeH * dpi) / inch),
   canvasMulty: 1,
-  // chladni
-  // items: 80,
-  // freqM: 4,
-  // freqN: 5,
-  // vibration: 0.06,
-  // itemSize: 1,
-  // itemHeight: 2,
-  // playSynth: false,
+  // mode
+  depthMode: 'Rivers',
   // image
-  // dmScale: 1,
-  // dmX: 0,
-  // dmY: 0, 
+  dmScale: 1,
+  dmX: 0,
+  dmY: 0, 
   // paint
   // brushOn: false,
   // brushSize: 1,
@@ -57,26 +52,32 @@ function setupLil(){
   const gCanvas = gui.addFolder('Canvas');
   gCanvas.add(obj, 'canvasW').min(100).max(4133).step(1).name('Width');
   gCanvas.add(obj, 'canvasH').min(100).max(1771).step(1).name('Height');
-  gCanvas.add(obj, 'canvasMulty').min(0.25).max(2).step(0.25).name('Multiply');
+  gCanvas.add(obj, 'canvasMulty').min(0.25).max(1).step(0.25).name('Multiply');
 
-  const part = gui.addFolder('Particles');
-  part.add(obj, 'rivItems')
-    .min(1).max(20).step(1).name('Items');
-  part.add(obj, 'rivItemSize')
-    .min(1).max(300).step(1).name('Item Size');
-  part.add(obj, 'rivItemOpacity')
-    .min(0.01).max(1).name('Item Opacity');
-  part.add(obj, 'rivNoiseScale')
-    .min(0.1).max(2).step(0.1).name('Noise Scale');
-  part.add(obj, 'rivNoiseSeed')
+  const gMode = gui.addFolder('Depth Map');
+  gMode.add( obj, 'depthMode', [
+    'Rivers',
+    'Image'
+  ]).name('Mode');
+
+  gPart = gui.addFolder('Rivers');
+  gPart.add(obj, 'rivItems')
+    .min(1).max(20).step(1).name('Number of rivers');
+  gPart.add(obj, 'rivItemSize')
+    .min(1).max(300).step(1).name('River size');
+  gPart.add(obj, 'rivItemOpacity')
+    .min(0.01).max(1).name('Opacity');
+  gPart.add(obj, 'rivNoiseSeed')
     .min(0).max(1000).step(1).name('Noise Seed');
+  gPart.add(obj, 'rivNoiseScale')
+    .min(0.1).max(2).step(0.1).name('Noise Scale');
 
   // Depth Map | Image Upload
-  // const gDepthMap = gui.addFolder('Depth Map');
-  // gDepthMap.add(obj, 'dmUpload').name('Upload Image');
-  // gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
-  // gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
-  // gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
+  gDepthMap = gui.addFolder('Depth Map').hide();
+  gDepthMap.add(obj, 'dmUpload').name('Upload Image');
+  gDmScale = gDepthMap.add(obj, 'dmScale').min(0.1).max(4).name('Scale').hide();
+  gDmX = gDepthMap.add(obj, 'dmX').min(-1).max(1).name('X').hide();
+  gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
   // Paint Tool
   // const gPaint = gui.addFolder('Paint (spacebar + mouse)');
@@ -151,7 +152,18 @@ function setupLil(){
       case 'rivNoiseSeed':
       case 'rivNoiseScale':
       case 'rivDepthLife':
-        setupLevels();
+        setupDepth();
+        break;
+
+      case 'depthMode':
+        setupDepth();
+        if (event.value == 'Image'){
+          gDepthMap.show();
+          gPart.hide();
+        } else {
+          gDepthMap.hide();
+          gPart.show();
+        }
         break;
 
       case 'invertColors':

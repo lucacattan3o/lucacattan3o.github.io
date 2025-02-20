@@ -70,7 +70,9 @@ class Item{
 
     // noise per la dimensione
     this.nRadius = noise(this.x * this.noiseScale * 0.5, this.y * this.noiseScale * 0.5, 1000);  
-    this.radius = obj.rivItemSize * this.grow * (width * 0.001);  
+    this.radius = obj.rivItemSize * this.grow * (width * 0.001);
+    // dimensione in funzione del noise
+    this.radius = this.radius * this.nRadius * 2;
 
     this.x += this.velX;
     this.y += this.velY;
