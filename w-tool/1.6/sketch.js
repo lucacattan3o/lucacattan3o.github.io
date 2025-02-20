@@ -80,6 +80,24 @@ function setupLevels(){
 
 function draw() {
   drawRivers();
+  // drawSample();
+}
+
+function drawSample(){
+  push();
+    translate(w * 0.5, h * 0.5);
+    
+    noStroke();
+    fill(80);
+    circle(0, 0, h * 0.7);
+    fill(120);
+    circle(0, 0, h * 0.6);
+    fill(180);
+    circle(0, 0, h * 0.5);
+    fill(255);
+    circle(0, 0, h * 0.4);
+
+  pop();
 }
 
 function drawRivers(){

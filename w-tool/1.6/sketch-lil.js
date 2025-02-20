@@ -10,7 +10,7 @@ let obj = {
   // canvas
   canvasW: Math.floor((sizeW * dpi) / inch),
   canvasH: Math.floor((sizeH * dpi) / inch),
-  canvasMulty: 0.5,
+  canvasMulty: 1,
   // chladni
   // items: 80,
   // freqM: 4,
@@ -115,7 +115,7 @@ function setupLil(){
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
   gAdv.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
-  gAdv.add(obj, 'stereoDpi').min(72).max(300).step(16).name('DPI');
+  gAdv.add(obj, 'stereoDpi').min(72).max(300).step(1).name('DPI');
   gAdv.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
   
   gStereo.add(obj, 'createSird').name('Generate Stereogram (g)');
