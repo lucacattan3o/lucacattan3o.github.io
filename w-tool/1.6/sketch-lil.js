@@ -3,9 +3,9 @@
 
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor, guiPatWords;
-let gRivers, gDepthMap, gPaint;
+let gRivers, gDepthMap, gPaint, gWell;
 let guiCols = [];
-let storageName = 'gui-stereo-1.4';
+let storageName = 'gui-stereo-1.6';
 
 let obj = {
   // canvas
@@ -22,6 +22,10 @@ let obj = {
   brushSize: 3,
   brushHard: 0.1,
   brushColor: [1, 1, 1],
+  // well
+  wellRadius: 0.8,
+  wellDepth: 1,
+  wellSteps: 16,
   // stereogram
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
@@ -34,7 +38,7 @@ let obj = {
   patScale: 0.4,
   patGradScale: 0.5,
   // words
-  patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
+  patWords: 'del nostro scavo continuo',
   // rivers
   rivItems: 3,
   rivItemOpacity: 0.01,
@@ -53,13 +57,15 @@ function setupLil(){
   gCanvas.add(obj, 'canvasH').min(100).max(1771).step(1).name('Height');
   gCanvas.add(obj, 'canvasMulty').min(0.25).max(1).step(0.25).name('Multiply');
 
-  const gMode = gui.addFolder('Depth Map');
+  const gMode = gui.addFolder('Depth Mode');
   gMode.add( obj, 'depthMode', [
     'Rivers',
     'Image',
-    'Paint'
+    'Paint',
+    'Well'
   ]).name('Mode');
 
+  // Rivers
   gRivers = gui.addFolder('Rivers');
   gRivers.add(obj, 'rivItems')
     .min(1).max(20).step(1).name('Number of rivers');
@@ -85,6 +91,12 @@ function setupLil(){
   gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
   guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color');
   guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
+
+  // Well
+  gWell = gui.addFolder('Well').hide();
+  gWell.add(obj, 'wellRadius').min(0.1).max(1).step(0.1).name('Radius');
+  gWell.add(obj, 'wellDepth').min(0.1).max(1).step(0.1).name('Depth');
+  gWell.add(obj, 'wellSteps').min(2).max(40).step(1).name('Steps');
 
   // Stereogram
   const gStereo = gui.addFolder('Stereogram');
@@ -157,19 +169,28 @@ function setupLil(){
       case 'depthMode':
         setupDepth();
         if (event.value == 'Image'){
-          gDepthMap.show();
+          gWell.hide();
           gRivers.hide();
           gPaint.hide();
+          gDepthMap.show();
         }
         if (event.value == 'Rivers'){
+          gWell.hide();
           gDepthMap.hide();
-          gRivers.show();
           gPaint.hide();
+          gRivers.show();
         }
         if (event.value == 'Paint'){
           gRivers.hide();
           gDepthMap.hide();
+          gWell.hide();
           gPaint.show();
+        }
+        if (event.value == 'Well'){
+          gRivers.hide();
+          gDepthMap.hide();
+          gPaint.hide();
+          gWell.show();
         }
         break;
 
@@ -365,6 +386,7 @@ obj.paintClear = function(){
 }
 
 function saveToStorage(){
+  console.debug('saveToStorage');
   preset = gui.save();
   localStorage.setItem(storageName, JSON.stringify(preset));
 };

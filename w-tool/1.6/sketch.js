@@ -112,7 +112,9 @@ function draw() {
   if (obj.depthMode == 'Paint'){
     drawPaint();
   }
-  // drawSample();
+  if (obj.depthMode == 'Well'){
+    drawWell();
+  }
 }
 
 function drawImage(){
@@ -176,20 +178,24 @@ function drawPaint(){
   }
 }
 
-function drawSample(){
+function drawWell(){
+  background(bg);
   push();
     translate(w * 0.5, h * 0.5);
     
-    noStroke();
-    fill(80);
-    circle(0, 0, h * 0.7);
-    fill(120);
-    circle(0, 0, h * 0.6);
-    fill(180);
-    circle(0, 0, h * 0.5);
-    fill(255);
-    circle(0, 0, h * 0.4);
-
+    let steps = obj.wellSteps;
+    let rad1 = obj.wellRadius * height * 0.5;
+    let rad2 = rad1 + (obj.wellDepth * height * 2);
+    let deltaRadius = rad2 - rad1;
+    let step = deltaRadius / steps;
+    let incr = 1 / steps;
+    for (let i = 0; i < steps; i++) {
+      let ii = steps - i - 1;
+      let r = rad1 + (step * ii);
+      noStroke();
+      fill(255 * incr * i);
+      circle(0, 0, r);
+    }
   pop();
 }
 
