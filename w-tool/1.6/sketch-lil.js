@@ -3,7 +3,7 @@
 
 let GUI = lil.GUI;
 let gui, guiM, guiN, guiBrushOn, guiPatScale, guiPatGradScale, gDmScale, gDmX, gDmY, guiBrushColor, guiPatWords;
-let gPart, gDepthMap;
+let gRivers, gDepthMap, gPaint;
 let guiCols = [];
 let storageName = 'gui-stereo-1.4';
 
@@ -19,10 +19,9 @@ let obj = {
   dmX: 0,
   dmY: 0, 
   // paint
-  // brushOn: false,
-  // brushSize: 1,
-  // brushHard: 0.8,
-  // brushColor: [1, 1, 1],
+  brushSize: 3,
+  brushHard: 0.1,
+  brushColor: [1, 1, 1],
   // stereogram
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
@@ -32,7 +31,7 @@ let obj = {
   invertColors: false,
   // pattern
   patType: 'Letter Noise',
-  patScale: 0.2,
+  patScale: 0.4,
   patGradScale: 0.5,
   // words
   patWords: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. etiam sodales turpis turpis, in auctor nunc ullamcorper vestibulum.',
@@ -57,19 +56,20 @@ function setupLil(){
   const gMode = gui.addFolder('Depth Map');
   gMode.add( obj, 'depthMode', [
     'Rivers',
-    'Image'
+    'Image',
+    'Paint'
   ]).name('Mode');
 
-  gPart = gui.addFolder('Rivers');
-  gPart.add(obj, 'rivItems')
+  gRivers = gui.addFolder('Rivers');
+  gRivers.add(obj, 'rivItems')
     .min(1).max(20).step(1).name('Number of rivers');
-  gPart.add(obj, 'rivItemSize')
+  gRivers.add(obj, 'rivItemSize')
     .min(1).max(300).step(1).name('River size');
-  gPart.add(obj, 'rivItemOpacity')
+  gRivers.add(obj, 'rivItemOpacity')
     .min(0.01).max(1).name('Opacity');
-  gPart.add(obj, 'rivNoiseSeed')
+  gRivers.add(obj, 'rivNoiseSeed')
     .min(0).max(1000).step(1).name('Noise Seed');
-  gPart.add(obj, 'rivNoiseScale')
+  gRivers.add(obj, 'rivNoiseScale')
     .min(0.1).max(2).step(0.1).name('Noise Scale');
 
   // Depth Map | Image Upload
@@ -80,12 +80,11 @@ function setupLil(){
   gDmY = gDepthMap.add(obj, 'dmY').min(-1).max(1).name('Y').hide();
 
   // Paint Tool
-  // const gPaint = gui.addFolder('Paint (spacebar + mouse)');
-  // guiBrushOn = gPaint.add(obj, 'brushOn').name('Use Brush').hide();
-  // gPaint.add(obj, 'brushSize').min(0.1).max(2).step(0.1).name('Size');
-  // gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
-  // guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color (BW)');
-  // guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
+  gPaint = gui.addFolder('Paint').hide();
+  gPaint.add(obj, 'brushSize').min(1).max(5).step(0.1).name('Size');
+  gPaint.add(obj, 'brushHard').min(0.1).max(1).step(0.1).name('Hardness');
+  guiBrushColor = gPaint.addColor(obj, 'brushColor').name('Color');
+  guiPaintClear = gPaint.add(obj, 'paintClear').name('Clear Canvas');
 
   // Stereogram
   const gStereo = gui.addFolder('Stereogram');
@@ -159,10 +158,18 @@ function setupLil(){
         setupDepth();
         if (event.value == 'Image'){
           gDepthMap.show();
-          gPart.hide();
-        } else {
+          gRivers.hide();
+          gPaint.hide();
+        }
+        if (event.value == 'Rivers'){
           gDepthMap.hide();
-          gPart.show();
+          gRivers.show();
+          gPaint.hide();
+        }
+        if (event.value == 'Paint'){
+          gRivers.hide();
+          gDepthMap.hide();
+          gPaint.show();
         }
         break;
 

@@ -30,7 +30,7 @@ class Item{
     this.velX = 0;
     this.velY = 0;
     
-    this.vel = 3;
+    this.vel = 1.5;
 
     this.noiseScale = 0.01 * obj.rivNoiseScale;
     

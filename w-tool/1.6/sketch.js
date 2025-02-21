@@ -1,4 +1,4 @@
-let fps = 30;
+let fps = 60;
 
 let palette = [
   "ffffff",
@@ -16,11 +16,13 @@ let mPos;
 let font;
 let dmImage = null;
 let redrawImage = false;
+let mouseIsPressedManually = false;
 
 let sizeW = 35;   // cm
 let sizeH = 15;   // cm
 let inch = 2.54;  // cm
 let dpi = 300;    // px / in
+
 
 let levels = [
   // {
@@ -52,6 +54,19 @@ function setup() {
   background(bg);
   setupDepth();
   rectMode(CENTER);
+
+  // Ottieni il canvas
+  let canvas = document.querySelector('canvas');
+
+  // Aggiungi l'event listener per 'mousedown'
+  canvas.addEventListener('mousedown', function(event) {
+    mouseIsPressedManually = true;
+  });
+
+  // Aggiungi l'event listener per 'mouseup'
+  canvas.addEventListener('mouseup', function(event) {
+    mouseIsPressedManually = false;
+  });
 }
 
 function setupDepth(){
@@ -94,6 +109,9 @@ function draw() {
   if (obj.depthMode == 'Image'){
     drawImage();
   }
+  if (obj.depthMode == 'Paint'){
+    drawPaint();
+  }
   // drawSample();
 }
 
@@ -109,6 +127,52 @@ function drawImage(){
       pop();
       redrawImage = false;
     }
+  }
+}
+
+function drawPaint(){
+  let mPos = responsiveMousePos();
+
+  if (mouseIsPressedManually){
+    let bSize = 100;
+    let fillSize = bSize * obj.brushSize;
+    let strokeSize = 1;
+    // console.debug('Original: ' + fillSize);
+    // da 0 alla dimensione del brush
+    let hard = (1 - obj.brushHard) * fillSize;
+    // console.debug('Hard: ' + hard);
+    // riduco la dimensione del fill
+    fillSize = fillSize - hard;
+    // console.debug('Size: ' + fillSize);
+    
+    push();
+    translate(mPos.x, mPos.y);
+    let rgb = [
+      obj.brushColor[0] * 255,
+      obj.brushColor[1] * 255,
+      obj.brushColor[2] * 255
+    ];
+    fill(rgb);
+    noStroke();
+    circle(0, 0, fillSize);
+    
+    if (hard){
+      for (i = 0; i < hard; i++){
+        let sSize = fillSize + (i * strokeSize);
+        let alpha = map(i, 0, hard, 200, 0, true);
+        let rgba = [
+          obj.brushColor[0] * 255,
+          obj.brushColor[1] * 255,
+          obj.brushColor[2] * 255,
+          alpha,
+        ];
+        strokeWeight(strokeSize);
+        stroke(rgba);
+        noFill();
+        circle(0, 0, sSize);
+      }
+    }
+    pop();
   }
 }
 
