@@ -51,6 +51,7 @@ function preload(){
 function setup() {
   setupCanvas();
   setupLil();
+  setupStereo();
   background(bg);
   setupDepth();
   rectMode(CENTER);

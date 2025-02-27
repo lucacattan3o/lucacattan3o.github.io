@@ -7,6 +7,7 @@
   border: 1px dashed #999;
   z-index: 1000;
   display: none;
+  text-align: center;
 
   /*
   padding: 0;
@@ -22,6 +23,13 @@
   img{
     width: 100%;
     height: auto;
+    cursor: pointer;
+  }
+
+  .stereogram-download{
+    font-size: 10px;
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   &.ready{
