@@ -43,6 +43,7 @@ let obj = {
   rivItems: 3,
   rivItemOpacity: 0.01,
   rivItemSize: 20,
+  rivSpeed: 3,
   rivNoiseScale: 0.3,
   rivNoiseSeed: 250,
 };
@@ -71,6 +72,8 @@ function setupLil(){
     .min(1).max(20).step(1).name('Number of rivers');
   gRivers.add(obj, 'rivItemSize')
     .min(1).max(300).step(1).name('River size');
+  gRivers.add(obj, 'rivSpeed')
+    .min(0.5).step(0.1).max(5).name('Speed');
   gRivers.add(obj, 'rivItemOpacity')
     .min(0.01).max(1).name('Opacity');
   gRivers.add(obj, 'rivNoiseSeed')
@@ -159,6 +162,7 @@ function setupLil(){
     switch (event.property) {
       case 'rivItems':
       case 'rivItemSize':
+      case 'rivSpeed':
       case 'rivItemOpacity':
       case 'rivNoiseSeed':
       case 'rivNoiseScale':
