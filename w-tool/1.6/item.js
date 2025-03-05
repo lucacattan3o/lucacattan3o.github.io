@@ -20,12 +20,6 @@ class Item{
     } else {
       this.x = width;
     }
-
-    // this.y = height * 0.5;
-    // this.x = width * 0.7;
-    // if (this.leftToRight){
-    //   this.x = width * 0.3;
-    // }
     
     this.velX = 0;
     this.velY = 0;
@@ -37,14 +31,26 @@ class Item{
     this.nDirection = 0;
     this.nRadius = 0;
 
-    // this.grow = 0.01;
-    this.grow = 1;
-    this.maxGrow = 1;
-    this.growSpeed = 0.0005;
-
     this.life = true;
-    this.progr = 0;
     this.radius = 0;
+
+    this.alpha = 255 * obj.rivItemOpacity;
+
+    // i livelli più bassi sono più larghi
+    this.scale = 1;
+    if (levels.length !== 1){
+      let sc = levels.length - this.deltaLevel - 1;
+      this.scale += sc;
+
+      // l'opacità troppo alta per la modalità multi livello
+      // è un problema, devo settare un minimo a 0.1
+      let op = obj.rivItemOpacity;
+      if (op < 0.1){
+        op = 0.1;
+      }
+      this.alpha = 255 * op;
+    }
+    
   }
   
   update(){
@@ -63,16 +69,13 @@ class Item{
     this.velX = cos(this.nDirection * TWO_PI + fixDirection) * this.vel;
     this.velY = -sin(this.nDirection * TWO_PI + fixDirection) * this.vel;
 
-    // crescita del fiume
-    // if (this.grow < this.maxGrow){
-    //   this.grow += this.growSpeed;
-    // }
-
     // noise per la dimensione
     this.nRadius = noise(this.x * this.noiseScale * 0.5, this.y * this.noiseScale * 0.5, 1000);  
-    this.radius = obj.rivItemSize * this.grow * (width * 0.001);
+    this.radius = obj.rivItemSize * (width * 0.001);
     // dimensione in funzione del noise
     this.radius = this.radius * this.nRadius * 2;
+    
+    this.radius = this.radius * this.scale;
 
     this.x += this.velX;
     this.y += this.velY;
@@ -120,7 +123,7 @@ class Item{
     push();
       let level = levels[this.deltaLevel].level;
       let c = color(this.color);
-      c.setAlpha(255 * obj.rivItemOpacity);
+      c.setAlpha(this.alpha);
       level.fill(c);
       level.noStroke();
       level.circle(this.x, this.y, this.radius);

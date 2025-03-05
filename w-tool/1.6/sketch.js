@@ -24,23 +24,7 @@ let inch = 2.54;  // cm
 let dpi = 300;    // px / in
 
 
-let levels = [
-  // {
-  //   color: 50,
-  // },
-  // {
-  //   color: 100,
-  // },
-  // {
-  //   color: 180,
-  // },
-  // {
-  //   color: 200,
-  // },
-  {
-    color: 255,
-  }
-];
+let levels = []
 
 let items = [];
 
@@ -92,6 +76,21 @@ function setupCanvas(){
 }
 
 function setupLevels(){
+  levels = [];
+  let tot = obj.rivLevels;
+  if (tot == 1){
+    levels.push({
+      color: 255
+    });
+  } else {
+    for (let i = 0; i < tot; i++) {
+      let col = map(i, 0, tot - 1, 50, 255, true);
+      levels.push({
+        color: col
+      });
+    }
+  }
+
   noiseSeed(obj.rivNoiseSeed);
   items = [];
   levels.forEach((level, delta) => {

@@ -40,12 +40,13 @@ let obj = {
   // words
   patWords: 'del nostro scavo continuo',
   // rivers
+  rivLevels: 1,
   rivItems: 3,
   rivItemOpacity: 0.01,
   rivItemSize: 20,
   rivSpeed: 3,
   rivNoiseScale: 0.3,
-  rivNoiseSeed: 250,
+  rivNoiseSeed: 232,
 };
 
 function setupLil(){
@@ -68,6 +69,8 @@ function setupLil(){
 
   // Rivers
   gRivers = gui.addFolder('Rivers');
+  gRivers.add(obj, 'rivLevels')
+    .min(1).max(5).step(1).name('Levels');
   gRivers.add(obj, 'rivItems')
     .min(1).max(20).step(1).name('Number Of Rivers');
   gRivers.add(obj, 'rivItemSize')
@@ -161,6 +164,7 @@ function setupLil(){
     mouseIsPressed = false;
 
     switch (event.property) {
+      case 'rivLevels':
       case 'rivItems':
       case 'rivItemSize':
       case 'rivSpeed':
