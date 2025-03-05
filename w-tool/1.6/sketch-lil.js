@@ -30,7 +30,7 @@ let obj = {
   stereoInvert: false,
   stereoEyeSep: 6.35,  // eye separation in cm
   stereoDpi:    72,    // dpi
-  stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default)
+  stereoMu:     2,     // depth of field (fraction of viewing distance: 1 / x) (3 default) - low value >> gread depth
   nColors: 2,
   invertColors: false,
   // pattern
@@ -69,9 +69,9 @@ function setupLil(){
   // Rivers
   gRivers = gui.addFolder('Rivers');
   gRivers.add(obj, 'rivItems')
-    .min(1).max(20).step(1).name('Number of rivers');
+    .min(1).max(20).step(1).name('Number Of Rivers');
   gRivers.add(obj, 'rivItemSize')
-    .min(1).max(300).step(1).name('River size');
+    .min(1).max(300).step(1).name('River Size');
   gRivers.add(obj, 'rivSpeed')
     .min(0.5).step(0.1).max(5).name('Speed');
   gRivers.add(obj, 'rivItemOpacity')
@@ -103,21 +103,13 @@ function setupLil(){
 
   // Stereogram
   const gStereo = gui.addFolder('Stereogram');
-  gStereo.add(obj, 'invertColors').name('Invert Colors');
-  gStereo.add(obj, 'nColors').min(2).max(5).step(1).name('Number Of Colors');
-  palette.forEach((col, index) => {
-    let p = 'color' + index;
-    let gc = gStereo.addColor(obj, p).name('Color ' + (index + 1));
-    guiCols.push(gc);
-  });
-  updateStereoColors(obj.nColors);
   gStereo.add( obj, 'patType', [
+    'Letter Noise',
     'SIRD',
     'Perlin Noise',
     'Perlin Noise Sinusoidal',
     'Worley Noise',
-    'Vertical Lines',
-    'Letter Noise'
+    'Vertical Lines'
     // 'Check Width',
   ]).name('Noise Type');
   guiPatScale = gStereo.add(obj, 'patScale').min(0.1).max(1).step(0.01).name('Noise Scale');
@@ -126,13 +118,22 @@ function setupLil(){
   guiPatGradScale.hide();
   guiPatWords = gStereo.add(obj, 'patWords').name('Words');
   // guiPatWords.hide();
+
+  // Colors
+  gColNum = gStereo.add(obj, 'nColors').min(2).max(5).step(1).name('Number Of Colors').hide();
+  palette.forEach((col, index) => {
+    let p = 'color' + index;
+    let gc = gStereo.addColor(obj, p).name('Color ' + (index + 1));
+    guiCols.push(gc);
+  });
+  updateStereoColors(obj.nColors);
+  gStereo.add(obj, 'invertColors').name('Invert Colors');
   
   const gAdv = gStereo.addFolder('Advanced').close();
   gAdv.add(obj, 'stereoInvert').name('Invert Depth');
   gAdv.add(obj, 'stereoEyeSep').min(5).max(8).step(0.1).name('Eye Separation');
   gAdv.add(obj, 'stereoDpi').min(72).max(300).step(1).name('DPI');
   gAdv.add(obj, 'stereoMu').min(1.1).max(8).step(0.1).name('Depth of field');
-  
   gStereo.add(obj, 'createSird').name('Generate Stereogram (g)');
 
   // const grid = gui.addFolder('Grid');
@@ -216,8 +217,13 @@ function setupLil(){
 
         if (event.value == 'Letter Noise'){
           guiPatWords.show();
+          gColNum.hide();
+          gColNum.setValue(2);
+          // setta il numero di colori a 2
+          // nascondi number of colors
         } else {
           guiPatWords.hide();
+          gColNum.show();
         }
 
         switch (event.value) {

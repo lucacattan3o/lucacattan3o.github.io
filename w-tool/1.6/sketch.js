@@ -137,7 +137,7 @@ function drawPaint(){
   let mPos = responsiveMousePos();
 
   if (mouseIsPressedManually){
-    let bSize = 100;
+    let bSize = width * 0.05;
     let fillSize = bSize * obj.brushSize;
     let strokeSize = 1;
     // console.debug('Original: ' + fillSize);
@@ -153,7 +153,8 @@ function drawPaint(){
     let rgb = [
       obj.brushColor[0] * 255,
       obj.brushColor[1] * 255,
-      obj.brushColor[2] * 255
+      obj.brushColor[2] * 255,
+      95
     ];
     fill(rgb);
     noStroke();
@@ -162,7 +163,7 @@ function drawPaint(){
     if (hard){
       for (i = 0; i < hard; i++){
         let sSize = fillSize + (i * strokeSize);
-        let alpha = map(i, 0, hard, 200, 0, true);
+        let alpha = map(i, 0, hard, 50, 0, true);
         let rgba = [
           obj.brushColor[0] * 255,
           obj.brushColor[1] * 255,
