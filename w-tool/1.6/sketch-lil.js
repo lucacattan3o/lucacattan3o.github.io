@@ -74,7 +74,7 @@ function setupLil(){
   gRivers.add(obj, 'rivItems')
     .min(1).max(20).step(1).name('Number Of Rivers');
   gRivers.add(obj, 'rivItemSize')
-    .min(1).max(300).step(1).name('River Size');
+    .min(1).max(150).step(1).name('River Size');
   gRivers.add(obj, 'rivSpeed')
     .min(0.5).step(0.1).max(5).name('Speed');
   gRivers.add(obj, 'rivItemOpacity')
