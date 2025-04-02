@@ -25,7 +25,7 @@ function windowResized(){
 }
 
 function drawBody(w, h, offset, points){
-  anim = frameCount * obj.vel * 0.5 * 0.5;
+  anim = frameCount * obj.vel * 0.5 * 0.5 * 0.5;
   
   beginShape();
 
