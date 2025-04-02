@@ -1,6 +1,5 @@
 let obj = {
-  itemsX: 5,
-  itemsY: 15,
+  vel: 0.5,
 };
 
 let storageName = 'settete';
@@ -41,8 +40,7 @@ function setupLil(){
   gui = new GUI();
 
   const grid = gui.addFolder('Grid');
-  grid.add(obj, 'itemsX').min(1).max(20).step(1).name('Items X');
-  grid.add(obj, 'itemsY').min(1).max(20).step(1).name('Items Y');
+  grid.add(obj, 'vel').min(0.1).max(1).step(0.1).name('Velocity');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
