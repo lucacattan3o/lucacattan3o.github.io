@@ -10,7 +10,7 @@ let matildaBg = palette[0];
 
 let 
   eyeSize, eyeSep, eyeAspect,
-  pupilSize, pupilAspect;
+  pupilSize, pupilAspect, pupilDist;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -42,6 +42,7 @@ function drawMatilda(){
   eyeAspect = 1.15;
   pupilSize = eyeSize * 0.35;
   pupilAspect = 1.4;
+  pupilDist = eyeSize * 0.4;
 
   let amp = tildaW * 0.1;
 
@@ -56,15 +57,17 @@ function drawMatilda(){
       fill(matildaBg);
       drawTilde(0, 0, tildaW, tildaH, amp, speed, 30);
     pop();
+  pop();
 
-    // eyes
-    push();
-      stroke(0);
-      let bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
-      translate(amp * 0.8 * bx, -tildaH * 0.2)
-      drawEye(-eyeSep, 0);
-      drawEye(eyeSep, 0);
-    pop();
+  // eyes
+  push();
+    stroke(0);
+    let bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+    let x = width * 0.5;
+    x = x + amp * 0.8 * bx;
+    let y = height - tildaH * 0.8;
+    drawEye(x - eyeSep, y);
+    drawEye(x + eyeSep, y);
   pop();
 }
 
@@ -87,7 +90,16 @@ function drawEye(x, y){
   ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
 
   fill(0);
-  ellipse(0, 0, pupilSize, pupilSize * pupilAspect);
+  let a = atan2(y - mouseY, x - mouseX);
+  let d = dist(x, y, mouseX, mouseY);
+  let r = pupilDist * map(d, 0, width, 0, 1, true);
+
+    push();
+      rotate(a);  
+      translate(-r, 0);
+      rotate(-a);
+      ellipse(0, 0, pupilSize, pupilSize * pupilAspect);
+    pop();
   pop();
 }
 
