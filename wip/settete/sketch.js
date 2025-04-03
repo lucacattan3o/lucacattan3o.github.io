@@ -9,7 +9,7 @@ let palette = [
 let matildaBg = palette[0];
 
 let 
-  tildaW, tildaH,
+  matildaW, matildaH,
   eyeSize, eyeSep, eyeAspect,
   pupilSize, pupilAspect, pupilDist;
 
@@ -30,8 +30,8 @@ function draw() {
   background(0);
   unit = width / 10;
   
-  drawReference();
-  // drawMatilda();
+  // drawReference();
+  drawMatilda(width * 0.5, height * 0.5);
 }  
 
 function windowResized(){
@@ -47,47 +47,66 @@ function drawReference(){
   pop();
 }
 
-function drawMatilda(){
+function drawMatilda(matildaX, matildaY){
   let speed = obj.vel;
   
-  tildaW = width * 0.2;
-  tildaH = tildaW * 2;
+  matildaW = width * 0.2;
+  matildaH = matildaW * 2;
   
-  eyeSize = tildaW * 0.56;
+  eyeSize = matildaW * 0.56;
   eyeSep = eyeSize * 0.4;
   eyeAspect = 1.2;
   pupilSize = eyeSize * 0.33;
   pupilAspect = 1.5;
   pupilDist = eyeSize * 0.5;
 
-  let amp = tildaW * 0.12;
+  let amp = matildaW * 0.12;
 
-  strokeWeight(tildaW * 0.005);
+  let bx = 0;
+  if (speed){
+    bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+  }
+
+  strokeWeight(matildaW * 0.005);
 
   push();
-    translate(width * 0.5, height * 0.5);
+    translate(matildaX, matildaY);
 
     // body
     push();
       noStroke();
       fill(matildaBg);
       // noFill();
-      drawTilde(0, 0, tildaW, tildaH, amp, speed, 60);
+      drawTilde(0, 0, matildaW, matildaH, amp, speed, 30);
     pop();
   pop();
 
   // eyes
   push();
     stroke(0);
-    let bx = 0;
-    if (speed){
-      bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
-    }
-    let x = width * 0.5;
-    x = x + amp * 0.8 * bx;
-    let y = height * 0.5 - tildaH * 0.18;
+    let x = matildaX;
+    x = x + amp * 0.7 * bx;
+    let y = matildaY - matildaH * 0.18;
     drawEye(x - eyeSep, y);
     drawEye(x + eyeSep, y);
+  pop();
+
+  // eyebrows
+  push();
+    translate(matildaX, matildaY);
+    let ebx = amp * 0.6 * bx;
+    translate(ebx, 0);
+    fill(0);
+    push();
+      translate(-matildaW * 0.27, -matildaH * 0.36)
+      rotate(PI * 0.5);
+      drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
+    pop();
+    push();
+      translate(matildaW * 0.27, -matildaH * 0.36)
+      rotate(PI * 0.5);
+      drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
+    pop();
   pop();
 }
 
@@ -114,6 +133,7 @@ function drawEye(x, y){
       let d = dist(x, y, mouseX, mouseY);
       let r = pupilDist * map(d, 0, width, 0, 1, true);
 
+      // clippo la pupilla sotto la palpebra
       push();
         clip(maskEyelid);
         fill(0);
@@ -124,6 +144,7 @@ function drawEye(x, y){
       pop();
     pop();
 
+    // traccia occhio
     noFill();
     stroke(0);
     ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
@@ -149,8 +170,8 @@ function drawTilde(x, y, w, h, amp, speed, points){
   beginShape();
 
   // Linea superiore
-  vertex(-w * 0.5, 0);
-  vertex(w * 0.5, 0);
+  // vertex(-w * 0.5, 0);
+  // vertex(w * 0.5, 0);
 
   // Curva destra
   for (let i = 0; i <= points; i++) {
@@ -166,8 +187,8 @@ function drawTilde(x, y, w, h, amp, speed, points){
   }
 
   // Linea inferiore
-  vertex(w * 0.5, -h);
-  vertex(-w * 0.5, -h);
+  // vertex(w * 0.5, -h);
+  // vertex(-w * 0.5, -h);
 
   // Curva sinistra
   for (let i = 0; i <= points; i++) {

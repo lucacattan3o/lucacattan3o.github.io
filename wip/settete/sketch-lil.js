@@ -41,7 +41,7 @@ function setupLil(){
   gui = new GUI();
 
   const body = gui.addFolder('Matilda');
-  body.add(obj, 'vel').min(0).max(40).step(0.1).name('Velocity');
+  body.add(obj, 'vel').min(0).max(40).name('Velocity');
   // grid.add(obj, 'freq').min(0.05).max(4).step(0.1).name('Frequency');
 
   const eyes = gui.addFolder('Eyes');
