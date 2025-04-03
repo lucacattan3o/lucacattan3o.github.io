@@ -9,8 +9,15 @@ let palette = [
 let matildaBg = palette[0];
 
 let 
+  tildaW, tildaH,
   eyeSize, eyeSep, eyeAspect,
   pupilSize, pupilAspect, pupilDist;
+
+let ref;
+
+function preload(){
+  ref = loadImage('./imgs/ref.png');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,39 +29,49 @@ function setup() {
 function draw() {
   background(0);
   unit = width / 10;
-
   
-  
-  drawMatilda();
+  drawReference();
+  // drawMatilda();
 }  
 
 function windowResized(){
   resizeCanvas(windowWidth, windowHeight);
 }
 
+function drawReference(){
+  push();
+    translate(width * 0.5, height * 0.49);
+    imageMode(CENTER);
+    scale(1.9);
+    image(ref, 0, 0);
+  pop();
+}
+
 function drawMatilda(){
   let speed = obj.vel;
-  let tildaW = width * 0.2;
-  let tildaH = tildaW * 2;
   
-  eyeSize = tildaW * 0.5;
-  eyeSep = eyeSize * 0.44;
-  eyeAspect = 1.15;
-  pupilSize = eyeSize * 0.35;
-  pupilAspect = 1.4;
+  tildaW = width * 0.2;
+  tildaH = tildaW * 2;
+  
+  eyeSize = tildaW * 0.56;
+  eyeSep = eyeSize * 0.4;
+  eyeAspect = 1.2;
+  pupilSize = eyeSize * 0.33;
+  pupilAspect = 1.5;
   pupilDist = eyeSize * 0.5;
 
-  let amp = tildaW * 0.1;
+  let amp = tildaW * 0.12;
 
   strokeWeight(tildaW * 0.005);
 
   push();
-    translate(width * 0.5, height - tildaH * 0.5);
+    translate(width * 0.5, height * 0.5);
 
     // body
     push();
       noStroke();
       fill(matildaBg);
+      // noFill();
       drawTilde(0, 0, tildaW, tildaH, amp, speed, 60);
     pop();
   pop();
@@ -68,7 +85,7 @@ function drawMatilda(){
     }
     let x = width * 0.5;
     x = x + amp * 0.8 * bx;
-    let y = height - tildaH * 0.75;
+    let y = height * 0.5 - tildaH * 0.18;
     drawEye(x - eyeSep, y);
     drawEye(x + eyeSep, y);
   pop();
@@ -79,20 +96,27 @@ function drawEye(x, y){
     translate(x, y);
     fill(matildaBg);
     noStroke();
+    
+    // Colore palpebra
     ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
 
     push();
-      fill(255);
       clip(maskEye);
-      stroke(0);
-      circle(0, eyeSize * 0.55, eyeSize * 1.5);
 
-      fill(0);
+      // sclera (parte bianca dell'occhio)
+      // serve per simulare la palpebra
+      fill(255);
+      stroke(0);
+      circle(0, eyeSize * obj.eyelidY, eyeSize * 1.5);
+
+      // pupilla che segue il mouse
       let a = atan2(y - mouseY, x - mouseX);
       let d = dist(x, y, mouseX, mouseY);
       let r = pupilDist * map(d, 0, width, 0, 1, true);
 
       push();
+        clip(maskEyelid);
+        fill(0);
         rotate(a);  
         translate(-r, 0);
         rotate(-a);
@@ -108,6 +132,9 @@ function drawEye(x, y){
 
 function maskEye(){
   ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
+}
+function maskEyelid(){
+  circle(0, eyeSize * obj.eyelidY, eyeSize * 1.5);
 }
 
 function drawTilde(x, y, w, h, amp, speed, points){

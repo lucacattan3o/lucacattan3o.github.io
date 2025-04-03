@@ -1,6 +1,6 @@
 let obj = {
   vel: 6,
-  freq: 0.5,
+  eyelidY: 0.5,
 };
 
 let storageName = 'settete';
@@ -40,9 +40,12 @@ obj.saveImage = function(){
 function setupLil(){
   gui = new GUI();
 
-  const grid = gui.addFolder('Matilda');
-  grid.add(obj, 'vel').min(0).max(40).step(0.1).name('Velocity');
+  const body = gui.addFolder('Matilda');
+  body.add(obj, 'vel').min(0).max(40).step(0.1).name('Velocity');
   // grid.add(obj, 'freq').min(0.05).max(4).step(0.1).name('Frequency');
+
+  const eyes = gui.addFolder('Eyes');
+  eyes.add(obj, 'eyelidY').min(-1).max(1).name('Eyelid');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
