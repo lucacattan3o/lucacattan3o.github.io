@@ -1,5 +1,5 @@
 let obj = {
-  vel: 0.8,
+  vel: 6,
 };
 
 let storageName = 'settete';
