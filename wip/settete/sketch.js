@@ -6,6 +6,12 @@ let palette = [
   '#BEBEFF',
 ];
 
+let matildaBg = palette[0];
+
+let 
+  eyeSize, eyeSep, eyeAspect,
+  pupilSize, pupilAspect;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
@@ -31,11 +37,11 @@ function drawMatilda(){
   let tildaW = width * 0.2;
   let tildaH = tildaW * 2;
   
-  let eyeSize = tildaW * 0.5;
-  let eyeSep = eyeSize * 0.4;
-  let eyeAspect = 1.18;
-  let pupilSize = eyeSize * 0.35;
-  let pupilAspect = 1.4;
+  eyeSize = tildaW * 0.5;
+  eyeSep = eyeSize * 0.44;
+  eyeAspect = 1.15;
+  pupilSize = eyeSize * 0.35;
+  pupilAspect = 1.4;
 
   let amp = tildaW * 0.1;
 
@@ -47,24 +53,46 @@ function drawMatilda(){
     // body
     push();
       noStroke();
-      fill(palette[0]);
+      fill(matildaBg);
       drawTilde(0, 0, tildaW, tildaH, amp, speed, 30);
     pop();
 
     // eyes
     push();
       stroke(0);
-      let bx = getLoopBounce(speed * 0.5 * 0.5 * 0.65, 0.55);
-      translate(amp * 0.8 * bx, -tildaH * 0.25)
-      
-      ellipse(-eyeSep, 0, eyeSize, eyeSize * eyeAspect);
-      ellipse(eyeSep, 0, eyeSize, eyeSize * eyeAspect);
-
-      fill(0);
-      ellipse(-eyeSep, 0, pupilSize, pupilSize * pupilAspect);
-      ellipse(eyeSep, 0, pupilSize, pupilSize * pupilAspect);
+      let bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+      translate(amp * 0.8 * bx, -tildaH * 0.2)
+      drawEye(-eyeSep, 0);
+      drawEye(eyeSep, 0);
     pop();
   pop();
+}
+
+function drawEye(x, y){
+  push();
+  translate(x, y);
+  fill(matildaBg);
+  noStroke();
+  ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
+
+  push();
+    fill(255);
+    clip(maskEye);
+    stroke(0);
+    circle(0, eyeSize * 0.55, eyeSize * 1.5);
+  pop();
+
+  noFill();
+  stroke(0);
+  ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
+
+  fill(0);
+  ellipse(0, 0, pupilSize, pupilSize * pupilAspect);
+  pop();
+}
+
+function maskEye(){
+  ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
 }
 
 function drawTilde(x, y, w, h, amp, speed, points){
