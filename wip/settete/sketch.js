@@ -153,7 +153,7 @@ function drawEyebrows(matildaX, matildaY, amp, bx){
         drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
       pop();
       push();
-        translate(eyebrowsSpace, eyeSize * obj.eyebrowsDelta);
+        translate(eyebrowsSpace, eyeSize * -obj.eyebrowsDelta);
         rotate(PI * 0.5);
         drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
       pop();
