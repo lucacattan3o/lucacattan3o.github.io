@@ -94,7 +94,7 @@ function drawMatilda(matildaX, matildaY){
   // eyebrows
   push();
     translate(matildaX, matildaY);
-    let ebx = amp * 0.6 * bx;
+    let ebx = amp * 0.5 * bx;
     translate(ebx, 0);
     fill(0);
     push();
