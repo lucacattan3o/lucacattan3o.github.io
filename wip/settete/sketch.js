@@ -42,7 +42,7 @@ function drawMatilda(){
   eyeAspect = 1.15;
   pupilSize = eyeSize * 0.35;
   pupilAspect = 1.4;
-  pupilDist = eyeSize * 0.4;
+  pupilDist = eyeSize * 0.5;
 
   let amp = tildaW * 0.1;
 
@@ -55,17 +55,20 @@ function drawMatilda(){
     push();
       noStroke();
       fill(matildaBg);
-      drawTilde(0, 0, tildaW, tildaH, amp, speed, 30);
+      drawTilde(0, 0, tildaW, tildaH, amp, speed, 60);
     pop();
   pop();
 
   // eyes
   push();
     stroke(0);
-    let bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+    let bx = 0;
+    if (speed){
+      bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+    }
     let x = width * 0.5;
     x = x + amp * 0.8 * bx;
-    let y = height - tildaH * 0.8;
+    let y = height - tildaH * 0.75;
     drawEye(x - eyeSep, y);
     drawEye(x + eyeSep, y);
   pop();
@@ -73,33 +76,33 @@ function drawMatilda(){
 
 function drawEye(x, y){
   push();
-  translate(x, y);
-  fill(matildaBg);
-  noStroke();
-  ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
-
-  push();
-    fill(255);
-    clip(maskEye);
-    stroke(0);
-    circle(0, eyeSize * 0.55, eyeSize * 1.5);
-  pop();
-
-  noFill();
-  stroke(0);
-  ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
-
-  fill(0);
-  let a = atan2(y - mouseY, x - mouseX);
-  let d = dist(x, y, mouseX, mouseY);
-  let r = pupilDist * map(d, 0, width, 0, 1, true);
+    translate(x, y);
+    fill(matildaBg);
+    noStroke();
+    ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
 
     push();
-      rotate(a);  
-      translate(-r, 0);
-      rotate(-a);
-      ellipse(0, 0, pupilSize, pupilSize * pupilAspect);
+      fill(255);
+      clip(maskEye);
+      stroke(0);
+      circle(0, eyeSize * 0.55, eyeSize * 1.5);
+
+      fill(0);
+      let a = atan2(y - mouseY, x - mouseX);
+      let d = dist(x, y, mouseX, mouseY);
+      let r = pupilDist * map(d, 0, width, 0, 1, true);
+
+      push();
+        rotate(a);  
+        translate(-r, 0);
+        rotate(-a);
+        ellipse(0, 0, pupilSize, pupilSize * pupilAspect);
+      pop();
     pop();
+
+    noFill();
+    stroke(0);
+    ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
   pop();
 }
 
@@ -125,9 +128,12 @@ function drawTilde(x, y, w, h, amp, speed, points){
   // Curva destra
   for (let i = 0; i <= points; i++) {
     let angle = map(i, 0, points * 0.5, 0, PI);
+    // 0.5  > PI
+    // 0.25 > 
+    angle += PI;
     angle += anim;
     let x = w * 0.5;
-    x = x + map(sin(-angle), -1, 1, -amp, amp);
+    x = x + map(sin(angle), -1, 1, -amp, amp);
     let y = - i * (h / points);
     vertex(x, y);
   }
