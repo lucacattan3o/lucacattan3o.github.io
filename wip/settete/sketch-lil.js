@@ -1,6 +1,9 @@
 let obj = {
   vel: 6,
   eyelidY: 0.5,
+  eyebrowsY: 0,
+  eyebrowsDelta: 0,
+  eyebrows: 'Tilde',
 };
 
 let storageName = 'settete';
@@ -42,10 +45,12 @@ function setupLil(){
 
   const body = gui.addFolder('Matilda');
   body.add(obj, 'vel').min(0).max(40).name('Velocity');
-  // grid.add(obj, 'freq').min(0.05).max(4).step(0.1).name('Frequency');
 
   const eyes = gui.addFolder('Eyes');
-  eyes.add(obj, 'eyelidY').min(-1).max(1).name('Eyelid');
+  eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
+  eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
+  eyes.add(obj, 'eyebrowsDelta').min(-0.5).max(0.5).name('Eyebrows Delta');
+  eyes.add(obj, 'eyelidY').min(-1.4).max(1.4).name('Eyelid');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');

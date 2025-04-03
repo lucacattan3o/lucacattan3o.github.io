@@ -91,23 +91,8 @@ function drawMatilda(matildaX, matildaY){
     drawEye(x + eyeSep, y);
   pop();
 
-  // eyebrows
-  push();
-    translate(matildaX, matildaY);
-    let ebx = amp * 0.5 * bx;
-    translate(ebx, 0);
-    fill(0);
-    push();
-      translate(-matildaW * 0.27, -matildaH * 0.36)
-      rotate(PI * 0.5);
-      drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
-    pop();
-    push();
-      translate(matildaW * 0.27, -matildaH * 0.36)
-      rotate(PI * 0.5);
-      drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
-    pop();
-  pop();
+  drawEyebrows(matildaX, matildaY, amp, bx);
+  
 }
 
 function drawEye(x, y){
@@ -151,6 +136,55 @@ function drawEye(x, y){
   pop();
 }
 
+function drawEyebrows(matildaX, matildaY, amp, bx){
+  let eyebrowsSpace = matildaW * 0.27;
+
+  push();
+    translate(matildaX, matildaY);
+    let ebx = amp * 0.5 * bx;
+    translate(ebx, -matildaH * 0.4);
+    translate(0, eyeSize * obj.eyebrowsY);
+
+    fill(0);
+    if (obj.eyebrows == 'Tilde'){
+      push();
+        translate(-eyebrowsSpace, eyeSize * obj.eyebrowsDelta);
+        rotate(PI * 0.5);
+        drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
+      pop();
+      push();
+        translate(eyebrowsSpace, eyeSize * obj.eyebrowsDelta);
+        rotate(PI * 0.5);
+        drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
+      pop();
+    }
+    if (obj.eyebrows == 'Happy'){
+      push();
+        strokeCap(SQUARE);
+        strokeWeight(eyeSize * 0.3);
+        push();
+          translate(-eyebrowsSpace, eyeSize * obj.eyebrowsDelta);
+          bezier(
+            -eyeSize * 0.35, 0, 
+            -eyeSize * 0.1, -eyeSize * 0.2,
+            eyeSize * 0.1, -eyeSize * 0.2,
+            eyeSize * 0.35, 0
+          );
+        pop();
+        push();
+          translate(eyebrowsSpace, eyeSize * -obj.eyebrowsDelta);
+          bezier(
+            -eyeSize * 0.35, 0, 
+            -eyeSize * 0.1, -eyeSize * 0.2,
+            eyeSize * 0.1, -eyeSize * 0.2,
+            eyeSize * 0.35, 0
+          );
+        pop();
+      pop();
+    }
+  pop();
+}
+
 function maskEye(){
   ellipse(0, 0, eyeSize, eyeSize * eyeAspect);
 }
@@ -168,11 +202,6 @@ function drawTilde(x, y, w, h, amp, speed, points){
   }
   
   beginShape();
-
-  // Linea superiore
-  // vertex(-w * 0.5, 0);
-  // vertex(w * 0.5, 0);
-
   // Curva destra
   for (let i = 0; i <= points; i++) {
     let angle = map(i, 0, points * 0.5, 0, PI);
@@ -186,10 +215,6 @@ function drawTilde(x, y, w, h, amp, speed, points){
     vertex(x, y);
   }
 
-  // Linea inferiore
-  // vertex(w * 0.5, -h);
-  // vertex(-w * 0.5, -h);
-
   // Curva sinistra
   for (let i = 0; i <= points; i++) {
     let angle = map(i, 0, points * 0.5, 0, PI);
@@ -199,7 +224,6 @@ function drawTilde(x, y, w, h, amp, speed, points){
     let y = -h + i * (h / points);
     vertex(x, y);
   }
-
   endShape(CLOSE);
   pop();
 }
