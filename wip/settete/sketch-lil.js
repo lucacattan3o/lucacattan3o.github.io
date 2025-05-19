@@ -1,5 +1,5 @@
 let obj = {
-  vel: 6,
+  vel: 1,
   eyelidY: 0.5,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
@@ -44,7 +44,7 @@ function setupLil(){
   gui = new GUI();
 
   const body = gui.addFolder('Matilda');
-  body.add(obj, 'vel').min(0).max(40).name('Velocity');
+  body.add(obj, 'vel').min(0).max(8).name('Velocity');
 
   const eyes = gui.addFolder('Eyes');
   eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');

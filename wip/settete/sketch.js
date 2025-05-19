@@ -16,7 +16,7 @@ let
 let ref;
 
 let bodyPoints = [];
-let nPoints = 20;
+let nPoints = 50;
 
 function preload(){
   ref = loadImage('./imgs/matilde-idle.png');
@@ -33,10 +33,18 @@ function setup() {
 function setupBodyPoints(){
   for (let i = 0; i < nPoints; i++) {
     bodyPoints.push({
-      i: i,
-      x: cos(i * TWO_PI / points - PI * 0.5),
+      delta: i,
+      x: cos(i * TWO_PI / nPoints - PI * 0.5),
     });
   }
+}
+
+function updateBodyPoints(speed){
+  let a = getAnimation();
+  bodyPoints.forEach((point, i) => {
+    let anim = a * PI * speed;
+    point.x = cos(i * TWO_PI / nPoints - PI * 0.5 * anim);
+  });
 }
 
 function draw() {
@@ -74,9 +82,8 @@ function drawMatilda(matildaX, matildaY){
 
   let amp = matildaW * 0.1;
 
-  let bx = 0;
   if (speed){
-    bx = getLoopBounce(speed * 0.5 * 0.5 * 0.5, 0.55);
+    updateBodyPoints(speed);
   }
 
   strokeWeight(matildaW * 0.005);
@@ -91,7 +98,7 @@ function drawMatilda(matildaX, matildaY){
       // noFill();
       // stroke('red');
       // drawTilde(0, 0, matildaW, matildaH, amp, speed, 30);
-      drawSmartTilde(0, 0, matildaW, matildaH, amp, speed, npPoints);
+      drawSmartTilde(0, 0, matildaW, matildaH, amp, nPoints);
     pop();
   pop();
 
@@ -206,14 +213,9 @@ function maskEyelid(){
   circle(0, eyeSize * obj.eyelidY, eyeSize * 1.5);
 }
 
-function drawSmartTilde(x, y, w, h, amp, speed, points){
+function drawSmartTilde(x, y, w, h, amp, points){
   push();
   translate(x, y - h * 0.5);
-  
-  let anim = 0;
-  if (speed){
-    anim = getAnimation(speed);
-  }
   let firstPoint = {
     x: null,
     y: null,
@@ -240,7 +242,6 @@ function drawSmartTilde(x, y, w, h, amp, speed, points){
     vertex(firstPoint.x, firstPoint.y);
   endShape();
   pop();
-  noLoop();
 }
 
 function drawTilde(x, y, w, h, amp, speed, points){
