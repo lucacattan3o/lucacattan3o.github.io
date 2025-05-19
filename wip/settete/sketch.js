@@ -16,7 +16,7 @@ let
 let ref;
 
 function preload(){
-  ref = loadImage('./imgs/ref.png');
+  ref = loadImage('./imgs/matilde-idle.png');
 }
 
 function setup() {
@@ -30,8 +30,8 @@ function draw() {
   background(0);
   unit = width / 10;
   
-  // drawReference();
-  drawMatilda(width * 0.5, height * 0.5);
+  drawReference();
+  // drawMatilda(width * 0.5, height * 0.5);
 }  
 
 function windowResized(){
@@ -42,7 +42,6 @@ function drawReference(){
   push();
     translate(width * 0.5, height * 0.49);
     imageMode(CENTER);
-    scale(1.9);
     image(ref, 0, 0);
   pop();
 }
@@ -82,16 +81,16 @@ function drawMatilda(matildaX, matildaY){
   pop();
 
   // eyes
-  push();
-    stroke(0);
-    let x = matildaX;
-    x = x + amp * 0.7 * bx;
-    let y = matildaY - matildaH * 0.18;
-    drawEye(x - eyeSep, y);
-    drawEye(x + eyeSep, y);
-  pop();
+  // push();
+  //   stroke(0);
+  //   let x = matildaX;
+  //   x = x + amp * 0.7 * bx;
+  //   let y = matildaY - matildaH * 0.18;
+  //   drawEye(x - eyeSep, y);
+  //   drawEye(x + eyeSep, y);
+  // pop();
 
-  drawEyebrows(matildaX, matildaY, amp, bx);
+  // drawEyebrows(matildaX, matildaY, amp, bx);
   
 }
 
