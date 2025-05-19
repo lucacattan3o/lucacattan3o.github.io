@@ -15,6 +15,9 @@ let
 
 let ref;
 
+let bodyPoints = [];
+let nPoints = 20;
+
 function preload(){
   ref = loadImage('./imgs/matilde-idle.png');
 }
@@ -24,14 +27,24 @@ function setup() {
   frameRate(fps);
   smFrameRate(fps);
   setupLil();
+  setupBodyPoints();
+}
+
+function setupBodyPoints(){
+  for (let i = 0; i < nPoints; i++) {
+    bodyPoints.push({
+      i: i,
+      x: cos(i * TWO_PI / points - PI * 0.5),
+    });
+  }
 }
 
 function draw() {
   background(0);
   unit = width / 10;
   
-  drawReference();
-  // drawMatilda(width * 0.5, height * 0.5);
+  // drawReference();
+  drawMatilda(width * 0.5, height * 0.5);
 }  
 
 function windowResized(){
@@ -40,7 +53,7 @@ function windowResized(){
 
 function drawReference(){
   push();
-    translate(width * 0.5, height * 0.49);
+    translate(width * 0.5, height * 0.485);
     imageMode(CENTER);
     image(ref, 0, 0);
   pop();
@@ -50,7 +63,7 @@ function drawMatilda(matildaX, matildaY){
   let speed = obj.vel;
   
   matildaW = width * 0.2;
-  matildaH = matildaW * 2;
+  matildaH = matildaW * 1.47;
   
   eyeSize = matildaW * 0.56;
   eyeSep = eyeSize * 0.4;
@@ -59,7 +72,7 @@ function drawMatilda(matildaX, matildaY){
   pupilAspect = 1.5;
   pupilDist = eyeSize * 0.5;
 
-  let amp = matildaW * 0.12;
+  let amp = matildaW * 0.1;
 
   let bx = 0;
   if (speed){
@@ -76,7 +89,9 @@ function drawMatilda(matildaX, matildaY){
       noStroke();
       fill(matildaBg);
       // noFill();
-      drawTilde(0, 0, matildaW, matildaH, amp, speed, 30);
+      // stroke('red');
+      // drawTilde(0, 0, matildaW, matildaH, amp, speed, 30);
+      drawSmartTilde(0, 0, matildaW, matildaH, amp, speed, npPoints);
     pop();
   pop();
 
@@ -189,6 +204,43 @@ function maskEye(){
 }
 function maskEyelid(){
   circle(0, eyeSize * obj.eyelidY, eyeSize * 1.5);
+}
+
+function drawSmartTilde(x, y, w, h, amp, speed, points){
+  push();
+  translate(x, y - h * 0.5);
+  
+  let anim = 0;
+  if (speed){
+    anim = getAnimation(speed);
+  }
+  let firstPoint = {
+    x: null,
+    y: null,
+  };
+  beginShape();
+    for (let i = 0; i < points; i++) {
+      let point = bodyPoints[i];
+      let x = w * 0.5;
+      x = x + map(point.x, -1, 1, -amp, amp);
+      let y = i * (h / points);
+      if (i == 0){
+        firstPoint.x = x;
+        firstPoint.y = y;
+      }
+      vertex(x, y);
+    };
+    for (let i = (points - 1); i >= 0; i--) {
+      let point = bodyPoints[i];
+      let x = -w * 0.5;
+      x = x - map(point.x, 1, -1, -amp, amp);
+      let y = i * (h / points);
+      vertex(x, y);
+    };
+    vertex(firstPoint.x, firstPoint.y);
+  endShape();
+  pop();
+  noLoop();
 }
 
 function drawTilde(x, y, w, h, amp, speed, points){
