@@ -1,9 +1,10 @@
 let obj = {
   vel: 1,
-  eyelidY: 0.5,
+  eyelidY: 1.4,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
-  eyebrows: 'Tilde',
+  eyebrows: 'Happy',
+  soundAmp: 0.5,
 };
 
 let storageName = 'settete';
@@ -49,8 +50,11 @@ function setupLil(){
   const eyes = gui.addFolder('Eyes');
   eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
   eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
-  eyes.add(obj, 'eyebrowsDelta').min(-0.5).max(0.5).name('Eyebrows Delta');
-  eyes.add(obj, 'eyelidY').min(-1.4).max(1.4).name('Eyelid');
+  eyes.add(obj, 'eyebrowsDelta').min(-1).max(1).name('Eyebrows Delta');
+  eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
+
+  const sound = gui.addFolder('Sound');
+  sound.add(obj, 'soundAmp').min(0.5).max(4).name('Sound Displacement');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
