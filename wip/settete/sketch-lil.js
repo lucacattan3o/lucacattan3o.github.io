@@ -4,7 +4,7 @@ let obj = {
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
-  soundAmp: 0.5,
+  soundAmp: 1,
 };
 
 let storageName = 'settete';
@@ -13,7 +13,16 @@ let storageName = 'settete';
 // ---------
 
 let GUI = lil.GUI;
-let gui;
+let gui, guiMic, guiVel;
+
+obj.toggleMic = function(){
+  toggleMic();
+  if (micOn) {
+    guiMic.name('Mic: Turn Off');
+  } else {
+    guiMic.name('Mic: Turn On');
+  }
+};
 
 obj.savePreset = function() {
   saveToStorage();
@@ -45,7 +54,7 @@ function setupLil(){
   gui = new GUI();
 
   const body = gui.addFolder('Matilda');
-  body.add(obj, 'vel').min(0).max(8).name('Velocity');
+  guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity');
 
   const eyes = gui.addFolder('Eyes');
   eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
@@ -54,6 +63,7 @@ function setupLil(){
   eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
 
   const sound = gui.addFolder('Sound');
+  guiMic = sound.add(obj, 'toggleMic').name('Mic: turn on');
   sound.add(obj, 'soundAmp').min(0.5).max(4).name('Sound Displacement');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
