@@ -8,7 +8,7 @@ let
 function drawMatilda(matildaX, matildaY){
   updateBodyPoints();
 
-  matildaW = width * 0.2;
+  matildaW = unit * 2;
   matildaH = matildaW * 1.4;
 
   // ampiezza dell'oscillazione

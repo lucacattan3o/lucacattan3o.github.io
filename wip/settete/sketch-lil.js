@@ -1,11 +1,11 @@
 let obj = {
   vel: 1,
-  eyelidY: 1.4,
+  eyelidY: 0.5,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
   mouth: 'Idle',
-  soundAmp: 1,
+  soundAmp: 0.1,
 };
 
 let storageName = 'settete';
@@ -67,8 +67,8 @@ function setupLil(){
   mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
 
   const sound = gui.addFolder('Sound');
-  guiMic = sound.add(obj, 'toggleMic').name('Mic: turn on');
-  sound.add(obj, 'soundAmp').min(0.5).max(4).name('Sound Displacement');
+  guiMic = sound.add(obj, 'toggleMic').name('Mic: Turn On');
+  sound.add(obj, 'soundAmp').min(0).max(2).name('Sound Displacement');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
