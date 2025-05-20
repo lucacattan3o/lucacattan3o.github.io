@@ -4,6 +4,7 @@ let obj = {
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
+  mouth: 'Idle',
   soundAmp: 1,
 };
 
@@ -61,6 +62,9 @@ function setupLil(){
   eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
   eyes.add(obj, 'eyebrowsDelta').min(-1).max(1).name('Eyebrows Delta');
   eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
+
+  const mouth = gui.addFolder('Mouth');
+  mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
 
   const sound = gui.addFolder('Sound');
   guiMic = sound.add(obj, 'toggleMic').name('Mic: turn on');
