@@ -2,7 +2,8 @@
 let 
   matildaW, matildaH, matildaAmp,
   eyeSize, eyeSep, eyeAspect,
-  pupilSize, pupilAspect, pupilDist;
+  pupilSize, pupilAspect, pupilDist,
+  strokeW;
 
 function drawMatilda(matildaX, matildaY){
   updateBodyPoints();
@@ -18,11 +19,13 @@ function drawMatilda(matildaX, matildaY){
   eyeAspect = 1.2;
   eyeWhite = eyeSize * 3;
 
-  pupilSize = eyeSize * 0.25;
+  pupilSize = eyeSize * 0.24;
   pupilAspect = 1.5;
   pupilDist = eyeSize * 0.5;
+
+  strokeW = matildaW * 0.018;
   
-  strokeWeight(matildaW * 0.018);
+  strokeWeight(strokeW);
 
   // body
   push();
@@ -40,8 +43,8 @@ function drawMatilda(matildaX, matildaY){
   drawEyebrows(matildaX, matildaY);
 
   // mouth
-  let mx = matildaX + (0.5 * matildaAmp * bodyPoints[42].x);
-  let my = matildaY + matildaH * 0.15;
+  let mx = matildaX + (0.4 * matildaAmp * bodyPoints[27].x);
+  let my = matildaY + matildaH * 0.19;
   drawMouth(mx, my);
 }
 
@@ -122,14 +125,13 @@ function drawEye(x, y){
 }
 
 function drawEyebrows(matildaX, matildaY){
-  let eyebrowsSpace = matildaW * 0.27;
-
+  let eyebrowsSpace = matildaW * 0.28;
   let eyebrowsDelta = obj.eyebrowsDelta * 0.1;
 
   push();
     translate(matildaX, matildaY);
     let ebx = matildaAmp * 0.5 * bodyPoints[25].x;
-    translate(ebx, -matildaH * 0.35);
+    translate(ebx, -matildaH * 0.37);
     translate(0, eyeSize * obj.eyebrowsY);
 
     fill(0);
@@ -148,23 +150,25 @@ function drawEyebrows(matildaX, matildaY){
     if (obj.eyebrows == 'Happy'){
       push();
         strokeCap(SQUARE);
-        strokeWeight(eyeSize * 0.3);
+        strokeWeight(eyeSize * 0.35);
         push();
           translate(-eyebrowsSpace, eyeSize * eyebrowsDelta);
+          rotate(-PI * 0.05);
           bezier(
-            -eyeSize * 0.35, 0, 
+            -eyeSize * 0.38, 0, 
             -eyeSize * 0.1, -eyeSize * 0.2,
             eyeSize * 0.1, -eyeSize * 0.2,
-            eyeSize * 0.35, 0
+            eyeSize * 0.38, 0
           );
         pop();
         push();
           translate(eyebrowsSpace, eyeSize * -eyebrowsDelta);
+          rotate(PI * 0.05);
           bezier(
-            -eyeSize * 0.35, 0, 
+            -eyeSize * 0.38, 0, 
             -eyeSize * 0.1, -eyeSize * 0.2,
             eyeSize * 0.1, -eyeSize * 0.2,
-            eyeSize * 0.35, 0
+            eyeSize * 0.38, 0
           );
         pop();
       pop();
@@ -185,20 +189,30 @@ function maskEyelid(){
 function drawMouth(x, y){
   push();
     translate(x, y);
-    rotate(-HALF_PI * 0.1);
-    let unit = matildaW * 0.1;
-    strokeWeight(unit * 1.5);
-    stroke(palette[1]);
     noFill();
-    let mW = unit * 2.5;
-    let mH = unit * 0.8;
-    bezier(
-      -mW, -mH,
-      -mW * 0.6, mH * 0.6,
-      mW * 0.4, mH * 0.6,
-      mW, -mH
-    );
+    rotate(-HALF_PI * 0.05);
+    let mu = matildaW * 0.11;
+    strokeWeight(mu * 1.5 + (strokeW * 2));
+    stroke(0);
+    drawStandardMouth(mu);
+    strokeWeight(mu * 1.5);
+    stroke(palette[1]);
+    drawStandardMouth(mu);
+    strokeWeight(strokeW);
+    stroke(0);
+    drawStandardMouth(mu);
   pop();
+}
+
+function drawStandardMouth(mu){
+  let mW = mu * 2.5;
+  let mH = mu * 0.8;
+  bezier(
+    -mW, -mH,
+    -mW * 0.6, mH * 0.6,
+    mW * 0.4, mH * 0.6,
+    mW, -mH
+  );
 }
 
 /**
