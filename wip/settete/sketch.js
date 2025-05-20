@@ -20,6 +20,7 @@ let nPoints = 64;
 
 let mic, fft;
 let micOn = false;
+let soundVol = 0;
 let waveform = [];
 let bins = nPoints;
 
@@ -75,18 +76,18 @@ function draw() {
   background(0);
   unit = width / 10;
 
-  if (mic.enabled){
-    let vol = mic.getLevel();
-    if (vol > 0.5){
+  if (micOn){
+    soundVol = mic.getLevel();
+    // simple sound interaction
+    if (soundVol > 0.5){
       guiVel.setValue(4);
     } else{
       guiVel.setValue(1);
     }
+    // waveform = fft.waveform();
   }
-
-  // waveform = fft.waveform();
   
-  // drawReference();
+  drawReference();
   drawMatilda(width * 0.5, height * 0.5);
 }
 
@@ -149,9 +150,10 @@ function updateBodyPoints(){
     return;
   }
 
-  let a = getLoop();
+  let a = getLoop(obj.vel);
   bodyPoints.forEach((point, i) => {
-    let anim = a * TWO_PI * obj.vel;
+    // let anim = a * TWO_PI * obj.vel;
+    anim = a * TWO_PI;
     let angle = (i * TWO_PI / nPoints - PI * 0.5) + anim;
     point.x = cos(angle);
     // point.x += waveform[i] * obj.soundAmp;
