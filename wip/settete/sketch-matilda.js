@@ -3,7 +3,8 @@ let
   matildaW, matildaH, matildaAmp, matildaOffset,
   eyeSize, eyeSep, eyeAspect,
   pupilSize, pupilAspect, pupilDist,
-  strokeW, mouthUnit;
+  strokeW,
+  mouthUnit, mouthW;
 
 function drawMatilda(matildaX, matildaY){
   updateBodyPoints();
@@ -28,7 +29,10 @@ function drawMatilda(matildaX, matildaY){
   pupilDist = eyeSize * 0.5;
 
   strokeW = matildaW * 0.018;
+
+  // spessore bocca
   mouthUnit = matildaW * 0.11;
+  mouthW = mouthUnit * 2.5;
   
   strokeWeight(strokeW);
 
@@ -192,13 +196,20 @@ function maskEyelid(){
 // -----------
 
 function drawMouth(x, y){
-  let mu = mouthUnit;
   let debug = true;
   push();
     translate(x, y);
     switch (obj.mouth) {
       case 'Idle':
-        drawMouthIdle(mu, debug);
+        drawMouthIdle(debug);
+        break;
+
+      case 'Sad':
+        drawMouthSad(debug);
+        break;
+
+      case 'Bored':
+        drawMouthBored(debug);
         break;
     
       default:
@@ -207,7 +218,8 @@ function drawMouth(x, y){
   pop();
 }
 
-function drawMouthIdle(mu, debug){
+function drawMouthIdle(debug){
+  let mu = mouthUnit;
   push();
     noFill();
     rotate(-HALF_PI * 0.05);
@@ -215,22 +227,72 @@ function drawMouthIdle(mu, debug){
     // bordo nero
     strokeWeight(mu * 1.5 + (strokeW * 2));
     stroke(0);
-    mouthIdle(mu);
+    mouthIdle();
 
     // labbra magenta
     strokeWeight(mu * 1.5);
     stroke(palette[1]);
-    mouthIdle(mu);
+    mouthIdle();
 
     // linea nera
     strokeWeight(strokeW);
     stroke(0);
-    mouthIdle(mu, debug);
+    mouthIdle(debug);
   pop();
 }
 
-function mouthIdle(mu, debug = false){
-  let mw = mu * 2.5;
+function drawMouthSad(debug){
+  let mu = mouthUnit;
+  push();
+    noFill();
+    rotate(HALF_PI * 0.05);
+    
+    // bordo nero
+    strokeWeight(mu * 1.5 + (strokeW * 2));
+    stroke(0);
+    mouthSad();
+
+    // labbra magenta
+    strokeWeight(mu * 1.5);
+    stroke(palette[1]);
+    mouthSad();
+
+    // linea nera
+    strokeWeight(strokeW);
+    stroke(0);
+    mouthSad(debug);
+  pop();
+}
+
+function drawMouthBored(debug){
+  let mu = mouthUnit;
+  push();
+    noFill();
+    rotate(HALF_PI * 0.15);
+    
+    // bordo nero
+    strokeWeight(mu * 1.5 + (strokeW * 2));
+    stroke(0);
+    mouthBored();
+
+    // labbra magenta
+    strokeWeight(mu * 1.5);
+    stroke(palette[1]);
+    mouthBored();
+
+    // linea nera
+    strokeWeight(strokeW);
+    stroke(0);
+    mouthBored(debug);
+  pop();
+}
+
+// ** MOUTH LINES **
+// -----------------
+
+function mouthIdle(debug = false){
+  let mw = mouthW;
+  let mu = mouthUnit;
   let mh = mu * 0.8;
 
   let p = [
@@ -256,14 +318,72 @@ function mouthIdle(mu, debug = false){
   );
 
   if (debug){
-    push();
-      strokeWeight(mouthUnit * 0.3);
-      stroke(debugColor);
-      p.forEach((item) => {
-        point(item.x, item.y);
-      });
-    pop();
+    debugPoints(p);
   }
+}
+
+function mouthSad(debug = false){
+  let mu = mouthUnit;
+  let mw = mouthW;
+  let mh = mu * 0.8;
+
+  let p = [
+    {
+      x: -mw, y: mh * 0.3,
+    },
+    {
+      x: -mw * 0.6, y: -mh * 1.3,
+    },
+    {
+      x: mw * 0.4, y: -mh * 1.3,
+    },
+    {
+      x: mw, y: mh * 0.3,
+    }
+  ];
+
+  bezier(
+    p[0].x, p[0].y, 
+    p[1].x, p[1].y,
+    p[2].x, p[2].y,
+    p[3].x, p[3].y,
+  );
+
+  if (debug){
+    debugPoints(p);
+  }
+}
+
+function mouthBored(debug = false){
+  let mw = mouthW * 0.9;
+
+  let p = [
+    {
+      x: -mw, y: 0,
+    },
+    {
+      x: mw, y: 0,
+    }
+  ];
+
+  line(
+    p[0].x, p[0].y, 
+    p[1].x, p[1].y
+  );
+
+  if (debug){
+    debugPoints(p);
+  }
+}
+
+function debugPoints(points){
+  push();
+    strokeWeight(mouthUnit * 0.3);
+    stroke(debugColor);
+    points.forEach((item) => {
+      point(item.x, item.y);
+    });
+  pop();
 }
 
 /**

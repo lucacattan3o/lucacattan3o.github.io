@@ -23,7 +23,7 @@ let waveform = [];
 let bins = nPoints;
 
 function preload(){
-  ref = loadImage('./imgs/matilde-idle.png');
+  ref = loadImage('./imgs/matilde-state1.png');
 }
 
 function setup() {
@@ -63,7 +63,7 @@ function draw() {
 
   micInteraction();
   
-  // drawReference();
+  drawReference();
   drawMatilda(width * 0.5, height * 0.5);
   drawMic();
 }
