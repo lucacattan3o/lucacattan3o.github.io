@@ -7,6 +7,8 @@ let palette = [
   '#f664d0',
 ];
 
+let debugColor = '#03FFBC';
+
 let matildaBg = palette[0];
 
 let ref;

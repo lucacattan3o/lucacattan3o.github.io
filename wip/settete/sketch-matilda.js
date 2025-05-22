@@ -1,9 +1,9 @@
 
 let 
-  matildaW, matildaH, matildaAmp,
+  matildaW, matildaH, matildaAmp, matildaOffset,
   eyeSize, eyeSep, eyeAspect,
   pupilSize, pupilAspect, pupilDist,
-  strokeW;
+  strokeW, mouthUnit;
 
 function drawMatilda(matildaX, matildaY){
   updateBodyPoints();
@@ -13,6 +13,10 @@ function drawMatilda(matildaX, matildaY){
 
   // ampiezza dell'oscillazione
   matildaAmp = matildaW * 0.1;
+
+  // offset dal centro di matilda
+  // viso un po' a sx
+  matildaOffset = matildaW * 0.15;
   
   eyeSize = matildaW * 0.5;
   eyeSep = eyeSize * 0.4;
@@ -24,6 +28,7 @@ function drawMatilda(matildaX, matildaY){
   pupilDist = eyeSize * 0.5;
 
   strokeW = matildaW * 0.018;
+  mouthUnit = matildaW * 0.11;
   
   strokeWeight(strokeW);
 
@@ -35,15 +40,15 @@ function drawMatilda(matildaX, matildaY){
   pop();
 
   // eyes
-  let x = matildaX + (0.7 * matildaAmp * bodyPoints[26].x);
+  let x = matildaX - matildaOffset + (0.7 * matildaAmp * bodyPoints[26].x);
   let y = matildaY - matildaH * 0.1;
   drawEye(x - eyeSep, y);
   drawEye(x + eyeSep, y);
 
-  drawEyebrows(matildaX, matildaY);
+  drawEyebrows(matildaX - matildaOffset, matildaY);
 
   // mouth
-  let mx = matildaX + (0.4 * matildaAmp * bodyPoints[27].x);
+  let mx = matildaX - matildaOffset + (0.4 * matildaAmp * bodyPoints[27].x);
   let my = matildaY + matildaH * 0.19;
   drawMouth(mx, my);
 }
@@ -187,32 +192,78 @@ function maskEyelid(){
 // -----------
 
 function drawMouth(x, y){
+  let mu = mouthUnit;
+  let debug = true;
   push();
     translate(x, y);
-    noFill();
-    rotate(-HALF_PI * 0.05);
-    let mu = matildaW * 0.11;
-    strokeWeight(mu * 1.5 + (strokeW * 2));
-    stroke(0);
-    drawStandardMouth(mu);
-    strokeWeight(mu * 1.5);
-    stroke(palette[1]);
-    drawStandardMouth(mu);
-    strokeWeight(strokeW);
-    stroke(0);
-    drawStandardMouth(mu);
+    switch (obj.mouth) {
+      case 'Idle':
+        drawMouthIdle(mu, debug);
+        break;
+    
+      default:
+        break;
+    }
   pop();
 }
 
-function drawStandardMouth(mu){
-  let mW = mu * 2.5;
-  let mH = mu * 0.8;
+function drawMouthIdle(mu, debug){
+  push();
+    noFill();
+    rotate(-HALF_PI * 0.05);
+    
+    // bordo nero
+    strokeWeight(mu * 1.5 + (strokeW * 2));
+    stroke(0);
+    mouthIdle(mu);
+
+    // labbra magenta
+    strokeWeight(mu * 1.5);
+    stroke(palette[1]);
+    mouthIdle(mu);
+
+    // linea nera
+    strokeWeight(strokeW);
+    stroke(0);
+    mouthIdle(mu, debug);
+  pop();
+}
+
+function mouthIdle(mu, debug = false){
+  let mw = mu * 2.5;
+  let mh = mu * 0.8;
+
+  let p = [
+    {
+      x: -mw, y: -mh,
+    },
+    {
+      x: -mw * 0.6, y: mh * 0.6,
+    },
+    {
+      x: mw * 0.4, y: mh * 0.6,
+    },
+    {
+      x: mw, y: -mh,
+    }
+  ];
+
   bezier(
-    -mW, -mH,
-    -mW * 0.6, mH * 0.6,
-    mW * 0.4, mH * 0.6,
-    mW, -mH
+    p[0].x, p[0].y, 
+    p[1].x, p[1].y,
+    p[2].x, p[2].y,
+    p[3].x, p[3].y,
   );
+
+  if (debug){
+    push();
+      strokeWeight(mouthUnit * 0.3);
+      stroke(debugColor);
+      p.forEach((item) => {
+        point(item.x, item.y);
+      });
+    pop();
+  }
 }
 
 /**
