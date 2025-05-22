@@ -63,7 +63,7 @@ function draw() {
 
   micInteraction();
   
-  drawReference();
+  // drawReference();
   drawMatilda(width * 0.5, height * 0.5);
   drawMic();
 }

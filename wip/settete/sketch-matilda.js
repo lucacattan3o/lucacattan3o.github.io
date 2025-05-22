@@ -196,7 +196,7 @@ function maskEyelid(){
 // -----------
 
 function drawMouth(x, y){
-  let debug = true;
+  let debug = false;
   push();
     translate(x, y);
     switch (obj.mouth) {
@@ -292,7 +292,7 @@ function drawMouthBored(debug){
 }
 
 function drawMouthHappy(debug){
-  let mu = mouthUnit;
+  let mw = mouthW;
   push();
     noFill();
     // rotate(HALF_PI * 0.15);
@@ -301,7 +301,10 @@ function drawMouthHappy(debug){
     stroke(0);
     strokeWeight(strokeW);
     fill(palette[1]);
-    mouthHappy(debug);
+    mouthHappy(1.2, 1.2, 'outer',);
+    translate(0, mw * 0.22);
+    fill(0);
+    mouthHappy(0.85, 0.6, 'inner', debug);
   pop();
 }
 
@@ -394,35 +397,54 @@ function mouthBored(debug = false){
   }
 }
 
-function mouthHappy(debug = false){
-  let mu = mouthUnit;
-  let mw = mouthW * 0.9;
+function mouthHappy(scaleX, scaleY, part, debug = false){
+  let mw = mouthW * scaleX;
+  let mh = mouthW * scaleY;
 
   let start = {
-    x: 0, y: 0,
+    x: -mw * 0.1, y: 0,
   }
   let p = [
     {
-      ax: mw * 0.5, ay: +mu * 0,
-      bx: mw * 0.7, by: -mu * 1.4,
-      cx: mw * 1,   cy: -mu * 1,
+      ax: mw * 0.5, ay: +mh * 0,
+      bx: mw * 1,   by: -mh * 0.7,
+      cx: mw * 1,   cy: -mh * 0.2, // dx
     },
     {
-      ax: mw * 1.3, ay: -mu * 0.4,
-      bx: mw * 0.7, by: +mu * 1.4,
-      cx: mw * 0,   cy: +mu * 1.4,
+      ax: mw * 1,   ay: +mh * 0.2,
+      bx: mw * 0.6, by: +mh * 0.7,
+      cx: mw * 0,   cy: +mh * 0.7, // basso
     },
     {
-      ax: -mw * 0.8, ay: +mu * 1.4,
-      bx: -mw * 1.3, by: +mu * 0.4,
-      cx: -mw * 1.1, cy: -mu * 0.3,
+      ax: -mw * 0.6, ay: +mh * 0.7,
+      bx: -mw * 1,   by: +mh * 0.25,
+      cx: -mw * 1,   cy: -mh * 0.15, // sx
     },
     {
-      ax: -mw * 0.9, ay: -mu * 0.9,
-      bx: -mw * 0.5, by: +mu * 0,
-      cx: start.x,   cy: start.y,
+      ax: -mw * 1,   ay: -mh * 0.5,
+      bx: -mw * 0.5, by: +mh * 0,
+      cx: start.x,   cy: start.y, // top
     },
   ];
+
+  if (part == 'inner'){
+    // angolo a destra
+    p[0].bx = mw * 1.15;
+    p[0].cx = mw * 1.15;
+    p[1].ax = mw * 1.15;
+
+    p[0].by = -mh * 0.9;
+    p[0].cy = -mh * 0.5;
+    p[1].ay = mw * 0;
+
+    // angolo a sx
+    p[2].bx = -mw * 1.15;
+    p[2].cx = -mw * 1.15;
+    p[3].ax = -mw * 1.15;
+    p[2].by = mh * 0.015;
+    p[2].cy = -mh * 0.45;
+    p[3].ay = -mh * 0.8;
+  }
 
   beginShape();
     vertex(start.x, start.y);
