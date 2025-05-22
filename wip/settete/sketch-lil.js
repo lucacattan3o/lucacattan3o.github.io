@@ -1,10 +1,10 @@
 let obj = {
-  vel: 1,
+  vel: 0,
   eyelidY: 0.5,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
-  mouth: 'Idle',
+  mouth: 'Happy',
   soundAmp: 0.1,
 };
 

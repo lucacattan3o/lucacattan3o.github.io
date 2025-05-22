@@ -23,7 +23,7 @@ let waveform = [];
 let bins = nPoints;
 
 function preload(){
-  ref = loadImage('./imgs/matilde-state1.png');
+  ref = loadImage('./imgs/matilde-state3.png');
 }
 
 function setup() {
@@ -75,6 +75,7 @@ function windowResized(){
 function drawReference(){
   push();
     translate(width * 0.2, height * 0.49);
+    scale(0.5);
     imageMode(CENTER);
     image(ref, 0, 0);
   pop();

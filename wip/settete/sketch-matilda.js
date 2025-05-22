@@ -211,6 +211,10 @@ function drawMouth(x, y){
       case 'Bored':
         drawMouthBored(debug);
         break;
+
+      case 'Happy':
+        drawMouthHappy(debug);
+          break;
     
       default:
         break;
@@ -284,6 +288,20 @@ function drawMouthBored(debug){
     strokeWeight(strokeW);
     stroke(0);
     mouthBored(debug);
+  pop();
+}
+
+function drawMouthHappy(debug){
+  let mu = mouthUnit;
+  push();
+    noFill();
+    // rotate(HALF_PI * 0.15);
+    
+    // contorno esterno
+    stroke(0);
+    strokeWeight(strokeW);
+    fill(palette[1]);
+    mouthHappy(debug);
   pop();
 }
 
@@ -376,12 +394,73 @@ function mouthBored(debug = false){
   }
 }
 
+function mouthHappy(debug = false){
+  let mu = mouthUnit;
+  let mw = mouthW * 0.9;
+
+  let start = {
+    x: 0, y: 0,
+  }
+  let p = [
+    {
+      ax: mw * 0.5, ay: +mu * 0,
+      bx: mw * 0.7, by: -mu * 1.4,
+      cx: mw * 1,   cy: -mu * 1,
+    },
+    {
+      ax: mw * 1.3, ay: -mu * 0.4,
+      bx: mw * 0.7, by: +mu * 1.4,
+      cx: mw * 0,   cy: +mu * 1.4,
+    },
+    {
+      ax: -mw * 0.8, ay: +mu * 1.4,
+      bx: -mw * 1.3, by: +mu * 0.4,
+      cx: -mw * 1.1, cy: -mu * 0.3,
+    },
+    {
+      ax: -mw * 0.9, ay: -mu * 0.9,
+      bx: -mw * 0.5, by: +mu * 0,
+      cx: start.x,   cy: start.y,
+    },
+  ];
+
+  beginShape();
+    vertex(start.x, start.y);
+    p.forEach((item) => {
+      bezierVertex(
+        item.ax, item.ay,
+        item.bx, item.by,
+        item.cx, item.cy
+      );
+    })
+  endShape();
+
+  if (debug){
+    push();
+      strokeWeight(mouthUnit * 0.3);
+      stroke(debugColor);
+      point(start.x, start.y);
+    pop();
+    debugPoints(p);
+  }
+}
+
 function debugPoints(points){
   push();
     strokeWeight(mouthUnit * 0.3);
     stroke(debugColor);
     points.forEach((item) => {
-      point(item.x, item.y);
+      if (item.x !== undefined){
+        point(item.x, item.y);
+      } else {
+        strokeWeight(mouthUnit * 0.2);
+        stroke('red');
+        point(item.ax, item.ay);
+        point(item.bx, item.by);
+        stroke(debugColor);
+        strokeWeight(mouthUnit * 0.3);
+        point(item.cx, item.cy);
+      }
     });
   pop();
 }
