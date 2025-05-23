@@ -12,6 +12,7 @@ let debugColor = '#03FFBC';
 let matildaBg = palette[0];
 
 let ref;
+let mouthImgs = [];
 
 let bodyPoints = [];
 let nPoints = 64 * 2;
@@ -24,6 +25,8 @@ let bins = nPoints;
 
 function preload(){
   ref = loadImage('./imgs/matilde-state3.png');
+  mouthImgs[0] = loadImage('./imgs/mouth-smile.png');
+  mouthImgs[1] = loadImage('./imgs/mouth-wow.png');
 }
 
 function setup() {
@@ -34,6 +37,7 @@ function setup() {
   setupBodyPoints();
   setupAudio();
   strokeJoin(ROUND);
+  imageMode(CENTER);
 }
 
 function setupAudio(){

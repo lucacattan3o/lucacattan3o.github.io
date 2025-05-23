@@ -213,7 +213,11 @@ function drawMouth(x, y){
         break;
 
       case 'Happy':
-        drawMouthHappy(debug);
+        drawMouthHappy();
+          break;
+      
+      case 'Wow':
+        drawMouthWow();
           break;
     
       default:
@@ -291,21 +295,16 @@ function drawMouthBored(debug){
   pop();
 }
 
-function drawMouthHappy(debug){
-  let mw = mouthW;
-  push();
-    noFill();
-    // rotate(HALF_PI * 0.15);
-    
-    // contorno esterno
-    stroke(0);
-    strokeWeight(strokeW);
-    fill(palette[1]);
-    mouthHappy(1.2, 1.2, 'outer',);
-    translate(0, mw * 0.22);
-    fill(0);
-    mouthHappy(0.85, 0.6, 'inner', debug);
-  pop();
+function drawMouthHappy(){
+  let img = mouthImgs[0];
+  let scale = 0.6;
+  image(img, 0, 0, img.width * scale, img.height * scale);
+}
+
+function drawMouthWow(){
+  let img = mouthImgs[1];
+  let scale = 0.6;
+  image(img, 0, 0, img.width * scale, img.height * scale);
 }
 
 // ** MOUTH LINES **
@@ -393,76 +392,6 @@ function mouthBored(debug = false){
   );
 
   if (debug){
-    debugPoints(p);
-  }
-}
-
-function mouthHappy(scaleX, scaleY, part, debug = false){
-  let mw = mouthW * scaleX;
-  let mh = mouthW * scaleY;
-
-  let start = {
-    x: -mw * 0.1, y: 0,
-  }
-  let p = [
-    {
-      ax: mw * 0.5, ay: +mh * 0,
-      bx: mw * 1,   by: -mh * 0.7,
-      cx: mw * 1,   cy: -mh * 0.2, // dx
-    },
-    {
-      ax: mw * 1,   ay: +mh * 0.2,
-      bx: mw * 0.6, by: +mh * 0.7,
-      cx: mw * 0,   cy: +mh * 0.7, // basso
-    },
-    {
-      ax: -mw * 0.6, ay: +mh * 0.7,
-      bx: -mw * 1,   by: +mh * 0.25,
-      cx: -mw * 1,   cy: -mh * 0.15, // sx
-    },
-    {
-      ax: -mw * 1,   ay: -mh * 0.5,
-      bx: -mw * 0.5, by: +mh * 0,
-      cx: start.x,   cy: start.y, // top
-    },
-  ];
-
-  if (part == 'inner'){
-    // angolo a destra
-    p[0].bx = mw * 1.15;
-    p[0].cx = mw * 1.15;
-    p[1].ax = mw * 1.15;
-
-    p[0].by = -mh * 0.9;
-    p[0].cy = -mh * 0.5;
-    p[1].ay = mw * 0;
-
-    // angolo a sx
-    p[2].bx = -mw * 1.15;
-    p[2].cx = -mw * 1.15;
-    p[3].ax = -mw * 1.15;
-    p[2].by = mh * 0.015;
-    p[2].cy = -mh * 0.45;
-    p[3].ay = -mh * 0.8;
-  }
-
-  beginShape();
-    vertex(start.x, start.y);
-    p.forEach((item) => {
-      bezierVertex(
-        item.ax, item.ay,
-        item.bx, item.by,
-        item.cx, item.cy
-      );
-    })
-  endShape();
-
-  if (debug){
-    push();
-      strokeWeight(mouthUnit * 0.3);
-      stroke(debugColor);
-      point(start.x, start.y);
-    pop();
     debugPoints(p);
   }
 }
