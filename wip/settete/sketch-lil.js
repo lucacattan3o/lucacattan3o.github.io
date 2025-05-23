@@ -1,11 +1,14 @@
 let obj = {
-  vel: 0.5,
+  vel: matildaIdleVel,
   eyelidY: 0.5,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
   mouth: 'Idle',
-  soundAmp: 0.1,
+  volGain: 50,
+  levelA: 2,
+  levelB: 5,
+  soundAmp: 1,
 };
 
 let storageName = 'settete';
@@ -68,6 +71,9 @@ function setupLil(){
 
   const sound = gui.addFolder('Sound');
   guiMic = sound.add(obj, 'toggleMic').name('Mic: Turn On');
+  sound.add(obj, 'volGain').min(10).max(200).name('Volume Gain');
+  sound.add(obj, 'levelA').min(0).max(5).name('Threshold Mid');
+  sound.add(obj, 'levelB').min(0).max(5).name('Threshold High');
   sound.add(obj, 'soundAmp').min(0).max(2).name('Sound Displacement');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
