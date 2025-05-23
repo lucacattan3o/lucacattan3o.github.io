@@ -13,11 +13,11 @@ function drawMatilda(matildaX, matildaY){
   matildaH = matildaW * 1.4;
 
   // ampiezza dell'oscillazione
-  matildaAmp = matildaW * 0.1;
+  matildaAmp = matildaW * obj.amp;
 
   // offset dal centro di matilda
   // viso un po' a sx
-  matildaOffset = matildaW * 0.15;
+  matildaOffset = matildaW * 0.1;
   
   eyeSize = matildaW * 0.5;
   eyeSep = eyeSize * 0.4;
@@ -44,15 +44,21 @@ function drawMatilda(matildaX, matildaY){
   pop();
 
   // eyes
-  let x = matildaX - matildaOffset + (0.7 * matildaAmp * bodyPoints[26].x);
+  let ei = floor(bodyPoints.length * 0.5);
+  let x = matildaX - matildaOffset + (0.7 * matildaAmp * bodyPoints[ei].x);
   let y = matildaY - matildaH * 0.1;
   drawEye(x - eyeSep, y);
   drawEye(x + eyeSep, y);
 
-  drawEyebrows(matildaX - matildaOffset, matildaY);
+
+  let ebi = floor(bodyPoints.length * 0.45);
+  let ebx = matildaX - matildaOffset + matildaAmp * 0.5 * bodyPoints[ebi].x;
+  let eby = matildaY;
+  drawEyebrows(ebx, eby);
 
   // mouth
-  let mx = matildaX - matildaOffset + (0.4 * matildaAmp * bodyPoints[27].x);
+  let mi = floor(bodyPoints.length * 0.55);
+  let mx = matildaX - matildaOffset + (0.4 * matildaAmp * bodyPoints[mi].x);
   let my = matildaY + matildaH * 0.19;
   drawMouth(mx, my);
 }
@@ -75,6 +81,7 @@ function drawSmartTilde(x, y, w, h, amp, points){
         firstPoint.y = y;
       }
       vertex(x, y);
+      // textSize(10);
       // text(i, x + 30, y);
     };
     for (let i = (points - 1); i >= 0; i--) {
@@ -133,29 +140,16 @@ function drawEye(x, y){
   pop();
 }
 
-function drawEyebrows(matildaX, matildaY){
+function drawEyebrows(x, y){
   let eyebrowsSpace = matildaW * 0.28;
   let eyebrowsDelta = obj.eyebrowsDelta * 0.1;
 
   push();
-    translate(matildaX, matildaY);
-    let ebx = matildaAmp * 0.5 * bodyPoints[25].x;
-    translate(ebx, -matildaH * 0.37);
+    translate(x, y);
+    translate(0, -matildaH * 0.37);
     translate(0, eyeSize * obj.eyebrowsY);
 
     fill(0);
-    if (obj.eyebrows == 'Tilde'){
-      push();
-        translate(-eyebrowsSpace, eyeSize * eyebrowsDelta);
-        rotate(PI * 0.5);
-        drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
-      pop();
-      push();
-        translate(eyebrowsSpace, eyeSize * -eyebrowsDelta);
-        rotate(PI * 0.5);
-        drawTilde(0, 0, eyeSize * 0.4, eyeSize * 0.8, eyeSize * 0.06, 0, 10);
-      pop();
-    }
     if (obj.eyebrows == 'Happy'){
       push();
         strokeCap(SQUARE);

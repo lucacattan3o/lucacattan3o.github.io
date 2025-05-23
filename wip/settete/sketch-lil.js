@@ -1,5 +1,6 @@
 let obj = {
   vel: matildaIdleVel,
+  amp: 0.1,
   eyelidY: 0.5,
   eyebrowsY: 0,
   eyebrowsDelta: 0,
@@ -17,7 +18,7 @@ let storageName = 'settete';
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiMic, guiVel;
+let gui, guiMic, guiVel, guiAmp;
 
 obj.toggleMic = function(){
   toggleMic();
@@ -59,9 +60,10 @@ function setupLil(){
 
   const body = gui.addFolder('Matilda');
   guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity');
+  guiAmp = body.add(obj, 'amp').min(0).max(0.2).name('Ampliture');
 
   const eyes = gui.addFolder('Eyes');
-  eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
+  // eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
   eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
   eyes.add(obj, 'eyebrowsDelta').min(-1).max(1).name('Eyebrows Delta');
   eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
