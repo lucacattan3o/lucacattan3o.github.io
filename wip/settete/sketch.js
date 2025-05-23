@@ -72,7 +72,13 @@ function mousePressed(){
 
 function draw() {
   background(palette[2]);
-  unit = width / 10;
+  unit = width * 0.1;
+  if (width < 800){
+    unit = width * 0.15;
+  }
+  if (width < 400){
+    unit = width * 0.2;
+  }
 
   bgInteractions();
   micInteraction();
@@ -151,9 +157,9 @@ function drawMic(){
   let barH = unit;
 
   push();
-    textSize(unit * 0.2);
+    
     fill(255);
-    let vol = round(soundVol, 1);
+    let vol = round(soundVol, 1, true);
     translate(unit * 0.5, unit * 0.5);
     rect(0, 0, unit * 0.5, barH);
     fill(palette[0]);
@@ -175,10 +181,10 @@ function drawMic(){
       line(0, 0, unit * 0.5, 0);
     pop();
 
-
+    textSize(unit * 0.15);
     textFont('Courier');
     fill(0);
-    text(vol, unit * 0.06, unit * 0.2);
+    text(vol, unit * 0.08, unit * 0.2);
   pop();
 }
 

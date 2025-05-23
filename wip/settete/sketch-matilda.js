@@ -28,7 +28,7 @@ function drawMatilda(matildaX, matildaY){
   pupilAspect = 1.5;
   pupilDist = eyeSize * 0.5;
 
-  strokeW = matildaW * 0.018;
+  strokeW = matildaW * 0.02;
 
   // spessore bocca
   mouthUnit = matildaW * 0.11;
@@ -297,14 +297,18 @@ function drawMouthBored(debug){
 
 function drawMouthHappy(){
   let img = mouthImgs[0];
-  let scale = 0.6;
-  image(img, 0, 0, img.width * scale, img.height * scale);
+  let scale = 3;
+  let mw = mouthW;
+  let aspect = img.height / img.width;
+  image(img, 0, 0, mw * scale, mw * aspect * scale);
 }
 
 function drawMouthWow(){
   let img = mouthImgs[1];
-  let scale = 0.6;
-  image(img, 0, 0, img.width * scale, img.height * scale);
+  let scale = 1.7;
+  let mw = mouthW;
+  let aspect = img.height / img.width;
+  image(img, 0, 0, mw * scale, mw * aspect * scale);
 }
 
 // ** MOUTH LINES **

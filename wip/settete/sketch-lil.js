@@ -72,8 +72,8 @@ function setupLil(){
   const sound = gui.addFolder('Sound');
   guiMic = sound.add(obj, 'toggleMic').name('Mic: Turn On');
   sound.add(obj, 'volGain').min(10).max(200).name('Volume Gain');
-  sound.add(obj, 'levelA').min(0).max(5).name('Threshold Mid');
-  sound.add(obj, 'levelB').min(0).max(5).name('Threshold High');
+  sound.add(obj, 'levelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
+  sound.add(obj, 'levelB').min(4).max(8).step(0.1).name('Threshold High');
   sound.add(obj, 'soundAmp').min(0).max(2).name('Sound Displacement');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
