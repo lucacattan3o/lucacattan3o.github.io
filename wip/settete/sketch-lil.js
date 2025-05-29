@@ -24,7 +24,7 @@ let storageName = 'settete';
 let GUI = lil.GUI;
 let gui,
   guiVel,
-  guiMicMode, guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement,
+  guiMicMode, guiMic, guiMicVolGain, guiMicVolSimulation, guiMicLevelA, guiMicLevelB, guiMicVolDisplacement,
   guiEyebrowsDelta, guiEyebrowsY,
   guiEyelidY,
   guiMouth;
@@ -64,9 +64,11 @@ function setupLil(){
   guiMicVolGain       = sound.add(obj, 'micVolGain').min(10).max(200).name('Gain').hide();
   guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated').hide();
   
-  sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
-  sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
+  guiMicLevelA = sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
+  guiMicLevelB = sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
   guiMicVolDisplacement = sound.add(obj, 'micSoundDisplacement').min(0).max(2).name('Sound Displacement').hide();
+
+  hideMicControls();
 
   const body = gui.addFolder('Matilda');
   guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity');
@@ -95,6 +97,7 @@ function setupLil(){
           guiMicVolGain.show();
           guiMicVolDisplacement.show();
           disableGuiInteractions();
+          showMicControls();
           turnMicOn();
         }
         
@@ -104,11 +107,13 @@ function setupLil(){
           guiMicVolDisplacement.hide();
           disableGuiInteractions();
           turnMicOff();
+          showMicControls();
         }
 
         if (event.value == 'Manual'){
           guiMicVolSimulation.hide();
           enableGuiInteractions();
+          hideMicControls();
           turnMicOff();
         }
 
@@ -121,6 +126,19 @@ function setupLil(){
     gui.load(JSON.parse(saved));
   };
 };
+
+function hideMicControls(){
+  guiMicLevelA.hide();
+  guiMicLevelB.hide();
+  guiMicVolSimulation.hide();
+  guiMicVolGain.hide();
+  guiMicVolDisplacement.hide();
+}
+
+function showMicControls(){
+  guiMicLevelA.show();
+  guiMicLevelB.show();
+}
 
 function enableGuiInteractions(){
   guiVel.enable();
