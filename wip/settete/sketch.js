@@ -120,7 +120,7 @@ function soundInteraction(){
   if (obj.micMode == 'Manual'){
     return;
   }
-  
+
   if (micOn){
     soundVol = mic.getLevel() * obj.micVolGain;
   } else {
@@ -159,6 +159,10 @@ function bgInteractions(){
 }
 
 function drawMic(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+  
   let barH = unit;
 
   push();

@@ -1,13 +1,14 @@
 let obj = {
   vel: matildaIdleVel,
   amp: 0.1,
-  eyelidY: 0.5,
+
   eyebrowsY: 0,
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
+  eyelidY: 0.5,
   mouth: 'Idle',
 
-  micMode: 'Simulated',
+  micMode: 'Manual',
   micVolSimulation: 0.2,
   micVolGain: 50,
   micLevelA: 2,
@@ -23,7 +24,10 @@ let storageName = 'settete';
 let GUI = lil.GUI;
 let gui,
   guiVel,
-  guiMicMode, guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement;
+  guiMicMode, guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement,
+  guiEyebrowsDelta, guiEyebrowsY,
+  guiEyelidY,
+  guiMouth;
 
 obj.savePreset = function() {
   saveToStorage();
@@ -58,24 +62,24 @@ function setupLil(){
   guiMicMode          = sound.add(obj, 'micMode', ['Manual', 'Simulated', 'Real Mic']).name('Mode');
   // guiMic              = sound.add(obj, 'micToggle').name('Mic: Turn On');
   guiMicVolGain       = sound.add(obj, 'micVolGain').min(10).max(200).name('Gain').hide();
-  guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated');
+  guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated').hide();
   
   sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
   sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
   guiMicVolDisplacement = sound.add(obj, 'micSoundDisplacement').min(0).max(2).name('Sound Displacement').hide();
 
   const body = gui.addFolder('Matilda');
-  guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity').disable();
-  guiAmp = body.add(obj, 'amp').min(0).max(0.2).name('Ampliture').disable();
+  guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity');
+  guiAmp = body.add(obj, 'amp').min(0).max(0.2).name('Ampliture');
 
   const eyes = gui.addFolder('Eyes');
   // eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
-  eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
-  eyes.add(obj, 'eyebrowsDelta').min(-1).max(1).name('Eyebrows Delta');
-  eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
+  guiEyebrowsY      = eyes.add(obj, 'eyebrowsY').min(-0.5).max(0.5).name('Eyebrows Y');
+  guiEyebrowsDelta  = eyes.add(obj, 'eyebrowsDelta').min(-1).max(1).name('Eyebrows Delta');
+  guiEyelidY        = eyes.add(obj, 'eyelidY').min(0.5).max(2.5).name('Eyelid');
 
   const mouth = gui.addFolder('Mouth');
-  mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
+  guiMouth = mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
@@ -90,6 +94,7 @@ function setupLil(){
           guiMicVolSimulation.hide();
           guiMicVolGain.show();
           guiMicVolDisplacement.show();
+          disableGuiInteractions();
           turnMicOn();
         }
         
@@ -97,13 +102,13 @@ function setupLil(){
           guiMicVolSimulation.show();
           guiMicVolGain.hide();
           guiMicVolDisplacement.hide();
+          disableGuiInteractions();
           turnMicOff();
         }
 
         if (event.value == 'Manual'){
           guiMicVolSimulation.hide();
-          guiVel.enable();
-          guiAmp.enable();
+          enableGuiInteractions();
           turnMicOff();
         }
 
@@ -116,6 +121,24 @@ function setupLil(){
     gui.load(JSON.parse(saved));
   };
 };
+
+function enableGuiInteractions(){
+  guiVel.enable();
+  guiAmp.enable();
+  guiEyebrowsDelta.enable();
+  guiEyebrowsY.enable();
+  guiEyelidY.enable();
+  guiMouth.enable();
+}
+
+function disableGuiInteractions(){
+  guiVel.disable();
+  guiAmp.disable();
+  guiEyebrowsDelta.disable();
+  guiEyebrowsY.disable();
+  guiEyelidY.disable();
+  guiMouth.disable();
+}
 
 function saveToStorage(){
   preset = gui.save();
