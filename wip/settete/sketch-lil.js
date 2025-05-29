@@ -7,6 +7,7 @@ let obj = {
   eyebrows: 'Happy',
   mouth: 'Idle',
 
+  micMode: 'Simulated',
   micVolSimulation: 0.2,
   micVolGain: 50,
   micLevelA: 2,
@@ -22,22 +23,7 @@ let storageName = 'settete';
 let GUI = lil.GUI;
 let gui,
   guiVel,
-  guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement;
-
-obj.micToggle = function(){
-  toggleMic();
-  if (micOn) {
-    guiMic.name('Mic: Turn Off');
-    guiMicVolSimulation.hide();
-    guiMicVolGain.show();
-    guiMicVolDisplacement.show();
-  } else {
-    guiMic.name('Mic: Turn On');
-    guiMicVolSimulation.show();
-    guiMicVolGain.hide();
-    guiMicVolDisplacement.hide();
-  }
-};
+  guiMicMode, guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement;
 
 obj.savePreset = function() {
   saveToStorage();
@@ -68,9 +54,19 @@ obj.saveImage = function(){
 function setupLil(){
   gui = new GUI();
 
+  const sound = gui.addFolder('Sound');
+  guiMicMode          = sound.add(obj, 'micMode', ['Manual', 'Simulated', 'Real Mic']).name('Mode');
+  // guiMic              = sound.add(obj, 'micToggle').name('Mic: Turn On');
+  guiMicVolGain       = sound.add(obj, 'micVolGain').min(10).max(200).name('Gain').hide();
+  guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated');
+  
+  sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
+  sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
+  guiMicVolDisplacement = sound.add(obj, 'micSoundDisplacement').min(0).max(2).name('Sound Displacement').hide();
+
   const body = gui.addFolder('Matilda');
-  guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity');
-  guiAmp = body.add(obj, 'amp').min(0).max(0.2).name('Ampliture');
+  guiVel = body.add(obj, 'vel').min(0).max(4).name('Velocity').disable();
+  guiAmp = body.add(obj, 'amp').min(0).max(0.2).name('Ampliture').disable();
 
   const eyes = gui.addFolder('Eyes');
   // eyes.add(obj, 'eyebrows', ['Tilde', 'Happy']).name('Eyebrows Type');
@@ -81,15 +77,6 @@ function setupLil(){
   const mouth = gui.addFolder('Mouth');
   mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
 
-  const sound = gui.addFolder('Sound');
-  guiMic              = sound.add(obj, 'micToggle').name('Mic: Turn On');
-  guiMicVolGain       = sound.add(obj, 'micVolGain').min(10).max(200).name('Gain').hide();
-  guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated');
-  
-  sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
-  sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
-  guiMicVolDisplacement = sound.add(obj, 'micSoundDisplacement').min(0).max(2).name('Sound Displacement').hide();
-
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
   gui.add(obj, 'startOver').name('Run Again');
@@ -98,7 +85,28 @@ function setupLil(){
 
   gui.onChange( event => {
     switch (event.property) {
-      case 'toggleMic':
+      case 'micMode':
+        if (event.value == 'Real Mic') {
+          guiMicVolSimulation.hide();
+          guiMicVolGain.show();
+          guiMicVolDisplacement.show();
+          turnMicOn();
+        }
+        
+        if (event.value == 'Simulated') {
+          guiMicVolSimulation.show();
+          guiMicVolGain.hide();
+          guiMicVolDisplacement.hide();
+          turnMicOff();
+        }
+
+        if (event.value == 'Manual'){
+          guiMicVolSimulation.hide();
+          guiVel.enable();
+          guiAmp.enable();
+          turnMicOff();
+        }
+
         break;
     }
   });

@@ -101,22 +101,28 @@ function drawReference(){
   pop();
 }
 
-function toggleMic(){
+
+function turnMicOn(){
   let audioContextState = getAudioContext().state;
   if (audioContextState !== 'running') {
     getAudioContext().resume();
   }
-  if (micOn){
-    mic.stop();
-  } else {
-    mic.start();
-  }
-  micOn = !micOn;
+  mic.start();
+  micOn = true;
+}
+
+function turnMicOff(){
+  mic.stop();
+  micOn = false;
 }
 
 function soundInteraction(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+  
   if (micOn){
-    soundVol = mic.getLevel() * obj.volGain;
+    soundVol = mic.getLevel() * obj.micVolGain;
   } else {
     soundVol = obj.micVolSimulation;
   }
@@ -170,12 +176,12 @@ function drawMic(){
     pop();
 
     push();
-      translate(0, barH - unit * 0.1 * obj.levelA);
+      translate(0, barH - unit * 0.1 * obj.micLevelA);
       strokeWeight(strokeW * 0.5);
       line(0, 0, unit * 0.5, 0);
     pop();
     push();
-      translate(0, barH - unit * 0.1 * obj.levelB);
+      translate(0, barH - unit * 0.1 * obj.micLevelB);
       strokeWeight(strokeW * 0.5);
       line(0, 0, unit * 0.5, 0);
     pop();
