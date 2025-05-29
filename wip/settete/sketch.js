@@ -81,7 +81,7 @@ function draw() {
   }
 
   bgInteractions();
-  micInteraction();
+  soundInteraction();
   
   // drawReference();
   drawMatilda(width * 0.5, height * 0.5);
@@ -114,23 +114,26 @@ function toggleMic(){
   micOn = !micOn;
 }
 
-function micInteraction(){
+function soundInteraction(){
   if (micOn){
     soundVol = mic.getLevel() * obj.volGain;
-    if (soundVol > 10){
-      soundVol = 10;
-    }
-    // simple sound interaction
-    if (soundVol > obj.levelB){
-      guiVel.setValue(4);
-    } else if (soundVol > obj.levelA) {
-      guiVel.setValue(2);
-    } else {
-      guiVel.setValue(matildaIdleVel);
-    }
-    // complex
-    waveform = fft.waveform();
+  } else {
+    soundVol = obj.micVolSimulation;
   }
+  
+  if (soundVol > 10){
+    soundVol = 10;
+  }
+  // simple sound interaction
+  if (soundVol > obj.micLevelB){
+    guiVel.setValue(4);
+  } else if (soundVol > obj.micLevelA) {
+    guiVel.setValue(2);
+  } else {
+    guiVel.setValue(matildaIdleVel);
+  }
+  // complex
+  waveform = fft.waveform();
 }
 
 function bgInteractions(){
@@ -150,10 +153,6 @@ function bgInteractions(){
 }
 
 function drawMic(){
-  if (!micOn){
-    return;
-  }
-
   let barH = unit;
 
   push();

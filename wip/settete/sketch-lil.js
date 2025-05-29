@@ -6,10 +6,12 @@ let obj = {
   eyebrowsDelta: 0,
   eyebrows: 'Happy',
   mouth: 'Idle',
-  volGain: 50,
-  levelA: 2,
-  levelB: 5,
-  soundAmp: 1,
+
+  micVolSimulation: 0.2,
+  micVolGain: 50,
+  micLevelA: 2,
+  micLevelB: 5,
+  micSoundDisplacement: 1,
 };
 
 let storageName = 'settete';
@@ -18,14 +20,22 @@ let storageName = 'settete';
 // ---------
 
 let GUI = lil.GUI;
-let gui, guiMic, guiVel, guiAmp;
+let gui,
+  guiVel,
+  guiMic, guiMicVolGain, guiMicVolSimulation, guiMicVolDisplacement;
 
-obj.toggleMic = function(){
+obj.micToggle = function(){
   toggleMic();
   if (micOn) {
     guiMic.name('Mic: Turn Off');
+    guiMicVolSimulation.hide();
+    guiMicVolGain.show();
+    guiMicVolDisplacement.show();
   } else {
     guiMic.name('Mic: Turn On');
+    guiMicVolSimulation.show();
+    guiMicVolGain.hide();
+    guiMicVolDisplacement.hide();
   }
 };
 
@@ -72,11 +82,13 @@ function setupLil(){
   mouth.add(obj, 'mouth', ['Idle', 'Sad', 'Bored', 'Happy', 'Wow']).name('Mouth Type');
 
   const sound = gui.addFolder('Sound');
-  guiMic = sound.add(obj, 'toggleMic').name('Mic: Turn On');
-  sound.add(obj, 'volGain').min(10).max(200).name('Volume Gain');
-  sound.add(obj, 'levelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
-  sound.add(obj, 'levelB').min(4).max(8).step(0.1).name('Threshold High');
-  sound.add(obj, 'soundAmp').min(0).max(2).name('Sound Displacement');
+  guiMic              = sound.add(obj, 'micToggle').name('Mic: Turn On');
+  guiMicVolGain       = sound.add(obj, 'micVolGain').min(10).max(200).name('Gain').hide();
+  guiMicVolSimulation = sound.add(obj, 'micVolSimulation').min(0).max(10).name('Mic Input Simulated');
+  
+  sound.add(obj, 'micLevelA').min(0.5).max(4).step(0.1).name('Threshold Mid');
+  sound.add(obj, 'micLevelB').min(4).max(8).step(0.1).name('Threshold High');
+  guiMicVolDisplacement = sound.add(obj, 'micSoundDisplacement').min(0).max(2).name('Sound Displacement').hide();
 
   gui.add(obj, 'savePreset' ).name('Save Preset');
   gui.add(obj, 'clearStorage').name('Clear');
@@ -84,7 +96,12 @@ function setupLil(){
   
   gui.add(obj, 'saveImage').name('Save Image');
 
-  // gui.onChange( event => {});
+  gui.onChange( event => {
+    switch (event.property) {
+      case 'toggleMic':
+        break;
+    }
+  });
   
   let saved = localStorage.getItem(storageName);
   if (saved){
