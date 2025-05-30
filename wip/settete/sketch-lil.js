@@ -57,6 +57,7 @@ obj.saveImage = function(){
 
 function setupLil(){
   gui = new GUI();
+  gui.close();
 
   const sound = gui.addFolder('Sound');
   guiMicMode          = sound.add(obj, 'micMode', ['Manual', 'Simulated', 'Real Mic']).name('Mode');
