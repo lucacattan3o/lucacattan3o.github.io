@@ -80,8 +80,13 @@ function draw() {
     unit = width * 0.2;
   }
 
-  bgInteractions();
-  soundInteraction();
+  updateSoundVars();
+
+  // interactions
+  ixVel();
+  ixAmp();
+  ixBg();
+  ixExpressions();
   
   // drawReference();
   drawMatilda(width * 0.5, height * 0.5);
@@ -101,7 +106,6 @@ function drawReference(){
   pop();
 }
 
-
 function turnMicOn(){
   let audioContextState = getAudioContext().state;
   if (audioContextState !== 'running') {
@@ -112,11 +116,13 @@ function turnMicOn(){
 }
 
 function turnMicOff(){
-  mic.stop();
+  if (micOn){
+    mic.stop();
+  }
   micOn = false;
 }
 
-function soundInteraction(){
+function updateSoundVars(){
   if (obj.micMode == 'Manual'){
     return;
   }
@@ -130,7 +136,15 @@ function soundInteraction(){
   if (soundVol > 10){
     soundVol = 10;
   }
-  // simple sound interaction
+
+  waveform = fft.waveform();
+}
+
+function ixVel(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+
   if (soundVol > obj.micLevelB){
     guiVel.setValue(4);
   } else if (soundVol > obj.micLevelA) {
@@ -138,24 +152,121 @@ function soundInteraction(){
   } else {
     guiVel.setValue(matildaIdleVel);
   }
-  // complex
-  waveform = fft.waveform();
 }
 
-function bgInteractions(){
-  if (soundVol > obj.levelA){
+function ixAmp(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+
+  // if (soundVol < (obj.micLevelA * 0.25)){
+  //   guiAmp.setValue(0.05);
+  // } else {
+  //   guiAmp.setValue(0.1);
+  // }
+}
+
+function ixBg(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+
+  if (soundVol > obj.micLevelA){
     if (frameCount % 20 == 0){
       bgs = shuffle(bgs);
     }
   }
-  if (soundVol > obj.levelB){
+  if (soundVol > obj.micLevelB){
     if (frameCount % 2 == 0){
       bgs = shuffle(bgs);
     }
   }
-  if (soundVol > obj.levelA){
+  if (soundVol > obj.micLevelA){
     background(bgs[0]);
   }
+}
+
+function ixExpressions(){
+  if (obj.micMode == 'Manual'){
+    return;
+  }
+
+  let s = frameCount / fps;
+  let n = noise(frameCount * 0.01);
+
+  if (soundVol < obj.micLevelA){
+    if (s % 3 !== 0){
+      return;
+    }
+    if (n < 0.33){
+      expIdle();
+    } else if (n < 0.66) {
+      expBored();
+    } else {
+      expSad();
+    }
+  } else if (soundVol < obj.micLevelB){
+    if (s % 1 !== 0){
+      return;
+    }
+    if (n < 0.33){
+      expIdle();
+    } else if (n < 0.66) {
+      expHappy();
+    } else {
+      expEnjoyed();
+    }
+  } else {
+    if (n < 0.2){
+      expEnjoyed();
+    } else {
+      expOh();
+    }
+  }
+}
+
+// ** EXPRESSIONS **
+// -----------------
+
+function expIdle(){
+  guiMouth.setValue('Idle');
+  guiEyelidY.setValue(1.2);
+  guiEyebrowsDelta.setValue(0);
+}
+
+function expBored(){
+  guiMouth.setValue('Bored');
+  guiEyelidY.setValue(1.4);
+  guiEyebrowsY.setValue(0.05);
+  guiEyebrowsDelta.setValue(0.5);
+}
+
+function expSad(){
+  guiMouth.setValue('Sad');
+  guiEyelidY.setValue(1.3);
+  guiEyebrowsY.setValue(0);
+  guiEyebrowsDelta.setValue(0.1);
+}
+
+function expEnjoyed(){
+  guiMouth.setValue('Happy');
+  guiEyelidY.setValue(1.5);
+  guiEyebrowsY.setValue(0);
+  guiEyebrowsDelta.setValue(-0.5);
+}
+
+function expHappy(){
+  guiMouth.setValue('Happy');
+  guiEyelidY.setValue(0.5);
+  guiEyebrowsY.setValue(0);
+  guiEyebrowsDelta.setValue(0);
+}
+
+function expOh(){
+  guiMouth.setValue('Wow');
+  guiEyelidY.setValue(0.5);
+  guiEyebrowsY.setValue(-0.1);
+  guiEyebrowsDelta.setValue(1);
 }
 
 function drawMic(){
@@ -207,15 +318,10 @@ function updateBodyPoints(){
     let anim = a * TWO_PI * obj.vel;
     anim = a * TWO_PI;
     let angle = (i * TWO_PI / nPoints - PI * 0.5) + anim;
-    if (soundVol > obj.levelA){
-      point.x = 0;
+    if (obj.micMode == 'Real Mic' && soundVol > (obj.micLevelA * 0.5)){
+      point.x = waveform[i] * obj.micSoundDisplacement * 10;
     } else {
       point.x = cos(angle);
-    }
-    if (micOn){
-      if (soundVol > 0.2){
-        point.x += waveform[i] * obj.soundAmp * 10;
-      }
     }
   });
 }
